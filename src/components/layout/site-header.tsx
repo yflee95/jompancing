@@ -1,63 +1,79 @@
 "use client";
 
-import { Fish, Search } from "lucide-react";
+import { Suspense } from "react";
+import { Fish, User } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
-import { Button } from "@/components/ui/button";
+import {
+  SiteHeaderSearch,
+  SiteHeaderSearchFallback,
+} from "@/components/layout/site-header-search";
+import { useScrolledPast } from "@/hooks/use-scrolled-past";
+import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
   const t = useTranslations();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const scrolled = useScrolledPast(60);
+  const isOverlay = isHome && !scrolled;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/80">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-teal-700 shadow-lg shadow-teal-600/25">
-            <Fish className="h-5 w-5 text-white" />
+    <header
+      className={cn(
+        "sticky top-0 z-50 transition-all duration-300",
+        isOverlay
+          ? "border-b border-white/10 bg-gradient-to-b from-black/55 via-black/25 to-transparent"
+          : "border-b border-[var(--sand-dark)]/50 bg-[var(--sand)]/95 shadow-sm shadow-[var(--sand-dark)]/20 backdrop-blur-xl",
+      )}
+    >
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:gap-3 sm:px-4">
+        <Link href="/" className="flex shrink-0 items-center gap-2">
+          <div
+            className={cn(
+              "flex h-9 w-9 items-center justify-center rounded-full transition-colors",
+              isOverlay
+                ? "bg-white/20 backdrop-blur-sm"
+                : "bg-[var(--ocean)] shadow-md shadow-[var(--ocean-glow)]",
+            )}
+          >
+            <Fish className="h-4 w-4 text-white" />
           </div>
-          <div className="hidden sm:block">
-            <p className="text-base font-bold tracking-tight text-slate-900 dark:text-white">
-              {t("common.appName")}
-            </p>
-            <p className="text-xs text-teal-600 dark:text-teal-400">
-              {t("common.tagline")}
-            </p>
-          </div>
+          <span
+            className={cn(
+              "font-serif-display hidden text-lg font-bold sm:block",
+              isOverlay ? "text-white" : "text-[var(--ink)]",
+            )}
+          >
+            {t("common.appName")}
+          </span>
         </Link>
 
-        <div className="hidden flex-1 max-w-md md:flex">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-            <input
-              type="search"
-              placeholder={t("common.search")}
-              className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm outline-none transition focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 dark:border-slate-700 dark:bg-slate-900"
-            />
-          </div>
-        </div>
+        <Suspense fallback={<SiteHeaderSearchFallback isOverlay={isOverlay} />}>
+          <SiteHeaderSearch isOverlay={isOverlay} />
+        </Suspense>
 
-        <div className="flex items-center gap-2">
-          <LocaleSwitcher className="hidden sm:flex" />
-          {user ? (
-            <div className="flex items-center gap-2">
-              <Link
-                href="/profile"
-                className="hidden text-sm font-medium text-slate-700 dark:text-slate-200 sm:block"
-              >
-                {user.name}
-              </Link>
-              <Button variant="ghost" size="sm" onClick={logout}>
-                {t("common.logout")}
-              </Button>
-            </div>
-          ) : (
-            <Button asChild size="sm">
-              <Link href="/login">{t("common.login")}</Link>
-            </Button>
-          )}
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <LocaleSwitcher variant={isOverlay ? "light" : "default"} />
+          <Link
+            href={user ? "/profile" : "/login"}
+            aria-label={user ? user.name : t("common.login")}
+            className={cn(
+              "flex h-9 w-9 items-center justify-center overflow-hidden rounded-full text-xs font-bold transition active:scale-95",
+              isOverlay
+                ? "bg-white/20 text-white ring-2 ring-white/30 backdrop-blur-sm"
+                : "bg-[var(--ocean-light)] text-[var(--ocean)] ring-2 ring-white shadow-sm",
+            )}
+          >
+            {user ? (
+              user.name.charAt(0).toUpperCase()
+            ) : (
+              <User className="h-4 w-4" />
+            )}
+          </Link>
         </div>
       </div>
     </header>

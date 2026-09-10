@@ -1,65 +1,80 @@
-import Image from "next/image";
-import { MapPin, MessageCircle } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { Lock, MapPin, MessageCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import { getDistrictById, getStateById } from "@/data/malaysia-states";
+import { AppImage } from "@/components/ui/app-image";
+import { getSpotLocationLine } from "@/lib/spot-location";
 import { getLocalizedText, type FishingSpot } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
 interface SpotCardProps {
   spot: FishingSpot;
   locale: Locale;
+  showPrivateBadge?: boolean;
 }
 
-export async function SpotCard({ spot, locale }: SpotCardProps) {
-  const t = await getTranslations("spots");
-  const state = getStateById(spot.stateId);
-  const district = getDistrictById(spot.stateId, spot.districtId);
-
+export function SpotCard({ spot, locale, showPrivateBadge }: SpotCardProps) {
+  const t = useTranslations("spots");
+  const tCommon = useTranslations("common");
   return (
     <Link href={`/spots/${spot.slug}`} className="group block">
-      <Card className="overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-teal-600/10">
-        <div className="relative aspect-[16/10] overflow-hidden">
-          <Image
+      <article className="overflow-hidden rounded-3xl bg-white shadow-[0_8px_30px_rgba(44,36,22,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(44,36,22,0.1)]">
+        <div className="relative aspect-[4/5] overflow-hidden">
+          <AppImage
             src={spot.imageUrl}
             alt={getLocalizedText(spot.title, locale)}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 33vw"
+            sizes="(max-width: 768px) 50vw, 33vw"
+            placeholderVariant="spot"
+            placeholderLabel={tCommon("photoUnavailable")}
+            className="absolute inset-0"
+            imageClassName="transition duration-500 group-hover:scale-105"
           />
           {spot.featured && (
-            <Badge variant="featured" className="absolute left-3 top-3">
-              ★ Featured
-            </Badge>
+            <span className="badge-accent absolute left-3 top-3 z-10 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide">
+              ★ {tCommon("featured")}
+            </span>
           )}
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-            <p className="text-xs font-medium text-teal-200">
-              {state && getLocalizedText(state.name, locale)} ·{" "}
-              {district && getLocalizedText(district.name, locale)}
+          {(showPrivateBadge || spot.visibility === "private") && (
+            <span className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-black/50 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+              <Lock className="h-3 w-3" />
+              {t("private")}
+            </span>
+          )}
+          {spot.photos.length > 1 && (
+            <span className="absolute bottom-14 right-3 z-10 rounded-full bg-black/45 px-2 py-0.5 text-[10px] font-semibold text-white backdrop-blur-sm">
+              +{spot.photos.length - 1}
+            </span>
+          )}
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 z-10 p-4">
+            <p className="line-clamp-1 text-[10px] font-medium text-white/70">
+              {getSpotLocationLine(spot, locale)}
             </p>
+            <p className="mt-0.5 text-[11px] font-medium text-white/75">
+              {spot.authorName}
+            </p>
+            <h3 className="font-serif-display mt-0.5 line-clamp-2 text-lg font-semibold leading-tight text-white">
+              {getLocalizedText(spot.title, locale)}
+            </h3>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <span className="flex items-center gap-1 text-[11px] text-white/70">
+                <MapPin className="h-3 w-3" />
+                {t(spot.waterType as "saltwater" | "freshwater" | "pond" | "river")}
+              </span>
+              {spot.tags[0] && (
+                <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] text-white/90">
+                  {spot.tags[0]}
+                </span>
+              )}
+              <span className="flex items-center gap-1 text-[11px] text-white/70">
+                <MessageCircle className="h-3 w-3" />
+                {spot.commentCount}
+              </span>
+            </div>
           </div>
         </div>
-        <div className="p-4">
-          <h3 className="line-clamp-1 text-base font-semibold text-slate-900 group-hover:text-teal-700 dark:text-white dark:group-hover:text-teal-300">
-            {getLocalizedText(spot.title, locale)}
-          </h3>
-          <p className="mt-1 line-clamp-2 text-sm text-slate-600 dark:text-slate-400">
-            {getLocalizedText(spot.description, locale)}
-          </p>
-          <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-            <span className="flex items-center gap-1">
-              <MapPin className="h-3.5 w-3.5" />
-              {t(spot.waterType as "saltwater" | "freshwater" | "pond" | "river")}
-            </span>
-            <span className="flex items-center gap-1">
-              <MessageCircle className="h-3.5 w-3.5" />
-              {spot.commentCount}
-            </span>
-          </div>
-        </div>
-      </Card>
+      </article>
     </Link>
   );
 }

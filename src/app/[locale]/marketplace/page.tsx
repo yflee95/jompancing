@@ -24,24 +24,21 @@ export default async function MarketplacePage({
   const t = await getTranslations("marketplace");
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
-      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-            {t("title")}
-          </h1>
-          <p className="mt-2 text-slate-600 dark:text-slate-400">
-            {t("subtitle")}
-          </p>
-        </div>
-        <Button variant="outline">{t("postListing")}</Button>
+    <div className="mx-auto max-w-6xl px-4 py-6">
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <h1 className="font-serif-display text-2xl font-bold text-[var(--ink)]">
+          {t("title")}
+        </h1>
+        <Button variant="outline" size="sm">
+          {t("postListing")}
+        </Button>
       </div>
 
-      <p className="mb-6 rounded-xl bg-slate-100 p-4 text-sm text-slate-600 dark:bg-slate-800/50 dark:text-slate-400">
+      <p className="mb-6 rounded-2xl bg-white p-3 text-xs text-[var(--ink-muted)] ring-1 ring-[var(--sand-dark)]/40">
         {t("codDisclaimer")}
       </p>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
         {mockListings.map((listing) => (
           <ListingCard key={listing.id} listing={listing} locale={locale} />
         ))}

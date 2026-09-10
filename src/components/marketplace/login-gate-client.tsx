@@ -23,9 +23,9 @@ export function LoginGateClient({
 
   if (!user) {
     return (
-      <div className="rounded-xl border border-dashed border-slate-300 p-3 text-center dark:border-slate-700">
-        <p className="text-xs text-slate-500">{loginMessage}</p>
-        <Button asChild size="sm" className="mt-2 w-full">
+      <div className="rounded-2xl bg-[var(--sand)] p-3 text-center ring-1 ring-[var(--sand-dark)]/40">
+        <p className="text-[11px] text-[var(--ink-muted)]">{loginMessage}</p>
+        <Button asChild size="sm" variant="outline" className="mt-2 w-full">
           <Link href="/login">{contactLabel}</Link>
         </Button>
       </div>
@@ -35,6 +35,7 @@ export function LoginGateClient({
   return (
     <Button
       className="w-full"
+      size="sm"
       onClick={() => {
         window.open(
           buildWhatsAppUrl(

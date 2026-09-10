@@ -1,11 +1,36 @@
 @import "tailwindcss";
 
+/*
+ * Jompancing Premium Palette
+ * ─────────────────────────
+ * Ocean (85%) → navigation, buttons, links, filters
+ * Accent (15%) → Featured badge + Post (+) FAB only
+ * Sand → backgrounds
+ */
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --teal-primary: #0d9488;
-  --teal-dark: #115e59;
-  --amber-accent: #f59e0b;
+  --sand: #faf6ef;
+  --sand-dark: #e8e0d4;
+  --surface: #ffffff;
+  --ink: #2a2418;
+  --ink-muted: #73695c;
+
+  --ocean: #1a6570;
+  --ocean-dark: #134952;
+  --ocean-light: #e4f0f2;
+  --ocean-glow: rgba(26, 101, 112, 0.18);
+
+  --accent: #c7674e;
+  --accent-light: #f3ebe7;
+  --accent-glow: rgba(199, 103, 78, 0.22);
+
+  /* Legacy aliases */
+  --coral: var(--accent);
+  --coral-light: var(--accent-light);
+
+  --shadow-travel: 0 8px 30px rgba(42, 36, 24, 0.07);
+  --shadow-travel-hover: 0 16px 48px rgba(42, 36, 24, 0.12);
+  --background: var(--sand);
+  --foreground: var(--ink);
 }
 
 @theme inline {
@@ -13,45 +38,121 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-display: var(--font-plus-jakarta);
+  --font-display-serif: var(--font-playfair);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #020617;
-    --foreground: #f1f5f9;
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--sand);
+  color: var(--ink);
   font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.locale-zh body {
+  font-family: var(--font-noto-sc), var(--font-inter), system-ui, sans-serif;
+}
+
+.font-serif-display {
+  font-family: var(--font-playfair), Georgia, "Times New Roman", serif;
+}
+
+/* Accent badge — use ONLY for Featured / Hot */
+.badge-accent {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 2px 8px var(--accent-glow);
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--teal-primary) 25%, transparent);
+  background: color-mix(in srgb, var(--ocean) 20%, transparent);
 }
 
-/* Smooth scroll & safe area for mobile nav */
-html {
-  scroll-behavior: smooth;
+.tap-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tap-card:active {
+  transform: scale(0.98);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.07);
+  }
+}
+
+.hero-ken-burns {
+  animation: ken-burns 7s ease-out forwards;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s ease-out both;
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--sand-dark) 0%,
+    var(--ocean-light) 40%,
+    var(--sand) 60%,
+    var(--sand-dark) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
 .pb-safe {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Custom scrollbar */
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #94a3b8;
+  background: var(--sand-dark);
   border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
 }

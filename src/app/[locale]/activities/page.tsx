@@ -1,9 +1,17 @@
 import { Megaphone } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ActivityCard } from "@/components/activities/activity-card";
+import { ActivityFilters } from "@/components/activities/activity-filters";
 import { Button } from "@/components/ui/button";
-import { mockActivities } from "@/data/mock-data";
+import { EmptyState } from "@/components/ui/empty-state";
+import { filterActivities } from "@/data/mock-data";
+import type { ActivitySort } from "@/types";
 import type { Locale } from "@/i18n/routing";
+
+interface ActivitiesPageProps {
+  params: Promise<{ locale: Locale }>;
+  searchParams: Promise<{ state?: string; district?: string; sort?: ActivitySort }>;
+}
 
 export async function generateMetadata({
   params,
@@ -17,44 +25,56 @@ export async function generateMetadata({
 
 export default async function ActivitiesPage({
   params,
-}: {
-  params: Promise<{ locale: Locale }>;
-}) {
+  searchParams,
+}: ActivitiesPageProps) {
   const { locale } = await params;
+  const { state, district, sort = "hot" } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("activities");
 
+  const activities = filterActivities(state, district, sort);
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
-      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div className="mx-auto max-w-6xl px-4 py-6 pb-24 md:pb-8">
+      <div className="mb-6 flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+          <h1 className="font-serif-display text-2xl font-bold text-[var(--ink)]">
             {t("title")}
           </h1>
-          <p className="mt-2 text-slate-600 dark:text-slate-400">
-            {t("subtitle")}
-          </p>
+          <p className="mt-1 text-sm text-[var(--ink-muted)]">{t("subtitle")}</p>
         </div>
-        <Button>
+        <Button size="sm">
           <Megaphone className="h-4 w-4" />
           {t("promote")}
         </Button>
       </div>
 
-      <div className="mb-8 rounded-2xl border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 p-6 dark:border-amber-800/50 dark:from-amber-950/30 dark:to-orange-950/20">
-        <h2 className="font-semibold text-amber-900 dark:text-amber-200">
-          {t("promote")}
-        </h2>
-        <p className="mt-1 text-sm text-amber-800/80 dark:text-amber-300/80">
+      <div className="mb-6 rounded-2xl bg-[var(--ocean-light)] p-4 ring-1 ring-[var(--ocean)]/15">
+        <p className="text-sm font-semibold text-[var(--ocean-dark)]">
           {t("promoteDesc")}
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        {mockActivities.map((activity) => (
-          <ActivityCard key={activity.id} activity={activity} locale={locale} />
-        ))}
-      </div>
+      <ActivityFilters
+        locale={locale}
+        currentState={state}
+        currentDistrict={district}
+        currentSort={sort}
+      />
+
+      {activities.length === 0 ? (
+        <EmptyState
+          className="mt-6"
+          title={t("noActivities")}
+          description={t("tryDifferentRegion")}
+        />
+      ) : (
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          {activities.map((activity) => (
+            <ActivityCard key={activity.id} activity={activity} locale={locale} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
