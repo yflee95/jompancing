@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "title": "Jompancing — 马来西亚钓鱼平台",
+    "description": "分享钓点、参与活动、买卖渔具 — 全马钓友社区。"
+  },
+  "common": {
+    "appName": "Jompancing",
+    "tagline": "一起钓，一起分享",
+    "loading": "加载中...",
+    "search": "搜索钓点、活动、渔具...",
+    "viewAll": "查看全部",
+    "share": "分享",
+    "save": "保存",
+    "cancel": "取消",
+    "submit": "提交",
+    "loginRequired": "需要登录",
+    "loginToContinue": "登录以使用此功能",
+    "login": "登录",
+    "signup": "注册",
+    "logout": "退出",
+    "guest": "访客",
+    "myr": "RM",
+    "cod": "货到付款",
+    "featured": "精选",
+    "verified": "已认证",
+    "new": "最新",
+    "nearYou": "附近"
+  },
+  "nav": {
+    "home": "首页",
+    "spots": "钓点",
+    "map": "地图",
+    "activities": "活动",
+    "marketplace": "商城",
+    "guide": "指南",
+    "profile": "我的",
+    "post": "分享"
+  },
+  "locale": {
+    "label": "语言",
+    "ms": "Bahasa Melayu",
+    "en": "English",
+    "zh": "中文"
+  },
+  "home": {
+    "heroTitle": "发现马来西亚最佳钓点",
+    "heroSubtitle": "分享地点、参加活动、COD 买渔具 — 从柔佛到沙巴。",
+    "ctaExplore": "探索钓点",
+    "ctaPost": "分享钓点",
+    "statsSpots": "已分享钓点",
+    "statsAnglers": "活跃钓友",
+    "statsStates": "覆盖州属",
+    "featuredSpots": "精选钓点",
+    "upcomingActivities": "即将举行的活动",
+    "latestListings": "最新商品",
+    "browseByState": "按州浏览"
+  },
+  "spots": {
+    "title": "钓点分享",
+    "subtitle": "来自全马钓友的真实钓点",
+    "filterState": "州属",
+    "filterDistrict": "县/区",
+    "filterAll": "全部",
+    "filterWaterType": "水域类型",
+    "saltwater": "海水",
+    "freshwater": "淡水",
+    "pond": "池塘",
+    "river": "河流",
+    "directions": "导航",
+    "comments": "留言",
+    "species": "鱼种",
+    "facilities": "设施",
+    "bestTime": "最佳时间",
+    "postedBy": "分享者",
+    "loginForDirections": "登录后查看导航和留言",
+    "noSpots": "此区域暂无钓点",
+    "beFirst": "成为第一个分享钓点的人！"
+  },
+  "activities": {
+    "title": "活动与推广",
+    "subtitle": "钓鱼比赛、大促销、工作坊 — 推广您的活动",
+    "contest": "比赛",
+    "sale": "大促销",
+    "workshop": "工作坊",
+    "meetup": "聚会",
+    "promote": "推广活动",
+    "promoteDesc": "按天付费广告提升曝光 — 从 RM29/天起",
+    "date": "日期",
+    "venue": "地点",
+    "organizer": "主办方",
+    "fee": "费用"
+  },
+  "marketplace": {
+    "title": "渔具商城",
+    "subtitle": "买卖渔具 — 目前仅支持货到付款 (COD)",
+    "condition": "成色",
+    "conditionNew": "全新",
+    "conditionUsed": "二手",
+    "contactSeller": "联系卖家",
+    "loginForContact": "登录后通过 WhatsApp 联系卖家",
+    "codDisclaimer": "COD 交易在平台外进行。Jompancing 不对买卖交易负责。",
+    "postListing": "发布商品"
+  },
+  "guide": {
+    "title": "钓鱼指南",
+    "subtitle": "技巧、鱼种、法规与季节 — 马来西亚钓友必读",
+    "readMore": "阅读更多",
+    "categories": {
+      "tips": "技巧",
+      "species": "鱼种",
+      "regulations": "法规",
+      "gear": "装备",
+      "season": "季节与天气"
+    }
+  },
+  "auth": {
+    "welcomeBack": "欢迎回来",
+    "createAccount": "创建账户",
+    "email": "邮箱",
+    "password": "密码",
+    "continueWithGoogle": "使用 Google 继续",
+    "noAccount": "没有账户？",
+    "hasAccount": "已有账户？",
+    "demoLogin": "演示登录"
+  },
+  "footer": {
+    "about": "关于",
+    "terms": "条款",
+    "privacy": "隐私",
+    "contact": "联系",
+    "copyright": "© {year} Jompancing. 马来西亚钓友社区。"
+  }
+}

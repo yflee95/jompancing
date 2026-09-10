@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "title": "Jompancing — Platform Memancing Malaysia",
+    "description": "Kongsi tempat memancing, aktiviti, jual beli peralatan — komuniti pemancing seluruh Malaysia."
+  },
+  "common": {
+    "appName": "Jompancing",
+    "tagline": "Jom pancing, jom kongsi",
+    "loading": "Memuatkan...",
+    "search": "Cari tempat, aktiviti, peralatan...",
+    "viewAll": "Lihat semua",
+    "share": "Kongsi",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "submit": "Hantar",
+    "loginRequired": "Log masuk diperlukan",
+    "loginToContinue": "Log masuk untuk akses ciri ini",
+    "login": "Log Masuk",
+    "signup": "Daftar",
+    "logout": "Log Keluar",
+    "guest": "Tetamu",
+    "myr": "RM",
+    "cod": "COD",
+    "featured": "Pilihan",
+    "verified": "Disahkan",
+    "new": "Baru",
+    "nearYou": "Berhampiran anda"
+  },
+  "nav": {
+    "home": "Utama",
+    "spots": "Tempat",
+    "map": "Peta",
+    "activities": "Aktiviti",
+    "marketplace": "Kedai",
+    "guide": "Panduan",
+    "profile": "Profil",
+    "post": "Kongsi"
+  },
+  "locale": {
+    "label": "Bahasa",
+    "ms": "Bahasa Melayu",
+    "en": "English",
+    "zh": "中文"
+  },
+  "home": {
+    "heroTitle": "Temui tempat memancing terbaik di Malaysia",
+    "heroSubtitle": "Kongsi lokasi, sertai aktiviti, beli peralatan COD — dari Johor hingga Sabah.",
+    "ctaExplore": "Terokai Tempat",
+    "ctaPost": "Kongsi Tempat",
+    "statsSpots": "Tempat dikongsi",
+    "statsAnglers": "Pemancing aktif",
+    "statsStates": "Negeri diliputi",
+    "featuredSpots": "Tempat Pilihan",
+    "upcomingActivities": "Aktiviti Akan Datang",
+    "latestListings": "Jualan Terkini",
+    "browseByState": "Layari mengikut Negeri"
+  },
+  "spots": {
+    "title": "Tempat Memancing",
+    "subtitle": "Temui lokasi dari pemancing sebenar di seluruh Malaysia",
+    "filterState": "Negeri",
+    "filterDistrict": "Daerah",
+    "filterAll": "Semua",
+    "filterWaterType": "Jenis air",
+    "saltwater": "Air laut",
+    "freshwater": "Air tawar",
+    "pond": "Kolam",
+    "river": "Sungai",
+    "directions": "Navigasi",
+    "comments": "Komen",
+    "species": "Spesies ikan",
+    "facilities": "Kemudahan",
+    "bestTime": "Masa terbaik",
+    "postedBy": "Dikongsi oleh",
+    "loginForDirections": "Log masuk untuk lihat navigasi & komen",
+    "noSpots": "Tiada tempat di kawasan ini lagi",
+    "beFirst": "Jadilah yang pertama kongsi tempat di sini!"
+  },
+  "activities": {
+    "title": "Aktiviti & Promosi",
+    "subtitle": "Peraduan memancing, jualan besar, bengkel — promosikan aktiviti anda",
+    "contest": "Peraduan",
+    "sale": "Jualan Besar",
+    "workshop": "Bengkel",
+    "meetup": "Perjumpaan",
+    "promote": "Promosikan Aktiviti",
+    "promoteDesc": "Tingkatkan visibiliti dengan iklan harian — dari RM29/hari",
+    "date": "Tarikh",
+    "venue": "Lokasi",
+    "organizer": "Penganjur",
+    "fee": "Yuran"
+  },
+  "marketplace": {
+    "title": "Kedai Peralatan",
+    "subtitle": "Beli & jual peralatan memancing — COD sahaja buat masa ini",
+    "condition": "Keadaan",
+    "conditionNew": "Baru",
+    "conditionUsed": "Terpakai",
+    "contactSeller": "Hubungi Penjual",
+    "loginForContact": "Log masuk untuk hubungi penjual via WhatsApp",
+    "codDisclaimer": "Transaksi COD di luar platform. Jompancing tidak bertanggungjawab atas urusan jual beli.",
+    "postListing": "Senarai Barang"
+  },
+  "guide": {
+    "title": "Panduan Memancing",
+    "subtitle": "Tips, spesies ikan, peraturan & musim — untuk pemancing Malaysia",
+    "readMore": "Baca lagi",
+    "categories": {
+      "tips": "Tips & Teknik",
+      "species": "Spesies Ikan",
+      "regulations": "Peraturan",
+      "gear": "Peralatan",
+      "season": "Musim & Cuaca"
+    }
+  },
+  "auth": {
+    "welcomeBack": "Selamat kembali",
+    "createAccount": "Cipta akaun",
+    "email": "E-mel",
+    "password": "Kata laluan",
+    "continueWithGoogle": "Teruskan dengan Google",
+    "noAccount": "Tiada akaun?",
+    "hasAccount": "Sudah ada akaun?",
+    "demoLogin": "Log masuk demo"
+  },
+  "footer": {
+    "about": "Tentang",
+    "terms": "Terma",
+    "privacy": "Privasi",
+    "contact": "Hubungi",
+    "copyright": "© {year} Jompancing. Komuniti pemancing Malaysia."
+  }
+}

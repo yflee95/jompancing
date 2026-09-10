@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "title": "Jompancing — Malaysia Fishing Platform",
+    "description": "Share fishing spots, join activities, buy & sell gear — the angler community across Malaysia."
+  },
+  "common": {
+    "appName": "Jompancing",
+    "tagline": "Let's fish, let's share",
+    "loading": "Loading...",
+    "search": "Search spots, activities, gear...",
+    "viewAll": "View all",
+    "share": "Share",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "loginRequired": "Login required",
+    "loginToContinue": "Sign in to access this feature",
+    "login": "Log In",
+    "signup": "Sign Up",
+    "logout": "Log Out",
+    "guest": "Guest",
+    "myr": "RM",
+    "cod": "COD",
+    "featured": "Featured",
+    "verified": "Verified",
+    "new": "New",
+    "nearYou": "Near you"
+  },
+  "nav": {
+    "home": "Home",
+    "spots": "Spots",
+    "map": "Map",
+    "activities": "Activities",
+    "marketplace": "Shop",
+    "guide": "Guide",
+    "profile": "Profile",
+    "post": "Share"
+  },
+  "locale": {
+    "label": "Language",
+    "ms": "Bahasa Melayu",
+    "en": "English",
+    "zh": "中文"
+  },
+  "home": {
+    "heroTitle": "Discover the best fishing spots in Malaysia",
+    "heroSubtitle": "Share locations, join events, buy gear COD — from Johor to Sabah.",
+    "ctaExplore": "Explore Spots",
+    "ctaPost": "Share a Spot",
+    "statsSpots": "Spots shared",
+    "statsAnglers": "Active anglers",
+    "statsStates": "States covered",
+    "featuredSpots": "Featured Spots",
+    "upcomingActivities": "Upcoming Activities",
+    "latestListings": "Latest Listings",
+    "browseByState": "Browse by State"
+  },
+  "spots": {
+    "title": "Fishing Spots",
+    "subtitle": "Real locations shared by anglers across Malaysia",
+    "filterState": "State",
+    "filterDistrict": "District",
+    "filterAll": "All",
+    "filterWaterType": "Water type",
+    "saltwater": "Saltwater",
+    "freshwater": "Freshwater",
+    "pond": "Pond",
+    "river": "River",
+    "directions": "Directions",
+    "comments": "Comments",
+    "species": "Fish species",
+    "facilities": "Facilities",
+    "bestTime": "Best time",
+    "postedBy": "Shared by",
+    "loginForDirections": "Sign in to view directions & comments",
+    "noSpots": "No spots in this area yet",
+    "beFirst": "Be the first to share a spot here!"
+  },
+  "activities": {
+    "title": "Activities & Promotions",
+    "subtitle": "Fishing contests, mega sales, workshops — promote your event",
+    "contest": "Contest",
+    "sale": "Mega Sale",
+    "workshop": "Workshop",
+    "meetup": "Meetup",
+    "promote": "Promote Activity",
+    "promoteDesc": "Boost visibility with daily ads — from RM29/day",
+    "date": "Date",
+    "venue": "Venue",
+    "organizer": "Organizer",
+    "fee": "Fee"
+  },
+  "marketplace": {
+    "title": "Gear Marketplace",
+    "subtitle": "Buy & sell fishing gear — COD only for now",
+    "condition": "Condition",
+    "conditionNew": "New",
+    "conditionUsed": "Used",
+    "contactSeller": "Contact Seller",
+    "loginForContact": "Sign in to contact seller via WhatsApp",
+    "codDisclaimer": "COD transactions are off-platform. Jompancing is not responsible for buy/sell dealings.",
+    "postListing": "Post Listing"
+  },
+  "guide": {
+    "title": "Fishing Guide",
+    "subtitle": "Tips, fish species, regulations & seasons — for Malaysian anglers",
+    "readMore": "Read more",
+    "categories": {
+      "tips": "Tips & Techniques",
+      "species": "Fish Species",
+      "regulations": "Regulations",
+      "gear": "Gear",
+      "season": "Season & Weather"
+    }
+  },
+  "auth": {
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "continueWithGoogle": "Continue with Google",
+    "noAccount": "No account?",
+    "hasAccount": "Already have an account?",
+    "demoLogin": "Demo login"
+  },
+  "footer": {
+    "about": "About",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "contact": "Contact",
+    "copyright": "© {year} Jompancing. Malaysia's angler community."
+  }
+}
