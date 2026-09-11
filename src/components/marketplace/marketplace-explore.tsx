@@ -1,11 +1,16 @@
 "use client";
 
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ListingCard } from "@/components/marketplace/listing-card";
+import {
+  buildListingShelfSlots,
+  ListingAddCard,
+  ListingPlaceholderCard,
+} from "@/components/marketplace/listing-shelf-cards";
 import { useMarketplace } from "@/components/providers/marketplace-provider";
 import { Button } from "@/components/ui/button";
-import { EmptyState } from "@/components/ui/empty-state";
 import type { Locale } from "@/i18n/routing";
 
 interface MarketplaceExploreProps {
@@ -15,6 +20,18 @@ interface MarketplaceExploreProps {
 export function MarketplaceExplore({ locale }: MarketplaceExploreProps) {
   const t = useTranslations("marketplace");
   const { listings, isLoaded } = useMarketplace();
+
+  const shelfSlots = useMemo(
+    () =>
+      buildListingShelfSlots(
+        [...listings].sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        ),
+        12,
+      ),
+    [listings],
+  );
 
   return (
     <>
@@ -38,18 +55,25 @@ export function MarketplaceExplore({ locale }: MarketplaceExploreProps) {
         <div className="flex h-40 items-center justify-center">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--ocean)] border-t-transparent" />
         </div>
-      ) : listings.length === 0 ? (
-        <EmptyState
-          title={t("noListings")}
-          description={t("beFirstSeller")}
-          actionLabel={t("postListing")}
-          actionHref="/marketplace/new"
-        />
       ) : (
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
-          {listings.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} locale={locale} />
-          ))}
+          {shelfSlots.map((slot, index) => {
+            if (slot.kind === "item") {
+              return (
+                <ListingCard
+                  key={slot.value.id}
+                  listing={slot.value}
+                  locale={locale}
+                />
+              );
+            }
+            if (slot.kind === "add") {
+              return <ListingAddCard key="add" layout="grid" />;
+            }
+            return (
+              <ListingPlaceholderCard key={`placeholder-${index}`} layout="grid" />
+            );
+          })}
         </div>
       )}
     </>

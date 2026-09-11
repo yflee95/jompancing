@@ -4,6 +4,11 @@ import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { HomeListingRailCard } from "@/components/home/home-listing-rail-card";
 import { HomeSpotSection } from "@/components/home/home-spot-section";
+import {
+  buildListingShelfSlots,
+  ListingAddCard,
+  ListingPlaceholderCard,
+} from "@/components/marketplace/listing-shelf-cards";
 import { useMarketplace } from "@/components/providers/marketplace-provider";
 import type { Locale } from "@/i18n/routing";
 
@@ -18,16 +23,19 @@ export function HomeListingsSection({ locale }: HomeListingsSectionProps) {
 
   const latestListings = useMemo(
     () =>
-      [...listings]
-        .sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-        )
-        .slice(0, 4),
+      [...listings].sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      ),
     [listings],
   );
 
-  if (!isLoaded || latestListings.length === 0) return null;
+  const shelfSlots = useMemo(
+    () => buildListingShelfSlots(latestListings, 4),
+    [latestListings],
+  );
+
+  if (!isLoaded) return null;
 
   return (
     <HomeSpotSection
@@ -38,9 +46,21 @@ export function HomeListingsSection({ locale }: HomeListingsSectionProps) {
       className="border-t border-[var(--sand-dark)]/20 bg-white/50 py-5 md:py-6"
       mobilePeek
     >
-      {latestListings.map((listing) => (
-        <HomeListingRailCard key={listing.id} listing={listing} locale={locale} />
-      ))}
+      {shelfSlots.map((slot, index) => {
+        if (slot.kind === "item") {
+          return (
+            <HomeListingRailCard
+              key={slot.value.id}
+              listing={slot.value}
+              locale={locale}
+            />
+          );
+        }
+        if (slot.kind === "add") {
+          return <ListingAddCard key="add" layout="rail" />;
+        }
+        return <ListingPlaceholderCard key={`placeholder-${index}`} layout="rail" />;
+      })}
     </HomeSpotSection>
   );
 }

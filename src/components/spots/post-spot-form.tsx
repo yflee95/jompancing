@@ -74,7 +74,11 @@ function FormSection({
   );
 }
 
-export function PostSpotForm() {
+interface PostSpotFormProps {
+  defaultWaterType?: WaterType;
+}
+
+export function PostSpotForm({ defaultWaterType }: PostSpotFormProps = {}) {
   const t = useTranslations("post");
   const tSpots = useTranslations("spots");
   const tCommon = useTranslations("common");
@@ -88,7 +92,9 @@ export function PostSpotForm() {
   const [description, setDescription] = useState("");
   const [googleAddress, setGoogleAddress] = useState("");
   const [googleMapsUrl, setGoogleMapsUrl] = useState("");
-  const [waterType, setWaterType] = useState<WaterType>("saltwater");
+  const [waterType, setWaterType] = useState<WaterType>(
+    defaultWaterType ?? "saltwater",
+  );
   const [tags, setTags] = useState<string[]>([]);
   const [tagDraft, setTagDraft] = useState("");
   const [visibility, setVisibility] = useState<SpotVisibility>("public");

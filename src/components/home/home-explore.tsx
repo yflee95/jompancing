@@ -10,6 +10,11 @@ import {
 } from "@/components/providers/spots-provider";
 import { HomeActivitySection } from "@/components/home/home-activity-section";
 import { HomeListingsSection } from "@/components/home/home-listings-section";
+import {
+  HomePaidPondAddCard,
+  HomePaidPondPlaceholderCard,
+} from "@/components/home/home-paid-pond-shelf-cards";
+import { buildListingShelfSlots } from "@/components/marketplace/listing-shelf-cards";
 import { HomeDiscoverGrid } from "@/components/home/home-discover-grid";
 import { HomeShareSpotBanner } from "@/components/home/home-share-spot-banner";
 import { HomeSpotDeck } from "@/components/home/home-spot-deck";
@@ -146,8 +151,12 @@ export function HomeExplore({ spots }: HomeExploreProps) {
       .slice(0, 6);
   }, [allPublicSpots, activeCategory, nearbyIds]);
 
-  const showPaidPondSection =
-    activeCategory === "all" && nearbyPaidPonds.length > 0;
+  const showPaidPondSection = activeCategory === "all";
+
+  const paidPondShelfSlots = useMemo(
+    () => buildListingShelfSlots(nearbyPaidPonds, 4),
+    [nearbyPaidPonds],
+  );
 
   const nearbyCount = hasGps
     ? spotsWithDistance.filter(
@@ -203,22 +212,32 @@ export function HomeExplore({ spots }: HomeExploreProps) {
         {showPaidPondSection && (
           <HomeSpotSection
             title={t("nearbyPaidPonds")}
-            subtitle={t("nearbyPaidPondsHint")}
+            subtitle={
+              hasGps ? t("nearbyPaidPondsHint") : t("nearbyPaidPondsHintNoGps")
+            }
             href="/spots"
             linkLabel={tCommon("viewAll")}
             className="border-t border-[var(--sand-dark)]/20 bg-white/40 py-5 md:py-6"
             mobilePeek
           >
-            {nearbyPaidPonds.map((spot) => (
-              <HomeSpotRailCard
-                key={spot.id}
-                spot={spot}
-                locale={locale}
-                distanceKm={spot.distanceKm}
-                showPaid
-                layout="peek"
-              />
-            ))}
+            {paidPondShelfSlots.map((slot, index) => {
+              if (slot.kind === "item") {
+                return (
+                  <HomeSpotRailCard
+                    key={slot.value.id}
+                    spot={slot.value}
+                    locale={locale}
+                    distanceKm={slot.value.distanceKm}
+                    showPaid
+                    layout="peek"
+                  />
+                );
+              }
+              if (slot.kind === "add") {
+                return <HomePaidPondAddCard key="add" />;
+              }
+              return <HomePaidPondPlaceholderCard key={`placeholder-${index}`} />;
+            })}
           </HomeSpotSection>
         )}
 

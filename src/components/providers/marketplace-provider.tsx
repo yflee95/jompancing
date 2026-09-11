@@ -8,7 +8,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import { mockListings } from "@/data/mock-data";
 import { slugify } from "@/lib/slug";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import {
@@ -79,18 +78,6 @@ function createDemoListing(input: NewMarketplaceListingInput): MarketplaceListin
   };
 }
 
-function mergeListings(
-  userListings: MarketplaceListing[],
-  seed: MarketplaceListing[],
-): MarketplaceListing[] {
-  const seen = new Set<string>();
-  return [...userListings, ...seed].filter((listing) => {
-    if (seen.has(listing.id)) return false;
-    seen.add(listing.id);
-    return true;
-  });
-}
-
 export function MarketplaceProvider({ children }: { children: React.ReactNode }) {
   const useDb = isSupabaseConfigured();
   const [userListings, setUserListings] = useState<MarketplaceListing[]>([]);
@@ -114,10 +101,7 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
     void refreshListings();
   }, [refreshListings]);
 
-  const listings = useMemo(
-    () => mergeListings(userListings, mockListings),
-    [userListings],
-  );
+  const listings = userListings;
 
   const addListing = useCallback(
     async (input: NewMarketplaceListingInput): Promise<MarketplaceListing> => {

@@ -84,6 +84,12 @@
     "paidPond": "Kolam berbayar",
     "nearbyPaidPonds": "Kolam berbayar berhampiran",
     "nearbyPaidPondsHint": "Kolam memancing berbayar — patin, keli & mesra keluarga.",
+    "nearbyPaidPondsHintNoGps": "Hidupkan lokasi untuk lihat kolam berhampiran — atau tambah satu untuk kawasan anda.",
+    "paidPondAddBadge": "Tambah tempat",
+    "paidPondAddTitle": "Tahu kolam berbayar berhampiran?",
+    "paidPondAddDesc": "Kongsi kolam berbayar — bantu pemancing cari patin & tempat mesra keluarga.",
+    "paidPondLoginHint": "Log masuk untuk kongsi kolam berbayar berhampiran.",
+    "paidPondEmptyPlaceholder": "Tiada kolam buat masa ini",
     "deckTitle": "Pilih tempat hari ini",
     "deckHint": "Leret kiri atau kanan untuk lihat tempat popular berdekatan.",
     "deckScrollMore": "Skrol untuk lagi",
@@ -354,7 +360,12 @@
     "saveListing": "Simpan perubahan",
     "updateFailed": "Gagal menyimpan — sila cuba lagi.",
     "manageListingTitle": "Jualan anda",
-    "manageListingDesc": "Kemas kini butiran atau buang senarai ini."
+    "manageListingDesc": "Kemas kini butiran atau buang senarai ini.",
+    "addCardBadge": "Jual gear",
+    "addCardTitle": "Senaraikan barang untuk dijual",
+    "addCardDesc": "Ambil gambar, tetapkan harga — pembeli hubungi anda di WhatsApp.",
+    "addCardLoginHint": "Log masuk untuk senaraikan gear memancing anda.",
+    "emptyPlaceholder": "Tiada barang buat masa ini"
   },
   "guide": {
     "title": "Panduan Memancing",

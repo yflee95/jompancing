@@ -84,6 +84,12 @@
     "paidPond": "付费鱼塘",
     "nearbyPaidPonds": "附近付费鱼塘",
     "nearbyPaidPondsHint": "收费钓场 — 巴丁、鲶鱼，适合家庭与新手。",
+    "nearbyPaidPondsHintNoGps": "开启定位查看附近钓场 — 或先添加你知道的收费塘。",
+    "paidPondAddBadge": "添加钓点",
+    "paidPondAddTitle": "知道附近收费钓场？",
+    "paidPondAddDesc": "分享收费鱼塘，帮钓友找到巴丁鱼和家庭友好钓场。",
+    "paidPondLoginHint": "登录后即可分享附近收费钓场。",
+    "paidPondEmptyPlaceholder": "暂无钓场",
     "deckTitle": "今日钓点",
     "deckHint": "左右滑动，浏览附近热门钓点。",
     "deckScrollMore": "往下滑探索更多",
@@ -354,7 +360,12 @@
     "saveListing": "保存修改",
     "updateFailed": "保存失败，请重试。",
     "manageListingTitle": "你的商品",
-    "manageListingDesc": "更新内容或移除此商品。"
+    "manageListingDesc": "更新内容或移除此商品。",
+    "addCardBadge": "出售渔具",
+    "addCardTitle": "上架想卖的渔具",
+    "addCardDesc": "拍照定价 — 买家通过 WhatsApp 联系你。",
+    "addCardLoginHint": "登录后即可上架渔具。",
+    "emptyPlaceholder": "暂无商品"
   },
   "guide": {
     "title": "钓鱼指南",

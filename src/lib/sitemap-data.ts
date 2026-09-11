@@ -226,20 +226,10 @@ export async function getActivitySlugs(): Promise<SitemapSlugEntry[]> {
 }
 
 export async function getMarketplaceSlugs(): Promise<SitemapSlugEntry[]> {
-  const { mockListings } = await import("@/data/mock-data");
   const { fetchListingsFromDb } = await import("@/lib/supabase/marketplace");
 
   const seen = new Set<string>();
   const entries: SitemapSlugEntry[] = [];
-
-  for (const listing of mockListings) {
-    if (seen.has(listing.slug)) continue;
-    seen.add(listing.slug);
-    entries.push({
-      slug: listing.slug,
-      lastModified: safeDate(listing.createdAt),
-    });
-  }
 
   if (!isSupabaseConfigured()) return entries;
 

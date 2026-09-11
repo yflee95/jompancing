@@ -1,6 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ListingDetailView } from "@/components/marketplace/listing-detail-view";
-import { getListingBySlug } from "@/data/mock-data";
 import { buildPageMetadata } from "@/lib/seo";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { fetchListingBySlugFromDb } from "@/lib/supabase/marketplace";
@@ -12,9 +11,6 @@ interface ListingDetailPageProps {
 }
 
 async function resolveListing(slug: string) {
-  const mockListing = getListingBySlug(slug);
-  if (mockListing) return mockListing;
-
   if (!isSupabaseConfigured()) return null;
   try {
     return await fetchListingBySlugFromDb(slug);

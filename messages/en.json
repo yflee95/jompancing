@@ -84,6 +84,12 @@
     "paidPond": "Paid pond",
     "nearbyPaidPonds": "Paid ponds near you",
     "nearbyPaidPondsHint": "Kolam memancing berbayar — patin, catfish & family-friendly spots.",
+    "nearbyPaidPondsHintNoGps": "Turn on location to see ponds near you — or add one for your area.",
+    "paidPondAddBadge": "Add spot",
+    "paidPondAddTitle": "Know a paid pond nearby?",
+    "paidPondAddDesc": "Share kolam berbayar — help anglers find patin & family spots.",
+    "paidPondLoginHint": "Sign in to share a paid pond near you.",
+    "paidPondEmptyPlaceholder": "No pond yet",
     "deckTitle": "Pick your spot today",
     "deckHint": "Swipe left or right to browse nearby hot spots.",
     "deckScrollMore": "Scroll for more",
@@ -354,7 +360,12 @@
     "saveListing": "Save changes",
     "updateFailed": "Could not save changes — please try again.",
     "manageListingTitle": "Your listing",
-    "manageListingDesc": "Update details or remove this listing."
+    "manageListingDesc": "Update details or remove this listing.",
+    "addCardBadge": "Sell gear",
+    "addCardTitle": "List what you want to sell",
+    "addCardDesc": "Snap a photo, set a price — buyers contact you on WhatsApp.",
+    "addCardLoginHint": "Sign in to list your fishing gear.",
+    "emptyPlaceholder": "No listings yet"
   },
   "guide": {
     "title": "Fishing Guide",
