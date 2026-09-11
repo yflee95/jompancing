@@ -1,7 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SpotDetailView } from "@/components/spots/spot-detail-view";
 import { UserSpotDetail } from "@/components/spots/user-spot-detail";
-import { getCommentsForSpot, getSpotBySlug } from "@/data/mock-data";
 import { buildPageMetadata } from "@/lib/seo";
 import { fetchCommentsForThreadServer } from "@/lib/supabase/comments";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -14,9 +13,6 @@ interface SpotDetailPageProps {
 }
 
 async function resolveSpot(slug: string) {
-  const mockSpot = getSpotBySlug(slug);
-  if (mockSpot) return mockSpot;
-
   if (!isSupabaseConfigured()) return null;
   try {
     return await fetchSpotBySlugFromDb(slug);
@@ -54,17 +50,9 @@ export default async function SpotDetailPage({ params }: SpotDetailPageProps) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const mockSpot = getSpotBySlug(slug);
-  if (mockSpot) {
-    const comments = getCommentsForSpot(mockSpot.id);
-    return (
-      <SpotDetailView spot={mockSpot} comments={comments} locale={locale} />
-    );
-  }
-
   if (isSupabaseConfigured()) {
     try {
-      const dbSpot = await fetchSpotBySlugFromDb(slug);
+      const dbSpot = await resolveSpot(slug);
       if (dbSpot) {
         if (dbSpot.visibility === "private") {
           return <UserSpotDetail slug={slug} locale={locale} />;

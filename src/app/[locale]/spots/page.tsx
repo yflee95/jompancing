@@ -2,8 +2,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { SpotsExplore } from "@/components/spots/spots-explore";
 
-import { mockSpots } from "@/data/mock-data";
 import { buildPageMetadata } from "@/lib/seo";
+import { loadPublicSpots } from "@/lib/public-spots";
 import type { Locale } from "@/i18n/routing";
 
 
@@ -52,8 +52,7 @@ export default async function SpotsPage({
   const { state, district, area } = await searchParams;
 
   setRequestLocale(locale);
-
-
+  const spots = await loadPublicSpots();
 
   return (
 
@@ -61,7 +60,7 @@ export default async function SpotsPage({
 
       <SpotsExplore
 
-        initialSpots={mockSpots}
+        initialSpots={spots}
 
         locale={locale}
 

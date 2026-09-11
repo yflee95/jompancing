@@ -34,6 +34,10 @@ type SpotRow = {
   featured: boolean;
   comment_count: number;
   created_at: string;
+  source?: string;
+  is_curated?: boolean;
+  google_place_id?: string | null;
+  google_photo_attribution?: string | null;
   profiles: { name: string; avatar_url: string | null } | null;
   spot_photos: { url: string; sort_order: number }[] | null;
 };
@@ -80,8 +84,15 @@ export function mapSpotRow(row: SpotRow): FishingSpot {
     authorName: row.profiles?.name ?? "Angler",
     authorAvatar: row.profiles?.avatar_url ?? undefined,
     visibility: row.visibility,
-    isUserGenerated: true,
+    isUserGenerated: row.source !== "google",
     featured: row.featured,
+    photoAttribution: row.google_photo_attribution
+      ? {
+          artist: row.google_photo_attribution,
+          license: "Google Maps",
+          filePage: row.google_maps_url,
+        }
+      : undefined,
     commentCount: row.comment_count,
     createdAt: row.created_at,
   };

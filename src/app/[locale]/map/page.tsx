@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MapExplore } from "@/components/map/map-explore";
 import { buildPageMetadata } from "@/lib/seo";
-import { mockSpots } from "@/data/mock-data";
+import { loadPublicSpots } from "@/lib/public-spots";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -29,10 +29,11 @@ export default async function MapPage({
   const { locale } = await params;
   const { state, district, area } = await searchParams;
   setRequestLocale(locale);
+  const spots = await loadPublicSpots();
 
   return (
     <MapExplore
-      spots={mockSpots}
+      spots={spots}
       filterState={state}
       filterDistrict={district}
       filterArea={area}

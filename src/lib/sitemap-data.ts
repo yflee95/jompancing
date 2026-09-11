@@ -6,8 +6,6 @@ import {
 
   mockForumPosts,
 
-  mockSpots,
-
 } from "@/data/mock-data";
 
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -67,24 +65,6 @@ export async function getPublicSpotSlugs(): Promise<SitemapSlugEntry[]> {
   const seen = new Set<string>();
 
   const entries: SitemapSlugEntry[] = [];
-
-
-
-  for (const spot of mockSpots) {
-
-    if (spot.visibility !== "public" || seen.has(spot.slug)) continue;
-
-    seen.add(spot.slug);
-
-    entries.push({
-
-      slug: spot.slug,
-
-      lastModified: safeDate(spot.createdAt),
-
-    });
-
-  }
 
 
 
