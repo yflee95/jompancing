@@ -25,6 +25,10 @@ interface AddressAutocompleteProps {
   onAddressChange: (address: string) => void;
   onMapsUrlChange: (url: string) => void;
   onAreaMatch?: (areaId: string) => void;
+  onRegionMatch?: (payload: {
+    stateId: string;
+    districtId: string;
+  }) => void;
   disabled?: boolean;
 }
 
@@ -37,6 +41,7 @@ export function AddressAutocomplete({
   onAddressChange,
   onMapsUrlChange,
   onAreaMatch,
+  onRegionMatch,
   disabled,
 }: AddressAutocompleteProps) {
   const t = useTranslations("post");
@@ -50,8 +55,9 @@ export function AddressAutocomplete({
   const [autoFilled, setAutoFilled] = useState(false);
   const [selecting, setSelecting] = useState(false);
 
-  const canSearch = Boolean(stateId && !disabled);
+  const canSearch = !disabled;
   const hasDistrict = Boolean(districtId);
+  const hasState = Boolean(stateId);
   const trimmed = value.trim();
   const showPanel = open && canSearch && trimmed.length >= 2;
 
@@ -64,9 +70,10 @@ export function AddressAutocomplete({
       return;
     }
 
-    const local = hasDistrict
-      ? searchLocalAddresses(stateId, districtId, value, locale)
-      : [];
+    const local =
+      hasState && hasDistrict
+        ? searchLocalAddresses(stateId, districtId, value, locale)
+        : [];
     setSuggestions(local);
     setSearched(false);
 
@@ -87,7 +94,7 @@ export function AddressAutocomplete({
     const timer = setTimeout(async () => {
       setLoading(true);
       const remote = await searchOsmAddresses(
-        stateId,
+        hasState ? stateId : "",
         hasDistrict ? districtId : undefined,
         value,
         locale,
@@ -97,9 +104,10 @@ export function AddressAutocomplete({
 
       if (generation !== searchGenerationRef.current) return;
 
-      const freshLocal = hasDistrict
-        ? searchLocalAddresses(stateId, districtId, value, locale)
-        : [];
+      const freshLocal =
+        hasState && hasDistrict
+          ? searchLocalAddresses(stateId, districtId, value, locale)
+          : [];
       setSuggestions(
         enrichSuggestionsWithUserInput(
           mergeAddressSuggestions(freshLocal, remote),
@@ -115,7 +123,7 @@ export function AddressAutocomplete({
       clearTimeout(timer);
       controller.abort();
     };
-  }, [canSearch, districtId, hasDistrict, locale, stateId, trimmed, value]);
+  }, [canSearch, districtId, hasDistrict, hasState, locale, stateId, trimmed, value]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -133,7 +141,7 @@ export function AddressAutocomplete({
     const geocoded = await geocodeAddress(
       trimmed,
       locale,
-      stateId,
+      hasState ? stateId : undefined,
       hasDistrict ? districtId : undefined,
     );
     if (geocoded && isValidMalaysiaCoordinate(geocoded.lat, geocoded.lng)) {
@@ -167,6 +175,9 @@ export function AddressAutocomplete({
     }
 
     if (item.areaId && onAreaMatch) onAreaMatch(item.areaId);
+    if (item.stateId && item.districtId && onRegionMatch) {
+      onRegionMatch({ stateId: item.stateId, districtId: item.districtId });
+    }
     setOpen(false);
     setSelecting(false);
   }
@@ -188,9 +199,7 @@ export function AddressAutocomplete({
           onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
             if (e.key === "Escape") setOpen(false);
           }}
-          placeholder={
-            canSearch ? t("googleAddressPlaceholder") : t("addressSelectStateFirst")
-          }
+          placeholder={t("googleAddressPlaceholder")}
           aria-autocomplete="list"
           aria-controls={listId}
           aria-expanded={open}
@@ -242,6 +251,10 @@ export function AddressAutocomplete({
                     <span className="shrink-0 rounded-full bg-[var(--ocean-light)] px-2 py-0.5 text-[10px] font-semibold text-[var(--ocean-dark)]">
                       {t("addressPopular")}
                     </span>
+                  ) : item.source === "google" ? (
+                    <span className="shrink-0 rounded-full bg-[var(--ocean-light)] px-2 py-0.5 text-[10px] font-semibold text-[var(--ocean-dark)]">
+                      Google
+                    </span>
                   ) : null}
                 </button>
               </li>
@@ -277,16 +290,10 @@ export function AddressAutocomplete({
         )}
       </div>
 
-      {!canSearch && (
-        <p className="flex items-center gap-1.5 text-xs text-[var(--ink-muted)]">
-          <Sparkles className="h-3.5 w-3.5 text-[var(--ocean)]" />
-          {t("addressSelectStateFirst")}
-        </p>
-      )}
-
-      {canSearch && (
-        <p className="text-xs text-[var(--ink-muted)]">{t("googleAddressHint")}</p>
-      )}
+      <p className="flex items-center gap-1.5 text-xs text-[var(--ink-muted)]">
+        <Sparkles className="h-3.5 w-3.5 text-[var(--ocean)]" />
+        {hasState ? t("googleAddressHint") : t("googleAddressHintNoState")}
+      </p>
 
       {mapsUrl && autoFilled && (
         <div className="flex items-center gap-2 rounded-xl bg-[var(--ocean-light)]/50 px-3 py-2 text-xs text-[var(--ocean-dark)]">

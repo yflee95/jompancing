@@ -1,11 +1,12 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { ChevronDown, MapPin } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { ChevronDown, MapPin, Navigation } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { getAreasByDistrict } from "@/data/malaysia-areas";
 import { malaysiaStates } from "@/data/malaysia-states";
+import { useUserLocation } from "@/hooks/use-user-location";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
@@ -28,8 +29,11 @@ export function RegionFilters({
   compact,
 }: RegionFiltersProps) {
   const t = useTranslations("spots");
+  const tPost = useTranslations("post");
   const router = useRouter();
   const pathname = usePathname();
+  const userLocation = useUserLocation(locale);
+  const [applyingGps, setApplyingGps] = useState(false);
 
   const selectedState = malaysiaStates.find((s) => s.id === currentState);
   const areas =
@@ -50,6 +54,17 @@ export function RegionFilters({
     router.replace(query ? `${pathname}?${query}` : pathname);
   }
 
+  function applyGpsRegion() {
+    const region = userLocation.region;
+    if (!region) return;
+    setApplyingGps(true);
+    updateParams(region.stateId, region.districtId);
+    setApplyingGps(false);
+  }
+
+  const canUseGps =
+    userLocation.status === "granted" && Boolean(userLocation.region);
+
   return (
     <div
       className={cn(
@@ -65,6 +80,30 @@ export function RegionFilters({
           aria-hidden
         />
       )}
+
+      <button
+        type="button"
+        onClick={applyGpsRegion}
+        disabled={!canUseGps || applyingGps}
+        title={tPost("useMyLocation")}
+        className={cn(
+          "inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 font-semibold transition ring-1",
+          compact ? "h-8 text-[10px]" : "h-9 text-[11px]",
+          canUseGps
+            ? "bg-[var(--ocean-light)] text-[var(--ocean-dark)] ring-[var(--ocean)]/25 hover:bg-[var(--ocean-light)]/80"
+            : "cursor-not-allowed bg-white text-[var(--ink-muted)] ring-[var(--sand-dark)]/40 opacity-60",
+        )}
+      >
+        <Navigation
+          className={cn(
+            "h-3 w-3",
+            userLocation.status === "pending" && "animate-pulse",
+          )}
+        />
+        {userLocation.status === "pending"
+          ? tPost("gpsDetecting")
+          : tPost("nearMe")}
+      </button>
 
       <FilterPill
         compact={compact}

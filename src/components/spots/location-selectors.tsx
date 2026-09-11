@@ -1,11 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
+import { Navigation } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { getAreasByDistrict, getGeneralAreaId } from "@/data/malaysia-areas";
 import { malaysiaStates } from "@/data/malaysia-states";
+import { useUserLocation } from "@/hooks/use-user-location";
 import { Label } from "@/components/ui/input";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
@@ -33,6 +36,8 @@ export function LocationSelectors({
   onAreaNameChange,
 }: LocationSelectorsProps) {
   const t = useTranslations("spots");
+  const tPost = useTranslations("post");
+  const userLocation = useUserLocation(locale);
 
   const selectedState = malaysiaStates.find((s) => s.id === stateId);
   const areas = useMemo(
@@ -45,11 +50,46 @@ export function LocationSelectors({
   const selectClass =
     "h-11 w-full rounded-2xl border-0 bg-[var(--sand)] px-4 text-sm ring-1 ring-[var(--sand-dark)]/60 outline-none focus:ring-2 focus:ring-[var(--ocean)]/30";
 
+  function applyGpsRegion() {
+    const region = userLocation.region;
+    if (!region) return;
+    onStateChange(region.stateId);
+    onDistrictChange(region.districtId);
+  }
+
+  const canUseGps =
+    userLocation.status === "granted" && Boolean(userLocation.region);
+
   return (
     <div className="space-y-4 rounded-2xl bg-[var(--ocean-light)]/40 p-4 ring-1 ring-[var(--ocean)]/10">
-      <p className="text-xs font-semibold uppercase tracking-wide text-[var(--ocean-dark)]">
-        {t("locationSection")}
-      </p>
+      <div className="flex items-start justify-between gap-3">
+        <p className="text-xs font-semibold uppercase tracking-wide text-[var(--ocean-dark)]">
+          {t("locationSection")}
+        </p>
+        <button
+          type="button"
+          onClick={applyGpsRegion}
+          disabled={!canUseGps}
+          className={cn(
+            "inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold transition",
+            canUseGps
+              ? "bg-white text-[var(--ocean-dark)] shadow-sm ring-1 ring-[var(--ocean)]/20 hover:bg-[var(--ocean-light)]"
+              : "cursor-not-allowed bg-white/50 text-[var(--ink-muted)] ring-1 ring-[var(--sand-dark)]/30",
+          )}
+        >
+          <Navigation
+            className={cn(
+              "h-3 w-3",
+              userLocation.status === "pending" && "animate-pulse",
+            )}
+          />
+          {userLocation.status === "pending"
+            ? tPost("gpsDetecting")
+            : canUseGps
+              ? tPost("useMyLocation")
+              : tPost("gpsUnavailable")}
+        </button>
+      </div>
 
       <div className="space-y-1.5">
         <Label htmlFor="state">{t("filterState")} *</Label>

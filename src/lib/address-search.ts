@@ -19,7 +19,9 @@ export interface AddressSuggestion {
   address: string;
   coordinates: Coordinates;
   areaId?: string;
-  source: "local" | "osm";
+  stateId?: string;
+  districtId?: string;
+  source: "local" | "osm" | "google";
 }
 
 const MOCK_SUGGESTIONS: AddressSuggestion[] = mockSpots.map((spot) => ({
@@ -115,14 +117,18 @@ export function searchLocalAddresses(
     .slice(0, limit);
 }
 
-type OsmHit = {
-  place_id: number;
-  display_name: string;
+type RemoteAddressHit = {
+  id: string;
+  label: string;
+  address: string;
   lat: string;
   lon: string;
+  stateId?: string;
+  districtId?: string;
+  source: "google" | "osm";
 };
 
-function mapOsmHits(hits: OsmHit[]): AddressSuggestion[] {
+function mapRemoteHits(hits: RemoteAddressHit[]): AddressSuggestion[] {
   const mapped: AddressSuggestion[] = [];
 
   for (const item of hits) {
@@ -131,11 +137,13 @@ function mapOsmHits(hits: OsmHit[]): AddressSuggestion[] {
     if (!isValidMalaysiaCoordinate(lat, lng)) continue;
 
     mapped.push({
-      id: `osm-${item.place_id}`,
-      label: item.display_name.split(",")[0] ?? item.display_name,
-      address: item.display_name,
+      id: item.id,
+      label: item.label,
+      address: item.address,
       coordinates: { lat, lng },
-      source: "osm",
+      stateId: item.stateId,
+      districtId: item.districtId,
+      source: item.source,
     });
   }
 
@@ -155,7 +163,7 @@ async function fetchNationwideOsm(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query,
-      stateId,
+      stateId: stateId || undefined,
       districtId,
       locale,
       limit,
@@ -164,11 +172,11 @@ async function fetchNationwideOsm(
   });
 
   if (!res.ok) return [];
-  const data = (await res.json()) as OsmHit[];
-  return mapOsmHits(data);
+  const data = (await res.json()) as RemoteAddressHit[];
+  return mapRemoteHits(data);
 }
 
-/** Nationwide OSM search — district optional; wrong district still resolves. */
+/** Nationwide address search (Google first, OSM fallback). District optional. */
 export async function searchOsmAddresses(
   stateId: string,
   districtId: string | undefined,
@@ -178,7 +186,7 @@ export async function searchOsmAddresses(
   signal?: AbortSignal,
 ): Promise<AddressSuggestion[]> {
   const normalized = normalizeAddressQuery(query);
-  if (!stateId || normalized.length < 2) return [];
+  if (normalized.length < 2) return [];
 
   try {
     return await fetchNationwideOsm(

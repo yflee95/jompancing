@@ -4,6 +4,7 @@ import {
   ChangeEvent,
   FormEvent,
   KeyboardEvent,
+  useEffect,
   useState,
   type ReactNode,
 } from "react";
@@ -28,6 +29,7 @@ import { useUserSpots } from "@/components/providers/spots-provider";
 import { getGeneralAreaId } from "@/data/malaysia-areas";
 import { Button } from "@/components/ui/button";
 import { Input, Label, Textarea } from "@/components/ui/input";
+import { useUserLocation } from "@/hooks/use-user-location";
 import { isValidGoogleMapsUrl, parseGoogleMapsUrl } from "@/lib/google-maps";
 import { cn } from "@/lib/utils";
 import type { SpotVisibility, WaterType } from "@/types";
@@ -96,6 +98,13 @@ export function PostSpotForm() {
   const [areaName, setAreaName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const userLocation = useUserLocation(locale);
+
+  useEffect(() => {
+    if (!userLocation.region || stateId) return;
+    setStateId(userLocation.region.stateId);
+    setDistrictId(userLocation.region.districtId);
+  }, [userLocation.region, stateId]);
 
   function handleStateChange(id: string) {
     setStateId(id);
@@ -112,6 +121,13 @@ export function PostSpotForm() {
     setAreaName("");
     setGoogleAddress("");
     setGoogleMapsUrl("");
+  }
+
+  function applyRegionFromAddress(nextStateId: string, nextDistrictId: string) {
+    setStateId(nextStateId);
+    setDistrictId(nextDistrictId);
+    setAreaId("");
+    setAreaName("");
   }
 
   function addTag(raw: string) {
@@ -444,6 +460,9 @@ export function PostSpotForm() {
                 onAddressChange={setGoogleAddress}
                 onMapsUrlChange={setGoogleMapsUrl}
                 onAreaMatch={setAreaId}
+                onRegionMatch={({ stateId: nextStateId, districtId: nextDistrictId }) =>
+                  applyRegionFromAddress(nextStateId, nextDistrictId)
+                }
               />
             </div>
           </div>

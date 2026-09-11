@@ -1,55 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { reverseGoogleRegion } from "@/lib/google-geocoding-server";
 import { getGoogleGeocodingApiKey } from "@/lib/google-maps-config";
-import {
-  matchRegionFromGoogleComponents,
-  matchRegionFromNominatim,
-  toGoogleGeocodingLanguage,
-} from "@/lib/reverse-geocode";
+import { matchRegionFromNominatim } from "@/lib/reverse-geocode";
 import type { Locale } from "@/i18n/routing";
 
 const NOMINATIM_REVERSE = "https://nominatim.openstreetmap.org/reverse";
-const GOOGLE_GEOCODE = "https://maps.googleapis.com/maps/api/geocode/json";
 const USER_AGENT = "Jompancing/1.0 (reverse-geocode; +https://jompancing.my)";
-
-type GoogleGeocodeResponse = {
-  status: string;
-  results?: Array<{
-    address_components: Array<{
-      long_name: string;
-      short_name: string;
-      types: string[];
-    }>;
-  }>;
-};
-
-async function reverseGeocodeWithGoogle(
-  lat: number,
-  lng: number,
-  locale: Locale,
-  apiKey: string,
-) {
-  const url = new URL(GOOGLE_GEOCODE);
-  url.searchParams.set("latlng", `${lat},${lng}`);
-  url.searchParams.set("key", apiKey);
-  url.searchParams.set("language", toGoogleGeocodingLanguage(locale));
-  url.searchParams.set("region", "my");
-
-  const res = await fetch(url.toString(), {
-    next: { revalidate: 3600 },
-  });
-
-  if (!res.ok) return null;
-
-  const data = (await res.json()) as GoogleGeocodeResponse;
-  if (data.status !== "OK" || !data.results?.[0]?.address_components) {
-    return null;
-  }
-
-  return matchRegionFromGoogleComponents(
-    data.results[0].address_components,
-    locale,
-  );
-}
 
 async function reverseGeocodeWithNominatim(
   lat: number,
@@ -91,15 +47,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const googleKey = getGoogleGeocodingApiKey();
-
-    if (googleKey) {
-      const googleRegion = await reverseGeocodeWithGoogle(
-        lat,
-        lng,
-        locale,
-        googleKey,
-      );
+    if (getGoogleGeocodingApiKey()) {
+      const googleRegion = await reverseGoogleRegion(lat, lng, locale);
       if (googleRegion) {
         return NextResponse.json({ region: googleRegion, source: "google" });
       }
