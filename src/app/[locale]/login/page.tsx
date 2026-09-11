@@ -3,7 +3,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Fish } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import { type AuthErrorKey } from "@/lib/auth-errors";
@@ -48,7 +47,6 @@ export default function LoginPage() {
   const t = useTranslations("auth");
   const tCommon = useTranslations("common");
   const locale = useLocale() as Locale;
-  const searchParams = useSearchParams();
   const {
     loginDemo,
     loginWithEmail,
@@ -75,10 +73,11 @@ export default function LoginPage() {
   }, [user, isLoading, router]);
 
   useEffect(() => {
-    if (searchParams.get("error") === "oauth") {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("error") === "oauth") {
       setError(t("errors.oauthFailed"));
     }
-  }, [searchParams, t]);
+  }, [t]);
 
   async function handleGoogleLogin() {
     setError(null);
