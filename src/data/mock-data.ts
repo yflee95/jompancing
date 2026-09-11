@@ -275,15 +275,6 @@ const seedSpots: FishingSpot[] = [
   ...curatedSpots,
 ];
 
-export const mockSpots: FishingSpot[] = applyWikimediaPhotos(seedSpots);
-
-export function getPublicSpots(spots: FishingSpot[]): FishingSpot[] {
-  return spots.filter((s) => s.visibility === "public");
-}
-
-/** Real activities from organizers — empty until UGC / admin listings */
-export const mockActivities: Activity[] = [];
-
 export const mockSpotComments: SpotComment[] = [
   {
     id: "sc-1",
@@ -341,6 +332,24 @@ export const mockSpotComments: SpotComment[] = [
     createdAt: "2026-02-25T11:45:00Z",
   },
 ];
+
+function withSeedCommentCounts(spots: FishingSpot[]): FishingSpot[] {
+  return spots.map((spot) => ({
+    ...spot,
+    commentCount: mockSpotComments.filter((c) => c.spotId === spot.id).length,
+  }));
+}
+
+export const mockSpots: FishingSpot[] = withSeedCommentCounts(
+  applyWikimediaPhotos(seedSpots),
+);
+
+export function getPublicSpots(spots: FishingSpot[]): FishingSpot[] {
+  return spots.filter((s) => s.visibility === "public");
+}
+
+/** Real activities from organizers — empty until UGC / admin listings */
+export const mockActivities: Activity[] = [];
 
 export const mockForumPosts: ForumPost[] = [
   {
