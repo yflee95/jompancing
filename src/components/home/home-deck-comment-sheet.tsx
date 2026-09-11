@@ -24,7 +24,7 @@ import {
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { TranslatableText } from "@/components/shared/translatable-text";
 import { formatDate, cn } from "@/lib/utils";
-import type { FishingSpot } from "@/types";
+import { getLocalizedText, type FishingSpot } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
 const DRAG_THRESHOLD = 36;
