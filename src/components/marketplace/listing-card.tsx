@@ -1,4 +1,6 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LoginGateClient } from "@/components/marketplace/login-gate-client";
 import { AppImage } from "@/components/ui/app-image";
@@ -13,9 +15,9 @@ interface ListingCardProps {
   locale: Locale;
 }
 
-export async function ListingCard({ listing, locale }: ListingCardProps) {
-  const t = await getTranslations("marketplace");
-  const tCommon = await getTranslations("common");
+export function ListingCard({ listing, locale }: ListingCardProps) {
+  const t = useTranslations("marketplace");
+  const tCommon = useTranslations("common");
 
   const title = getLocalizedText(listing.title, locale);
 
