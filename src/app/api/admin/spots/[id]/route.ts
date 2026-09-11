@@ -1,5 +1,7 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { getSessionAdminEmail } from "@/lib/admin";
+import { locales } from "@/i18n/routing";
 import { createServiceSupabaseClient } from "@/lib/supabase/service";
 
 interface RouteContext {
@@ -23,6 +25,12 @@ export async function DELETE(_request: Request, context: RouteContext) {
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    for (const locale of locales) {
+      revalidatePath(`/${locale}`);
+      revalidatePath(`/${locale}/spots`);
+      revalidatePath(`/${locale}/map`);
     }
 
     return NextResponse.json({ ok: true });

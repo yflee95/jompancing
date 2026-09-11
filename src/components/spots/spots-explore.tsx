@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 
 import { EmptyState } from "@/components/ui/empty-state";
 
+import { mergePublicSpots } from "@/lib/merge-public-spots";
 import { filterSpotsByRegion } from "@/lib/spot-location";
 
 import type { FishingSpot } from "@/types";
@@ -84,23 +85,10 @@ export function SpotsExplore({
 
 
 
-  const communitySpots = useMemo(() => {
-
-    const publicUser = getPublicUserSpots(userSpots);
-
-    const seen = new Set<string>();
-
-    return [...publicUser, ...initialSpots].filter((s) => {
-
-      if (seen.has(s.id)) return false;
-
-      seen.add(s.id);
-
-      return s.visibility === "public";
-
-    });
-
-  }, [initialSpots, userSpots]);
+  const communitySpots = useMemo(
+    () => mergePublicSpots(initialSpots, getPublicUserSpots(userSpots)),
+    [initialSpots, userSpots],
+  );
 
 
 

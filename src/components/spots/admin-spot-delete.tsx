@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
+import { useUserSpots } from "@/components/providers/spots-provider";
 import { Button } from "@/components/ui/button";
 
 interface AdminSpotDeleteProps {
@@ -13,6 +14,7 @@ interface AdminSpotDeleteProps {
 export function AdminSpotDelete({ spotId }: AdminSpotDeleteProps) {
   const t = useTranslations("spots");
   const router = useRouter();
+  const { refreshSpots } = useUserSpots();
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +45,8 @@ export function AdminSpotDelete({ spotId }: AdminSpotDeleteProps) {
                 } | null;
                 throw new Error(body?.error ?? t("devDeleteSpotFailed"));
               }
-              router.push("/spots");
+              await refreshSpots();
+              router.push("/");
               router.refresh();
             })
             .catch((err: unknown) => {

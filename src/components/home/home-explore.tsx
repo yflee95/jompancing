@@ -22,6 +22,7 @@ import { HomeSpotRailCard } from "@/components/home/home-spot-rail-card";
 import { HomeSpotSection } from "@/components/home/home-spot-section";
 import { useUserLocation } from "@/hooks/use-user-location";
 import { getDistanceKm } from "@/lib/geo";
+import { mergePublicSpots } from "@/lib/merge-public-spots";
 import { mockArticles, mockForumPosts } from "@/data/mock-data";
 import {
   type FishingSpot,
@@ -65,15 +66,10 @@ export function HomeExplore({ spots }: HomeExploreProps) {
   const hasGps = userLocation.status === "granted" && userLocation.coords !== null;
   const locating = userLocation.status === "pending";
 
-  const allPublicSpots = useMemo(() => {
-    const publicUser = getPublicUserSpots(userSpots);
-    const seen = new Set<string>();
-    return [...publicUser, ...spots].filter((s) => {
-      if (seen.has(s.id)) return false;
-      seen.add(s.id);
-      return s.visibility === "public";
-    });
-  }, [spots, userSpots]);
+  const allPublicSpots = useMemo(
+    () => mergePublicSpots(spots, getPublicUserSpots(userSpots)),
+    [spots, userSpots],
+  );
 
   const spotsWithDistance = useMemo<SpotWithDistance[]>(() => {
     if (!hasGps || !userLocation.coords) {
