@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useActivities } from "@/components/providers/activities-provider";
+import { useMarketplace } from "@/components/providers/marketplace-provider";
 import {
   getPublicUserSpots,
   useUserSpots,
@@ -18,7 +19,6 @@ import { getDistanceKm } from "@/lib/geo";
 import { mockArticles, mockForumPosts } from "@/data/mock-data";
 import {
   type FishingSpot,
-  type MarketplaceListing,
   type WaterType,
 } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -27,7 +27,6 @@ type SpotWithDistance = FishingSpot & { distanceKm?: number };
 
 interface HomeExploreProps {
   spots: FishingSpot[];
-  listings: MarketplaceListing[];
 }
 
 const NEARBY_RADIUS_KM = 120;
@@ -46,12 +45,13 @@ function sortNationwideHot(a: FishingSpot, b: FishingSpot): number {
   return b.commentCount - a.commentCount;
 }
 
-export function HomeExplore({ spots, listings }: HomeExploreProps) {
+export function HomeExplore({ spots }: HomeExploreProps) {
   const t = useTranslations("home");
   const tCommon = useTranslations("common");
   const locale = useLocale() as Locale;
   const { userSpots } = useUserSpots();
   const { activities } = useActivities();
+  const { listings } = useMarketplace();
   const userLocation = useUserLocation(locale);
 
   const [activeCategory, setActiveCategory] = useState<WaterType | "all">("all");

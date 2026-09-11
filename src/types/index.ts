@@ -205,6 +205,21 @@ export interface MarketplaceListing {
   imageUrl: string;
   whatsapp: string;
   createdAt: string;
+  authorId?: string;
+}
+
+export interface NewMarketplaceListingInput {
+  title: string;
+  description: string;
+  price: number;
+  condition: ListingCondition;
+  stateId: string;
+  districtId: string;
+  whatsapp: string;
+  photo?: string;
+  authorId: string;
+  authorName: string;
+  locale: Locale;
 }
 
 export interface GuideArticle {

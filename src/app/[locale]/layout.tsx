@@ -15,6 +15,7 @@ import { ConditionalFooter } from "@/components/layout/conditional-footer";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ForumProvider } from "@/components/providers/forum-provider";
 import { ActivitiesProvider } from "@/components/providers/activities-provider";
+import { MarketplaceProvider } from "@/components/providers/marketplace-provider";
 import { SpotsProvider } from "@/components/providers/spots-provider";
 import { routing } from "@/i18n/routing";
 import { WebsiteJsonLd } from "@/components/seo/website-json-ld";
@@ -93,6 +94,7 @@ export default async function LocaleLayout({
             <ForumProvider>
             <SpotsProvider>
             <ActivitiesProvider>
+            <MarketplaceProvider>
               <Suspense fallback={<div className="sticky top-0 z-50 h-14 border-b border-[var(--sand-dark)]/50 bg-[var(--sand)]/95" />}>
                 <SiteHeader />
               </Suspense>
@@ -100,6 +102,7 @@ export default async function LocaleLayout({
               <main className="min-h-[calc(100vh-8rem)]">{children}</main>
               <ConditionalFooter />
               <BottomNav />
+            </MarketplaceProvider>
             </ActivitiesProvider>
             </SpotsProvider>
             </ForumProvider>

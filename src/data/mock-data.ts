@@ -754,6 +754,10 @@ export function filterForumPosts(category?: ForumCategory): ForumPost[] {
   });
 }
 
+export function getListingBySlug(slug: string): MarketplaceListing | undefined {
+  return mockListings.find((listing) => listing.slug === slug);
+}
+
 export function getForumPostBySlug(slug: string): ForumPost | undefined {
   return mockForumPosts.find((post) => post.slug === slug);
 }

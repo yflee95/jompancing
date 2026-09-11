@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { LoginGateClient } from "@/components/marketplace/login-gate-client";
 import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
@@ -16,36 +17,40 @@ export async function ListingCard({ listing, locale }: ListingCardProps) {
   const t = await getTranslations("marketplace");
   const tCommon = await getTranslations("common");
 
+  const title = getLocalizedText(listing.title, locale);
+
   return (
     <Card className="transition hover:-translate-y-0.5">
-      <div className="relative aspect-square overflow-hidden">
-        <AppImage
-          src={listing.imageUrl}
-          alt={getLocalizedText(listing.title, locale)}
-          sizes="(max-width: 768px) 50vw, 25vw"
-          placeholderVariant="square"
-          placeholderLabel={tCommon("photoUnavailable")}
-          className="absolute inset-0"
-        />
-        <Badge className="absolute left-2 top-2 z-10 bg-white/90 text-[var(--ink)] backdrop-blur-sm">
-          {listing.condition === "new" ? t("conditionNew") : t("conditionUsed")}
-        </Badge>
-      </div>
-      <div className="p-3">
-        <p className="text-base font-bold text-[var(--ocean)]">
-          {formatPrice(listing.price)}
-        </p>
-        <h3 className="mt-0.5 line-clamp-2 text-sm font-semibold text-[var(--ink)]">
-          {getLocalizedText(listing.title, locale)}
-        </h3>
-        <div className="mt-3">
-          <LoginGateClient
-            listingTitle={getLocalizedText(listing.title, locale)}
-            whatsapp={listing.whatsapp}
-            loginMessage={t("loginForContact")}
-            contactLabel={t("contactSeller")}
+      <Link href={`/marketplace/${listing.slug}`} className="block">
+        <div className="relative aspect-square overflow-hidden">
+          <AppImage
+            src={listing.imageUrl}
+            alt={title}
+            sizes="(max-width: 768px) 50vw, 25vw"
+            placeholderVariant="square"
+            placeholderLabel={tCommon("photoUnavailable")}
+            className="absolute inset-0"
           />
+          <Badge className="absolute left-2 top-2 z-10 bg-white/90 text-[var(--ink)] backdrop-blur-sm">
+            {listing.condition === "new" ? t("conditionNew") : t("conditionUsed")}
+          </Badge>
         </div>
+        <div className="p-3 pb-0">
+          <p className="text-base font-bold text-[var(--ocean)]">
+            {formatPrice(listing.price)}
+          </p>
+          <h3 className="mt-0.5 line-clamp-2 text-sm font-semibold text-[var(--ink)]">
+            {title}
+          </h3>
+        </div>
+      </Link>
+      <div className="p-3 pt-2">
+        <LoginGateClient
+          listingTitle={title}
+          whatsapp={listing.whatsapp}
+          loginMessage={t("loginForContact")}
+          contactLabel={t("contactSeller")}
+        />
       </div>
     </Card>
   );
