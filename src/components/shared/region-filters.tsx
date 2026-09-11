@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { useSearchParams } from "next/navigation";
 import { ChevronDown, MapPin, Navigation } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
@@ -34,7 +35,9 @@ export function RegionFilters({
   const router = useRouter();
   const pathname = usePathname();
   const userLocation = useUserLocation(locale);
+  const searchParams = useSearchParams();
   const [applyingGps, setApplyingGps] = useState(false);
+  const preservedWater = searchParams.get("water");
 
   const selectedState = malaysiaStates.find((s) => s.id === currentState);
   const areas =
@@ -57,6 +60,7 @@ export function RegionFilters({
     if (stateId) params.set("state", stateId);
     if (districtId) params.set("district", districtId);
     if (areaId) params.set("area", areaId);
+    if (preservedWater) params.set("water", preservedWater);
     const query = params.toString();
     router.replace(query ? `${pathname}?${query}` : pathname);
   }

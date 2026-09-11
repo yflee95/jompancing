@@ -58,7 +58,7 @@ export function HomeSpotSection({
         className={cn(
           "mx-auto flex max-w-7xl gap-3 md:gap-3",
           title || subtitle ? "mt-4" : "mt-0",
-          "overflow-x-auto overscroll-x-contain scroll-pl-4 pb-2 pl-4 pr-4 scrollbar-none",
+          "overflow-x-auto overscroll-x-contain scroll-pl-4 scroll-pr-4 pb-2 pl-4 pr-4 scrollbar-none",
           "snap-x snap-mandatory [-webkit-overflow-scrolling:touch]",
           mobilePeek && "md:overflow-x-auto md:snap-x lg:overflow-visible lg:snap-none",
           !mobilePeek &&

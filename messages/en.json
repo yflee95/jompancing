@@ -187,6 +187,8 @@
     "beFirst": "Be the first to share a spot here!",
     "searchResults": "Results for \"{query}\"",
     "resultCount": "{count} spots",
+    "paidPondResultCount": "{count} paid ponds nearby",
+    "loadingNearby": "Finding spots near you…",
     "noSearchResults": "No spots match \"{query}\"",
     "tryDifferentSearch": "Try different keywords or browse by state.",
     "clearSearch": "Clear search"
@@ -349,6 +351,7 @@
     "formIncomplete": "Please fill in title, description, and price.",
     "whatsappRequired": "Enter a valid WhatsApp number.",
     "postFailed": "Could not publish listing — please try again.",
+    "loadingListings": "Loading listings…",
     "noListings": "No listings yet",
     "beFirstSeller": "Be the first to sell gear here!",
     "notFound": "Listing not found",

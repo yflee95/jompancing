@@ -11,6 +11,7 @@ import {
 } from "@/components/marketplace/listing-shelf-cards";
 import { useMarketplace } from "@/components/providers/marketplace-provider";
 import { Button } from "@/components/ui/button";
+import { PageLoader } from "@/components/ui/page-loader";
 import type { Locale } from "@/i18n/routing";
 
 interface MarketplaceExploreProps {
@@ -52,26 +53,28 @@ export function MarketplaceExplore({ locale }: MarketplaceExploreProps) {
       </p>
 
       {!isLoaded ? (
-        <div className="flex h-40 items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--ocean)] border-t-transparent" />
-        </div>
+        <PageLoader compact label={t("loadingListings")} />
       ) : (
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+        <div className="grid min-w-0 grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
           {shelfSlots.map((slot, index) => {
             if (slot.kind === "item") {
               return (
-                <ListingCard
-                  key={slot.value.id}
-                  listing={slot.value}
-                  locale={locale}
-                />
+                <div key={slot.value.id} className="min-w-0">
+                  <ListingCard listing={slot.value} locale={locale} />
+                </div>
               );
             }
             if (slot.kind === "add") {
-              return <ListingAddCard key="add" layout="grid" />;
+              return (
+                <div key="add" className="min-w-0">
+                  <ListingAddCard layout="grid" />
+                </div>
+              );
             }
             return (
-              <ListingPlaceholderCard key={`placeholder-${index}`} layout="grid" />
+              <div key={`placeholder-${index}`} className="min-w-0">
+                <ListingPlaceholderCard layout="grid" />
+              </div>
             );
           })}
         </div>

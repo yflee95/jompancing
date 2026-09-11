@@ -27,6 +27,7 @@ import { SpotFilters } from "@/components/spots/spot-filters";
 import { Button } from "@/components/ui/button";
 
 import { EmptyState } from "@/components/ui/empty-state";
+import { PageLoader } from "@/components/ui/page-loader";
 
 import { useNearMeSpotFilters } from "@/hooks/use-near-me-spot-filters";
 import { getDistanceKm } from "@/lib/geo";
@@ -56,6 +57,7 @@ interface SpotsExploreProps {
   filterDistrict?: string;
 
   filterArea?: string;
+  filterWater?: import("@/types").WaterType;
 
 }
 
@@ -72,6 +74,7 @@ export function SpotsExplore({
   filterDistrict,
 
   filterArea,
+  filterWater,
 
 }: SpotsExploreProps) {
 
@@ -89,6 +92,7 @@ export function SpotsExplore({
     effectiveState,
     effectiveDistrict,
     effectiveArea,
+    effectiveWater,
     isNearMeMode,
     isResolvingLocation,
     userLocation,
@@ -97,6 +101,7 @@ export function SpotsExplore({
     filterState,
     filterDistrict,
     filterArea,
+    filterWater,
   });
 
 
@@ -130,6 +135,10 @@ export function SpotsExplore({
       effectiveArea,
     );
 
+    if (effectiveWater) {
+      list = list.filter((spot) => spot.waterType === effectiveWater);
+    }
+
     if (isNearMeMode && userLocation.coords) {
       list = [...list]
         .map((spot) => ({
@@ -145,6 +154,7 @@ export function SpotsExplore({
     effectiveState,
     effectiveDistrict,
     effectiveArea,
+    effectiveWater,
     isNearMeMode,
     userLocation.coords,
   ]);
@@ -261,26 +271,18 @@ export function SpotsExplore({
 
 
 
-      {hasRegionFilter && (
-
+      {(hasRegionFilter || effectiveWater) && (
         <p className="mb-3 text-sm text-[var(--ink-muted)]">
-
-          {t("resultCount", { count: displayed.length })}
-
+          {effectiveWater === "pond"
+            ? t("paidPondResultCount", { count: displayed.length })
+            : t("resultCount", { count: displayed.length })}
         </p>
-
       )}
 
 
 
       {!isLoaded || (tab === "community" && isResolvingLocation) ? (
-
-        <div className="flex h-40 items-center justify-center">
-
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--ocean)] border-t-transparent" />
-
-        </div>
-
+        <PageLoader compact label={t("loadingNearby")} />
       ) : displayed.length === 0 ? (
 
         <EmptyState

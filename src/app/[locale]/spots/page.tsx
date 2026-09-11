@@ -43,13 +43,18 @@ export default async function SpotsPage({
 
   params: Promise<{ locale: Locale }>;
 
-  searchParams: Promise<{ state?: string; district?: string; area?: string }>;
+  searchParams: Promise<{
+    state?: string;
+    district?: string;
+    area?: string;
+    water?: string;
+  }>;
 
 }) {
 
   const { locale } = await params;
 
-  const { state, district, area } = await searchParams;
+  const { state, district, area, water } = await searchParams;
 
   setRequestLocale(locale);
   const spots = await loadPublicSpots();
@@ -69,7 +74,14 @@ export default async function SpotsPage({
         filterDistrict={district}
 
         filterArea={area}
-
+        filterWater={
+          water === "saltwater" ||
+          water === "freshwater" ||
+          water === "pond" ||
+          water === "river"
+            ? water
+            : undefined
+        }
       />
 
     </div>

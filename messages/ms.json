@@ -187,6 +187,8 @@
     "beFirst": "Jadilah yang pertama kongsi tempat di sini!",
     "searchResults": "Keputusan untuk \"{query}\"",
     "resultCount": "{count} tempat",
+    "paidPondResultCount": "{count} kolam berbayar berhampiran",
+    "loadingNearby": "Mencari tempat berhampiran…",
     "noSearchResults": "Tiada tempat untuk \"{query}\"",
     "tryDifferentSearch": "Cuba kata kunci lain atau layari mengikut negeri.",
     "clearSearch": "Kosongkan carian"
@@ -349,6 +351,7 @@
     "formIncomplete": "Sila isi tajuk, penerangan dan harga.",
     "whatsappRequired": "Masukkan nombor WhatsApp yang sah.",
     "postFailed": "Gagal siarkan senarai — sila cuba lagi.",
+    "loadingListings": "Memuatkan senarai…",
     "noListings": "Belum ada senarai",
     "beFirstSeller": "Jadilah yang pertama jual peralatan di sini!",
     "notFound": "Senarai tidak dijumpai",

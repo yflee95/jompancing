@@ -8,6 +8,7 @@ import {
   getTranslations,
   setRequestLocale,
 } from "next-intl/server";
+import { RouteProgress } from "@/components/layout/route-progress";
 import { SiteHeader } from "@/components/layout/site-header";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { ConditionalDesktopNav } from "@/components/layout/conditional-desktop-nav";
@@ -95,6 +96,9 @@ export default async function LocaleLayout({
             <SpotsProvider>
             <ActivitiesProvider>
             <MarketplaceProvider>
+              <Suspense fallback={null}>
+                <RouteProgress />
+              </Suspense>
               <Suspense fallback={<div className="sticky top-0 z-50 h-14 border-b border-[var(--sand-dark)]/50 bg-[var(--sand)]/95" />}>
                 <SiteHeader />
               </Suspense>

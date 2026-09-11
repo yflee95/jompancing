@@ -187,6 +187,8 @@
     "beFirst": "成为第一个分享钓点的人！",
     "searchResults": "「{query}」的搜索结果",
     "resultCount": "{count} 个钓点",
+    "paidPondResultCount": "附近 {count} 个付费鱼塘",
+    "loadingNearby": "正在查找附近钓点…",
     "noSearchResults": "找不到「{query}」相关钓点",
     "tryDifferentSearch": "试试其他关键词，或按州属浏览。",
     "clearSearch": "清除搜索"
@@ -349,6 +351,7 @@
     "formIncomplete": "请填写标题、描述和价格。",
     "whatsappRequired": "请输入有效的 WhatsApp 号码。",
     "postFailed": "发布失败，请重试。",
+    "loadingListings": "正在加载商品…",
     "noListings": "暂无商品",
     "beFirstSeller": "成为第一个在此出售渔具的人！",
     "notFound": "找不到商品",

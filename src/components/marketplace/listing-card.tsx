@@ -22,8 +22,8 @@ export function ListingCard({ listing, locale }: ListingCardProps) {
   const title = getLocalizedText(listing.title, locale);
 
   return (
-    <Card className="transition hover:-translate-y-0.5">
-      <Link href={`/marketplace/${listing.slug}`} className="block">
+    <Card className="flex h-full flex-col transition hover:-translate-y-0.5">
+      <Link href={`/marketplace/${listing.slug}`} className="block min-w-0">
         <div className="relative aspect-square overflow-hidden">
           <AppImage
             src={listing.imageUrl}
@@ -46,7 +46,7 @@ export function ListingCard({ listing, locale }: ListingCardProps) {
           </h3>
         </div>
       </Link>
-      <div className="p-3 pt-2">
+      <div className="mt-auto p-3 pt-2">
         <LoginGateClient
           listingTitle={title}
           whatsapp={listing.whatsapp}
