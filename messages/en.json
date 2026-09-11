@@ -58,6 +58,7 @@
     "upcomingActivities": "Hot Activities",
     "communityLatest": "Latest from Anglers",
     "latestListings": "Latest Listings",
+    "latestListingsHint": "Fresh gear from anglers — COD meet-ups in your area.",
     "browseByState": "Browse by State",
     "searchPlaceholder": "Search spots, forum, activities...",
     "yourLocation": "Your location",
@@ -344,12 +345,23 @@
     "deleteListingDesc": "This permanently removes the listing from the marketplace.",
     "deleteListingConfirm": "Delete this listing permanently?",
     "deleteListingProgress": "Removing…",
-    "deleteListingFailed": "Could not delete — please try again."
+    "deleteListingFailed": "Could not delete — please try again.",
+    "editListing": "Edit listing",
+    "editListingTitle": "Edit your listing",
+    "editListingHint": "Update photo, price, or description. Your listing link stays the same.",
+    "editListingForbidden": "You can only edit listings you posted.",
+    "backToListing": "Back to listing",
+    "saveListing": "Save changes",
+    "updateFailed": "Could not save changes — please try again.",
+    "manageListingTitle": "Your listing",
+    "manageListingDesc": "Update details or remove this listing."
   },
   "guide": {
     "title": "Fishing Guide",
     "subtitle": "Tips, fish species, regulations & seasons — for Malaysian anglers",
     "readMore": "Read more",
+    "backToGuide": "Back to guide",
+    "notFound": "Article not found",
     "categories": {
       "tips": "Tips & Techniques",
       "species": "Fish Species",

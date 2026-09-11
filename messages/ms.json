@@ -58,6 +58,7 @@
     "upcomingActivities": "Aktiviti Hot",
     "communityLatest": "Terbaru dari Pemancing",
     "latestListings": "Jualan Terkini",
+    "latestListingsHint": "Gear terbaru dari pemancing — COD jumpa di kawasan anda.",
     "browseByState": "Layari mengikut Negeri",
     "searchPlaceholder": "Cari tempat, forum, aktiviti...",
     "yourLocation": "Lokasi anda",
@@ -344,12 +345,23 @@
     "deleteListingDesc": "Senarai akan dipadam kekal dari kedai.",
     "deleteListingConfirm": "Padam senarai ini kekal?",
     "deleteListingProgress": "Membuang…",
-    "deleteListingFailed": "Gagal memadam — sila cuba lagi."
+    "deleteListingFailed": "Gagal memadam — sila cuba lagi.",
+    "editListing": "Edit jualan",
+    "editListingTitle": "Edit jualan anda",
+    "editListingHint": "Kemas kini foto, harga atau penerangan. Pautan jualan kekal sama.",
+    "editListingForbidden": "Anda hanya boleh edit jualan yang anda siarkan.",
+    "backToListing": "Kembali ke jualan",
+    "saveListing": "Simpan perubahan",
+    "updateFailed": "Gagal menyimpan — sila cuba lagi.",
+    "manageListingTitle": "Jualan anda",
+    "manageListingDesc": "Kemas kini butiran atau buang senarai ini."
   },
   "guide": {
     "title": "Panduan Memancing",
     "subtitle": "Tips, spesies ikan, peraturan & musim — untuk pemancing Malaysia",
     "readMore": "Baca lagi",
+    "backToGuide": "Kembali ke panduan",
+    "notFound": "Artikel tidak dijumpai",
     "categories": {
       "tips": "Tips & Teknik",
       "species": "Spesies Ikan",

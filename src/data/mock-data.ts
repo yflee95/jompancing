@@ -659,6 +659,11 @@ export const mockArticles: GuideArticle[] = [
       en: "Complete guide on techniques, baits & best spots for barramundi.",
       zh: "金目鲈钓法、饵料和最佳钓点完整指南。",
     },
+    body: {
+      ms: "Siakap (barramundi) adalah spesies popular di perairan payau Malaysia — dari Johor hingga Sabah. Waktu terbaik biasanya awal pagi dan petang lewat apabila air tenang.\n\nUmpan hidup seperti udang galah dan ikan kecil masih paling berkesan. Untuk casting, soft plastic 3–4 inci warna putih/perak berfungsi baik di waktu malam.\n\nCari struktur: tiang jeti, pokok bakau, dan perubahan arus. Jangan lupa peraturan saiz minimum mengikut negeri — semak sebelum keep.",
+      en: "Barramundi (siakap) thrive in Malaysia's brackish waters — from Johor to Sabah. Best bites are usually early morning and late evening when the tide slows.\n\nLive bait such as prawns and small fish still outfish most lures. For casting, 3–4 inch white/silver soft plastics work well at night under lights.\n\nTarget structure: jetty piles, mangrove edges, and current breaks. Always check your state's minimum size rules before keeping fish.",
+      zh: "金目鲈（Siakap）是马来西亚半咸淡水的热门鱼种，从柔佛到沙巴都有。最佳时段通常是清晨和傍晚水流较缓时。\n\n活饵如小虾和小鱼依然最有效。路亚可选 3–4 寸白/银软胶，夜钓灯光下效果不错。\n\n找结构位：码头桩、红树林边、缓流区。保留前务必查阅各州最小尺寸规定。",
+    },
     category: "tips",
     readMinutes: 8,
     imageUrl:
@@ -678,6 +683,11 @@ export const mockArticles: GuideArticle[] = [
       en: "Fishing license rules by state and water type.",
       zh: "各州和各水域类型的钓鱼执照规定。",
     },
+    body: {
+      ms: "Lesen memancing di Malaysia diurus oleh negeri masing-masing — tiada satu lesen kebangsaan untuk semua perairan.\n\nKolam komersial dan jeti persendirian selalunya tidak memerlukan lesen negeri, tetapi tanya pengurusan venue. Memancing di laut, sungai awam, atau empangan kerajaan biasanya memerlukan lesen atau permit.\n\nLesen harian, mingguan, dan tahunan tersedia di pejabat PERHILITAN atau platform dalam talian negeri. Bawa IC dan simpan resit semasa memancing.",
+      en: "Fishing licences in Malaysia are managed by each state — there is no single national licence for all waters.\n\nCommercial ponds and private jetties often do not require a state licence, but always confirm with the venue. Sea, public rivers, and government reservoirs usually need a licence or permit.\n\nDaily, weekly, and annual licences are sold at state PERHILITAN offices or online portals. Bring your ID and keep the receipt while fishing.",
+      zh: "马来西亚钓鱼执照由各州自行管理，没有一张全国通用执照。\n\n商业钓场和私人码头通常不需要州执照，但仍建议向场方确认。海钓、公共河流和政府水库一般需要执照或许可证。\n\n日票、周票和年票可在州 PERHILITAN 办公室或线上购买。请携带身份证，并保留收据以备检查。",
+    },
     category: "regulations",
     readMinutes: 6,
     imageUrl:
@@ -696,6 +706,11 @@ export const mockArticles: GuideArticle[] = [
       ms: "Bila perlu memancing pantai timur vs barat semasa monsun.",
       en: "When to fish east vs west coast during monsoon season.",
       zh: "季风期间东海岸与西海岸钓鱼时机。",
+    },
+    body: {
+      ms: "Malaysia mengalami monsun barat (Mei–Okt) dan monsun timur (Nov–Mac). Pantai barat Semenanjung lebih hujan lebat pada monsun barat; pantai timur pula lebih teruk semasa monsun timur.\n\nSemasa hujan lebat, elakkan jeti terbuka dan perhatikan amaran ribut. Kolam dalaman dan empangan sheltered masih boleh dimancing dengan selamat jika cuaca dibenarkan.\n\nMusim inter-monsun (Mac–April dan Okt–Nov) sering memberi angin lemah dan air jernih — sesuai untuk memancing pantai dan estuari.",
+      en: "Malaysia sees the southwest monsoon (May–Oct) and northeast monsoon (Nov–Mar). The west coast of Peninsular Malaysia gets heavier rain during the southwest monsoon; the east coast is worst during the northeast monsoon.\n\nIn heavy rain, avoid exposed jetties and watch storm warnings. Sheltered ponds and inland dams can still fish safely when conditions allow.\n\nInter-monsoon windows (Mar–Apr and Oct–Nov) often bring lighter winds and clearer water — good for shore and estuary fishing.",
+      zh: "马来西亚有西南季风（5–10 月）和东北季风（11–3 月）。半岛西海岸在西南季风期间雨势较大；东海岸则在东北季风期间受影响更明显。\n\n大雨时应避免开放码头，留意风暴预警。室内钓场和有遮蔽的水库在条件允许时仍可安全作钓。\n\n季风间歇期（3–4 月、10–11 月）常风小水清，适合岸钓和河口钓。",
     },
     category: "season",
     readMinutes: 5,
@@ -756,6 +771,10 @@ export function filterForumPosts(category?: ForumCategory): ForumPost[] {
 
 export function getListingBySlug(slug: string): MarketplaceListing | undefined {
   return mockListings.find((listing) => listing.slug === slug);
+}
+
+export function getArticleBySlug(slug: string): GuideArticle | undefined {
+  return mockArticles.find((article) => article.slug === slug);
 }
 
 export function getForumPostBySlug(slug: string): ForumPost | undefined {

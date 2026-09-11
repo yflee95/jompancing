@@ -4,6 +4,7 @@ import { absoluteUrl, localePath } from "@/lib/seo";
 import {
   getActivitySlugs,
   getForumSlugs,
+  getGuideSlugs,
   getMarketplaceSlugs,
   getPublicSpotSlugs,
   PUBLIC_STATIC_PATHS,
@@ -14,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const forumSlugs = await getForumSlugs();
   const activitySlugs = await getActivitySlugs();
   const marketplaceSlugs = await getMarketplaceSlugs();
+  const guideSlugs = await getGuideSlugs();
   const entries: MetadataRoute.Sitemap = [];
 
   for (const locale of locales) {
@@ -59,6 +61,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: listing.lastModified,
         changeFrequency: "weekly",
         priority: 0.65,
+      });
+    }
+
+    for (const article of guideSlugs) {
+      entries.push({
+        url: absoluteUrl(localePath(locale, `/guide/${article.slug}`)),
+        lastModified: article.lastModified,
+        changeFrequency: "monthly",
+        priority: 0.6,
       });
     }
   }

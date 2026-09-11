@@ -6,6 +6,7 @@ import type {
   LocalizedString,
   MarketplaceListing,
   NewMarketplaceListingInput,
+  UpdateMarketplaceListingInput,
 } from "@/types";
 
 type ListingRow = {
@@ -179,6 +180,65 @@ export async function insertListingToDb(
     .from("marketplace_listings")
     .select(LISTING_SELECT)
     .eq("id", row.id)
+    .single();
+
+  if (refreshError || !refreshed) {
+    throw refreshError ?? new Error("Failed to load listing");
+  }
+
+  return mapListingRow(refreshed as ListingRow);
+}
+
+export async function updateListingInDb(
+  input: UpdateMarketplaceListingInput,
+): Promise<MarketplaceListing> {
+  const supabase = createClient();
+  const title = input.title.trim();
+  const description = input.description.trim();
+
+  const { data: existing, error: existingError } = await supabase
+    .from("marketplace_listings")
+    .select("id, author_id, image_url")
+    .eq("id", input.listingId)
+    .maybeSingle();
+
+  if (existingError) throw existingError;
+  if (!existing || existing.author_id !== input.authorId) {
+    throw new Error("Forbidden");
+  }
+
+  let imageUrl = existing.image_url as string;
+  if (input.photo?.startsWith("data:")) {
+    imageUrl = await uploadListingPhoto(input.authorId, input.listingId, input.photo);
+  } else if (input.photo) {
+    imageUrl = input.photo;
+  }
+
+  const { error } = await supabase
+    .from("marketplace_listings")
+    .update({
+      title_ms: title,
+      title_en: title,
+      title_zh: title,
+      description_ms: description,
+      description_en: description,
+      description_zh: description,
+      price: input.price,
+      condition: input.condition,
+      state_id: input.stateId,
+      district_id: input.districtId,
+      whatsapp: input.whatsapp.replace(/\D/g, ""),
+      image_url: imageUrl,
+    })
+    .eq("id", input.listingId)
+    .eq("author_id", input.authorId);
+
+  if (error) throw error;
+
+  const { data: refreshed, error: refreshError } = await supabase
+    .from("marketplace_listings")
+    .select(LISTING_SELECT)
+    .eq("id", input.listingId)
     .single();
 
   if (refreshError || !refreshed) {

@@ -1,5 +1,6 @@
 import { Clock } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -42,6 +43,7 @@ export default async function GuidePage({
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {mockArticles.map((article) => (
           <Card key={article.id} className="transition hover:-translate-y-0.5">
+            <Link href={`/guide/${article.slug}`} className="block">
             <div className="relative aspect-[16/10] overflow-hidden">
               <AppImage
                 src={article.imageUrl}
@@ -61,9 +63,10 @@ export default async function GuidePage({
               </h2>
               <p className="mt-2 flex items-center gap-1 text-xs text-[var(--ink-muted)]">
                 <Clock className="h-3 w-3" />
-                {article.readMinutes} min
+                {article.readMinutes} min · {t("readMore")}
               </p>
             </div>
+            </Link>
           </Card>
         ))}
       </div>

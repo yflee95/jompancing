@@ -241,11 +241,26 @@ export interface NewMarketplaceListingInput {
   locale: Locale;
 }
 
+export interface UpdateMarketplaceListingInput {
+  listingId: string;
+  authorId: string;
+  title: string;
+  description: string;
+  price: number;
+  condition: ListingCondition;
+  stateId: string;
+  districtId: string;
+  whatsapp: string;
+  photo?: string;
+  locale: Locale;
+}
+
 export interface GuideArticle {
   id: string;
   slug: string;
   title: LocalizedString;
   excerpt: LocalizedString;
+  body: LocalizedString;
   category: GuideCategory;
   readMinutes: number;
   imageUrl: string;

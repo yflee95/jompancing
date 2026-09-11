@@ -2,6 +2,8 @@ import {
 
   mockActivities,
 
+  mockArticles,
+
   mockForumPosts,
 
   mockSpots,
@@ -253,6 +255,22 @@ export async function getMarketplaceSlugs(): Promise<SitemapSlugEntry[]> {
     }
   } catch {
     /* mock slugs only */
+  }
+
+  return entries;
+}
+
+export async function getGuideSlugs(): Promise<SitemapSlugEntry[]> {
+  const seen = new Set<string>();
+  const entries: SitemapSlugEntry[] = [];
+
+  for (const article of mockArticles) {
+    if (seen.has(article.slug)) continue;
+    seen.add(article.slug);
+    entries.push({
+      slug: article.slug,
+      lastModified: safeDate(article.publishedAt),
+    });
   }
 
   return entries;

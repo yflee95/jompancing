@@ -15,11 +15,13 @@ import {
   deleteListingFromDb,
   fetchListingsClient,
   insertListingToDb,
+  updateListingInDb,
 } from "@/lib/supabase/marketplace";
 import type {
   LocalizedString,
   MarketplaceListing,
   NewMarketplaceListingInput,
+  UpdateMarketplaceListingInput,
 } from "@/types";
 
 const DEMO_STORAGE_KEY = "jompancing_marketplace_listings";
@@ -28,6 +30,7 @@ interface MarketplaceContextValue {
   listings: MarketplaceListing[];
   isLoaded: boolean;
   addListing: (input: NewMarketplaceListingInput) => Promise<MarketplaceListing>;
+  updateListing: (input: UpdateMarketplaceListingInput) => Promise<MarketplaceListing>;
   deleteListing: (listingId: string) => Promise<void>;
   getListingBySlug: (slug: string) => MarketplaceListing | undefined;
   refreshListings: () => Promise<void>;
@@ -136,6 +139,40 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
     [useDb, userListings],
   );
 
+  const updateListing = useCallback(
+    async (input: UpdateMarketplaceListingInput): Promise<MarketplaceListing> => {
+      if (useDb) {
+        const listing = await updateListingInDb(input);
+        setUserListings((prev) =>
+          prev.map((l) => (l.id === listing.id ? listing : l)),
+        );
+        return listing;
+      }
+
+      const existing = userListings.find((l) => l.id === input.listingId);
+      if (!existing || existing.authorId !== input.authorId) {
+        throw new Error("Forbidden");
+      }
+
+      const updated: MarketplaceListing = {
+        ...existing,
+        title: toLocalized(input.title, input.locale),
+        description: toLocalized(input.description, input.locale),
+        price: input.price,
+        condition: input.condition,
+        stateId: input.stateId,
+        districtId: input.districtId,
+        whatsapp: input.whatsapp.replace(/\D/g, ""),
+        imageUrl: input.photo ?? existing.imageUrl,
+      };
+      const next = userListings.map((l) => (l.id === updated.id ? updated : l));
+      setUserListings(next);
+      persistDemoListings(next);
+      return updated;
+    },
+    [useDb, userListings],
+  );
+
   const deleteListing = useCallback(
     async (listingId: string) => {
       if (useDb) {
@@ -160,11 +197,20 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       listings,
       isLoaded,
       addListing,
+      updateListing,
       deleteListing,
       getListingBySlug,
       refreshListings,
     }),
-    [listings, isLoaded, addListing, deleteListing, getListingBySlug, refreshListings],
+    [
+      listings,
+      isLoaded,
+      addListing,
+      updateListing,
+      deleteListing,
+      getListingBySlug,
+      refreshListings,
+    ],
   );
 
   return (

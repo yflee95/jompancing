@@ -1,15 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
+import { ListingOwnerActions } from "@/components/marketplace/listing-owner-actions";
 import { LoginGateClient } from "@/components/marketplace/login-gate-client";
-import { useAuth } from "@/components/providers/auth-provider";
 import { useMarketplace } from "@/components/providers/marketplace-provider";
 import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { getGeneralAreaId } from "@/data/malaysia-areas";
 import { getSpotLocationLine } from "@/lib/spot-location";
 import { formatDate, formatPrice } from "@/lib/utils";
@@ -24,12 +20,8 @@ interface ListingDetailViewProps {
 export function ListingDetailView({ slug, locale }: ListingDetailViewProps) {
   const t = useTranslations("marketplace");
   const tCommon = useTranslations("common");
-  const { user } = useAuth();
-  const router = useRouter();
-  const { getListingBySlug, deleteListing, isLoaded } = useMarketplace();
+  const { getListingBySlug, isLoaded } = useMarketplace();
   const listing = getListingBySlug(slug);
-  const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   if (!isLoaded) {
     return (
@@ -47,7 +39,6 @@ export function ListingDetailView({ slug, locale }: ListingDetailViewProps) {
     );
   }
 
-  const isOwner = user?.id === listing.authorId;
   const title = getLocalizedText(listing.title, locale);
 
   return (
@@ -108,33 +99,7 @@ export function ListingDetailView({ slug, locale }: ListingDetailViewProps) {
 
         <p className="mt-4 text-xs text-[var(--ink-muted)]">{t("codDisclaimer")}</p>
 
-        {isOwner && (
-          <div className="mt-8 rounded-2xl border border-red-100 bg-red-50/50 p-4">
-            <p className="text-sm font-medium text-red-800">{t("deleteListingTitle")}</p>
-            <p className="mt-1 text-xs text-red-700/80">{t("deleteListingDesc")}</p>
-            {deleteError && (
-              <p className="mt-2 text-xs text-red-600">{deleteError}</p>
-            )}
-            <Button
-              type="button"
-              variant="outline"
-              disabled={deleting}
-              className="mt-3 border-red-200 text-red-700 hover:bg-red-100 hover:text-red-800"
-              onClick={() => {
-                if (!window.confirm(t("deleteListingConfirm"))) return;
-                setDeleting(true);
-                setDeleteError(null);
-                void deleteListing(listing.id)
-                  .then(() => router.push("/marketplace"))
-                  .catch(() => setDeleteError(t("deleteListingFailed")))
-                  .finally(() => setDeleting(false));
-              }}
-            >
-              <Trash2 className="h-4 w-4" />
-              {deleting ? t("deleteListingProgress") : t("deleteListing")}
-            </Button>
-          </div>
-        )}
+        <ListingOwnerActions listing={listing} />
       </div>
     </article>
   );

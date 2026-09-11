@@ -9,6 +9,7 @@ import {
   useUserSpots,
 } from "@/components/providers/spots-provider";
 import { HomeActivitySection } from "@/components/home/home-activity-section";
+import { HomeListingsSection } from "@/components/home/home-listings-section";
 import { HomeDiscoverGrid } from "@/components/home/home-discover-grid";
 import { HomeShareSpotBanner } from "@/components/home/home-share-spot-banner";
 import { HomeSpotDeck } from "@/components/home/home-spot-deck";
@@ -228,6 +229,8 @@ export function HomeExplore({ spots }: HomeExploreProps) {
           defaultStateId={inferredRegion?.stateId}
           defaultDistrictId={inferredRegion?.districtId}
         />
+
+        <HomeListingsSection locale={locale} />
 
         {nationwideHotSpots.length > 0 && (
           <HomeSpotSection

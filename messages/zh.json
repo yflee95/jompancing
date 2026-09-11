@@ -58,6 +58,7 @@
     "upcomingActivities": "热门活动",
     "communityLatest": "钓友最新分享",
     "latestListings": "最新商品",
+    "latestListingsHint": "钓友刚上架的渔具 — 支持同城面交 COD。",
     "browseByState": "按州浏览",
     "searchPlaceholder": "搜索钓点、论坛、活动...",
     "yourLocation": "你的位置",
@@ -344,12 +345,23 @@
     "deleteListingDesc": "将从商城永久删除此商品。",
     "deleteListingConfirm": "确定永久删除此商品？",
     "deleteListingProgress": "删除中…",
-    "deleteListingFailed": "删除失败，请重试。"
+    "deleteListingFailed": "删除失败，请重试。",
+    "editListing": "编辑商品",
+    "editListingTitle": "编辑你的商品",
+    "editListingHint": "可更新照片、价格或描述，商品链接不变。",
+    "editListingForbidden": "你只能编辑自己发布的商品。",
+    "backToListing": "返回商品页",
+    "saveListing": "保存修改",
+    "updateFailed": "保存失败，请重试。",
+    "manageListingTitle": "你的商品",
+    "manageListingDesc": "更新内容或移除此商品。"
   },
   "guide": {
     "title": "钓鱼指南",
     "subtitle": "技巧、鱼种、法规与季节 — 马来西亚钓友必读",
     "readMore": "阅读更多",
+    "backToGuide": "返回指南",
+    "notFound": "找不到文章",
     "categories": {
       "tips": "技巧",
       "species": "鱼种",
