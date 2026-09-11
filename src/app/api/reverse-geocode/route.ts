@@ -1,9 +1,84 @@
 import { NextRequest, NextResponse } from "next/server";
-import { matchRegionFromNominatim } from "@/lib/reverse-geocode";
+import { getGoogleGeocodingApiKey } from "@/lib/google-maps-config";
+import {
+  matchRegionFromGoogleComponents,
+  matchRegionFromNominatim,
+  toGoogleGeocodingLanguage,
+} from "@/lib/reverse-geocode";
 import type { Locale } from "@/i18n/routing";
 
 const NOMINATIM_REVERSE = "https://nominatim.openstreetmap.org/reverse";
+const GOOGLE_GEOCODE = "https://maps.googleapis.com/maps/api/geocode/json";
 const USER_AGENT = "Jompancing/1.0 (reverse-geocode; +https://jompancing.my)";
+
+type GoogleGeocodeResponse = {
+  status: string;
+  results?: Array<{
+    address_components: Array<{
+      long_name: string;
+      short_name: string;
+      types: string[];
+    }>;
+  }>;
+};
+
+async function reverseGeocodeWithGoogle(
+  lat: number,
+  lng: number,
+  locale: Locale,
+  apiKey: string,
+) {
+  const url = new URL(GOOGLE_GEOCODE);
+  url.searchParams.set("latlng", `${lat},${lng}`);
+  url.searchParams.set("key", apiKey);
+  url.searchParams.set("language", toGoogleGeocodingLanguage(locale));
+  url.searchParams.set("region", "my");
+
+  const res = await fetch(url.toString(), {
+    next: { revalidate: 3600 },
+  });
+
+  if (!res.ok) return null;
+
+  const data = (await res.json()) as GoogleGeocodeResponse;
+  if (data.status !== "OK" || !data.results?.[0]?.address_components) {
+    return null;
+  }
+
+  return matchRegionFromGoogleComponents(
+    data.results[0].address_components,
+    locale,
+  );
+}
+
+async function reverseGeocodeWithNominatim(
+  lat: number,
+  lng: number,
+  locale: Locale,
+) {
+  const url = new URL(NOMINATIM_REVERSE);
+  url.searchParams.set("format", "json");
+  url.searchParams.set("lat", String(lat));
+  url.searchParams.set("lon", String(lng));
+  url.searchParams.set("zoom", "12");
+  url.searchParams.set("addressdetails", "1");
+
+  const res = await fetch(url.toString(), {
+    headers: {
+      Accept: "application/json",
+      "Accept-Language": locale,
+      "User-Agent": USER_AGENT,
+    },
+    next: { revalidate: 3600 },
+  });
+
+  if (!res.ok) return null;
+
+  const data = (await res.json()) as { address?: Record<string, string> };
+  return data.address
+    ? matchRegionFromNominatim(data.address, locale)
+    : null;
+}
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -16,32 +91,25 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const url = new URL(NOMINATIM_REVERSE);
-    url.searchParams.set("format", "json");
-    url.searchParams.set("lat", String(lat));
-    url.searchParams.set("lon", String(lng));
-    url.searchParams.set("zoom", "12");
-    url.searchParams.set("addressdetails", "1");
+    const googleKey = getGoogleGeocodingApiKey();
 
-    const res = await fetch(url.toString(), {
-      headers: {
-        Accept: "application/json",
-        "Accept-Language": locale,
-        "User-Agent": USER_AGENT,
-      },
-      next: { revalidate: 3600 },
-    });
-
-    if (!res.ok) {
-      return NextResponse.json({ region: null });
+    if (googleKey) {
+      const googleRegion = await reverseGeocodeWithGoogle(
+        lat,
+        lng,
+        locale,
+        googleKey,
+      );
+      if (googleRegion) {
+        return NextResponse.json({ region: googleRegion, source: "google" });
+      }
     }
 
-    const data = (await res.json()) as { address?: Record<string, string> };
-    const region = data.address
-      ? matchRegionFromNominatim(data.address, locale)
-      : null;
-
-    return NextResponse.json({ region });
+    const osmRegion = await reverseGeocodeWithNominatim(lat, lng, locale);
+    return NextResponse.json({
+      region: osmRegion,
+      source: osmRegion ? "osm" : null,
+    });
   } catch {
     return NextResponse.json({ region: null }, { status: 502 });
   }
