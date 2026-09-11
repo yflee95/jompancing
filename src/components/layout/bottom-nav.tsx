@@ -2,8 +2,8 @@
 
 import {
   Home,
-  Map,
   MapPin,
+  MessageSquare,
   PlusCircle,
   ShoppingBag,
 } from "lucide-react";
@@ -11,7 +11,7 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-type MobileNavHref = "/" | "/spots" | "/post" | "/map" | "/marketplace";
+type MobileNavHref = "/" | "/spots" | "/post" | "/forum" | "/marketplace";
 
 type NavItem = {
   href: MobileNavHref;
@@ -20,7 +20,7 @@ type NavItem = {
     | "nav.home"
     | "nav.spots"
     | "nav.post"
-    | "nav.map"
+    | "nav.forum"
     | "nav.marketplace";
   accent?: boolean;
 };
@@ -29,7 +29,7 @@ const mobileNavItems: NavItem[] = [
   { href: "/", icon: Home, labelKey: "nav.home" },
   { href: "/spots", icon: MapPin, labelKey: "nav.spots" },
   { href: "/post", icon: PlusCircle, labelKey: "nav.post", accent: true },
-  { href: "/map", icon: Map, labelKey: "nav.map" },
+  { href: "/forum", icon: MessageSquare, labelKey: "nav.forum" },
   { href: "/marketplace", icon: ShoppingBag, labelKey: "nav.marketplace" },
 ];
 
