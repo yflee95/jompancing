@@ -46,7 +46,7 @@ export function LocaleSwitcher({
           type="button"
           onClick={() => router.replace(pathname, { locale: loc })}
           className={cn(
-            "rounded-full px-2 py-1 text-[10px] font-bold tracking-wide transition-all sm:px-2.5 sm:text-[11px]",
+            "rounded-full px-1.5 py-0.5 text-[10px] font-bold tracking-wide transition-all sm:px-2.5 sm:py-1 sm:text-[11px]",
             locale === loc
               ? isLight
                 ? "bg-white text-[var(--ink)] shadow-sm"

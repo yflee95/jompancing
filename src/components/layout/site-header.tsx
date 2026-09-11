@@ -26,7 +26,7 @@ export function SiteHeader() {
           : "border-b border-[var(--sand-dark)]/50 bg-[var(--sand)]/95 shadow-sm shadow-[var(--sand-dark)]/20 backdrop-blur-xl",
       )}
     >
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-3 sm:gap-3 sm:px-4 md:px-6">
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-1.5 px-2.5 sm:gap-3 sm:px-4 md:px-6">
         <Link href="/" className="flex shrink-0 items-center gap-2">
           <div
             className={cn(

@@ -34,7 +34,7 @@ export function SiteHeaderSearch({ isOverlay }: SiteHeaderSearchProps) {
     <form onSubmit={handleSearch} className="relative min-w-0 flex-1">
       <Search
         className={cn(
-          "pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2",
+          "pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 sm:left-3",
           isOverlay ? "text-white/70" : "text-[var(--ink-muted)]",
         )}
       />
@@ -42,10 +42,10 @@ export function SiteHeaderSearch({ isOverlay }: SiteHeaderSearchProps) {
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder={t("home.searchPlaceholder")}
+        placeholder={t("home.searchPlaceholderShort")}
         aria-label={t("home.searchPlaceholder")}
         className={cn(
-          "h-10 w-full rounded-full border-0 pl-10 pr-4 text-sm outline-none transition focus:ring-2",
+          "h-10 w-full min-w-0 rounded-full border-0 pl-9 pr-3 text-sm outline-none transition focus:ring-2 sm:pl-10 sm:pr-4",
           isOverlay
             ? "bg-white/15 text-white placeholder:text-white/60 backdrop-blur-md focus:bg-white/25 focus:ring-white/30"
             : "bg-white text-[var(--ink)] shadow-sm ring-1 ring-[var(--sand-dark)]/60 placeholder:text-[var(--ink-muted)] focus:ring-[var(--ocean)]/30",
