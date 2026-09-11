@@ -26,7 +26,8 @@
     "verified": "Verified",
     "new": "New",
     "nearYou": "Near you",
-    "photoUnavailable": "Photo unavailable"
+    "photoUnavailable": "Photo unavailable",
+    "submitting": "Submitting…"
   },
   "nav": {
     "home": "Home",
@@ -278,6 +279,7 @@
     "topicBody": "Content",
     "topicBodyPlaceholder": "Share your question or experience...",
     "notFound": "Topic not found",
+    "postFailed": "Could not publish topic — please try again.",
     "categories": {
       "spots": "Spots",
       "techniques": "Techniques",
@@ -293,6 +295,8 @@
     "empty": "No comments yet. Be the first!",
     "placeholder": "Share your tips or experience...",
     "post": "Post",
+    "posting": "Posting…",
+    "postFailed": "Could not post comment — please try again.",
     "loginToPost": "Sign in to leave a comment",
     "login": "Sign In"
   },

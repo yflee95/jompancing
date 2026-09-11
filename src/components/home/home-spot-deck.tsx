@@ -25,6 +25,7 @@ import { HomeSpotDeckActions } from "@/components/home/home-spot-deck-actions";
 import { HomeSpotDeckCard } from "@/components/home/home-spot-deck-card";
 import { AppImage } from "@/components/ui/app-image";
 import {
+  COMMENT_ADDED_EVENT,
   getSpotCommentCount,
   getSpotCommentItems,
 } from "@/lib/spot-comments";
@@ -96,6 +97,14 @@ export function HomeSpotDeck({
   useEffect(() => {
     setIndex(0);
   }, [activeCategory, spots.length]);
+
+  useEffect(() => {
+    function onCommentAdded() {
+      setCommentCountTick((n) => n + 1);
+    }
+    window.addEventListener(COMMENT_ADDED_EVENT, onCommentAdded);
+    return () => window.removeEventListener(COMMENT_ADDED_EVENT, onCommentAdded);
+  }, []);
 
   const go = useCallback(
     (delta: number) => {
@@ -227,7 +236,7 @@ export function HomeSpotDeck({
 
   const activeCommentCount = useMemo(() => {
     if (!activeSpot) return 0;
-    return getSpotCommentCount(activeSpot.id);
+    return getSpotCommentCount(activeSpot.id, activeSpot.commentCount);
   }, [activeSpot, commentCountTick]);
 
   const blockNavigate = useCallback(() => didDrag.current, []);

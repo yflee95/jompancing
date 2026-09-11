@@ -9,6 +9,11 @@ import {
   useState,
 } from "react";
 import { slugify } from "@/lib/slug";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
+import {
+  fetchForumPostsClient,
+  insertForumPostToDb,
+} from "@/lib/supabase/forum";
 import type { ForumCategory, ForumPost, LocalizedString } from "@/types";
 
 const STORAGE_KEY = "jompancing_forum_posts";
@@ -17,6 +22,7 @@ interface NewForumPostInput {
   title: string;
   body: string;
   category: ForumCategory;
+  authorId: string;
   authorName: string;
   locale: "ms" | "en" | "zh";
 }
@@ -24,8 +30,9 @@ interface NewForumPostInput {
 interface ForumContextValue {
   userPosts: ForumPost[];
   isLoaded: boolean;
-  addPost: (input: NewForumPostInput) => ForumPost;
+  addPost: (input: NewForumPostInput) => Promise<ForumPost>;
   getUserPostBySlug: (slug: string) => ForumPost | undefined;
+  refreshPosts: () => Promise<void>;
 }
 
 const ForumContext = createContext<ForumContextValue | null>(null);
@@ -35,27 +42,47 @@ function toLocalized(text: string, locale: "ms" | "en" | "zh"): LocalizedString 
 }
 
 export function ForumProvider({ children }: { children: React.ReactNode }) {
+  const useDb = isSupabaseConfigured();
   const [userPosts, setUserPosts] = useState<ForumPost[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) setUserPosts(JSON.parse(stored) as ForumPost[]);
-    } catch {
-      localStorage.removeItem(STORAGE_KEY);
-    } finally {
-      setIsLoaded(true);
+  const refreshPosts = useCallback(async () => {
+    if (useDb) {
+      try {
+        const posts = await fetchForumPostsClient();
+        setUserPosts(posts);
+      } catch {
+        setUserPosts([]);
+      }
+    } else {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        setUserPosts(stored ? (JSON.parse(stored) as ForumPost[]) : []);
+      } catch {
+        localStorage.removeItem(STORAGE_KEY);
+        setUserPosts([]);
+      }
     }
-  }, []);
+    setIsLoaded(true);
+  }, [useDb]);
 
-  const persist = useCallback((posts: ForumPost[]) => {
+  useEffect(() => {
+    void refreshPosts();
+  }, [refreshPosts]);
+
+  const persistLocal = useCallback((posts: ForumPost[]) => {
     setUserPosts(posts);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
   }, []);
 
   const addPost = useCallback(
-    (input: NewForumPostInput): ForumPost => {
+    async (input: NewForumPostInput): Promise<ForumPost> => {
+      if (useDb) {
+        const post = await insertForumPostToDb(input);
+        setUserPosts((prev) => [post, ...prev]);
+        return post;
+      }
+
       const now = new Date().toISOString();
       const baseSlug = slugify(input.title) || "topic";
       const slug = `${baseSlug}-${Date.now().toString(36)}`;
@@ -74,10 +101,10 @@ export function ForumProvider({ children }: { children: React.ReactNode }) {
         lastReplyAt: now,
       };
 
-      persist([post, ...userPosts]);
+      persistLocal([post, ...userPosts]);
       return post;
     },
-    [persist, userPosts],
+    [persistLocal, useDb, userPosts],
   );
 
   const getUserPostBySlug = useCallback(
@@ -86,8 +113,8 @@ export function ForumProvider({ children }: { children: React.ReactNode }) {
   );
 
   const value = useMemo(
-    () => ({ userPosts, isLoaded, addPost, getUserPostBySlug }),
-    [userPosts, isLoaded, addPost, getUserPostBySlug],
+    () => ({ userPosts, isLoaded, addPost, getUserPostBySlug, refreshPosts }),
+    [userPosts, isLoaded, addPost, getUserPostBySlug, refreshPosts],
   );
 
   return (

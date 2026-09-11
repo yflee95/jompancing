@@ -26,7 +26,8 @@
     "verified": "Disahkan",
     "new": "Baru",
     "nearYou": "Berhampiran anda",
-    "photoUnavailable": "Foto tidak tersedia"
+    "photoUnavailable": "Foto tidak tersedia",
+    "submitting": "Menghantar…"
   },
   "nav": {
     "home": "Utama",
@@ -278,6 +279,7 @@
     "topicBody": "Kandungan",
     "topicBodyPlaceholder": "Kongsi soalan atau pengalaman anda...",
     "notFound": "Topik tidak dijumpai",
+    "postFailed": "Gagal siarkan topik — sila cuba lagi.",
     "categories": {
       "spots": "Tempat",
       "techniques": "Teknik",
@@ -293,6 +295,8 @@
     "empty": "Belum ada komen. Jadilah yang pertama!",
     "placeholder": "Kongsi tips atau pengalaman anda...",
     "post": "Hantar",
+    "posting": "Menghantar…",
+    "postFailed": "Gagal hantar komen — sila cuba lagi.",
     "loginToPost": "Log masuk untuk tinggalkan komen",
     "login": "Log Masuk"
   },

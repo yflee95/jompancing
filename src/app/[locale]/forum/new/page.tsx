@@ -33,6 +33,8 @@ export default function NewForumTopicPage() {
   const [category, setCategory] = useState<ForumCategory>("general");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   if (isLoading) {
     return (
@@ -50,17 +52,25 @@ export default function NewForumTopicPage() {
     );
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!title.trim() || !body.trim()) return;
-    const post = addPost({
-      title: title.trim(),
-      body: body.trim(),
-      category,
-      authorName: user!.name,
-      locale,
-    });
-    router.push(`/forum/${post.slug}`);
+    if (!title.trim() || !body.trim() || submitting) return;
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const post = await addPost({
+        title: title.trim(),
+        body: body.trim(),
+        category,
+        authorId: user!.id,
+        authorName: user!.name,
+        locale,
+      });
+      router.push(`/forum/${post.slug}`);
+    } catch {
+      setSubmitError(t("postFailed"));
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -110,8 +120,16 @@ export default function NewForumTopicPage() {
               />
             </div>
 
-            <Button type="submit" className="w-full" size="lg" disabled={!title.trim() || !body.trim()}>
-              {tCommon("submit")}
+            {submitError && (
+              <p className="text-sm text-red-600">{submitError}</p>
+            )}
+            <Button
+              type="submit"
+              className="w-full"
+              size="lg"
+              disabled={!title.trim() || !body.trim() || submitting}
+            >
+              {submitting ? tCommon("submitting") : tCommon("submit")}
             </Button>
           </form>
         </CardContent>

@@ -17,6 +17,11 @@ import {
   getSpotCommentCount,
   loadStoredSpotComments,
 } from "@/lib/spot-comments";
+import {
+  fetchCommentsForThread,
+  isDbThreadId,
+} from "@/lib/supabase/comments";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { formatDate, cn } from "@/lib/utils";
 import { getLocalizedText, type FishingSpot } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -76,12 +81,23 @@ export function HomeDeckCommentSheet({
   useEffect(() => {
     if (!open) return;
     setDragOffset(0);
-    const stored = loadStoredSpotComments(spot.id);
-    setStoredComments(stored);
+
+    const useDb =
+      isSupabaseConfigured() && isDbThreadId(spot.id);
+
+    if (useDb) {
+      void fetchCommentsForThread("spot", spot.id)
+        .then(setStoredComments)
+        .catch(() => setStoredComments([]));
+    } else {
+      setStoredComments(loadStoredSpotComments(spot.id));
+    }
+
     const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-    const hasComments = getSpotCommentCount(spot.id) > 0;
+    const hasComments =
+      getSpotCommentCount(spot.id, spot.commentCount) > 0;
     setExpanded(isDesktop || hasComments);
-  }, [open, spot.id, seedComments.length]);
+  }, [open, spot.id, spot.commentCount, seedComments.length]);
 
   useEffect(() => {
     if (!open) return;

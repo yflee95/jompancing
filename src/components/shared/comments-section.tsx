@@ -1,12 +1,19 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { MessageCircle, Send } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { formatDate, cn } from "@/lib/utils";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
+import {
+  fetchCommentsForThread,
+  insertCommentToDb,
+  isDbThreadId,
+  type ThreadType,
+} from "@/lib/supabase/comments";
 import { getLocalizedText, type LocalizedString } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
@@ -19,6 +26,7 @@ export interface CommentItem {
 
 interface CommentsSectionProps {
   threadId: string;
+  threadType?: ThreadType;
   comments: CommentItem[];
   locale: Locale;
   title?: string;
@@ -27,6 +35,7 @@ interface CommentsSectionProps {
 }
 
 const STORAGE_PREFIX = "jompancing_comments_";
+const COMMENT_ADDED_EVENT = "jompancing-comment-added";
 
 function loadStoredComments(threadId: string): CommentItem[] {
   if (typeof window === "undefined") return [];
@@ -61,6 +70,7 @@ function mergeComments(
 
 export function CommentsSection({
   threadId,
+  threadType = "spot",
   comments,
   locale,
   title,
@@ -73,40 +83,89 @@ export function CommentsSection({
   const [draft, setDraft] = useState("");
   const [userComments, setUserComments] = useState<CommentItem[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const [posting, setPosting] = useState(false);
+  const [postError, setPostError] = useState<string | null>(null);
+
+  const useDb =
+    isSupabaseConfigured() && isDbThreadId(threadId);
+
+  const loadComments = useCallback(async () => {
+    if (useDb) {
+      try {
+        const fetched = await fetchCommentsForThread(threadType, threadId);
+        setUserComments(fetched);
+      } catch {
+        setUserComments([]);
+      }
+    } else {
+      setUserComments(loadStoredComments(threadId));
+    }
+    setHydrated(true);
+  }, [threadId, threadType, useDb]);
 
   useEffect(() => {
-    setUserComments(loadStoredComments(threadId));
-    setHydrated(true);
-  }, [threadId]);
+    setHydrated(false);
+    void loadComments();
+  }, [loadComments]);
 
-  const displayed = useMemo(
-    () => mergeComments(comments, userComments),
-    [comments, userComments],
-  );
+  const displayed = useMemo(() => {
+    if (useDb) {
+      return mergeComments(comments, userComments);
+    }
+    return mergeComments(comments, userComments);
+  }, [comments, userComments, useDb]);
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const text = draft.trim();
-    if (!text || !isRegisteredUser || !user) return;
+    if (!text || !isRegisteredUser || !user || posting) return;
 
-    const body: LocalizedString = {
-      ms: text,
-      en: text,
-      zh: text,
-      [activeLocale]: text,
-    };
+    setPosting(true);
+    setPostError(null);
 
-    const next: CommentItem = {
-      id: `local-${Date.now()}`,
-      authorName: user.name,
-      body,
-      createdAt: new Date().toISOString(),
-    };
-
-    const updated = [...userComments, next];
-    setUserComments(updated);
-    saveStoredComments(threadId, updated);
-    setDraft("");
+    try {
+      if (useDb) {
+        const created = await insertCommentToDb({
+          threadType,
+          threadId,
+          authorId: user.id,
+          body: text,
+          locale: activeLocale,
+        });
+        setUserComments((prev) => [...prev, created]);
+        window.dispatchEvent(
+          new CustomEvent(COMMENT_ADDED_EVENT, {
+            detail: { threadId, threadType },
+          }),
+        );
+      } else {
+        const body: LocalizedString = {
+          ms: text,
+          en: text,
+          zh: text,
+          [activeLocale]: text,
+        };
+        const next: CommentItem = {
+          id: `local-${Date.now()}`,
+          authorName: user.name,
+          body,
+          createdAt: new Date().toISOString(),
+        };
+        const updated = [...userComments, next];
+        setUserComments(updated);
+        saveStoredComments(threadId, updated);
+        window.dispatchEvent(
+          new CustomEvent(COMMENT_ADDED_EVENT, {
+            detail: { threadId, threadType },
+          }),
+        );
+      }
+      setDraft("");
+    } catch {
+      setPostError(t("postFailed"));
+    } finally {
+      setPosting(false);
+    }
   }
 
   return (
@@ -167,9 +226,17 @@ export function CommentsSection({
               rows={3}
               className="w-full resize-none rounded-xl border-0 bg-[var(--sand)] p-3 text-sm text-[var(--ink)] outline-none ring-1 ring-[var(--sand-dark)]/60 focus:ring-2 focus:ring-[var(--ocean)]/30"
             />
-            <Button type="submit" size="sm" className="mt-3" disabled={!draft.trim()}>
+            {postError && (
+              <p className="mt-2 text-xs text-red-600">{postError}</p>
+            )}
+            <Button
+              type="submit"
+              size="sm"
+              className="mt-3"
+              disabled={!draft.trim() || posting}
+            >
               <Send className="h-4 w-4" />
-              {t("post")}
+              {posting ? t("posting") : t("post")}
             </Button>
           </form>
         ) : (
@@ -186,3 +253,5 @@ export function CommentsSection({
     </section>
   );
 }
+
+export { COMMENT_ADDED_EVENT };

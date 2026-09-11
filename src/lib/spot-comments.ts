@@ -1,5 +1,8 @@
 import type { CommentItem } from "@/components/shared/comments-section";
+import { COMMENT_ADDED_EVENT } from "@/components/shared/comments-section";
 import { getCommentsForSpot } from "@/data/mock-data";
+import { isDbThreadId } from "@/lib/supabase/comments";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 const STORAGE_PREFIX = "jompancing_comments_";
 
@@ -14,7 +17,14 @@ export function loadStoredSpotComments(spotId: string): CommentItem[] {
 }
 
 /** Seed + local comments — matches what the comment sheet shows. */
-export function getSpotCommentCount(spotId: string): number {
+export function getSpotCommentCount(
+  spotId: string,
+  dbCount?: number,
+): number {
+  if (isSupabaseConfigured() && isDbThreadId(spotId)) {
+    return dbCount ?? 0;
+  }
+
   const seed = getCommentsForSpot(spotId);
   const stored = loadStoredSpotComments(spotId);
   const seen = new Set(seed.map((c) => c.id));
@@ -29,6 +39,10 @@ export function getSpotCommentCount(spotId: string): number {
 }
 
 export function getSpotCommentItems(spotId: string): CommentItem[] {
+  if (isSupabaseConfigured() && isDbThreadId(spotId)) {
+    return [];
+  }
+
   const seed = getCommentsForSpot(spotId).map(
     ({ id, authorName, body, createdAt }) => ({
       id,
@@ -50,3 +64,5 @@ export function getSpotCommentItems(spotId: string): CommentItem[] {
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
 }
+
+export { COMMENT_ADDED_EVENT };

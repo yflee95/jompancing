@@ -142,6 +142,7 @@ export function UserSpotDetail({ slug, locale }: UserSpotDetailProps) {
 
         <CommentsSection
           threadId={spot.id}
+          threadType="spot"
           className="mt-8"
           comments={[]}
           locale={locale}

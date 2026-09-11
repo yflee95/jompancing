@@ -26,7 +26,8 @@
     "verified": "已认证",
     "new": "最新",
     "nearYou": "附近",
-    "photoUnavailable": "图片不可用"
+    "photoUnavailable": "图片不可用",
+    "submitting": "提交中…"
   },
   "nav": {
     "home": "首页",
@@ -278,6 +279,7 @@
     "topicBody": "内容",
     "topicBodyPlaceholder": "分享你的问题或经验...",
     "notFound": "找不到帖子",
+    "postFailed": "发布失败，请重试。",
     "categories": {
       "spots": "钓点",
       "techniques": "技巧",
@@ -293,6 +295,8 @@
     "empty": "暂无留言，来做第一个吧！",
     "placeholder": "分享你的技巧或经验...",
     "post": "发布",
+    "posting": "发布中…",
+    "postFailed": "留言发布失败，请重试。",
     "loginToPost": "登录后发表留言",
     "login": "登录"
   },
