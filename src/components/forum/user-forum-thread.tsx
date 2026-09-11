@@ -6,7 +6,7 @@ import { useForum } from "@/components/providers/forum-provider";
 import { CommentsSection } from "@/components/shared/comments-section";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
-import { getLocalizedText } from "@/types";
+import { TranslatableText } from "@/components/shared/translatable-text";
 import type { Locale } from "@/i18n/routing";
 
 interface UserForumThreadProps {
@@ -41,9 +41,16 @@ export function UserForumThread({ slug, locale }: UserForumThreadProps) {
         <Badge className="bg-[var(--ocean-light)] text-[var(--ocean)]">
           {t(`categories.${post.category}`)}
         </Badge>
-        <h1 className="font-serif-display mt-4 text-2xl font-bold text-[var(--ink)] sm:text-3xl">
-          {getLocalizedText(post.title, locale)}
-        </h1>
+        <TranslatableText
+          as="h1"
+          className="font-serif-display mt-4 text-2xl font-bold text-[var(--ink)] sm:text-3xl"
+          text={post.title}
+          sourceLocale={post.sourceLocale}
+          locale={locale}
+          contentType="forum_post"
+          contentId={post.id}
+          field="title"
+        />
         <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-[var(--ink-muted)]">
           <span className="font-semibold text-[var(--ink)]">{post.authorName}</span>
           <span>{formatDate(post.createdAt, locale)}</span>
@@ -56,9 +63,16 @@ export function UserForumThread({ slug, locale }: UserForumThreadProps) {
             {post.viewCount}
           </span>
         </div>
-        <p className="mt-5 text-base leading-relaxed text-[var(--ink-muted)]">
-          {getLocalizedText(post.body, locale)}
-        </p>
+        <TranslatableText
+          as="p"
+          className="mt-5 text-base leading-relaxed text-[var(--ink-muted)]"
+          text={post.body}
+          sourceLocale={post.sourceLocale}
+          locale={locale}
+          contentType="forum_post"
+          contentId={post.id}
+          field="body"
+        />
       </div>
       <CommentsSection
         threadId={post.id}

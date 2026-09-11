@@ -1,7 +1,7 @@
 import type { CommentItem } from "@/components/shared/comments-section";
 import { createClient } from "@/lib/supabase/client";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
-import type { LocalizedString } from "@/types";
+import { createSourceLocalizedText } from "@/lib/translate/ugc-text";
 import type { Locale } from "@/i18n/routing";
 
 export type ThreadType = "spot" | "forum";
@@ -10,6 +10,7 @@ type CommentRow = {
   id: string;
   thread_type: string;
   thread_id: string;
+  source_locale: Locale;
   body_ms: string;
   body_en: string;
   body_zh: string;
@@ -21,6 +22,7 @@ const COMMENT_SELECT = `
   id,
   thread_type,
   thread_id,
+  source_locale,
   body_ms,
   body_en,
   body_zh,
@@ -51,6 +53,7 @@ function mapCommentRow(row: CommentRow): CommentItem {
       en: row.body_en,
       zh: row.body_zh,
     },
+    sourceLocale: row.source_locale ?? "ms",
     createdAt: row.created_at,
   };
 }
@@ -100,12 +103,7 @@ export async function insertCommentToDb(input: {
 }): Promise<CommentItem> {
   const supabase = createClient();
   const text = input.body.trim();
-  const localized: LocalizedString = {
-    ms: text,
-    en: text,
-    zh: text,
-    [input.locale]: text,
-  };
+  const localized = createSourceLocalizedText(text, input.locale);
 
   const { data, error } = await supabase
     .from("thread_comments")
@@ -113,6 +111,7 @@ export async function insertCommentToDb(input: {
       thread_type: input.threadType,
       thread_id: input.threadId,
       author_id: input.authorId,
+      source_locale: input.locale,
       body_ms: localized.ms,
       body_en: localized.en,
       body_zh: localized.zh,

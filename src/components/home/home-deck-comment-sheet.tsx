@@ -22,8 +22,9 @@ import {
   isDbThreadId,
 } from "@/lib/supabase/comments";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { TranslatableText } from "@/components/shared/translatable-text";
 import { formatDate, cn } from "@/lib/utils";
-import { getLocalizedText, type FishingSpot } from "@/types";
+import type { FishingSpot } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
 const DRAG_THRESHOLD = 36;
@@ -267,9 +268,16 @@ export function HomeDeckCommentSheet({
                           </p>
                         </div>
                       </div>
-                      <p className="mt-2.5 text-sm leading-relaxed text-[var(--ink-muted)]">
-                        {getLocalizedText(comment.body, locale)}
-                      </p>
+                      <TranslatableText
+                        as="p"
+                        className="mt-2.5 text-sm leading-relaxed text-[var(--ink-muted)]"
+                        text={comment.body}
+                        sourceLocale={comment.sourceLocale}
+                        locale={locale}
+                        contentType="comment"
+                        contentId={comment.id}
+                        field="body"
+                      />
                     </article>
                   </li>
                 ))}

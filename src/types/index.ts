@@ -184,6 +184,7 @@ export interface ForumPost {
   slug: string;
   title: LocalizedString;
   body: LocalizedString;
+  sourceLocale?: Locale;
   category: ForumCategory;
   authorName: string;
   replyCount: number;
@@ -280,6 +281,11 @@ export interface UserSession {
 export function getLocalizedText(
   value: LocalizedString,
   locale: Locale,
+  sourceLocale: Locale = "ms",
 ): string {
-  return value[locale] ?? value.ms;
+  const direct = value[locale]?.trim();
+  if (direct) return direct;
+  const source = value[sourceLocale]?.trim();
+  if (source) return source;
+  return value.ms?.trim() || value.en?.trim() || value.zh?.trim() || "";
 }

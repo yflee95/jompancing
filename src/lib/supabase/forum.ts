@@ -1,4 +1,5 @@
 import { slugify } from "@/lib/slug";
+import { createSourceLocalizedText } from "@/lib/translate/ugc-text";
 import { createClient } from "@/lib/supabase/client";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import type { ForumCategory, ForumPost, LocalizedString } from "@/types";
@@ -8,6 +9,7 @@ type ForumRow = {
   id: string;
   slug: string;
   author_id: string;
+  source_locale: Locale;
   title_ms: string;
   title_en: string;
   title_zh: string;
@@ -59,6 +61,7 @@ export function mapForumRow(row: ForumRow): ForumPost {
     slug: row.slug,
     title: toLocalized(row, "title"),
     body: toLocalized(row, "body"),
+    sourceLocale: row.source_locale ?? "ms",
     category: row.category as ForumCategory,
     authorName: row.profiles?.name ?? "Angler",
     replyCount,
@@ -141,18 +144,21 @@ export async function insertForumPostToDb(input: {
   const slug = `${baseSlug}-${Date.now().toString(36)}`;
   const title = input.title.trim();
   const body = input.body.trim();
+  const localizedTitle = createSourceLocalizedText(title, input.locale);
+  const localizedBody = createSourceLocalizedText(body, input.locale);
 
   const { data, error } = await supabase
     .from("forum_posts")
     .insert({
       slug,
       author_id: input.authorId,
-      title_ms: title,
-      title_en: title,
-      title_zh: title,
-      body_ms: body,
-      body_en: body,
-      body_zh: body,
+      source_locale: input.locale,
+      title_ms: localizedTitle.ms,
+      title_en: localizedTitle.en,
+      title_zh: localizedTitle.zh,
+      body_ms: localizedBody.ms,
+      body_en: localizedBody.en,
+      body_zh: localizedBody.zh,
       category: input.category,
     })
     .select(FORUM_SELECT)

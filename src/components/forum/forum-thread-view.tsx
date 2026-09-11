@@ -4,7 +4,8 @@ import { CommentsSection } from "@/components/shared/comments-section";
 import type { CommentItem } from "@/components/shared/comments-section";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
-import { getLocalizedText, type ForumPost } from "@/types";
+import { TranslatableText } from "@/components/shared/translatable-text";
+import type { ForumPost } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
 interface ForumThreadViewProps {
@@ -35,9 +36,16 @@ export async function ForumThreadView({
           )}
         </div>
 
-        <h1 className="font-serif-display mt-4 text-2xl font-bold text-[var(--ink)] sm:text-3xl">
-          {getLocalizedText(post.title, locale)}
-        </h1>
+        <TranslatableText
+          as="h1"
+          className="font-serif-display mt-4 text-2xl font-bold text-[var(--ink)] sm:text-3xl"
+          text={post.title}
+          sourceLocale={post.sourceLocale}
+          locale={locale}
+          contentType="forum_post"
+          contentId={post.id}
+          field="title"
+        />
 
         <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-[var(--ink-muted)]">
           <span className="font-semibold text-[var(--ink)]">{post.authorName}</span>
@@ -52,9 +60,16 @@ export async function ForumThreadView({
           </span>
         </div>
 
-        <p className="mt-5 text-base leading-relaxed text-[var(--ink-muted)]">
-          {getLocalizedText(post.body, locale)}
-        </p>
+        <TranslatableText
+          as="p"
+          className="mt-5 text-base leading-relaxed text-[var(--ink-muted)]"
+          text={post.body}
+          sourceLocale={post.sourceLocale}
+          locale={locale}
+          contentType="forum_post"
+          contentId={post.id}
+          field="body"
+        />
       </div>
 
       <CommentsSection

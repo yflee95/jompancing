@@ -7,6 +7,8 @@ import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { PageLoader } from "@/components/ui/page-loader";
+import { TranslatableText } from "@/components/shared/translatable-text";
+import { createSourceLocalizedText } from "@/lib/translate/ugc-text";
 import { formatDate, cn } from "@/lib/utils";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import {
@@ -15,13 +17,14 @@ import {
   isDbThreadId,
   type ThreadType,
 } from "@/lib/supabase/comments";
-import { getLocalizedText, type LocalizedString } from "@/types";
+import type { LocalizedString } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
 export interface CommentItem {
   id: string;
   authorName: string;
   body: LocalizedString;
+  sourceLocale?: Locale;
   createdAt: string;
 }
 
@@ -140,16 +143,11 @@ export function CommentsSection({
           }),
         );
       } else {
-        const body: LocalizedString = {
-          ms: text,
-          en: text,
-          zh: text,
-          [activeLocale]: text,
-        };
         const next: CommentItem = {
           id: `local-${Date.now()}`,
           authorName: user.name,
-          body,
+          body: createSourceLocalizedText(text, activeLocale),
+          sourceLocale: activeLocale,
           createdAt: new Date().toISOString(),
         };
         const updated = [...userComments, next];
@@ -207,9 +205,16 @@ export function CommentsSection({
                   </p>
                 </div>
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-[var(--ink-muted)]">
-                {getLocalizedText(comment.body, locale)}
-              </p>
+              <TranslatableText
+                as="p"
+                className="mt-3 text-sm leading-relaxed text-[var(--ink-muted)]"
+                text={comment.body}
+                sourceLocale={comment.sourceLocale}
+                locale={locale}
+                contentType="comment"
+                contentId={comment.id}
+                field="body"
+              />
             </article>
           ))
         )}

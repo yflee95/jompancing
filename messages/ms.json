@@ -333,6 +333,18 @@
     "loginToPost": "Log masuk untuk tinggalkan komen",
     "login": "Log Masuk"
   },
+  "translation": {
+    "translating": "Menterjemah…",
+    "showOriginal": "Papar asal",
+    "showTranslation": "Papar terjemahan",
+    "machineTranslated": "Terjemahan mesin",
+    "translateFailed": "Terjemahan tidak tersedia — paparan asal",
+    "translateTo": {
+      "ms": "Terjemah ke BM",
+      "en": "Terjemah ke English",
+      "zh": "Terjemah ke 中文"
+    }
+  },
   "marketplace": {
     "title": "Kedai Peralatan",
     "subtitle": "Beli & jual peralatan memancing — COD sahaja buat masa ini",

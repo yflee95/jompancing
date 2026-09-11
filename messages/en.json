@@ -333,6 +333,18 @@
     "loginToPost": "Sign in to leave a comment",
     "login": "Sign In"
   },
+  "translation": {
+    "translating": "Translating…",
+    "showOriginal": "Show original",
+    "showTranslation": "Show translation",
+    "machineTranslated": "Machine translated",
+    "translateFailed": "Translation unavailable — showing original",
+    "translateTo": {
+      "ms": "Translate to BM",
+      "en": "Translate to English",
+      "zh": "Translate to Chinese"
+    }
+  },
   "marketplace": {
     "title": "Gear Marketplace",
     "subtitle": "Buy & sell fishing gear — COD only for now",

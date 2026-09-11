@@ -14,7 +14,8 @@ import {
   fetchForumPostsClient,
   insertForumPostToDb,
 } from "@/lib/supabase/forum";
-import type { ForumCategory, ForumPost, LocalizedString } from "@/types";
+import { createSourceLocalizedText } from "@/lib/translate/ugc-text";
+import type { ForumCategory, ForumPost } from "@/types";
 
 const STORAGE_KEY = "jompancing_forum_posts";
 
@@ -36,10 +37,6 @@ interface ForumContextValue {
 }
 
 const ForumContext = createContext<ForumContextValue | null>(null);
-
-function toLocalized(text: string, locale: "ms" | "en" | "zh"): LocalizedString {
-  return { ms: text, en: text, zh: text, [locale]: text };
-}
 
 export function ForumProvider({ children }: { children: React.ReactNode }) {
   const useDb = isSupabaseConfigured();
@@ -90,8 +87,9 @@ export function ForumProvider({ children }: { children: React.ReactNode }) {
       const post: ForumPost = {
         id: `user-${Date.now()}`,
         slug,
-        title: toLocalized(input.title, input.locale),
-        body: toLocalized(input.body, input.locale),
+        title: createSourceLocalizedText(input.title, input.locale),
+        body: createSourceLocalizedText(input.body, input.locale),
+        sourceLocale: input.locale,
         category: input.category,
         authorName: input.authorName,
         replyCount: 0,

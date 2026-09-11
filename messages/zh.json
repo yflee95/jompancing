@@ -333,6 +333,18 @@
     "loginToPost": "登录后发表留言",
     "login": "登录"
   },
+  "translation": {
+    "translating": "翻译中…",
+    "showOriginal": "查看原文",
+    "showTranslation": "查看译文",
+    "machineTranslated": "机器翻译",
+    "translateFailed": "暂时无法翻译，显示原文",
+    "translateTo": {
+      "ms": "翻译成马来文",
+      "en": "翻译成英文",
+      "zh": "翻译成中文"
+    }
+  },
   "marketplace": {
     "title": "渔具商城",
     "subtitle": "买卖渔具 — 目前仅支持货到付款 (COD)",
