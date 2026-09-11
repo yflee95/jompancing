@@ -1,42 +1,36 @@
 "use client";
 
 import {
+  CalendarDays,
   Home,
-  Map,
+  MapPin,
+  MessageSquare,
   PlusCircle,
-  ShoppingBag,
-  User,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-type NavHref =
-  | "/"
-  | "/map"
-  | "/post"
-  | "/marketplace"
-  | "/profile";
+type MobileNavHref = "/" | "/spots" | "/post" | "/forum" | "/activities";
 
 type NavItem = {
-  href: NavHref;
+  href: MobileNavHref;
   icon: typeof Home;
   labelKey:
     | "nav.home"
-    | "nav.map"
+    | "nav.spots"
     | "nav.post"
-    | "nav.marketplace"
-    | "nav.profile";
+    | "nav.forum"
+    | "nav.activities";
   accent?: boolean;
 };
 
-/** Mobile: core daily actions — explore home/desktop nav for spots, forum, activities. */
 const mobileNavItems: NavItem[] = [
   { href: "/", icon: Home, labelKey: "nav.home" },
-  { href: "/map", icon: Map, labelKey: "nav.map" },
+  { href: "/spots", icon: MapPin, labelKey: "nav.spots" },
   { href: "/post", icon: PlusCircle, labelKey: "nav.post", accent: true },
-  { href: "/marketplace", icon: ShoppingBag, labelKey: "nav.marketplace" },
-  { href: "/profile", icon: User, labelKey: "nav.profile" },
+  { href: "/forum", icon: MessageSquare, labelKey: "nav.forum" },
+  { href: "/activities", icon: CalendarDays, labelKey: "nav.activities" },
 ];
 
 function isNavActive(pathname: string, href: string): boolean {
