@@ -7,7 +7,7 @@ import { LoginGate } from "@/components/shared/login-gate";
 
 export default function ProfilePage() {
   const tCommon = useTranslations("common");
-  const { user, isLoading } = useAuth();
+  const { isRegisteredUser, isLoading } = useAuth();
 
   if (isLoading) {
     return (
@@ -17,7 +17,7 @@ export default function ProfilePage() {
     );
   }
 
-  if (!user) {
+  if (!isRegisteredUser) {
     return (
       <div className="mx-auto max-w-md px-4 py-16">
         <LoginGate message={tCommon("loginToContinue")} />

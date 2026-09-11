@@ -24,6 +24,8 @@ interface AuthResult {
 
 interface AuthContextValue {
   user: UserSession | null;
+  /** Signed-in with email/Google — not anonymous guest. */
+  isRegisteredUser: boolean;
   isLoading: boolean;
   isSupabase: boolean;
   loginDemo: () => void;
@@ -36,6 +38,8 @@ interface AuthContextValue {
   loginWithGoogle: (locale: Locale) => Promise<AuthResult>;
   logout: () => Promise<void>;
   updateProfile: (patch: Partial<UserSession>) => Promise<void>;
+  /** Creates an anonymous session when needed so guests can publish spots. */
+  ensureAuthForPost: () => Promise<UserSession | null>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -52,14 +56,16 @@ function sessionUserFallback(
   user: {
     id: string;
     email?: string;
+    is_anonymous?: boolean;
     user_metadata?: Record<string, unknown>;
   },
 ): UserSession {
   const meta = user.user_metadata ?? {};
+  const isAnonymous = user.is_anonymous === true;
   const name =
     (typeof meta.name === "string" && meta.name) ||
     (typeof meta.full_name === "string" && meta.full_name) ||
-    user.email?.split("@")[0] ||
+    (isAnonymous ? "Guest Angler" : user.email?.split("@")[0]) ||
     "Angler";
   const avatar =
     (typeof meta.avatar_url === "string" && meta.avatar_url) ||
@@ -71,6 +77,7 @@ function sessionUserFallback(
     name,
     email: user.email ?? "",
     avatar,
+    isAnonymous,
   };
 }
 
@@ -90,6 +97,18 @@ async function fetchProfile(userId: string): Promise<UserSession | null> {
     email: data.email,
     avatar: data.avatar_url ?? undefined,
     homeStateId: data.home_state_id ?? undefined,
+    isAnonymous: false,
+  };
+}
+
+function mergeAnonymousFlag(
+  profile: UserSession | null,
+  authUser: { is_anonymous?: boolean },
+): UserSession | null {
+  if (!profile) return null;
+  return {
+    ...profile,
+    isAnonymous: authUser.is_anonymous === true,
   };
 }
 
@@ -116,8 +135,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function loadSession() {
       const { data } = await supabase.auth.getSession();
       if (data.session?.user) {
-        const profile = await fetchProfile(data.session.user.id);
-        setUser(profile ?? sessionUserFallback(data.session.user));
+        const authUser = data.session.user;
+        const profile = await fetchProfile(authUser.id);
+        setUser(
+          mergeAnonymousFlag(
+            profile ?? sessionUserFallback(authUser),
+            authUser,
+          ),
+        );
       }
       setIsLoading(false);
     }
@@ -132,8 +157,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(null);
           return;
         }
-        const profile = await fetchProfile(session.user.id);
-        setUser(profile ?? sessionUserFallback(session.user));
+        const authUser = session.user;
+        const profile = await fetchProfile(authUser.id);
+        setUser(
+          mergeAnonymousFlag(
+            profile ?? sessionUserFallback(authUser),
+            authUser,
+          ),
+        );
       })();
     });
 
@@ -225,6 +256,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem(DEMO_STORAGE_KEY);
   }, [isSupabase]);
 
+  const ensureAuthForPost = useCallback(async (): Promise<UserSession | null> => {
+    if (user) return user;
+
+    if (!isSupabase) {
+      const guest: UserSession = {
+        id: `guest-${Date.now().toString(36)}`,
+        name: "Guest Angler",
+        email: "",
+        isAnonymous: true,
+      };
+      setUser(guest);
+      localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(guest));
+      return guest;
+    }
+
+    const supabase = createClient();
+    const { data, error } = await supabase.auth.signInAnonymously();
+    if (error || !data.user) return null;
+
+    const authUser = data.user;
+    const profile = await fetchProfile(authUser.id);
+    const sessionUser = mergeAnonymousFlag(
+      profile ?? sessionUserFallback(authUser),
+      authUser,
+    );
+    setUser(sessionUser);
+    return sessionUser;
+  }, [user, isSupabase]);
+
   const updateProfile = useCallback(
     async (patch: Partial<UserSession>) => {
       if (!isSupabase) {
@@ -266,9 +326,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [isSupabase],
   );
 
+  const isRegisteredUser = Boolean(user && !user.isAnonymous);
+
   const value = useMemo(
     () => ({
       user,
+      isRegisteredUser,
       isLoading,
       isSupabase,
       loginDemo,
@@ -277,9 +340,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       loginWithGoogle,
       logout,
       updateProfile,
+      ensureAuthForPost,
     }),
     [
       user,
+      isRegisteredUser,
       isLoading,
       isSupabase,
       loginDemo,
@@ -288,6 +353,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       loginWithGoogle,
       logout,
       updateProfile,
+      ensureAuthForPost,
     ],
   );
 

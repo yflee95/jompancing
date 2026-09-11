@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { MapPin, Navigation } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -10,10 +10,11 @@ import {
   getPublicUserSpots,
   useUserSpots,
 } from "@/components/providers/spots-provider";
+import { useUserLocation } from "@/hooks/use-user-location";
 import {
-  DEFAULT_LOCATION,
   formatDistance,
   getDistanceKm,
+  getSpotsMapCenter,
 } from "@/lib/geo";
 import { filterSpotsByRegion, getSpotLocationLine } from "@/lib/spot-location";
 import { cn } from "@/lib/utils";
@@ -38,28 +39,12 @@ export function MapExplore({
   const tSpots = useTranslations("spots");
   const tCommon = useTranslations("common");
   const locale = useLocale() as Locale;
+  const userLocation = useUserLocation(locale);
 
-  const [userLocation, setUserLocation] = useState(DEFAULT_LOCATION);
-  const [locating, setLocating] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setLocating(false);
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setUserLocation({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        });
-        setLocating(false);
-      },
-      () => setLocating(false),
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 },
-    );
-  }, []);
+  const hasGps = userLocation.status === "granted" && userLocation.coords !== null;
+  const locating = userLocation.status === "pending";
 
   const publicSpots = useMemo(() => {
     const publicUser = getPublicUserSpots(userSpots);
@@ -82,15 +67,26 @@ export function MapExplore({
     [publicSpots, filterState, filterDistrict, filterArea],
   );
 
-  const spotsWithDistance = useMemo(
-    () =>
-      regionSpots
-        .map((spot) => ({
-          ...spot,
-          distanceKm: getDistanceKm(userLocation, spot.coordinates),
-        }))
-        .sort((a, b) => a.distanceKm - b.distanceKm),
-    [regionSpots, userLocation],
+  const spotsWithDistance = useMemo(() => {
+    const base = regionSpots.map((spot) => {
+      if (!hasGps || !userLocation.coords) {
+        return { ...spot, distanceKm: undefined as number | undefined };
+      }
+      return {
+        ...spot,
+        distanceKm: getDistanceKm(userLocation.coords, spot.coordinates),
+      };
+    });
+
+    if (hasGps) {
+      return base.sort((a, b) => (a.distanceKm ?? 0) - (b.distanceKm ?? 0));
+    }
+    return base;
+  }, [regionSpots, hasGps, userLocation.coords]);
+
+  const mapCenter = useMemo(
+    () => getSpotsMapCenter(regionSpots, userLocation.coords),
+    [regionSpots, userLocation.coords],
   );
 
   const activeSelectedId =
@@ -116,7 +112,9 @@ export function MapExplore({
           />
           {locating
             ? t("findingLocation")
-            : t("spotsOnMap", { count: spotsWithDistance.length })}
+            : hasGps
+              ? t("spotsOnMap", { count: spotsWithDistance.length })
+              : t("locationOffMap")}
         </div>
       </div>
 
@@ -124,7 +122,7 @@ export function MapExplore({
         <SpotsMap
           spots={spotsWithDistance}
           locale={locale}
-          center={userLocation}
+          center={mapCenter}
           selectedId={activeSelectedId}
           onSelectSpot={setSelectedId}
           className="h-full w-full"
@@ -150,7 +148,7 @@ export function MapExplore({
           ) : (
             <>
               <p className="mb-2 mt-3 text-xs font-semibold uppercase tracking-wide text-[var(--ink-muted)]">
-                {tCommon("nearYou")}
+                {hasGps ? tCommon("nearYou") : t("spotsList")}
               </p>
               <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none snap-x snap-mandatory">
                 {spotsWithDistance.map((spot) => (
@@ -172,10 +170,12 @@ export function MapExplore({
                     <p className="mt-0.5 line-clamp-1 text-[10px] text-[var(--ink-muted)]">
                       {getSpotLocationLine(spot, locale)}
                     </p>
-                    <p className="mt-1 flex items-center gap-1 text-[11px] text-[var(--ocean)]">
-                      <MapPin className="h-3 w-3" />
-                      {formatDistance(spot.distanceKm)}
-                    </p>
+                    {hasGps && spot.distanceKm !== undefined && (
+                      <p className="mt-1 flex items-center gap-1 text-[11px] text-[var(--ocean)]">
+                        <MapPin className="h-3 w-3" />
+                        {formatDistance(spot.distanceKm)}
+                      </p>
+                    )}
                   </button>
                 ))}
               </div>

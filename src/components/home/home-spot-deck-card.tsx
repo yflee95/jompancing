@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { getLocalizedText, type FishingSpot } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
-type SpotWithDistance = FishingSpot & { distanceKm: number };
+type SpotWithDistance = FishingSpot & { distanceKm?: number };
 
 interface HomeSpotDeckCardProps {
   spot: SpotWithDistance;
@@ -98,9 +98,11 @@ export const HomeSpotDeckCard = memo(function HomeSpotDeckCard({
                 {t("hotSpot")}
               </span>
             ) : null}
-            <span className="absolute right-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-[var(--ink)] shadow-sm">
-              {formatDistance(spot.distanceKm)}
-            </span>
+            {spot.distanceKm != null && (
+              <span className="absolute right-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-[var(--ink)] shadow-sm">
+                {formatDistance(spot.distanceKm)}
+              </span>
+            )}
             <div className="absolute inset-x-0 bottom-0 p-4 pb-[4.25rem]">
               <h2 className="font-serif-display text-xl font-bold leading-snug text-white">
                 {getLocalizedText(spot.title, locale)}

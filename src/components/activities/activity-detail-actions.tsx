@@ -19,7 +19,7 @@ export function ActivityDetailActions({
   contactWhatsApp,
 }: ActivityDetailActionsProps) {
   const t = useTranslations("activities");
-  const { user } = useAuth();
+  const { isRegisteredUser } = useAuth();
 
   const message = t("whatsappMessage", { title: activityTitle, organizer });
 
@@ -32,7 +32,7 @@ export function ActivityDetailActions({
     );
   }
 
-  if (!user) {
+  if (!isRegisteredUser) {
     return (
       <div className="fixed inset-x-0 bottom-[4.25rem] z-40 border-t border-[var(--sand-dark)]/40 bg-white/95 p-3 backdrop-blur-xl sm:static sm:mt-8 sm:rounded-2xl sm:border sm:p-5">
         <p className="mb-3 text-center text-sm text-[var(--ink-muted)] sm:text-left">

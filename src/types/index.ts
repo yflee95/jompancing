@@ -224,6 +224,8 @@ export interface UserSession {
   email: string;
   avatar?: string;
   homeStateId?: string;
+  /** Supabase anonymous sign-in — can post spots but not comment or use profile features. */
+  isAnonymous?: boolean;
 }
 
 export function getLocalizedText(

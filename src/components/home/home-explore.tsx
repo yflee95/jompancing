@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useActivities } from "@/components/providers/activities-provider";
 import {
@@ -13,10 +13,8 @@ import { HomeShareSpotBanner } from "@/components/home/home-share-spot-banner";
 import { HomeSpotDeck } from "@/components/home/home-spot-deck";
 import { HomeSpotRailCard } from "@/components/home/home-spot-rail-card";
 import { HomeSpotSection } from "@/components/home/home-spot-section";
-import {
-  DEFAULT_LOCATION,
-  getDistanceKm,
-} from "@/lib/geo";
+import { useUserLocation } from "@/hooks/use-user-location";
+import { getDistanceKm } from "@/lib/geo";
 import { mockArticles, mockForumPosts } from "@/data/mock-data";
 import {
   type FishingSpot,
@@ -25,7 +23,7 @@ import {
 } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
-type SpotWithDistance = FishingSpot & { distanceKm: number };
+type SpotWithDistance = FishingSpot & { distanceKm?: number };
 
 interface HomeExploreProps {
   spots: FishingSpot[];
@@ -37,7 +35,9 @@ const DECK_SIZE = 8;
 
 function sortNearbyHot(a: SpotWithDistance, b: SpotWithDistance): number {
   if (a.featured !== b.featured) return a.featured ? -1 : 1;
-  if (a.distanceKm !== b.distanceKm) return a.distanceKm - b.distanceKm;
+  const distA = a.distanceKm ?? Infinity;
+  const distB = b.distanceKm ?? Infinity;
+  if (distA !== distB) return distA - distB;
   return b.commentCount - a.commentCount;
 }
 
@@ -52,35 +52,12 @@ export function HomeExplore({ spots, listings }: HomeExploreProps) {
   const locale = useLocale() as Locale;
   const { userSpots } = useUserSpots();
   const { activities } = useActivities();
+  const userLocation = useUserLocation(locale);
 
-  const [userLocation, setUserLocation] = useState(DEFAULT_LOCATION);
-  const [locationLabel, setLocationLabel] = useState<string | null>(null);
-  const [locating, setLocating] = useState(true);
   const [activeCategory, setActiveCategory] = useState<WaterType | "all">("all");
 
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setLocating(false);
-      setLocationLabel(t("defaultLocation"));
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setUserLocation({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        });
-        setLocationLabel(t("yourLocation"));
-        setLocating(false);
-      },
-      () => {
-        setLocationLabel(t("defaultLocation"));
-        setLocating(false);
-      },
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 },
-    );
-  }, [t]);
+  const hasGps = userLocation.status === "granted" && userLocation.coords !== null;
+  const locating = userLocation.status === "pending";
 
   const allPublicSpots = useMemo(() => {
     const publicUser = getPublicUserSpots(userSpots);
@@ -92,16 +69,17 @@ export function HomeExplore({ spots, listings }: HomeExploreProps) {
     });
   }, [spots, userSpots]);
 
-  const spotsWithDistance = useMemo<SpotWithDistance[]>(
-    () =>
-      allPublicSpots
-        .map((spot) => ({
-          ...spot,
-          distanceKm: getDistanceKm(userLocation, spot.coordinates),
-        }))
-        .sort(sortNearbyHot),
-    [allPublicSpots, userLocation],
-  );
+  const spotsWithDistance = useMemo<SpotWithDistance[]>(() => {
+    if (!hasGps || !userLocation.coords) {
+      return allPublicSpots.map((spot) => ({ ...spot }));
+    }
+    return allPublicSpots
+      .map((spot) => ({
+        ...spot,
+        distanceKm: getDistanceKm(userLocation.coords!, spot.coordinates),
+      }))
+      .sort(sortNearbyHot);
+  }, [allPublicSpots, hasGps, userLocation.coords]);
 
   const filterByCategory = <T extends FishingSpot>(list: T[]): T[] =>
     activeCategory === "all"
@@ -109,33 +87,51 @@ export function HomeExplore({ spots, listings }: HomeExploreProps) {
       : list.filter((s) => s.waterType === activeCategory);
 
   const nearbyPaidPonds = useMemo(() => {
+    if (!hasGps) return [];
     return spotsWithDistance
       .filter(
-        (s) => s.waterType === "pond" && s.distanceKm <= NEARBY_RADIUS_KM,
+        (s) =>
+          s.waterType === "pond" &&
+          s.distanceKm !== undefined &&
+          s.distanceKm <= NEARBY_RADIUS_KM,
       )
-      .sort((a, b) => a.distanceKm - b.distanceKm)
+      .sort((a, b) => (a.distanceKm ?? 0) - (b.distanceKm ?? 0))
       .slice(0, 8);
-  }, [spotsWithDistance]);
+  }, [spotsWithDistance, hasGps]);
 
   const deckSpots = useMemo(() => {
     let filtered = filterByCategory(spotsWithDistance);
     if (activeCategory === "all") {
       filtered = filtered.filter((s) => s.waterType !== "pond");
     }
-    const withinRadius = filtered.filter((s) => s.distanceKm <= NEARBY_RADIUS_KM);
-    const pool = withinRadius.length >= 4 ? withinRadius : filtered;
-    return [...pool].sort(sortNearbyHot).slice(0, DECK_SIZE);
-  }, [spotsWithDistance, activeCategory]);
+
+    if (hasGps) {
+      const withinRadius = filtered.filter(
+        (s) => s.distanceKm !== undefined && s.distanceKm <= NEARBY_RADIUS_KM,
+      );
+      const pool = withinRadius.length >= 4 ? withinRadius : filtered;
+      return [...pool].sort(sortNearbyHot).slice(0, DECK_SIZE);
+    }
+
+    return [...filtered].sort(sortNationwideHot).slice(0, DECK_SIZE);
+  }, [spotsWithDistance, activeCategory, hasGps]);
 
   const nearbyHotSpots = useMemo(() => {
     let filtered = filterByCategory(spotsWithDistance);
     if (activeCategory === "all") {
       filtered = filtered.filter((s) => s.waterType !== "pond");
     }
-    const withinRadius = filtered.filter((s) => s.distanceKm <= NEARBY_RADIUS_KM);
-    const pool = withinRadius.length >= 4 ? withinRadius : filtered;
-    return [...pool].sort(sortNearbyHot).slice(0, 10);
-  }, [spotsWithDistance, activeCategory]);
+
+    if (hasGps) {
+      const withinRadius = filtered.filter(
+        (s) => s.distanceKm !== undefined && s.distanceKm <= NEARBY_RADIUS_KM,
+      );
+      const pool = withinRadius.length >= 4 ? withinRadius : filtered;
+      return [...pool].sort(sortNearbyHot).slice(0, 10);
+    }
+
+    return [...filtered].sort(sortNationwideHot).slice(0, 10);
+  }, [spotsWithDistance, activeCategory, hasGps]);
 
   const nearbyIds = useMemo(
     () => new Set(nearbyHotSpots.map((s) => s.id)),
@@ -152,20 +148,32 @@ export function HomeExplore({ spots, listings }: HomeExploreProps) {
   const showPaidPondSection =
     activeCategory === "all" && nearbyPaidPonds.length > 0;
 
-  const nearbyCount = spotsWithDistance.filter(
-    (s) => s.distanceKm <= NEARBY_RADIUS_KM,
-  ).length;
+  const nearbyCount = hasGps
+    ? spotsWithDistance.filter(
+        (s) => s.distanceKm !== undefined && s.distanceKm <= NEARBY_RADIUS_KM,
+      ).length
+    : 0;
+
+  const locationLabel = useMemo(() => {
+    if (locating) return null;
+    if (hasGps) {
+      return userLocation.region?.label ?? t("yourLocation");
+    }
+    if (userLocation.status === "denied") {
+      return t("locationUnavailable");
+    }
+    return null;
+  }, [locating, hasGps, userLocation, t]);
 
   const inferredRegion = useMemo(() => {
-    const nearest = spotsWithDistance[0];
-    if (!nearest) {
-      return { stateId: "johor", districtId: "johor-bahru" };
+    if (userLocation.region) {
+      return {
+        stateId: userLocation.region.stateId,
+        districtId: userLocation.region.districtId,
+      };
     }
-    return {
-      stateId: nearest.stateId,
-      districtId: nearest.districtId,
-    };
-  }, [spotsWithDistance]);
+    return undefined;
+  }, [userLocation.region]);
 
   if (allPublicSpots.length === 0) return null;
 
@@ -178,6 +186,7 @@ export function HomeExplore({ spots, listings }: HomeExploreProps) {
         onCategoryChange={setActiveCategory}
         locationLabel={locationLabel}
         locating={locating}
+        hasGps={hasGps}
         nearbyCount={nearbyCount}
       />
 
@@ -185,8 +194,9 @@ export function HomeExplore({ spots, listings }: HomeExploreProps) {
         <HomeShareSpotBanner
           locale={locale}
           locating={locating}
-          stateId={inferredRegion.stateId}
-          districtId={inferredRegion.districtId}
+          stateId={inferredRegion?.stateId}
+          districtId={inferredRegion?.districtId}
+          hasGps={hasGps}
         />
 
         {showPaidPondSection && (
@@ -214,8 +224,9 @@ export function HomeExplore({ spots, listings }: HomeExploreProps) {
         <HomeActivitySection
           activities={activities}
           locale={locale}
-          defaultStateId={inferredRegion.stateId}
-          defaultDistrictId={inferredRegion.districtId}
+          hasGps={hasGps}
+          defaultStateId={inferredRegion?.stateId}
+          defaultDistrictId={inferredRegion?.districtId}
         />
 
         {nationwideHotSpots.length > 0 && (

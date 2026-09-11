@@ -10,6 +10,7 @@ import type { Locale } from "@/i18n/routing";
 interface HomeShareSpotBannerProps {
   locale: Locale;
   locating?: boolean;
+  hasGps?: boolean;
   stateId?: string;
   districtId?: string;
 }
@@ -17,6 +18,7 @@ interface HomeShareSpotBannerProps {
 export function HomeShareSpotBanner({
   locale,
   locating = false,
+  hasGps = false,
   stateId,
   districtId,
 }: HomeShareSpotBannerProps) {
@@ -25,11 +27,15 @@ export function HomeShareSpotBanner({
   const state = stateId ? getStateById(stateId) : undefined;
   const district =
     stateId && districtId ? getDistrictById(stateId, districtId) : undefined;
-  const regionLabel = district
-    ? getLocalizedText(district.name, locale)
-    : state
-      ? getLocalizedText(state.name, locale)
-      : t("defaultLocation");
+  const regionLabel = locating
+    ? t("findingLocation")
+    : hasGps && district
+      ? getLocalizedText(district.name, locale)
+      : hasGps && state
+        ? getLocalizedText(state.name, locale)
+        : hasGps
+          ? t("yourLocation")
+          : t("locationUnavailable");
 
   return (
     <section className="animate-fade-up px-4 py-6 md:px-6 md:py-8">
@@ -50,7 +56,7 @@ export function HomeShareSpotBanner({
         <div className="relative mt-4 min-w-0 flex-1 md:mt-0">
           <p className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold text-white/90">
             <Camera className="h-3 w-3" />
-            {locating ? t("findingLocation") : regionLabel}
+            {regionLabel}
           </p>
           <h2 className="font-serif-display mt-2 text-xl font-bold leading-snug text-white md:mt-3 md:text-2xl">
             {t("shareSpotBannerTitle")}

@@ -14,13 +14,13 @@ interface SpotDetailActionsProps {
 
 export function SpotDetailActions({ lat, lng }: SpotDetailActionsProps) {
   const t = useTranslations("spots");
-  const { user } = useAuth();
+  const { isRegisteredUser } = useAuth();
 
   function openDirections() {
     window.open(buildMapsUrl(lat, lng), "_blank", "noopener,noreferrer");
   }
 
-  if (!user) {
+  if (!isRegisteredUser) {
     return (
       <>
         <div className="hidden sm:block">

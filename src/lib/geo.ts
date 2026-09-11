@@ -20,8 +20,21 @@ export function formatDistance(km: number): string {
   return `${Math.round(km)} km`;
 }
 
-/** Default fallback: Johor Bahru city centre */
-export const DEFAULT_LOCATION: Coordinates = {
-  lat: 1.4927,
-  lng: 103.7414,
+/** Map viewport centre when GPS is unavailable (not treated as user location). */
+export const MALAYSIA_MAP_CENTER: Coordinates = {
+  lat: 4.2105,
+  lng: 101.9758,
 };
+
+export function getSpotsMapCenter(
+  spots: { coordinates: Coordinates }[],
+  userCoords: Coordinates | null,
+): Coordinates {
+  if (userCoords) return userCoords;
+  if (spots.length === 0) return MALAYSIA_MAP_CENTER;
+  const lat =
+    spots.reduce((sum, s) => sum + s.coordinates.lat, 0) / spots.length;
+  const lng =
+    spots.reduce((sum, s) => sum + s.coordinates.lng, 0) / spots.length;
+  return { lat, lng };
+}

@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 interface HomeActivitySectionProps {
   activities: Activity[];
   locale: Locale;
+  hasGps?: boolean;
   defaultStateId?: string;
   defaultDistrictId?: string;
 }
@@ -21,6 +22,7 @@ interface HomeActivitySectionProps {
 export function HomeActivitySection({
   activities,
   locale,
+  hasGps = false,
   defaultStateId,
   defaultDistrictId,
 }: HomeActivitySectionProps) {
@@ -114,6 +116,7 @@ export function HomeActivitySection({
         <div className="mx-auto mt-5 max-w-7xl px-4 md:px-6">
           <HomeActivityEmptyCard
             locale={locale}
+            hasGps={hasGps}
             stateId={stateId}
             districtId={districtId}
           />

@@ -68,7 +68,7 @@ export function CommentsSection({
   className,
 }: CommentsSectionProps) {
   const t = useTranslations("comments");
-  const { user } = useAuth();
+  const { user, isRegisteredUser } = useAuth();
   const activeLocale = useLocale() as Locale;
   const [draft, setDraft] = useState("");
   const [userComments, setUserComments] = useState<CommentItem[]>([]);
@@ -87,7 +87,7 @@ export function CommentsSection({
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const text = draft.trim();
-    if (!text || !user) return;
+    if (!text || !isRegisteredUser || !user) return;
 
     const body: LocalizedString = {
       ms: text,
@@ -158,7 +158,7 @@ export function CommentsSection({
       </div>
 
       <div className="mt-4 rounded-2xl bg-white p-4 ring-1 ring-[var(--sand-dark)]/40">
-        {user ? (
+        {isRegisteredUser ? (
           <form onSubmit={handleSubmit}>
             <textarea
               value={draft}

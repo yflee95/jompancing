@@ -19,9 +19,9 @@ export function LoginGateClient({
   loginMessage,
   contactLabel,
 }: LoginGateClientProps) {
-  const { user } = useAuth();
+  const { isRegisteredUser } = useAuth();
 
-  if (!user) {
+  if (!isRegisteredUser) {
     return (
       <div className="rounded-2xl bg-[var(--sand)] p-3 text-center ring-1 ring-[var(--sand-dark)]/40">
         <p className="text-[11px] text-[var(--ink-muted)]">{loginMessage}</p>

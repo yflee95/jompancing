@@ -25,7 +25,7 @@ const CATEGORIES: ForumCategory[] = [
 export default function NewForumTopicPage() {
   const t = useTranslations("forum");
   const tCommon = useTranslations("common");
-  const { user, isLoading } = useAuth();
+  const { user, isRegisteredUser, isLoading } = useAuth();
   const { addPost } = useForum();
   const router = useRouter();
   const locale = useLocale() as Locale;
@@ -42,7 +42,7 @@ export default function NewForumTopicPage() {
     );
   }
 
-  if (!user) {
+  if (!isRegisteredUser) {
     return (
       <div className="mx-auto max-w-md px-4 py-16">
         <LoginGate message={t("loginToPost")} />

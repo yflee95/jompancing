@@ -76,7 +76,7 @@ export function PostSpotForm() {
   const t = useTranslations("post");
   const tSpots = useTranslations("spots");
   const tCommon = useTranslations("common");
-  const { user } = useAuth();
+  const { user, isRegisteredUser, ensureAuthForPost } = useAuth();
   const { addSpot } = useUserSpots();
   const router = useRouter();
   const locale = useLocale() as Locale;
@@ -155,7 +155,13 @@ export function PostSpotForm() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
-    if (!user || submitting) return;
+    if (submitting) return;
+
+    const poster = user ?? (await ensureAuthForPost());
+    if (!poster) {
+      setError(t("authRequired"));
+      return;
+    }
     if (photos.length === 0) {
       setError(t("photoRequired"));
       return;
@@ -198,9 +204,9 @@ export function PostSpotForm() {
         waterType,
         tags,
         photos,
-        visibility,
-        authorId: user.id,
-        authorName: user.name,
+        visibility: poster.isAnonymous ? "public" : visibility,
+        authorId: poster.id,
+        authorName: poster.name,
         locale,
         stateId,
         districtId,
@@ -268,33 +274,57 @@ export function PostSpotForm() {
               </div>
             ))}
             {photos.length < MAX_PHOTOS && (
-              <label className="flex h-28 w-24 shrink-0 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed border-[var(--ocean)]/35 bg-[var(--ocean-light)]/30 text-[var(--ocean)] transition hover:border-[var(--ocean)]/60 hover:bg-[var(--ocean-light)]/50">
-                <ImagePlus className="h-7 w-7" />
-                <span className="text-[10px] font-semibold">{t("addPhoto")}</span>
+              <>
+                <label className="flex h-28 w-24 shrink-0 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed border-[var(--ocean)]/35 bg-[var(--ocean-light)]/30 text-[var(--ocean)] transition hover:border-[var(--ocean)]/60 hover:bg-[var(--ocean-light)]/50">
+                  <Camera className="h-7 w-7" />
+                  <span className="text-[10px] font-semibold">{t("takePhoto")}</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="sr-only"
+                    onChange={handlePhotos}
+                  />
+                </label>
+                <label className="flex h-28 w-24 shrink-0 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed border-[var(--ocean)]/35 bg-[var(--ocean-light)]/30 text-[var(--ocean)] transition hover:border-[var(--ocean)]/60 hover:bg-[var(--ocean-light)]/50">
+                  <ImagePlus className="h-7 w-7" />
+                  <span className="text-[10px] font-semibold">{t("chooseFromGallery")}</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="sr-only"
+                    onChange={handlePhotos}
+                  />
+                </label>
+              </>
+            )}
+          </div>
+          {photos.length === 0 && (
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-[var(--sand)] py-4 text-sm font-medium text-[var(--ocean)] ring-1 ring-[var(--sand-dark)]/50 transition hover:bg-[var(--ocean-light)]/40">
+                <Camera className="h-4 w-4" />
+                {t("takePhoto")}
                 <input
                   type="file"
                   accept="image/*"
                   capture="environment"
+                  className="sr-only"
+                  onChange={handlePhotos}
+                />
+              </label>
+              <label className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-[var(--sand)] py-4 text-sm font-medium text-[var(--ocean)] ring-1 ring-[var(--sand-dark)]/50 transition hover:bg-[var(--ocean-light)]/40">
+                <ImagePlus className="h-4 w-4" />
+                {t("chooseFromGallery")}
+                <input
+                  type="file"
+                  accept="image/*"
                   multiple
                   className="sr-only"
                   onChange={handlePhotos}
                 />
               </label>
-            )}
-          </div>
-          {photos.length === 0 && (
-            <label className="mt-3 flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-[var(--sand)] py-4 text-sm font-medium text-[var(--ocean)] ring-1 ring-[var(--sand-dark)]/50 transition hover:bg-[var(--ocean-light)]/40">
-              <Camera className="h-4 w-4" />
-              {t("tapToUpload")}
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment"
-                multiple
-                className="sr-only"
-                onChange={handlePhotos}
-              />
-            </label>
+            </div>
           )}
         </FormSection>
 
@@ -419,30 +449,36 @@ export function PostSpotForm() {
           </div>
         </FormSection>
 
-        <FormSection step="04" title={t("visibility")} subtitle={t("visibilityHint")}>
-          <div className="grid grid-cols-2 gap-3">
-            {(["public", "private"] as SpotVisibility[]).map((v) => (
-              <button
-                key={v}
-                type="button"
-                onClick={() => setVisibility(v)}
-                className={cn(
-                  "flex flex-col items-center gap-2 rounded-2xl px-4 py-5 text-sm font-semibold ring-1 transition",
-                  visibility === v
-                    ? "bg-[var(--ocean-light)] text-[var(--ocean-dark)] ring-[var(--ocean)]/30 shadow-sm"
-                    : "bg-[var(--sand)] text-[var(--ink-muted)] ring-[var(--sand-dark)]/50",
-                )}
-              >
-                {v === "public" ? (
-                  <Unlock className="h-6 w-6" />
-                ) : (
-                  <Lock className="h-6 w-6" />
-                )}
-                {t(`visibility_${v}`)}
-              </button>
-            ))}
-          </div>
-        </FormSection>
+        {isRegisteredUser ? (
+          <FormSection step="04" title={t("visibility")} subtitle={t("visibilityHint")}>
+            <div className="grid grid-cols-2 gap-3">
+              {(["public", "private"] as SpotVisibility[]).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setVisibility(v)}
+                  className={cn(
+                    "flex flex-col items-center gap-2 rounded-2xl px-4 py-5 text-sm font-semibold ring-1 transition",
+                    visibility === v
+                      ? "bg-[var(--ocean-light)] text-[var(--ocean-dark)] ring-[var(--ocean)]/30 shadow-sm"
+                      : "bg-[var(--sand)] text-[var(--ink-muted)] ring-[var(--sand-dark)]/50",
+                  )}
+                >
+                  {v === "public" ? (
+                    <Unlock className="h-6 w-6" />
+                  ) : (
+                    <Lock className="h-6 w-6" />
+                  )}
+                  {t(`visibility_${v}`)}
+                </button>
+              ))}
+            </div>
+          </FormSection>
+        ) : (
+          <p className="rounded-2xl bg-[var(--ocean-light)]/50 px-4 py-3 text-xs text-[var(--ocean-dark)] ring-1 ring-[var(--ocean)]/15">
+            {t("anonymousPublicOnly")}
+          </p>
+        )}
 
         {error && (
           <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-100">

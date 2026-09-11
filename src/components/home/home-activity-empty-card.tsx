@@ -9,12 +9,14 @@ import type { Locale } from "@/i18n/routing";
 
 interface HomeActivityEmptyCardProps {
   locale: Locale;
+  hasGps?: boolean;
   stateId?: string;
   districtId?: string;
 }
 
 export function HomeActivityEmptyCard({
   locale,
+  hasGps = false,
   stateId,
   districtId,
 }: HomeActivityEmptyCardProps) {
@@ -23,11 +25,14 @@ export function HomeActivityEmptyCard({
   const state = stateId ? getStateById(stateId) : undefined;
   const district =
     stateId && districtId ? getDistrictById(stateId, districtId) : undefined;
-  const regionLabel = district
-    ? getLocalizedText(district.name, locale)
-    : state
-      ? getLocalizedText(state.name, locale)
-      : t("defaultLocation");
+  const regionLabel =
+    hasGps && district
+      ? getLocalizedText(district.name, locale)
+      : hasGps && state
+        ? getLocalizedText(state.name, locale)
+        : hasGps
+          ? t("yourLocation")
+          : t("locationUnavailable");
 
   return (
     <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--ocean)] via-[var(--ocean-dark)] to-[#0d3a40] p-6 shadow-[var(--shadow-travel)] ring-1 ring-[var(--ocean)]/20 md:flex md:items-center md:gap-8 md:p-8">

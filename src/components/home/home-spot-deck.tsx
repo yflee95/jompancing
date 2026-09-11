@@ -32,7 +32,7 @@ import { cn } from "@/lib/utils";
 import type { FishingSpot, WaterType } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
-type SpotWithDistance = FishingSpot & { distanceKm: number };
+type SpotWithDistance = FishingSpot & { distanceKm?: number };
 
 const CATEGORIES: { id: WaterType | "all"; icon: typeof Waves }[] = [
   { id: "all", icon: Sparkles },
@@ -50,6 +50,7 @@ interface HomeSpotDeckProps {
   onCategoryChange: (category: WaterType | "all") => void;
   locationLabel: string | null;
   locating: boolean;
+  hasGps: boolean;
   nearbyCount: number;
 }
 
@@ -67,6 +68,7 @@ export function HomeSpotDeck({
   onCategoryChange,
   locationLabel,
   locating,
+  hasGps,
   nearbyCount,
 }: HomeSpotDeckProps) {
   const t = useTranslations("home");
@@ -273,7 +275,9 @@ export function HomeSpotDeck({
             />
             {locating
               ? t("findingLocation")
-              : `${locationLabel ?? tCommon("nearYou")} · ${t("spotsNearby", { count: nearbyCount })}`}
+              : hasGps
+                ? `${locationLabel ?? t("yourLocation")} · ${t("spotsNearby", { count: nearbyCount })}`
+                : (locationLabel ?? t("popularSpots"))}
           </div>
 
           <h1 className="font-serif-display mt-4 text-2xl font-bold text-[var(--ink)] md:text-3xl">
