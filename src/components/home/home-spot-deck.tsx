@@ -100,9 +100,11 @@ export function HomeSpotDeck({
   const [isDragging, setIsDragging] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [commentCountTick, setCommentCountTick] = useState(0);
-  const dragStart = useRef<number | null>(null);
+  const dragStartX = useRef<number | null>(null);
+  const dragStartY = useRef<number | null>(null);
   const dragging = useRef(false);
   const didDrag = useRef(false);
+  const didLockAxis = useRef(false);
 
   const count = spots.length;
   const activeSpot = spots[index];
@@ -119,6 +121,15 @@ export function HomeSpotDeck({
     [count],
   );
 
+  const resetDrag = useCallback(() => {
+    dragging.current = false;
+    didLockAxis.current = false;
+    dragStartX.current = null;
+    dragStartY.current = null;
+    setIsDragging(false);
+    setDragPx(0);
+  }, []);
+
   const onPointerDown = (e: ReactPointerEvent) => {
     if (e.button !== 0) return;
     if (
@@ -129,32 +140,43 @@ export function HomeSpotDeck({
     }
     dragging.current = true;
     didDrag.current = false;
-    dragStart.current = e.clientX;
+    didLockAxis.current = false;
+    dragStartX.current = e.clientX;
+    dragStartY.current = e.clientY;
     setDragPx(0);
     setIsDragging(true);
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
 
   const onPointerMove = (e: ReactPointerEvent) => {
-    if (!dragging.current || dragStart.current == null) return;
-    const dx = e.clientX - dragStart.current;
-    if (Math.abs(dx) > 6) {
-      didDrag.current = true;
-      e.preventDefault();
+    if (!dragging.current || dragStartX.current == null || dragStartY.current == null) {
+      return;
     }
+    const dx = e.clientX - dragStartX.current;
+    const dy = e.clientY - dragStartY.current;
+
+    if (!didLockAxis.current && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+      if (Math.abs(dy) > Math.abs(dx)) {
+        resetDrag();
+        return;
+      }
+      didLockAxis.current = true;
+    }
+
+    if (!didLockAxis.current) return;
+
+    didDrag.current = true;
+    e.preventDefault();
     setDragPx(dx);
   };
 
   const onPointerUp = (e: ReactPointerEvent) => {
-    if (dragging.current) {
-      const dx = e.clientX - (dragStart.current ?? e.clientX);
-      dragging.current = false;
-      setIsDragging(false);
-      dragStart.current = null;
-      setDragPx(0);
+    if (dragging.current && didLockAxis.current && dragStartX.current != null) {
+      const dx = e.clientX - dragStartX.current;
       if (dx < -SWIPE_THRESHOLD) go(1);
       else if (dx > SWIPE_THRESHOLD) go(-1);
     }
+    resetDrag();
     try {
       (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
     } catch {
@@ -166,7 +188,7 @@ export function HomeSpotDeck({
   };
 
   const deckPointerHandlers = {
-    onPointerDown,
+    onPointerDownCapture: onPointerDown,
     onPointerMove,
     onPointerUp,
     onPointerCancel: onPointerUp,
@@ -247,7 +269,7 @@ export function HomeSpotDeck({
 
         {/* 3D deck stage — full-width swipe zone (left/right peek included) */}
         <div
-          className="relative mx-auto mt-6 w-full flex-1 touch-none select-none md:mt-8 md:max-w-3xl"
+          className="relative mx-auto mt-6 w-full flex-1 touch-pan-y select-none md:mt-8 md:max-w-3xl"
           style={{ perspective: "1400px" }}
           {...deckPointerHandlers}
         >
@@ -290,16 +312,8 @@ export function HomeSpotDeck({
                       }
                     >
                       <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-white/90 shadow-[0_24px_64px_rgba(26,101,112,0.18)] ring-1 ring-white/90 backdrop-blur-xl">
-                        <Link
-                          href={`/spots/${spot.slug}`}
-                          className="relative block flex-1 overflow-hidden"
-                          tabIndex={isActive ? 0 : -1}
-                          onClick={(e) => {
-                            if (didDrag.current) e.preventDefault();
-                          }}
-                          draggable={false}
-                        >
-                          <div className="relative aspect-[4/5] h-full min-h-[280px] w-full">
+                        <div className="relative block flex-1 overflow-hidden">
+                          <div className="relative aspect-[4/5] h-full min-h-[280px] w-full touch-pan-y">
                             <AppImage
                               src={spot.imageUrl}
                               alt={getLocalizedText(spot.title, locale)}
@@ -343,7 +357,7 @@ export function HomeSpotDeck({
                               </div>
                             </div>
                           </div>
-                        </Link>
+                        </div>
 
                         {isActive && (
                           <div
