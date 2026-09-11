@@ -4,6 +4,7 @@ import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { mockArticles } from "@/data/mock-data";
+import { buildPageMetadata } from "@/lib/seo";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
@@ -14,7 +15,12 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "guide" });
-  return { title: t("title"), description: t("subtitle") };
+  return buildPageMetadata({
+    locale,
+    path: "/guide",
+    title: t("title"),
+    description: t("subtitle"),
+  });
 }
 
 export default async function GuidePage({

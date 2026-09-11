@@ -5,6 +5,7 @@ import { ForumCategoryChips } from "@/components/forum/forum-category-chips";
 import { ForumPostList } from "@/components/forum/forum-post-list";
 import { Button } from "@/components/ui/button";
 import { filterForumPosts } from "@/data/mock-data";
+import { buildPageMetadata } from "@/lib/seo";
 import type { ForumCategory } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
@@ -20,7 +21,12 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "forum" });
-  return { title: t("title"), description: t("subtitle") };
+  return buildPageMetadata({
+    locale,
+    path: "/forum",
+    title: t("title"),
+    description: t("subtitle"),
+  });
 }
 
 export default async function ForumPage({

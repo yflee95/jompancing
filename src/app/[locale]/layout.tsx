@@ -3,7 +3,11 @@ import { Suspense } from "react";
 import { Inter, Noto_Sans_SC, Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from "next-intl/server";
 import { SiteHeader } from "@/components/layout/site-header";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { ConditionalDesktopNav } from "@/components/layout/conditional-desktop-nav";
@@ -13,7 +17,8 @@ import { ForumProvider } from "@/components/providers/forum-provider";
 import { ActivitiesProvider } from "@/components/providers/activities-provider";
 import { SpotsProvider } from "@/components/providers/spots-provider";
 import { routing } from "@/i18n/routing";
-import { SITE_URL } from "@/lib/constants";
+import { WebsiteJsonLd } from "@/components/seo/website-json-ld";
+import { buildRootMetadata } from "@/lib/seo";
 import "../globals.css";
 
 const inter = Inter({
@@ -50,31 +55,10 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "metadata" });
 
   return {
+    ...buildRootMetadata(locale as "ms" | "en" | "zh", t("title"), t("description")),
     title: {
       default: t("title"),
       template: `%s | Jompancing`,
-    },
-    description: t("description"),
-    metadataBase: new URL(SITE_URL),
-    alternates: {
-      canonical: "/",
-      languages: {
-        ms: "/ms",
-        en: "/en",
-        zh: "/zh",
-      },
-    },
-    openGraph: {
-      title: t("title"),
-      description: t("description"),
-      siteName: "Jompancing",
-      locale,
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: t("title"),
-      description: t("description"),
     },
     manifest: "/manifest.json",
   };
@@ -95,6 +79,7 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  const t = await getTranslations({ locale, namespace: "metadata" });
 
   return (
     <html
@@ -102,6 +87,7 @@ export default async function LocaleLayout({
       className={`${inter.variable} ${plusJakarta.variable} ${notoSansSC.variable} ${playfair.variable} h-full ${locale === "zh" ? "locale-zh" : ""}`}
     >
       <body className="min-h-full bg-[var(--sand)] pb-20 antialiased md:pb-0">
+        <WebsiteJsonLd locale={locale as "ms" | "en" | "zh"} description={t("description")} />
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
             <ForumProvider>

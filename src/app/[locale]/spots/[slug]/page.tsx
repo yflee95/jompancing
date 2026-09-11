@@ -6,7 +6,9 @@ import { SpotDetailActions } from "@/components/spots/spot-detail-actions";
 import { UserSpotDetail } from "@/components/spots/user-spot-detail";
 import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
+import { SpotJsonLd } from "@/components/seo/spot-json-ld";
 import { getSpotLocationLine } from "@/lib/spot-location";
+import { buildPageMetadata } from "@/lib/seo";
 import { getCommentsForSpot, getSpotBySlug } from "@/data/mock-data";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -20,12 +22,21 @@ export async function generateMetadata({ params }: SpotDetailPageProps) {
   const spot = getSpotBySlug(slug);
   const t = await getTranslations({ locale, namespace: "spots" });
   if (!spot) {
-    return { title: t("title"), description: t("subtitle") };
+    return buildPageMetadata({
+      locale,
+      path: `/spots/${slug}`,
+      title: t("notFound"),
+      description: t("subtitle"),
+    });
   }
-  return {
+  return buildPageMetadata({
+    locale,
+    path: `/spots/${slug}`,
     title: getLocalizedText(spot.title, locale),
     description: getLocalizedText(spot.description, locale),
-  };
+    ogImage: spot.imageUrl || undefined,
+    ogType: "article",
+  });
 }
 
 export default async function SpotDetailPage({ params }: SpotDetailPageProps) {
@@ -43,6 +54,7 @@ export default async function SpotDetailPage({ params }: SpotDetailPageProps) {
 
   return (
     <article className="mx-auto max-w-4xl px-4 pb-28 sm:pb-8">
+      <SpotJsonLd spot={spot} locale={locale} />
       <div className="relative -mx-4 aspect-[4/5] overflow-hidden sm:mx-0 sm:aspect-[16/10] sm:rounded-3xl">
         <AppImage
           src={spot.imageUrl}

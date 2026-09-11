@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SpotsExplore } from "@/components/spots/spots-explore";
 
 import { mockSpots } from "@/data/mock-data";
-
+import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/i18n/routing";
 
 
@@ -22,7 +22,12 @@ export async function generateMetadata({
 
   const t = await getTranslations({ locale, namespace: "spots" });
 
-  return { title: t("title"), description: t("subtitle") };
+  return buildPageMetadata({
+    locale,
+    path: "/spots",
+    title: t("title"),
+    description: t("subtitle"),
+  });
 
 }
 

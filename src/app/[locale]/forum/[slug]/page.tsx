@@ -7,6 +7,7 @@ import {
   getForumPostBySlug,
   getForumRepliesForPost,
 } from "@/data/mock-data";
+import { buildPageMetadata } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -17,12 +18,23 @@ interface ForumThreadPageProps {
 
 export async function generateMetadata({ params }: ForumThreadPageProps) {
   const { locale, slug } = await params;
+  const t = await getTranslations({ locale, namespace: "forum" });
   const post = getForumPostBySlug(slug);
-  if (!post) return { title: "Thread Not Found" };
-  return {
+  if (!post) {
+    return buildPageMetadata({
+      locale,
+      path: `/forum/${slug}`,
+      title: "Thread Not Found",
+      description: t("subtitle"),
+    });
+  }
+  return buildPageMetadata({
+    locale,
+    path: `/forum/${slug}`,
     title: getLocalizedText(post.title, locale),
     description: getLocalizedText(post.body, locale),
-  };
+    ogType: "article",
+  });
 }
 
 export default async function ForumThreadPage({ params }: ForumThreadPageProps) {

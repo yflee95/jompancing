@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MapExplore } from "@/components/map/map-explore";
+import { buildPageMetadata } from "@/lib/seo";
 import { mockSpots } from "@/data/mock-data";
 import type { Locale } from "@/i18n/routing";
 
@@ -10,7 +11,12 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "map" });
-  return { title: t("title"), description: t("subtitle") };
+  return buildPageMetadata({
+    locale,
+    path: "/map",
+    title: t("title"),
+    description: t("subtitle"),
+  });
 }
 
 export default async function MapPage({

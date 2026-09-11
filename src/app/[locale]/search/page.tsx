@@ -9,16 +9,6 @@ interface SearchPageProps {
   searchParams: Promise<{ q?: string }>;
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>;
-}) {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "search" });
-  return { title: t("title") };
-}
-
 export default async function SearchPage({
   params,
   searchParams,
