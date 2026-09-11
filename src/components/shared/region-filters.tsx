@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { getAreasByDistrict } from "@/data/malaysia-areas";
 import { malaysiaStates } from "@/data/malaysia-states";
+import { setSpotsShowAllPreference } from "@/lib/near-me-preferences";
 import { useUserLocation } from "@/hooks/use-user-location";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -46,6 +47,12 @@ export function RegionFilters({
     districtId?: string,
     areaId?: string,
   ) {
+    if (!stateId && !districtId && !areaId) {
+      setSpotsShowAllPreference(true);
+    } else {
+      setSpotsShowAllPreference(false);
+    }
+
     const params = new URLSearchParams();
     if (stateId) params.set("state", stateId);
     if (districtId) params.set("district", districtId);
@@ -58,6 +65,7 @@ export function RegionFilters({
     const region = userLocation.region;
     if (!region) return;
     setApplyingGps(true);
+    setSpotsShowAllPreference(false);
     updateParams(region.stateId, region.districtId);
     setApplyingGps(false);
   }

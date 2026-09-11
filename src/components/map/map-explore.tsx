@@ -10,7 +10,7 @@ import {
   getPublicUserSpots,
   useUserSpots,
 } from "@/components/providers/spots-provider";
-import { useUserLocation } from "@/hooks/use-user-location";
+import { useNearMeSpotFilters } from "@/hooks/use-near-me-spot-filters";
 import {
   formatDistance,
   getDistanceKm,
@@ -40,7 +40,18 @@ export function MapExplore({
   const tSpots = useTranslations("spots");
   const tCommon = useTranslations("common");
   const locale = useLocale() as Locale;
-  const userLocation = useUserLocation(locale);
+  const {
+    effectiveState,
+    effectiveDistrict,
+    effectiveArea,
+    isResolvingLocation,
+    userLocation,
+  } = useNearMeSpotFilters({
+    locale,
+    filterState,
+    filterDistrict,
+    filterArea,
+  });
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -56,11 +67,11 @@ export function MapExplore({
     () =>
       filterSpotsByRegion(
         publicSpots,
-        filterState,
-        filterDistrict,
-        filterArea,
+        effectiveState,
+        effectiveDistrict,
+        effectiveArea,
       ),
-    [publicSpots, filterState, filterDistrict, filterArea],
+    [publicSpots, effectiveState, effectiveDistrict, effectiveArea],
   );
 
   const spotsWithDistance = useMemo(() => {
@@ -91,7 +102,9 @@ export function MapExplore({
       : (spotsWithDistance[0]?.id ?? null);
 
   const selectedSpot = spotsWithDistance.find((s) => s.id === activeSelectedId);
-  const hasRegionFilter = Boolean(filterState || filterDistrict || filterArea);
+  const hasRegionFilter = Boolean(
+    effectiveState || effectiveDistrict || effectiveArea,
+  );
 
   return (
     <div className="relative flex h-[calc(100dvh-3.5rem-4.25rem)] flex-col md:h-[calc(100dvh-7rem)]">
@@ -135,7 +148,11 @@ export function MapExplore({
             compact
           />
 
-          {spotsWithDistance.length === 0 ? (
+          {isResolvingLocation ? (
+            <p className="mt-3 rounded-2xl bg-[var(--sand)] px-4 py-6 text-center text-sm text-[var(--ink-muted)]">
+              {t("findingLocation")}
+            </p>
+          ) : spotsWithDistance.length === 0 ? (
             <p className="mt-3 rounded-2xl bg-[var(--sand)] px-4 py-6 text-center text-sm text-[var(--ink-muted)]">
               {hasRegionFilter
                 ? tSpots("noSpotsInRegion")

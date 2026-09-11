@@ -28,6 +28,8 @@ import { Button } from "@/components/ui/button";
 
 import { EmptyState } from "@/components/ui/empty-state";
 
+import { useNearMeSpotFilters } from "@/hooks/use-near-me-spot-filters";
+import { getDistanceKm } from "@/lib/geo";
 import { mergePublicSpots } from "@/lib/merge-public-spots";
 import { filterSpotsByRegion } from "@/lib/spot-location";
 
@@ -83,6 +85,20 @@ export function SpotsExplore({
 
   const [tab, setTab] = useState<SpotsTab>("community");
 
+  const {
+    effectiveState,
+    effectiveDistrict,
+    effectiveArea,
+    isNearMeMode,
+    isResolvingLocation,
+    userLocation,
+  } = useNearMeSpotFilters({
+    locale,
+    filterState,
+    filterDistrict,
+    filterArea,
+  });
+
 
 
   const communitySpots = useMemo(
@@ -106,17 +122,36 @@ export function SpotsExplore({
 
 
 
-  const displayed = useMemo(
+  const displayed = useMemo(() => {
+    let list = filterSpotsByRegion(
+      baseList,
+      effectiveState,
+      effectiveDistrict,
+      effectiveArea,
+    );
 
-    () => filterSpotsByRegion(baseList, filterState, filterDistrict, filterArea),
+    if (isNearMeMode && userLocation.coords) {
+      list = [...list]
+        .map((spot) => ({
+          ...spot,
+          distanceKm: getDistanceKm(userLocation.coords!, spot.coordinates),
+        }))
+        .sort((a, b) => (a.distanceKm ?? 0) - (b.distanceKm ?? 0));
+    }
 
-    [baseList, filterState, filterDistrict, filterArea],
+    return list;
+  }, [
+    baseList,
+    effectiveState,
+    effectiveDistrict,
+    effectiveArea,
+    isNearMeMode,
+    userLocation.coords,
+  ]);
 
+  const hasRegionFilter = Boolean(
+    effectiveState || effectiveDistrict || effectiveArea,
   );
-
-
-
-  const hasRegionFilter = Boolean(filterState || filterDistrict || filterArea);
 
 
 
@@ -238,7 +273,7 @@ export function SpotsExplore({
 
 
 
-      {!isLoaded ? (
+      {!isLoaded || (tab === "community" && isResolvingLocation) ? (
 
         <div className="flex h-40 items-center justify-center">
 

@@ -181,6 +181,10 @@ export function HomeExplore({ spots }: HomeExploreProps) {
     return undefined;
   }, [userLocation.region]);
 
+  const nearbySpotsHref = inferredRegion
+    ? `/spots?state=${inferredRegion.stateId}&district=${inferredRegion.districtId}`
+    : "/spots";
+
   if (allPublicSpots.length === 0) return null;
 
   return (
@@ -211,7 +215,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
             subtitle={
               hasGps ? t("nearbyPaidPondsHint") : t("nearbyPaidPondsHintNoGps")
             }
-            href="/spots"
+            href={nearbySpotsHref}
             linkLabel={tCommon("viewAll")}
             className="border-t border-[var(--sand-dark)]/20 bg-white/40 py-5 md:py-6"
             mobilePeek
