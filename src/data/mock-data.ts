@@ -1,6 +1,7 @@
 import { curatedSpots } from "@/data/curated-spots";
 import { getDistrictById, getStateById } from "@/data/malaysia-states";
 import { applyWikimediaPhotos } from "@/data/wikimedia-photos";
+import { filterActivitiesByRegion } from "@/lib/activities";
 import type {
   Activity,
   ActivitySort,
@@ -280,203 +281,8 @@ export function getPublicSpots(spots: FishingSpot[]): FishingSpot[] {
   return spots.filter((s) => s.visibility === "public");
 }
 
-export const mockActivities: Activity[] = [
-  {
-    id: "act-1",
-    slug: "jb-siakap-contest-2026",
-    title: {
-      ms: "Peraduan Siakap JB 2026",
-      en: "JB Barramundi Contest 2026",
-      zh: "新山金目鲈大赛 2026",
-    },
-    description: {
-      ms: "Peraduan siakap terbesar di Johor Bahru. Hadiah utama RM5,000!",
-      en: "Johor Bahru's biggest barramundi contest. Grand prize RM5,000!",
-      zh: "新山最大金目鲈比赛，首奖 RM5,000！",
-    },
-    type: "contest",
-    stateId: "johor",
-    districtId: "johor-bahru",
-    venue: {
-      ms: "Danga Bay Marina",
-      en: "Danga Bay Marina",
-      zh: "Danga Bay  Marina",
-    },
-    organizer: "JB Anglers Club",
-    verified: true,
-    fee: 50,
-    startDate: "2026-04-15T06:00:00Z",
-    endDate: "2026-04-15T18:00:00Z",
-    imageUrl:
-      "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=800&q=80",
-    promoted: true,
-    viewCount: 1240,
-    interestCount: 89,
-    contactWhatsApp: "60123456789",
-  },
-  {
-    id: "act-2",
-    slug: "tackle-world-mega-sale",
-    title: {
-      ms: "Jualan Mega Tackle World",
-      en: "Tackle World Mega Sale",
-      zh: "Tackle World 大促销",
-    },
-    description: {
-      ms: "Diskaun sehingga 50% untuk rod, reel & lure. COD tersedia.",
-      en: "Up to 50% off rods, reels & lures. COD available.",
-      zh: "鱼竿、渔轮、假饵最高 5 折，支持 COD。",
-    },
-    type: "sale",
-    stateId: "selangor",
-    districtId: "petaling",
-    venue: {
-      ms: "Tackle World SS2",
-      en: "Tackle World SS2",
-      zh: "Tackle World SS2",
-    },
-    organizer: "Tackle World",
-    verified: true,
-    startDate: "2026-03-20T09:00:00Z",
-    endDate: "2026-03-22T21:00:00Z",
-    imageUrl:
-      "https://images.unsplash.com/photo-1532015917327-7a360180f871?w=800&q=80",
-    promoted: true,
-    viewCount: 980,
-    interestCount: 56,
-    contactWhatsApp: "60198765432",
-  },
-  {
-    id: "act-3",
-    slug: "beginner-lure-workshop",
-    title: {
-      ms: "Bengkel Lure untuk Pemula",
-      en: "Beginner Lure Fishing Workshop",
-      zh: "新手路亚工作坊",
-    },
-    description: {
-      ms: "Belajar teknik lure asas dengan jurulatih berpengalaman. Peralatan disediakan.",
-      en: "Learn basic lure techniques with experienced coaches. Gear provided.",
-      zh: "资深教练教授基础路亚技巧，提供装备。",
-    },
-    type: "workshop",
-    stateId: "penang",
-    districtId: "timur-laut",
-    venue: {
-      ms: "Gurney Drive",
-      en: "Gurney Drive",
-      zh: "Gurney Drive",
-    },
-    organizer: "Penang Fishing Academy",
-    verified: false,
-    fee: 80,
-    startDate: "2026-04-05T08:00:00Z",
-    endDate: "2026-04-05T12:00:00Z",
-    imageUrl:
-      "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
-    promoted: false,
-    viewCount: 340,
-    interestCount: 22,
-    contactWhatsApp: "60111222333",
-  },
-  {
-    id: "act-4",
-    slug: "kk-deep-sea-meetup",
-    title: {
-      ms: "Meetup Memancing Laut Dalam KK",
-      en: "KK Deep Sea Fishing Meetup",
-      zh: "亚庇深海钓鱼聚会",
-    },
-    description: {
-      ms: "Perjumpaan pemancing untuk trip laut dalam. Tempat terhad, daftar awal.",
-      en: "Anglers meetup for deep sea trips. Limited slots, register early.",
-      zh: "深海钓鱼聚会，名额有限，请尽早报名。",
-    },
-    type: "meetup",
-    stateId: "sabah",
-    districtId: "kota-kinabalu",
-    venue: {
-      ms: "Jesselton Point",
-      en: "Jesselton Point",
-      zh: "Jesselton Point",
-    },
-    organizer: "Sabah Anglers Network",
-    verified: true,
-    fee: 120,
-    startDate: "2026-05-10T05:00:00Z",
-    endDate: "2026-05-10T17:00:00Z",
-    imageUrl:
-      "https://images.unsplash.com/photo-1544551763-77ef2d0cfcb6?w=800&q=80",
-    promoted: true,
-    viewCount: 760,
-    interestCount: 45,
-    contactWhatsApp: "60187654321",
-  },
-  {
-    id: "act-5",
-    slug: "melaka-river-fishing-day",
-    title: {
-      ms: "Hari Memancing Sungai Melaka",
-      en: "Melaka River Fishing Day",
-      zh: "马六甲河钓日",
-    },
-    description: {
-      ms: "Acara keluarga di tebing sungai. Kanak-kanak dialu-alukan.",
-      en: "Family event by the riverbank. Kids welcome.",
-      zh: "河畔家庭钓鱼活动，欢迎儿童参加。",
-    },
-    type: "meetup",
-    stateId: "melaka",
-    districtId: "melaka-tengah",
-    venue: {
-      ms: "Sungai Melaka",
-      en: "Melaka River",
-      zh: "马六甲河",
-    },
-    organizer: "Melaka Fishing Club",
-    verified: false,
-    startDate: "2026-04-20T07:00:00Z",
-    endDate: "2026-04-20T14:00:00Z",
-    imageUrl:
-      "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&q=80",
-    promoted: false,
-    viewCount: 210,
-    interestCount: 18,
-    contactWhatsApp: "60155667788",
-  },
-  {
-    id: "act-6",
-    slug: "ipoh-tackle-swap",
-    title: {
-      ms: "Swap Meet Peralatan Ipoh",
-      en: "Ipoh Tackle Swap Meet",
-      zh: "怡保渔具交换会",
-    },
-    description: {
-      ms: "Bawa peralatan terpakai untuk tukar-tukar atau jual. Tiada yuran masuk.",
-      en: "Bring used gear to swap or sell. Free entry.",
-      zh: "带来二手渔具交换或出售，免费入场。",
-    },
-    type: "sale",
-    stateId: "perak",
-    districtId: "ipoh",
-    venue: {
-      ms: "Dataran Ipoh",
-      en: "Ipoh Square",
-      zh: "怡保广场",
-    },
-    organizer: "Perak Anglers",
-    verified: true,
-    startDate: "2026-03-28T09:00:00Z",
-    endDate: "2026-03-28T16:00:00Z",
-    imageUrl:
-      "https://images.unsplash.com/photo-1532015917327-7a360180f871?w=800&q=80",
-    promoted: false,
-    viewCount: 430,
-    interestCount: 31,
-    contactWhatsApp: "60199887766",
-  },
-];
+/** Real activities from organizers — empty until UGC / admin listings */
+export const mockActivities: Activity[] = [];
 
 export const mockSpotComments: SpotComment[] = [
   {
@@ -915,37 +721,12 @@ export function filterSpots(
   });
 }
 
-function activityHotScore(activity: Activity): number {
-  return (
-    (activity.promoted ? 1000 : 0) +
-    activity.interestCount * 3 +
-    activity.viewCount * 0.1
-  );
-}
-
 export function filterActivities(
   stateId?: string,
   districtId?: string,
   sort: ActivitySort = "hot",
 ): Activity[] {
-  let results = mockActivities.filter((activity) => {
-    if (stateId && activity.stateId !== stateId) return false;
-    if (districtId && activity.districtId !== districtId) return false;
-    return true;
-  });
-
-  if (sort === "hot") {
-    results = [...results].sort(
-      (a, b) => activityHotScore(b) - activityHotScore(a),
-    );
-  } else {
-    results = [...results].sort(
-      (a, b) =>
-        new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
-    );
-  }
-
-  return results;
+  return filterActivitiesByRegion(mockActivities, stateId, districtId, sort);
 }
 
 export function getActivityBySlug(slug: string): Activity | undefined {

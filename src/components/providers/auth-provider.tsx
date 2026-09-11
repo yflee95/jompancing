@@ -8,29 +8,71 @@ import {
   useMemo,
   useState,
 } from "react";
-import { DEMO_USER } from "@/lib/constants";
+import { DEMO_USER, SITE_URL } from "@/lib/constants";
+import { resolveAuthError, type AuthErrorKey } from "@/lib/auth-errors";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import type { Locale } from "@/i18n/routing";
 import type { UserSession } from "@/types";
 
 const DEMO_STORAGE_KEY = "jompancing_auth";
+
+interface AuthResult {
+  errorKey: AuthErrorKey | null;
+  rawMessage?: string;
+}
 
 interface AuthContextValue {
   user: UserSession | null;
   isLoading: boolean;
   isSupabase: boolean;
   loginDemo: () => void;
-  loginWithEmail: (email: string, password: string) => Promise<string | null>;
+  loginWithEmail: (email: string, password: string) => Promise<AuthResult>;
   signUpWithEmail: (
     email: string,
     password: string,
     name: string,
-  ) => Promise<string | null>;
+  ) => Promise<AuthResult>;
+  loginWithGoogle: (locale: Locale) => Promise<AuthResult>;
   logout: () => Promise<void>;
   updateProfile: (patch: Partial<UserSession>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+function getOAuthRedirectTo(locale: Locale): string {
+  const base =
+    (typeof window !== "undefined"
+      ? window.location.origin
+      : SITE_URL.replace(/\/$/, "")) || "https://jompancing.my";
+  return `${base}/auth/callback?next=/${locale}/profile`;
+}
+
+function sessionUserFallback(
+  user: {
+    id: string;
+    email?: string;
+    user_metadata?: Record<string, unknown>;
+  },
+): UserSession {
+  const meta = user.user_metadata ?? {};
+  const name =
+    (typeof meta.name === "string" && meta.name) ||
+    (typeof meta.full_name === "string" && meta.full_name) ||
+    user.email?.split("@")[0] ||
+    "Angler";
+  const avatar =
+    (typeof meta.avatar_url === "string" && meta.avatar_url) ||
+    (typeof meta.picture === "string" && meta.picture) ||
+    undefined;
+
+  return {
+    id: user.id,
+    name,
+    email: user.email ?? "",
+    avatar,
+  };
+}
 
 async function fetchProfile(userId: string): Promise<UserSession | null> {
   const supabase = createClient();
@@ -75,16 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { data } = await supabase.auth.getSession();
       if (data.session?.user) {
         const profile = await fetchProfile(data.session.user.id);
-        setUser(
-          profile ?? {
-            id: data.session.user.id,
-            name:
-              data.session.user.user_metadata?.name ??
-              data.session.user.email?.split("@")[0] ??
-              "Angler",
-            email: data.session.user.email ?? "",
-          },
-        );
+        setUser(profile ?? sessionUserFallback(data.session.user));
       }
       setIsLoading(false);
     }
@@ -100,16 +133,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return;
         }
         const profile = await fetchProfile(session.user.id);
-        setUser(
-          profile ?? {
-            id: session.user.id,
-            name:
-              session.user.user_metadata?.name ??
-              session.user.email?.split("@")[0] ??
-              "Angler",
-            email: session.user.email ?? "",
-          },
-        );
+        setUser(profile ?? sessionUserFallback(session.user));
       })();
     });
 
@@ -122,14 +146,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const loginWithEmail = useCallback(
-    async (email: string, password: string): Promise<string | null> => {
-      if (!isSupabase) return "Supabase not configured";
+    async (email: string, password: string): Promise<AuthResult> => {
+      if (!isSupabase) {
+        return { errorKey: "generic", rawMessage: "Supabase not configured" };
+      }
       const supabase = createClient();
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      return error?.message ?? null;
+      if (!error) return { errorKey: null };
+      return {
+        errorKey: resolveAuthError(error.message),
+        rawMessage: error.message,
+      };
     },
     [isSupabase],
   );
@@ -139,15 +169,49 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       email: string,
       password: string,
       name: string,
-    ): Promise<string | null> => {
-      if (!isSupabase) return "Supabase not configured";
+    ): Promise<AuthResult> => {
+      if (!isSupabase) {
+        return { errorKey: "generic", rawMessage: "Supabase not configured" };
+      }
       const supabase = createClient();
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: { data: { name } },
       });
-      return error?.message ?? null;
+
+      if (error) {
+        return {
+          errorKey: resolveAuthError(error.message),
+          rawMessage: error.message,
+        };
+      }
+
+      if (data.user?.identities?.length === 0) {
+        return { errorKey: "emailAlreadyRegistered" };
+      }
+
+      return { errorKey: null };
+    },
+    [isSupabase],
+  );
+
+  const loginWithGoogle = useCallback(
+    async (locale: Locale): Promise<AuthResult> => {
+      if (!isSupabase) {
+        return { errorKey: "generic", rawMessage: "Supabase not configured" };
+      }
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: getOAuthRedirectTo(locale) },
+      });
+      if (!error) return { errorKey: null };
+      const key = resolveAuthError(error.message);
+      return {
+        errorKey: key === "generic" ? "oauthFailed" : key,
+        rawMessage: error.message,
+      };
     },
     [isSupabase],
   );
@@ -210,6 +274,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       loginDemo,
       loginWithEmail,
       signUpWithEmail,
+      loginWithGoogle,
       logout,
       updateProfile,
     }),
@@ -220,6 +285,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       loginDemo,
       loginWithEmail,
       signUpWithEmail,
+      loginWithGoogle,
       logout,
       updateProfile,
     ],

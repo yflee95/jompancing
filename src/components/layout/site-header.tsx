@@ -3,23 +3,19 @@
 import { Suspense } from "react";
 import { Fish, User } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Link, usePathname } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
 import {
   SiteHeaderSearch,
   SiteHeaderSearchFallback,
 } from "@/components/layout/site-header-search";
-import { useScrolledPast } from "@/hooks/use-scrolled-past";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
   const t = useTranslations();
   const { user } = useAuth();
-  const pathname = usePathname();
-  const isHome = pathname === "/";
-  const scrolled = useScrolledPast(60);
-  const isOverlay = isHome && !scrolled;
+  const isOverlay = false;
 
   return (
     <header
@@ -30,7 +26,7 @@ export function SiteHeader() {
           : "border-b border-[var(--sand-dark)]/50 bg-[var(--sand)]/95 shadow-sm shadow-[var(--sand-dark)]/20 backdrop-blur-xl",
       )}
     >
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:gap-3 sm:px-4">
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-3 sm:gap-3 sm:px-4 md:px-6">
         <Link href="/" className="flex shrink-0 items-center gap-2">
           <div
             className={cn(

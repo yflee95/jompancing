@@ -94,7 +94,7 @@ export function DesktopNav() {
 
   return (
     <nav className="hidden border-b border-[var(--sand-dark)]/40 bg-white/60 md:block">
-      <div className="mx-auto flex max-w-6xl items-center gap-1 px-4 py-1.5">
+      <div className="mx-auto flex max-w-7xl items-center gap-1 px-4 py-1.5 md:px-6">
         {items.map(({ href, labelKey }) => {
           const isActive =
             href === "/" ? pathname === "/" : pathname.startsWith(href);

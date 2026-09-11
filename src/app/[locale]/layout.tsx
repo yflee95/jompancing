@@ -10,6 +10,7 @@ import { ConditionalDesktopNav } from "@/components/layout/conditional-desktop-n
 import { ConditionalFooter } from "@/components/layout/conditional-footer";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ForumProvider } from "@/components/providers/forum-provider";
+import { ActivitiesProvider } from "@/components/providers/activities-provider";
 import { SpotsProvider } from "@/components/providers/spots-provider";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/constants";
@@ -105,6 +106,7 @@ export default async function LocaleLayout({
           <AuthProvider>
             <ForumProvider>
             <SpotsProvider>
+            <ActivitiesProvider>
               <Suspense fallback={<div className="sticky top-0 z-50 h-14 border-b border-[var(--sand-dark)]/50 bg-[var(--sand)]/95" />}>
                 <SiteHeader />
               </Suspense>
@@ -112,6 +114,7 @@ export default async function LocaleLayout({
               <main className="min-h-[calc(100vh-8rem)]">{children}</main>
               <ConditionalFooter />
               <BottomNav />
+            </ActivitiesProvider>
             </SpotsProvider>
             </ForumProvider>
           </AuthProvider>

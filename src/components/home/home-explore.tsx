@@ -1,721 +1,309 @@
 "use client";
 
-
-
-import { useCallback, useEffect, useMemo, useState } from "react";
-
+import { useEffect, useMemo, useState } from "react";
 import {
-
-  ChevronRight,
-
   Compass,
-
-  Flame,
-
   MapPin,
-
-  MessageCircle,
-
   Navigation,
-
+  PlusCircle,
   Sparkles,
-
   Waves,
-
 } from "lucide-react";
-
 import { useLocale, useTranslations } from "next-intl";
-
 import { Link } from "@/i18n/navigation";
-
+import { useActivities } from "@/components/providers/activities-provider";
 import {
-
   getPublicUserSpots,
-
   useUserSpots,
-
 } from "@/components/providers/spots-provider";
-
+import { HomeActivitySection } from "@/components/home/home-activity-section";
 import { HomeDiscoverGrid } from "@/components/home/home-discover-grid";
-import { HomeActivityRailCard } from "@/components/home/home-activity-rail-card";
-
-import { HomeRailSection } from "@/components/home/home-rail-section";
-
 import { HomeSpotRailCard } from "@/components/home/home-spot-rail-card";
-
-import { getDistrictById, getStateById } from "@/data/malaysia-states";
-
+import { HomeSpotSection } from "@/components/home/home-spot-section";
 import {
-
   DEFAULT_LOCATION,
-
-  formatDistance,
-
   getDistanceKm,
-
 } from "@/lib/geo";
-
-import { AppImage } from "@/components/ui/app-image";
-
 import { cn } from "@/lib/utils";
-
 import { mockArticles, mockForumPosts } from "@/data/mock-data";
-
 import {
-
-  getLocalizedText,
-
-  type Activity,
-
   type FishingSpot,
-
   type MarketplaceListing,
-
   type WaterType,
-
 } from "@/types";
-
 import type { Locale } from "@/i18n/routing";
-
-
 
 type SpotWithDistance = FishingSpot & { distanceKm: number };
 
-
-
 interface HomeExploreProps {
-
   spots: FishingSpot[];
-
-  activities: Activity[];
-
   listings: MarketplaceListing[];
-
 }
 
-
-
 const CATEGORIES: { id: WaterType | "all"; icon: typeof Waves }[] = [
-
   { id: "all", icon: Sparkles },
-
   { id: "saltwater", icon: Waves },
-
   { id: "pond", icon: MapPin },
-
   { id: "river", icon: Compass },
-
 ];
 
+const NEARBY_RADIUS_KM = 120;
 
+function sortNearbyHot(a: SpotWithDistance, b: SpotWithDistance): number {
+  if (a.featured !== b.featured) return a.featured ? -1 : 1;
+  if (a.distanceKm !== b.distanceKm) return a.distanceKm - b.distanceKm;
+  return b.commentCount - a.commentCount;
+}
 
-const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+function sortNationwideHot(a: FishingSpot, b: FishingSpot): number {
+  if (a.featured !== b.featured) return a.featured ? -1 : 1;
+  return b.commentCount - a.commentCount;
+}
 
-
-
-export function HomeExplore({ spots, activities, listings }: HomeExploreProps) {
-
+export function HomeExplore({ spots, listings }: HomeExploreProps) {
   const t = useTranslations("home");
-
   const tSpots = useTranslations("spots");
-
   const tCommon = useTranslations("common");
-
   const locale = useLocale() as Locale;
-
   const { userSpots } = useUserSpots();
-
-
+  const { activities } = useActivities();
 
   const [userLocation, setUserLocation] = useState(DEFAULT_LOCATION);
-
   const [locationLabel, setLocationLabel] = useState<string | null>(null);
-
   const [locating, setLocating] = useState(true);
-
-  const [heroIndex, setHeroIndex] = useState(0);
-
   const [activeCategory, setActiveCategory] = useState<WaterType | "all">("all");
 
-
-
   useEffect(() => {
-
     if (!navigator.geolocation) {
-
       setLocating(false);
-
+      setLocationLabel(t("defaultLocation"));
       return;
-
     }
 
-
-
     navigator.geolocation.getCurrentPosition(
-
       (pos) => {
-
         setUserLocation({
-
           lat: pos.coords.latitude,
-
           lng: pos.coords.longitude,
-
         });
-
         setLocationLabel(t("yourLocation"));
-
         setLocating(false);
-
       },
-
       () => {
-
         setLocationLabel(t("defaultLocation"));
-
         setLocating(false);
-
       },
-
       { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 },
-
     );
-
   }, [t]);
 
-
-
   const allPublicSpots = useMemo(() => {
-
     const publicUser = getPublicUserSpots(userSpots);
-
     const seen = new Set<string>();
-
     return [...publicUser, ...spots].filter((s) => {
-
       if (seen.has(s.id)) return false;
-
       seen.add(s.id);
-
       return s.visibility === "public";
-
     });
-
   }, [spots, userSpots]);
 
-
-
   const spotsWithDistance = useMemo<SpotWithDistance[]>(
-
     () =>
-
       allPublicSpots
-
         .map((spot) => ({
-
           ...spot,
-
           distanceKm: getDistanceKm(userLocation, spot.coordinates),
-
         }))
-
-        .sort((a, b) => a.distanceKm - b.distanceKm),
-
+        .sort(sortNearbyHot),
     [allPublicSpots, userLocation],
-
   );
 
-
-
-  const featuredSpots = useMemo(
-
-    () => allPublicSpots.filter((s) => s.featured),
-
-    [allPublicSpots],
-
-  );
-
-
-
-  const heroSpots = featuredSpots.length > 0 ? featuredSpots : allPublicSpots.slice(0, 3);
-
-  const heroSpot = heroSpots[heroIndex % heroSpots.length] ?? heroSpots[0];
-
-
-
-  const categoryFilteredSpots =
-
+  const filterByCategory = <T extends FishingSpot>(list: T[]): T[] =>
     activeCategory === "all"
+      ? list
+      : list.filter((s) => s.waterType === activeCategory);
 
-      ? spotsWithDistance
+  const nearbyPaidPonds = useMemo(() => {
+    return spotsWithDistance
+      .filter(
+        (s) => s.waterType === "pond" && s.distanceKm <= NEARBY_RADIUS_KM,
+      )
+      .sort((a, b) => a.distanceKm - b.distanceKm)
+      .slice(0, 8);
+  }, [spotsWithDistance]);
 
-      : spotsWithDistance.filter((s) => s.waterType === activeCategory);
+  const nearbyHotSpots = useMemo(() => {
+    let filtered = filterByCategory(spotsWithDistance);
+    if (activeCategory === "all") {
+      filtered = filtered.filter((s) => s.waterType !== "pond");
+    }
+    const withinRadius = filtered.filter((s) => s.distanceKm <= NEARBY_RADIUS_KM);
+    const pool = withinRadius.length >= 4 ? withinRadius : filtered;
+    return [...pool].sort(sortNearbyHot).slice(0, 10);
+  }, [spotsWithDistance, activeCategory]);
 
-
-
-  const nearbySpots = categoryFilteredSpots.slice(0, 8);
-
-  const nearbyCount = spotsWithDistance.filter((s) => s.distanceKm < 80).length;
-
-  const activeHeroIndex = heroIndex % heroSpots.length;
-
-
-
-  const homeActivities = useMemo(
-
-    () =>
-
-      [...activities]
-
-        .sort((a, b) => {
-
-          if (a.promoted !== b.promoted) return a.promoted ? -1 : 1;
-
-          return (
-
-            new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-
-          );
-
-        })
-
-        .slice(0, 6),
-
-    [activities],
-
+  const nearbyIds = useMemo(
+    () => new Set(nearbyHotSpots.map((s) => s.id)),
+    [nearbyHotSpots],
   );
 
+  const nationwideHotSpots = useMemo(() => {
+    return filterByCategory(allPublicSpots)
+      .filter((s) => !nearbyIds.has(s.id))
+      .sort(sortNationwideHot)
+      .slice(0, 6);
+  }, [allPublicSpots, activeCategory, nearbyIds]);
 
+  const showPaidPondSection =
+    activeCategory === "all" && nearbyPaidPonds.length > 0;
 
-  const latestSpots = useMemo(
+  const nearbyCount = spotsWithDistance.filter(
+    (s) => s.distanceKm <= NEARBY_RADIUS_KM,
+  ).length;
 
-    () =>
+  const inferredRegion = useMemo(() => {
+    const nearest = spotsWithDistance[0];
+    if (!nearest) {
+      return { stateId: "johor", districtId: "johor-bahru" };
+    }
+    return {
+      stateId: nearest.stateId,
+      districtId: nearest.districtId,
+    };
+  }, [spotsWithDistance]);
 
-      [...allPublicSpots]
-
-        .sort(
-
-          (a, b) =>
-
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-
-        )
-
-        .slice(0, 8),
-
-    [allPublicSpots],
-
-  );
-
-
-
-  const isRecentSpot = useCallback((spot: FishingSpot) => {
-
-    return Date.now() - new Date(spot.createdAt).getTime() < SEVEN_DAYS_MS;
-
-  }, []);
-
-
-
-  useEffect(() => {
-
-    if (heroSpots.length <= 1) return;
-
-    const timer = setInterval(() => {
-
-      setHeroIndex((i) => (i + 1) % heroSpots.length);
-
-    }, 5500);
-
-    return () => clearInterval(timer);
-
-  }, [heroSpots.length]);
-
-
-
-  const getLocationText = useCallback(
-
-    (spot: FishingSpot) => {
-
-      const state = getStateById(spot.stateId);
-
-      const district = getDistrictById(spot.stateId, spot.districtId);
-
-      if (district) return getLocalizedText(district.name, locale);
-
-      if (state) return getLocalizedText(state.name, locale);
-
-      return "";
-
-    },
-
-    [locale],
-
-  );
-
-
-
-  if (!heroSpot || allPublicSpots.length === 0) return null;
-
-
+  if (allPublicSpots.length === 0) return null;
 
   return (
-
-    <div className="-mt-14 bg-[var(--sand)]">
-
-      {/* Featured hero */}
-
-      <section className="relative h-[72vh] min-h-[480px] max-h-[720px] w-full overflow-hidden">
-
-        {heroSpots.map((spot, i) => (
-
-          <div
-
-            key={spot.id}
-
-            className={cn(
-
-              "absolute inset-0 transition-opacity duration-700",
-
-              i === activeHeroIndex
-
-                ? "opacity-100"
-
-                : "pointer-events-none opacity-0",
-
-            )}
-
-          >
-
-            <AppImage
-
-              src={spot.imageUrl}
-
-              alt={getLocalizedText(spot.title, locale)}
-
-              priority={i === 0}
-
-              sizes="100vw"
-
-              placeholderVariant="hero"
-
-              placeholderLabel={tCommon("photoUnavailable")}
-
-              className="absolute inset-0"
-
-              imageClassName={
-
-                i === activeHeroIndex ? "hero-ken-burns" : undefined
-
-              }
-
-            />
-
-          </div>
-
-        ))}
-
-
-
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/90 via-[#1a1510]/30 to-[#1a1510]/10" />
-
-
-
-        <div className="absolute left-4 top-[4.5rem] z-10 md:left-6 md:top-20">
-
-          <div className="flex items-center gap-2 rounded-full bg-white/20 px-3.5 py-2 text-xs font-medium text-white backdrop-blur-md">
-
-            <Navigation
-
-              className={cn("h-3.5 w-3.5", locating && "animate-pulse")}
-
-            />
-
-            {locating
-
-              ? t("findingLocation")
-
-              : `${locationLabel ?? tCommon("nearYou")} · ${t("spotsNearby", { count: nearbyCount })}`}
-
-          </div>
-
-        </div>
-
-
-
-        <div className="absolute inset-x-0 bottom-0 z-10 p-5 pb-10 pb-safe md:p-8">
-
-          <div className="mx-auto max-w-6xl">
-
-            <span className="badge-accent inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider">
-
-              <Flame className="h-3 w-3" />
-
-              {tCommon("featured")}
-
-            </span>
-
-            <h1 className="font-serif-display mt-3 max-w-lg text-3xl font-bold leading-[1.1] text-white md:text-5xl">
-
-              {getLocalizedText(heroSpot.title, locale)}
-
-            </h1>
-
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-
-              <span className="flex items-center gap-1 text-sm text-white/85">
-
-                <MapPin className="h-3.5 w-3.5" />
-
-                {getLocationText(heroSpot)}
-
-                <span className="text-white/40">·</span>
-
-                {formatDistance(
-
-                  getDistanceKm(userLocation, heroSpot.coordinates),
-
-                )}
-
-              </span>
-
-              <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-[11px] font-medium text-white/90 backdrop-blur-sm">
-
-                {tSpots(heroSpot.waterType as "saltwater" | "freshwater" | "pond" | "river")}
-
-              </span>
-
-              <span className="flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-0.5 text-[11px] font-medium text-white/90 backdrop-blur-sm">
-
-                <MessageCircle className="h-3 w-3" />
-
-                {heroSpot.commentCount}
-
-              </span>
-
-            </div>
-
-            <Link
-
-              href={`/spots/${heroSpot.slug}`}
-
-              className="tap-card mt-5 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-[var(--ink)] shadow-xl hover:shadow-2xl"
-
-            >
-
-              {t("ctaExplore")}
-
-              <ChevronRight className="h-4 w-4" />
-
-            </Link>
-
-          </div>
-
-
-
-          {heroSpots.length > 1 && (
-
-            <div className="mx-auto mt-6 flex max-w-6xl gap-1.5">
-
-              {heroSpots.map((spot, i) => (
-
-                <button
-
-                  key={spot.id}
-
-                  type="button"
-
-                  aria-label={getLocalizedText(spot.title, locale)}
-
-                  onClick={() => setHeroIndex(i)}
-
-                  className={cn(
-
-                    "h-1.5 flex-1 rounded-full transition-all",
-
-                    i === activeHeroIndex
-
-                      ? "bg-white"
-
-                      : "bg-white/35 hover:bg-white/55",
-
-                  )}
-
+    <div className="bg-[var(--sand)] pb-24 md:pb-12">
+      {/* Compact header — location-first, no hero banner */}
+      <section className="border-b border-[var(--sand-dark)]/35 bg-white/80 backdrop-blur-sm">
+        <div className="mx-auto max-w-7xl px-4 py-5 md:px-6 md:py-8">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="min-w-0 flex-1">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[var(--ocean-light)] px-3 py-1.5 text-xs font-medium text-[var(--ocean)]">
+                <Navigation
+                  className={cn("h-3.5 w-3.5", locating && "animate-pulse")}
                 />
-
-              ))}
-
+                {locating
+                  ? t("findingLocation")
+                  : `${locationLabel ?? tCommon("nearYou")} · ${t("spotsNearby", { count: nearbyCount })}`}
+              </div>
+              <h1 className="font-serif-display mt-3 text-2xl font-bold text-[var(--ink)] md:text-3xl lg:text-4xl">
+                {t("nearbyHotSpots")}
+              </h1>
+              <p className="mt-1.5 max-w-xl text-sm text-[var(--ink-muted)] md:text-base">
+                {t("homeLead")}
+              </p>
             </div>
+            <div className="flex shrink-0">
+              <Link
+                href="/post"
+                className="tap-card inline-flex items-center gap-2 rounded-full bg-[var(--ocean)] px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[var(--ocean-glow)]"
+              >
+                <PlusCircle className="h-4 w-4" />
+                {t("ctaPost")}
+              </Link>
+            </div>
+          </div>
 
-          )}
-
+          <div className="mt-5 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+            {CATEGORIES.map(({ id, icon: Icon }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setActiveCategory(id)}
+                className={cn(
+                  "flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all",
+                  activeCategory === id
+                    ? "bg-[var(--ocean)] text-white shadow-md shadow-[var(--ocean-glow)]"
+                    : "bg-[var(--sand)] text-[var(--ink-muted)] ring-1 ring-[var(--sand-dark)]/50 hover:text-[var(--ink)]",
+                )}
+              >
+                <Icon className="h-3.5 w-3.5" />
+                {id === "all" ? t("allSpots") : tSpots(id)}
+              </button>
+            ))}
+          </div>
         </div>
-
       </section>
 
-
-
-      {/* Category filter */}
-
-      <div className="sticky top-14 z-30 border-b border-[var(--sand-dark)]/40 bg-[var(--sand)]/95 backdrop-blur-lg">
-
-        <div className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 py-3 scrollbar-none">
-
-          {CATEGORIES.map(({ id, icon: Icon }) => (
-
-            <button
-
-              key={id}
-
-              type="button"
-
-              onClick={() => setActiveCategory(id)}
-
-              className={cn(
-
-                "flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all",
-
-                activeCategory === id
-
-                  ? "bg-[var(--ocean)] text-white shadow-md shadow-[var(--ocean-glow)]"
-
-                  : "bg-white text-[var(--ink-muted)] hover:bg-white/80",
-
-              )}
-
-            >
-
-              <Icon className="h-3.5 w-3.5" />
-
-              {id === "all" ? t("allSpots") : tSpots(id)}
-
-            </button>
-
-          ))}
-
-        </div>
-
-      </div>
-
-
-
-      {/* Near you — horizontal rail */}
-
-      <HomeRailSection
-
-        title={tCommon("nearYou")}
-
-        href="/spots"
-
-        linkLabel={tCommon("viewAll")}
-
+      {/* Primary: nearby hot spots — ~3.5 cards visible on mobile */}
+      <HomeSpotSection
+        className="bg-[var(--sand)] pt-2 md:pt-4"
+        mobilePeek
       >
-
-        {nearbySpots.length === 0 ? (
-
-          <p className="w-full rounded-2xl bg-white p-6 text-center text-sm text-[var(--ink-muted)]">
-
+        {nearbyHotSpots.length === 0 ? (
+          <p className="w-full rounded-2xl bg-white p-8 text-center text-sm text-[var(--ink-muted)] lg:col-span-full">
             {tSpots("noSpots")}
-
           </p>
-
         ) : (
-
-          nearbySpots.map((spot) => (
-
+          nearbyHotSpots.map((spot, index) => (
             <HomeSpotRailCard
-
               key={spot.id}
-
               spot={spot}
-
               locale={locale}
-
               distanceKm={spot.distanceKm}
-
+              showHot={spot.featured}
+              priority={index < 4}
+              layout="peek"
             />
-
           ))
-
         )}
+      </HomeSpotSection>
 
-      </HomeRailSection>
-
-
-
-      {/* Hot activities — horizontal rail */}
-
-      {homeActivities.length > 0 && (
-
-        <HomeRailSection
-
-          title={t("upcomingActivities")}
-
-          href="/activities"
-
-          linkLabel={tCommon("viewAll")}
-
-          className="border-t border-[var(--sand-dark)]/25 bg-white/40"
-
-        >
-
-          {homeActivities.map((activity) => (
-
-            <HomeActivityRailCard
-
-              key={activity.id}
-
-              activity={activity}
-
-              locale={locale}
-
-            />
-
-          ))}
-
-        </HomeRailSection>
-
-      )}
-
-
-
-      {/* Latest community shares — horizontal rail */}
-
-      {latestSpots.length > 0 && (
-
-        <HomeRailSection
-
-          title={t("communityLatest")}
-
+      {/* Nearby paid fishing ponds */}
+      {showPaidPondSection && (
+        <HomeSpotSection
+          title={t("nearbyPaidPonds")}
+          subtitle={t("nearbyPaidPondsHint")}
           href="/spots"
-
           linkLabel={tCommon("viewAll")}
-
+          className="border-t border-[var(--sand-dark)]/20 bg-white/40 py-5 md:py-6"
+          mobilePeek
         >
-
-          {latestSpots.map((spot) => (
-
+          {nearbyPaidPonds.map((spot) => (
             <HomeSpotRailCard
-
               key={spot.id}
-
               spot={spot}
-
               locale={locale}
-
-              showNew={isRecentSpot(spot)}
-
-              showAuthor
-
+              distanceKm={spot.distanceKm}
+              showPaid
+              layout="peek"
             />
-
           ))}
-
-        </HomeRailSection>
-
+        </HomeSpotSection>
       )}
 
+      {/* Nationwide — subdued, below the fold feel */}
+      {nationwideHotSpots.length > 0 && (
+        <HomeSpotSection
+          title={t("nationwideHotSpots")}
+          href="/spots"
+          linkLabel={tCommon("viewAll")}
+          className="border-t border-[var(--sand-dark)]/15 bg-[var(--sand)] py-4 md:py-5"
+          titleClassName="font-sans text-sm font-medium text-[var(--ink-muted)]"
+          linkClassName="text-xs font-medium text-[var(--ink-muted)] hover:text-[var(--ocean)]"
+          mobilePeek
+        >
+          {nationwideHotSpots.map((spot) => (
+            <HomeSpotRailCard
+              key={spot.id}
+              spot={spot}
+              locale={locale}
+              showHot={spot.featured}
+              layout="peek"
+            />
+          ))}
+        </HomeSpotSection>
+      )}
 
+      <HomeActivitySection
+        activities={activities}
+        locale={locale}
+        defaultStateId={inferredRegion.stateId}
+        defaultDistrictId={inferredRegion.districtId}
+      />
 
       <HomeDiscoverGrid
         title={t("discover")}
@@ -732,10 +320,6 @@ export function HomeExplore({ spots, activities, listings }: HomeExploreProps) {
           guide: mockArticles.length,
         }}
       />
-
     </div>
-
   );
-
 }
-

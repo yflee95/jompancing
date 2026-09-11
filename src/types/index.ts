@@ -133,9 +133,31 @@ export interface Activity {
   endDate: string;
   imageUrl: string;
   promoted: boolean;
+  /** ISO timestamp — promotion ends after this (free trial or paid) */
+  promotedUntil?: string;
+  promotionFreeTrialUsed?: boolean;
+  authorId?: string;
   viewCount: number;
   interestCount: number;
   contactWhatsApp?: string;
+}
+
+export interface NewActivityInput {
+  title: string;
+  description: string;
+  type: ActivityType;
+  stateId: string;
+  districtId: string;
+  venue: string;
+  organizer: string;
+  fee?: number;
+  startDate: string;
+  endDate: string;
+  imageUrl?: string;
+  contactWhatsApp?: string;
+  authorId: string;
+  authorName: string;
+  locale: Locale;
 }
 
 export interface ForumPost {

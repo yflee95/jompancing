@@ -17,8 +17,8 @@ export function HomeDiscoverGrid({
   counts,
 }: HomeDiscoverGridProps) {
   return (
-    <section className="animate-fade-up border-t border-[var(--sand-dark)]/30 bg-white px-4 py-8 pb-24 md:pb-8">
-      <div className="mx-auto max-w-6xl">
+    <section className="animate-fade-up border-t border-[var(--sand-dark)]/30 bg-white px-4 py-6 md:py-8">
+      <div className="mx-auto max-w-7xl md:px-2">
         <h2 className="font-serif-display mb-4 text-xl font-bold text-[var(--ink)]">
           {title}
         </h2>

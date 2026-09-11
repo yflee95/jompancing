@@ -1,0 +1,37 @@
+<!-- Paste into Supabase → Authentication → Emails → Confirm signup → Body (Source) -->
+<!-- Subject suggestion: Sahkan e-mel anda — Jompancing | Confirm your email — Jompancing -->
+
+<h2 style="margin:0 0 12px;font-family:Georgia,serif;color:#134952;">
+  Jompancing 🎣
+</h2>
+
+<p style="font-family:system-ui,sans-serif;font-size:15px;color:#2a2418;line-height:1.6;">
+  Terima kasih kerana mendaftar dengan <strong>Jompancing</strong> — komuniti memancing Malaysia.<br>
+  Thanks for signing up for <strong>Jompancing</strong> — Malaysia's angler community.<br>
+  感谢注册 <strong>Jompancing</strong> — 马来西亚钓友社区。
+</p>
+
+<p style="font-family:system-ui,sans-serif;font-size:15px;color:#2a2418;line-height:1.6;">
+  Sila sahkan e-mel anda / Please confirm your email / 请确认你的邮箱：
+</p>
+
+<p style="margin:24px 0;">
+  <a href="{{ .ConfirmationURL }}"
+     style="display:inline-block;padding:14px 28px;background:#1a6570;color:#ffffff;text-decoration:none;border-radius:999px;font-family:system-ui,sans-serif;font-size:15px;font-weight:600;">
+    Sahkan e-mel · Confirm email · 确认邮箱
+  </a>
+</p>
+
+<p style="font-family:system-ui,sans-serif;font-size:13px;color:#73695c;line-height:1.5;">
+  Jika butang tidak berfungsi, salin pautan ini / If the button doesn't work, copy this link / 若按钮无效，请复制链接：<br>
+  <a href="{{ .ConfirmationURL }}" style="color:#1a6570;word-break:break-all;">{{ .ConfirmationURL }}</a>
+</p>
+
+<p style="font-family:system-ui,sans-serif;font-size:12px;color:#73695c;margin-top:24px;">
+  E-mel dihantar kepada {{ .Email }}. Jika anda tidak mendaftar, abaikan mesej ini.<br>
+  Sent to {{ .Email }}. If you didn't sign up, you can ignore this email.
+</p>
+
+<p style="font-family:system-ui,sans-serif;font-size:12px;color:#73695c;">
+  — Jompancing · <a href="https://jompancing.my/ms" style="color:#1a6570;">jompancing.my</a>
+</p>

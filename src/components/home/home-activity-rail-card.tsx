@@ -12,11 +12,13 @@ import type { Locale } from "@/i18n/routing";
 interface HomeActivityRailCardProps {
   activity: Activity;
   locale: Locale;
+  featured?: boolean;
 }
 
 export function HomeActivityRailCard({
   activity,
   locale,
+  featured = false,
 }: HomeActivityRailCardProps) {
   const t = useTranslations("activities");
   const tCommon = useTranslations("common");
@@ -32,7 +34,7 @@ export function HomeActivityRailCard({
   return (
     <Link
       href={`/activities/${activity.slug}`}
-      className="tap-card group relative w-[78vw] max-w-[300px] shrink-0 snap-start overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-travel)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-travel-hover)]"
+      className="tap-card group relative w-[85vw] max-w-[320px] min-w-[260px] shrink-0 snap-start overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-travel)] ring-1 ring-black/[0.04] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-travel-hover)] md:w-full md:max-w-none md:min-w-0"
     >
       <div className="relative aspect-[16/10]">
         <AppImage
@@ -49,7 +51,7 @@ export function HomeActivityRailCard({
           <span className="rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold text-[var(--ink)] backdrop-blur-sm">
             {t(activity.type)}
           </span>
-          {activity.promoted && (
+          {(featured || activity.promoted) && (
             <span className="badge-accent inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold">
               <Flame className="h-3 w-3" />
               {t("hot")}

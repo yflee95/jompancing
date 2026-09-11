@@ -7,6 +7,8 @@ interface SectionHeaderProps {
   href?: string;
   linkLabel?: string;
   className?: string;
+  titleClassName?: string;
+  linkClassName?: string;
 }
 
 export function SectionHeader({
@@ -14,16 +16,26 @@ export function SectionHeader({
   href,
   linkLabel,
   className,
+  titleClassName,
+  linkClassName,
 }: SectionHeaderProps) {
   return (
-    <div className={cn("flex items-center justify-between", className)}>
-      <h2 className="font-serif-display text-xl font-bold text-[var(--ink)]">
+    <div className={cn("flex items-center justify-between gap-3", className)}>
+      <h2
+        className={cn(
+          "font-serif-display text-xl font-bold text-[var(--ink)]",
+          titleClassName,
+        )}
+      >
         {title}
       </h2>
       {href && linkLabel && (
         <Link
           href={href}
-          className="flex items-center gap-0.5 text-sm font-semibold text-[var(--ocean)] transition hover:text-[var(--ocean-dark)]"
+          className={cn(
+            "flex shrink-0 items-center gap-0.5 text-sm font-semibold text-[var(--ocean)] transition hover:text-[var(--ocean-dark)]",
+            linkClassName,
+          )}
         >
           {linkLabel}
           <ChevronRight className="h-4 w-4" />

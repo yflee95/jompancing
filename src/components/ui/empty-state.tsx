@@ -6,7 +6,12 @@ interface EmptyStateProps {
   title: string;
   description?: string;
   actionLabel?: string;
-  actionHref?: "/post" | "/spots" | "/login" | "/forum/new";
+  actionHref?:
+    | "/post"
+    | "/spots"
+    | "/login"
+    | "/forum/new"
+    | "/activities/promote";
   className?: string;
 }
 
