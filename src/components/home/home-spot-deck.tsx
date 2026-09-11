@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  startTransition,
   useCallback,
   useEffect,
   useMemo,
@@ -13,26 +14,22 @@ import {
   ChevronLeft,
   ChevronRight,
   Compass,
-  Flame,
   MapPin,
-  Eye,
-  MessageCircle,
   Navigation,
   Sparkles,
   Waves,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { HomeDeckCommentSheet } from "@/components/home/home-deck-comment-sheet";
+import { HomeSpotDeckActions } from "@/components/home/home-spot-deck-actions";
+import { HomeSpotDeckCard } from "@/components/home/home-spot-deck-card";
 import { AppImage } from "@/components/ui/app-image";
 import {
   getSpotCommentCount,
   getSpotCommentItems,
 } from "@/lib/spot-comments";
-import { formatDistance } from "@/lib/geo";
-import { getSpotLocationLine } from "@/lib/spot-location";
 import { cn } from "@/lib/utils";
-import { getLocalizedText, type FishingSpot, type WaterType } from "@/types";
+import type { FishingSpot, WaterType } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
 type SpotWithDistance = FishingSpot & { distanceKm: number };
@@ -56,30 +53,11 @@ interface HomeSpotDeckProps {
   nearbyCount: number;
 }
 
-function getCardStyle(offset: number, dragPx: number) {
-  const base = offset * 100 + dragPx * 0.35;
-  const abs = Math.abs(offset);
-
-  if (abs > 2) {
-    return {
-      opacity: 0,
-      pointerEvents: "none" as const,
-      transform: `translateX(${base}px) scale(0.7) rotateY(0deg)`,
-      zIndex: 0,
-    };
-  }
-
-  const scale = offset === 0 ? 1 : abs === 1 ? 0.88 : 0.76;
-  const rotateY = offset === 0 ? 0 : offset > 0 ? -14 : 14;
-  const opacity = abs === 2 ? 0.35 : abs === 1 ? 0.72 : 1;
-  const zIndex = 30 - abs * 10;
-
-  return {
-    opacity,
-    pointerEvents: (abs <= 1 ? "auto" : "none") as "auto" | "none",
-    transform: `translateX(calc(${base}px + ${offset * 18}%)) scale(${scale}) rotateY(${rotateY}deg)`,
-    zIndex,
-  };
+function getWrappedOffset(i: number, index: number, count: number) {
+  let offset = i - index;
+  if (offset > count / 2) offset -= count;
+  if (offset < -count / 2) offset += count;
+  return offset;
 }
 
 export function HomeSpotDeck({
@@ -100,14 +78,18 @@ export function HomeSpotDeck({
   const [isDragging, setIsDragging] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [commentCountTick, setCommentCountTick] = useState(0);
+
   const dragStartX = useRef<number | null>(null);
   const dragStartY = useRef<number | null>(null);
+  const dragPxRef = useRef(0);
+  const dragRaf = useRef<number | null>(null);
   const dragging = useRef(false);
   const didDrag = useRef(false);
   const didLockAxis = useRef(false);
 
   const count = spots.length;
   const activeSpot = spots[index];
+  const activeSpotId = activeSpot?.id;
 
   useEffect(() => {
     setIndex(0);
@@ -116,7 +98,9 @@ export function HomeSpotDeck({
   const go = useCallback(
     (delta: number) => {
       if (count === 0) return;
-      setIndex((i) => (i + delta + count) % count);
+      startTransition(() => {
+        setIndex((i) => (i + delta + count) % count);
+      });
     },
     [count],
   );
@@ -126,11 +110,25 @@ export function HomeSpotDeck({
     didLockAxis.current = false;
     dragStartX.current = null;
     dragStartY.current = null;
+    dragPxRef.current = 0;
+    if (dragRaf.current != null) {
+      cancelAnimationFrame(dragRaf.current);
+      dragRaf.current = null;
+    }
     setIsDragging(false);
     setDragPx(0);
   }, []);
 
-  const onPointerDown = (e: ReactPointerEvent) => {
+  const scheduleDragUpdate = useCallback((dx: number) => {
+    dragPxRef.current = dx;
+    if (dragRaf.current != null) return;
+    dragRaf.current = requestAnimationFrame(() => {
+      dragRaf.current = null;
+      setDragPx(dragPxRef.current);
+    });
+  }, []);
+
+  const onPointerDown = useCallback((e: ReactPointerEvent) => {
     if (e.button !== 0) return;
     if (
       e.target instanceof HTMLElement &&
@@ -143,56 +141,66 @@ export function HomeSpotDeck({
     didLockAxis.current = false;
     dragStartX.current = e.clientX;
     dragStartY.current = e.clientY;
+    dragPxRef.current = 0;
     setDragPx(0);
     setIsDragging(true);
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  };
+  }, []);
 
-  const onPointerMove = (e: ReactPointerEvent) => {
-    if (!dragging.current || dragStartX.current == null || dragStartY.current == null) {
-      return;
-    }
-    const dx = e.clientX - dragStartX.current;
-    const dy = e.clientY - dragStartY.current;
-
-    if (!didLockAxis.current && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
-      if (Math.abs(dy) > Math.abs(dx)) {
-        resetDrag();
+  const onPointerMove = useCallback(
+    (e: ReactPointerEvent) => {
+      if (!dragging.current || dragStartX.current == null || dragStartY.current == null) {
         return;
       }
-      didLockAxis.current = true;
-    }
-
-    if (!didLockAxis.current) return;
-
-    didDrag.current = true;
-    e.preventDefault();
-    setDragPx(dx);
-  };
-
-  const onPointerUp = (e: ReactPointerEvent) => {
-    if (dragging.current && didLockAxis.current && dragStartX.current != null) {
       const dx = e.clientX - dragStartX.current;
-      if (dx < -SWIPE_THRESHOLD) go(1);
-      else if (dx > SWIPE_THRESHOLD) go(-1);
-    }
-    resetDrag();
-    try {
-      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-    } catch {
-      /* pointer was not captured */
-    }
-    window.setTimeout(() => {
-      didDrag.current = false;
-    }, 0);
-  };
+      const dy = e.clientY - dragStartY.current;
 
-  const deckPointerHandlers = {
-    onPointerDownCapture: onPointerDown,
-    onPointerMove,
-    onPointerUp,
-    onPointerCancel: onPointerUp,
-  };
+      if (!didLockAxis.current && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        if (Math.abs(dy) > Math.abs(dx)) {
+          resetDrag();
+          return;
+        }
+        didLockAxis.current = true;
+      }
+
+      if (!didLockAxis.current) return;
+
+      didDrag.current = true;
+      e.preventDefault();
+      scheduleDragUpdate(dx);
+    },
+    [resetDrag, scheduleDragUpdate],
+  );
+
+  const onPointerUp = useCallback(
+    (e: ReactPointerEvent) => {
+      if (dragging.current && didLockAxis.current && dragStartX.current != null) {
+        const dx = e.clientX - dragStartX.current;
+        if (dx < -SWIPE_THRESHOLD) go(1);
+        else if (dx > SWIPE_THRESHOLD) go(-1);
+      }
+      resetDrag();
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch {
+        /* pointer was not captured */
+      }
+      window.setTimeout(() => {
+        didDrag.current = false;
+      }, 0);
+    },
+    [go, resetDrag],
+  );
+
+  const deckPointerHandlers = useMemo(
+    () => ({
+      onPointerDownCapture: onPointerDown,
+      onPointerMove,
+      onPointerUp,
+      onPointerCancel: onPointerUp,
+    }),
+    [onPointerDown, onPointerMove, onPointerUp],
+  );
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -202,6 +210,13 @@ export function HomeSpotDeck({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [go]);
+
+  useEffect(
+    () => () => {
+      if (dragRaf.current != null) cancelAnimationFrame(dragRaf.current);
+    },
+    [],
+  );
 
   const seedComments = useMemo(() => {
     if (!activeSpot) return [];
@@ -213,25 +228,44 @@ export function HomeSpotDeck({
     return getSpotCommentCount(activeSpot.id);
   }, [activeSpot, commentCountTick]);
 
+  const blockNavigate = useCallback(() => didDrag.current, []);
+
+  const openComments = useCallback(() => setSheetOpen(true), []);
+
+  const closeComments = useCallback(() => {
+    setSheetOpen(false);
+    setCommentCountTick((n) => n + 1);
+  }, []);
+
   return (
     <section className="relative min-h-[88vh] overflow-hidden md:min-h-0 md:py-8 lg:py-10">
-      {/* Ambient blurred background */}
-      {activeSpot?.imageUrl && (
+      {/* Ambient backgrounds — keep mounted, crossfade (no reload flash) */}
+      {count > 0 && (
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-          <AppImage
-            src={activeSpot.imageUrl}
-            alt=""
-            sizes="100vw"
-            className="absolute inset-0 scale-110 blur-3xl"
-            imageClassName="opacity-50"
-            placeholderVariant="spot"
-          />
+          {spots.map((spot) => (
+            <div
+              key={`deck-bg-${spot.id}`}
+              className={cn(
+                "absolute inset-0 transition-opacity duration-500 ease-out",
+                spot.id === activeSpotId ? "opacity-100" : "opacity-0",
+              )}
+            >
+              <AppImage
+                src={spot.imageUrl}
+                alt=""
+                sizes="100vw"
+                priority
+                className="absolute inset-0 scale-110 blur-3xl"
+                imageClassName="opacity-50"
+                placeholderVariant="spot"
+              />
+            </div>
+          ))}
           <div className="absolute inset-0 bg-gradient-to-b from-[var(--sand)]/70 via-[var(--ocean-light)]/40 to-[var(--sand)]" />
         </div>
       )}
 
       <div className="relative z-10 mx-auto flex min-h-[88vh] max-w-lg flex-col px-4 pb-6 pt-4 md:min-h-0 md:max-w-4xl md:px-8 md:pb-8 md:pt-2 lg:max-w-5xl">
-        {/* Location + filters */}
         <div className="shrink-0 md:mx-auto md:max-w-2xl md:text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/75 px-3 py-1.5 text-xs font-medium text-[var(--ocean)] shadow-sm ring-1 ring-white/80 backdrop-blur-md md:mx-auto">
             <Navigation
@@ -254,7 +288,7 @@ export function HomeSpotDeck({
                 type="button"
                 onClick={() => onCategoryChange(id)}
                 className={cn(
-                  "flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium backdrop-blur-sm transition-all md:text-sm",
+                  "flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium backdrop-blur-sm transition-colors md:text-sm",
                   activeCategory === id
                     ? "bg-[var(--ocean)] text-white shadow-md shadow-[var(--ocean-glow)]"
                     : "bg-white/70 text-[var(--ink-muted)] ring-1 ring-white/80 hover:text-[var(--ink)]",
@@ -267,7 +301,6 @@ export function HomeSpotDeck({
           </div>
         </div>
 
-        {/* 3D deck stage — full-width swipe zone (left/right peek included) */}
         <div
           className="relative mx-auto mt-6 w-full flex-1 touch-pan-y select-none md:mt-8 md:max-w-3xl"
           style={{ perspective: "1400px" }}
@@ -280,120 +313,28 @@ export function HomeSpotDeck({
           ) : (
             <>
               <div className="relative mx-auto h-[min(420px,52vh)] w-full max-w-[min(100%,420px)] md:h-[min(500px,56vh)] md:max-w-[440px] lg:max-w-[480px]">
-                {spots.map((spot, i) => {
-                  let offset = i - index;
-                  if (offset > count / 2) offset -= count;
-                  if (offset < -count / 2) offset += count;
-                  const style = getCardStyle(offset, dragPx);
+                {spots.map((spot, i) => (
+                  <HomeSpotDeckCard
+                    key={spot.id}
+                    spot={spot}
+                    locale={locale}
+                    offset={getWrappedOffset(i, index, count)}
+                    dragPx={dragPx}
+                    isDragging={isDragging}
+                    eagerImage
+                  />
+                ))}
 
-                  const isActive = offset === 0;
-
-                  return (
-                    <article
-                      key={spot.id}
-                      className={cn(
-                        "absolute inset-0 origin-center transition-[transform,opacity] duration-300 ease-out",
-                        isActive && "cursor-grab active:cursor-grabbing",
-                        !isActive && "pointer-events-none",
-                      )}
-                      style={{
-                        transform: style.transform,
-                        opacity: style.opacity,
-                        zIndex: style.zIndex,
-                        pointerEvents: isActive ? "auto" : "none",
-                        transitionDuration: isDragging ? "0ms" : undefined,
-                      }}
-                      onClick={
-                        !isActive
-                          ? undefined
-                          : (e) => {
-                              if (didDrag.current) e.preventDefault();
-                            }
-                      }
-                    >
-                      <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-white/90 shadow-[0_24px_64px_rgba(26,101,112,0.18)] ring-1 ring-white/90 backdrop-blur-xl">
-                        <div className="relative block flex-1 overflow-hidden">
-                          <div className="relative aspect-[4/5] h-full min-h-[280px] w-full touch-pan-y">
-                            <AppImage
-                              src={spot.imageUrl}
-                              alt={getLocalizedText(spot.title, locale)}
-                              priority={i === index}
-                              sizes="360px"
-                              placeholderVariant="spot"
-                              className="absolute inset-0"
-                              imageClassName="object-cover"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                            {spot.waterType === "pond" ? (
-                              <span className="absolute left-3 top-3 inline-flex items-center rounded-full bg-[var(--ocean)] px-2.5 py-1 text-[10px] font-bold uppercase text-white">
-                                {t("paidPond")}
-                              </span>
-                            ) : spot.featured ? (
-                              <span className="badge-accent absolute left-3 top-3 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase">
-                                <Flame className="h-3 w-3" />
-                                {t("hotSpot")}
-                              </span>
-                            ) : null}
-                            <span className="absolute right-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-[var(--ink)] shadow-sm">
-                              {formatDistance(spot.distanceKm)}
-                            </span>
-                            <div className="absolute inset-x-0 bottom-0 p-4">
-                              <h2 className="font-serif-display text-xl font-bold leading-snug text-white">
-                                {getLocalizedText(spot.title, locale)}
-                              </h2>
-                              <p className="mt-1 flex items-center gap-1 text-xs text-white/80">
-                                <MapPin className="h-3 w-3 shrink-0" />
-                                {getSpotLocationLine(spot, locale)}
-                              </p>
-                              <div className="mt-2 flex flex-wrap gap-1.5">
-                                <span className="rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
-                                  {tSpots(spot.waterType)}
-                                </span>
-                                {spot.species[0] && (
-                                  <span className="rounded-full bg-white/15 px-2 py-0.5 text-[10px] text-white/90">
-                                    {spot.species[0]}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {isActive && (
-                          <div
-                            data-deck-action
-                            className="relative z-50 grid grid-cols-2 border-t border-[var(--sand-dark)]/25 bg-white/80 backdrop-blur-md"
-                            onPointerDown={(e) => e.stopPropagation()}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => setSheetOpen(true)}
-                              className="tap-card flex flex-col items-center gap-1 border-r border-[var(--sand-dark)]/20 px-3 py-3 text-[10px] font-medium text-[var(--ink-muted)] hover:text-[var(--ocean)] md:text-xs"
-                            >
-                              <MessageCircle className="h-5 w-5 md:h-[22px] md:w-[22px]" />
-                              {activeCommentCount > 0
-                                ? t("deckComments", { count: activeCommentCount })
-                                : t("deckCommentsEmpty")}
-                            </button>
-                            <Link
-                              href={`/spots/${spot.slug}`}
-                              onClick={(e) => {
-                                if (didDrag.current) e.preventDefault();
-                              }}
-                              className="tap-card flex flex-col items-center gap-1 px-3 py-3 text-[10px] font-medium text-[var(--ink-muted)] hover:text-[var(--ocean)] md:text-xs"
-                            >
-                              <Eye className="h-5 w-5 md:h-[22px] md:w-[22px]" />
-                              {t("deckView")}
-                            </Link>
-                          </div>
-                        )}
-                      </div>
-                    </article>
-                  );
-                })}
+                {activeSpot && (
+                  <HomeSpotDeckActions
+                    spot={activeSpot}
+                    commentCount={activeCommentCount}
+                    blockNavigate={blockNavigate}
+                    onOpenComments={openComments}
+                  />
+                )}
               </div>
 
-              {/* Prev / next arrows — pointer-events only on icon so sides stay swipeable */}
               <button
                 type="button"
                 aria-label={t("deckPrev")}
@@ -418,7 +359,6 @@ export function HomeSpotDeck({
           )}
         </div>
 
-        {/* Dots + scroll hint */}
         {count > 0 && (
           <div className="mt-4 shrink-0 text-center">
             <div className="flex justify-center gap-1.5">
@@ -427,9 +367,9 @@ export function HomeSpotDeck({
                   key={s.id}
                   type="button"
                   aria-label={`${i + 1}`}
-                  onClick={() => setIndex(i)}
+                  onClick={() => startTransition(() => setIndex(i))}
                   className={cn(
-                    "h-1.5 rounded-full transition-all",
+                    "h-1.5 rounded-full transition-[width,background-color] duration-300",
                     i === index
                       ? "w-6 bg-[var(--ocean)]"
                       : "w-1.5 bg-[var(--sand-dark)]",
@@ -458,10 +398,7 @@ export function HomeSpotDeck({
           spot={activeSpot}
           seedComments={seedComments}
           locale={locale}
-          onClose={() => {
-            setSheetOpen(false);
-            setCommentCountTick((n) => n + 1);
-          }}
+          onClose={closeComments}
         />
       )}
     </section>

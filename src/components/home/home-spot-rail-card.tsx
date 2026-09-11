@@ -19,7 +19,7 @@ interface HomeSpotRailCardProps {
   showPaid?: boolean;
   showAuthor?: boolean;
   priority?: boolean;
-  /** Smaller card — ~3.5 visible in mobile viewport */
+  /** Horizontal rail — ~2.1 cards on phone, ~3.5 on tablet+ */
   layout?: "default" | "peek";
 }
 
@@ -44,7 +44,7 @@ export function HomeSpotRailCard({
       className={cn(
         "tap-card group relative shrink-0 snap-start overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-travel)] ring-1 ring-black/[0.04] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-travel-hover)]",
         layout === "peek"
-          ? "w-[calc((100vw-2rem-0.625rem*2.5)/3.5)] max-w-[200px] min-w-[96px] lg:w-full lg:max-w-none lg:min-w-0"
+          ? "w-[calc((100vw-2rem-0.625rem)/2.15)] min-w-[152px] max-w-[260px] md:w-[calc((100vw-3rem-0.625rem*2.5)/3.5)] md:max-w-[220px] md:min-w-[120px] lg:w-full lg:max-w-none lg:min-w-0"
           : "w-[72vw] max-w-[280px] min-w-[148px] sm:w-[44vw] sm:max-w-[300px] md:w-full md:max-w-none md:min-w-0",
         "md:shrink lg:shrink",
       )}
@@ -62,7 +62,7 @@ export function HomeSpotRailCard({
           alt={getLocalizedText(spot.title, locale)}
           sizes={
             layout === "peek"
-              ? "(max-width: 1024px) 28vw, 20vw"
+              ? "(max-width: 768px) 46vw, (max-width: 1024px) 28vw, 20vw"
               : "(max-width: 768px) 72vw, (max-width: 1280px) 25vw, 20vw"
           }
           priority={priority}
@@ -105,20 +105,25 @@ export function HomeSpotRailCard({
         <div
           className={cn(
             "absolute inset-x-0 bottom-0",
-            layout === "peek" ? "p-2.5 md:p-3.5 lg:p-4" : "p-3.5 md:p-4",
+            layout === "peek" ? "p-3 md:p-3.5 lg:p-4" : "p-3.5 md:p-4",
           )}
         >
           <p
             className={cn(
               "font-serif-display line-clamp-2 font-semibold leading-snug text-white",
               layout === "peek"
-                ? "text-[13px] md:text-[15px] lg:text-base"
+                ? "text-sm md:text-[15px] lg:text-base"
                 : "text-[15px] md:text-base",
             )}
           >
             {getLocalizedText(spot.title, locale)}
           </p>
-          <p className="mt-1 flex items-center gap-1 text-[11px] text-white/75">
+          <p
+            className={cn(
+              "mt-1 flex items-center gap-1 text-white/75",
+              layout === "peek" ? "text-xs md:text-[11px]" : "text-[11px]",
+            )}
+          >
             <MapPin className="h-3 w-3 shrink-0" />
             <span className="line-clamp-1">
               {getSpotLocationLine(spot, locale)}

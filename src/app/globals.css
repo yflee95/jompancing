@@ -162,6 +162,11 @@ html.locale-zh body {
   animation: deck-sheet-enter 0.38s cubic-bezier(0.32, 0.72, 0, 1) both;
 }
 
+.deck-card-layer {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
 @keyframes deck-sheet-enter-desktop {
   from {
     opacity: 0;

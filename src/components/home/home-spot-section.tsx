@@ -11,7 +11,7 @@ interface HomeSpotSectionProps {
   titleClassName?: string;
   linkClassName?: string;
   subtitleClassName?: string;
-  /** Mobile horizontal scroll — show ~3.5 cards per viewport */
+  /** Mobile horizontal scroll — ~2.1 cards on phone, grid on desktop */
   mobilePeek?: boolean;
   children: ReactNode;
 }
@@ -56,7 +56,7 @@ export function HomeSpotSection({
       )}
       <div
         className={cn(
-          "mx-auto flex max-w-7xl gap-2.5 md:gap-3",
+          "mx-auto flex max-w-7xl gap-3 md:gap-3",
           title || subtitle ? "mt-4" : "mt-0",
           "overflow-x-auto overscroll-x-contain scroll-pl-4 pb-2 pl-4 pr-4 scrollbar-none",
           "snap-x snap-mandatory [-webkit-overflow-scrolling:touch]",
