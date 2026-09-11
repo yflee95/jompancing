@@ -9,6 +9,11 @@ import { SpotOwnerActions } from "@/components/spots/spot-owner-actions";
 import { SpotJsonLd } from "@/components/seo/spot-json-ld";
 import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
+import {
+  getSpotBestTimeLine,
+  getSpotFacilitiesLine,
+  getSpotSpeciesLine,
+} from "@/lib/spot-angler-info";
 import { getSpotLocationLine } from "@/lib/spot-location";
 import { getLocalizedText, type FishingSpot } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -157,30 +162,38 @@ export async function SpotDetailView({
           {t("postedBy")} {spot.authorName}
         </p>
 
-        {!isUserGenerated && (
-          <div className="mt-6 grid grid-cols-3 gap-2">
-            {[
-              { label: t("species"), value: spot.species.slice(0, 2).join(", ") },
-              {
-                label: t("bestTime"),
-                value: getLocalizedText(spot.bestTime, locale),
-              },
-              { label: t("facilities"), value: spot.facilities[0] ?? "—" },
-            ].map(({ label, value }) => (
-              <div
-                key={label}
-                className="rounded-2xl bg-white p-3 text-center ring-1 ring-[var(--sand-dark)]/40"
-              >
-                <p className="text-[10px] font-medium uppercase tracking-wide text-[var(--ink-muted)]">
-                  {label}
-                </p>
-                <p className="mt-1 line-clamp-2 text-xs font-semibold text-[var(--ink)]">
-                  {value}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {[
+            {
+              label: t("species"),
+              value: getSpotSpeciesLine(spot),
+            },
+            {
+              label: t("bestTime"),
+              value: getSpotBestTimeLine(spot, locale),
+            },
+            {
+              label: t("facilities"),
+              value: getSpotFacilitiesLine(spot),
+            },
+            {
+              label: t("comments"),
+              value: String(spot.commentCount),
+            },
+          ].map(({ label, value }) => (
+            <div
+              key={label}
+              className="rounded-2xl bg-white p-3 text-center ring-1 ring-[var(--sand-dark)]/40"
+            >
+              <p className="text-[10px] font-medium uppercase tracking-wide text-[var(--ink-muted)]">
+                {label}
+              </p>
+              <p className="mt-1 line-clamp-3 text-xs font-semibold text-[var(--ink)]">
+                {value}
+              </p>
+            </div>
+          ))}
+        </div>
 
         <CommentsSection
           threadId={spot.id}

@@ -35,10 +35,12 @@ export function ForumPostList({
     const filtered = category
       ? merged.filter((p) => p.category === category)
       : merged;
-    const seen = new Set<string>();
+    const seenIds = new Set<string>();
+    const seenSlugs = new Set<string>();
     const unique = filtered.filter((p) => {
-      if (seen.has(p.id)) return false;
-      seen.add(p.id);
+      if (seenIds.has(p.id) || seenSlugs.has(p.slug)) return false;
+      seenIds.add(p.id);
+      seenSlugs.add(p.slug);
       return true;
     });
     return sortPosts(unique);

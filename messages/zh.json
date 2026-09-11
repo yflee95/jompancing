@@ -110,6 +110,8 @@
     "shareSpotBannerStep2": "📍 标记位置",
     "shareSpotBannerStep3": "🐟 写鱼种 tips",
     "shareSpotBannerCta": "分享钓点",
+    "emptyTitle": "成为第一个分享钓点的人",
+    "emptyDesc": "钓友分享真实地点时最有用——照片、Google 定位，以及给 fellow 钓友的贴士。",
     "nearbyActivities": "附近活动",
     "nearbyActivitiesHint": "比赛、促销与聚会 — 按州属和县筛选。",
     "activityEmptyTitle": "这里还没有活动 — 成为第一个！",
@@ -205,6 +207,7 @@
     "welcomeBack": "欢迎回来",
     "spotsShared": "已分享钓点",
     "topicsPosted": "帖子",
+    "listingsPosted": "商品",
     "statesLabel": "覆盖州属",
     "homeStateLabel": "所在州属",
     "selectHomeState": "选择你的州属",
@@ -232,7 +235,8 @@
     "clearSearch": "返回",
     "spots": "钓点",
     "forum": "论坛",
-    "activities": "活动"
+    "activities": "活动",
+    "listings": "渔具商品"
   },
   "activities": {
     "title": "活动与推广",
@@ -292,6 +296,7 @@
   "forum": {
     "title": "钓友论坛",
     "subtitle": "讨论钓点、技巧、饵料、鱼钩、鱼类与观赏鱼",
+    "topicCount": "{count} 个话题",
     "allTopics": "全部",
     "newTopic": "发新帖",
     "noTopics": "此分类暂无帖子",
@@ -352,6 +357,13 @@
     "whatsappRequired": "请输入有效的 WhatsApp 号码。",
     "postFailed": "发布失败，请重试。",
     "loadingListings": "正在加载商品…",
+    "searchPlaceholder": "搜索渔具、品牌、竿、轮…",
+    "filterState": "州属",
+    "filterAllStates": "全部州属",
+    "resultCount": "{count} 件商品",
+    "noFilterResults": "没有匹配的商品",
+    "tryDifferentFilter": "试试其他关键词或州属。",
+    "clearFilters": "清除筛选",
     "noListings": "暂无商品",
     "beFirstSeller": "成为第一个在此出售渔具的人！",
     "notFound": "找不到商品",

@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MapExplore } from "@/components/map/map-explore";
 import { buildPageMetadata } from "@/lib/seo";
 import { loadPublicSpots } from "@/lib/public-spots";
+import { parseWaterTypeParam } from "@/lib/water-types";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -24,10 +25,15 @@ export default async function MapPage({
   searchParams,
 }: {
   params: Promise<{ locale: Locale }>;
-  searchParams: Promise<{ state?: string; district?: string; area?: string }>;
+  searchParams: Promise<{
+    state?: string;
+    district?: string;
+    area?: string;
+    water?: string;
+  }>;
 }) {
   const { locale } = await params;
-  const { state, district, area } = await searchParams;
+  const { state, district, area, water } = await searchParams;
   setRequestLocale(locale);
   const spots = await loadPublicSpots();
 
@@ -37,6 +43,7 @@ export default async function MapPage({
       filterState={state}
       filterDistrict={district}
       filterArea={area}
+      filterWater={parseWaterTypeParam(water)}
     />
   );
 }

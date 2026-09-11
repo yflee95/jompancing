@@ -36,9 +36,12 @@ export default async function GuidePage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
-      <h1 className="font-serif-display mb-6 text-2xl font-bold text-[var(--ink)]">
+      <h1 className="font-serif-display text-2xl font-bold text-[var(--ink)]">
         {t("title")}
       </h1>
+      <p className="mt-2 mb-6 max-w-2xl text-sm text-[var(--ink-muted)]">
+        {t("subtitle")}
+      </p>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {mockArticles.map((article) => (

@@ -4,7 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { ForumCategoryChips } from "@/components/forum/forum-category-chips";
 import { ForumPostList } from "@/components/forum/forum-post-list";
 import { Button } from "@/components/ui/button";
-import { filterForumPosts } from "@/data/mock-data";
+import { loadPublicForumPosts } from "@/lib/forum-posts-server";
 import { buildPageMetadata } from "@/lib/seo";
 import type { ForumCategory } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -37,7 +37,7 @@ export default async function ForumPage({
   const { category } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("forum");
-  const posts = filterForumPosts(category);
+  const posts = await loadPublicForumPosts(category);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 pb-24 md:pb-8">
@@ -46,7 +46,11 @@ export default async function ForumPage({
           <h1 className="font-serif-display text-2xl font-bold text-[var(--ink)]">
             {t("title")}
           </h1>
-          <p className="mt-1 text-sm text-[var(--ink-muted)]">{t("subtitle")}</p>
+          <p className="mt-1 text-sm text-[var(--ink-muted)]">
+            {t("subtitle")}
+            <span className="mx-1.5">·</span>
+            {t("topicCount", { count: posts.length })}
+          </p>
         </div>
         <Button size="sm" variant="outline" asChild>
           <Link href="/forum/new">

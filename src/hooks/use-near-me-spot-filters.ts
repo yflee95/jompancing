@@ -8,6 +8,7 @@ import {
   getSpotsShowAllPreference,
   setSpotsShowAllPreference,
 } from "@/lib/near-me-preferences";
+import { parseWaterTypeParam } from "@/lib/water-types";
 import type { WaterType } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
@@ -41,9 +42,8 @@ export function useNearMeSpotFilters({
   const userLocation = useUserLocation(locale);
   const [showAll, setShowAll] = useState(false);
 
-  const waterFromUrl = (searchParams.get("water") ?? filterWater) as
-    | WaterType
-    | undefined;
+  const waterFromUrl =
+    parseWaterTypeParam(searchParams.get("water")) ?? filterWater;
   const areaFromUrl = searchParams.get("area") ?? filterArea;
 
   useEffect(() => {

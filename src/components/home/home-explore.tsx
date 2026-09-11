@@ -3,7 +3,9 @@
 import { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useActivities } from "@/components/providers/activities-provider";
+import { useForum } from "@/components/providers/forum-provider";
 import { useMarketplace } from "@/components/providers/marketplace-provider";
+import { HomeEmptyWelcome } from "@/components/home/home-empty-welcome";
 import {
   getPublicUserSpots,
   useUserSpots,
@@ -60,6 +62,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
   const { userSpots } = useUserSpots();
   const { activities } = useActivities();
   const { listings } = useMarketplace();
+  const { userPosts } = useForum();
   const userLocation = useUserLocation(locale);
 
   const [activeCategory, setActiveCategory] = useState<WaterType | "all">("all");
@@ -188,7 +191,56 @@ export function HomeExplore({ spots }: HomeExploreProps) {
     water: "pond",
   });
 
-  if (allPublicSpots.length === 0) return null;
+  const forumCount = useMemo(() => {
+    const ids = new Set<string>();
+    const slugs = new Set<string>();
+    for (const post of [...userPosts, ...mockForumPosts]) {
+      if (ids.has(post.id) || slugs.has(post.slug)) continue;
+      ids.add(post.id);
+      slugs.add(post.slug);
+    }
+    return ids.size;
+  }, [userPosts]);
+
+  if (allPublicSpots.length === 0) {
+    return (
+      <div className="bg-[var(--sand)] pb-24 md:pb-12">
+        <HomeEmptyWelcome />
+        <div id="home-browse" className="scroll-mt-4 border-t border-[var(--sand-dark)]/30">
+          <HomeShareSpotBanner
+            locale={locale}
+            locating={locating}
+            stateId={inferredRegion?.stateId}
+            districtId={inferredRegion?.districtId}
+            hasGps={hasGps}
+          />
+          <HomeActivitySection
+            activities={activities}
+            locale={locale}
+            hasGps={hasGps}
+            defaultStateId={inferredRegion?.stateId}
+            defaultDistrictId={inferredRegion?.districtId}
+          />
+          <HomeListingsSection locale={locale} />
+          <HomeDiscoverGrid
+            title={t("discover")}
+            labels={{
+              forum: t("quickForum"),
+              map: t("quickMap"),
+              shop: t("quickShop"),
+              guide: t("quickGuide"),
+            }}
+            counts={{
+              forum: forumCount,
+              map: 0,
+              shop: listings.length,
+              guide: mockArticles.length,
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[var(--sand)] pb-24 md:pb-12">
@@ -285,7 +337,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
             guide: t("quickGuide"),
           }}
           counts={{
-            forum: mockForumPosts.length,
+            forum: forumCount,
             map: allPublicSpots.length,
             shop: listings.length,
             guide: mockArticles.length,

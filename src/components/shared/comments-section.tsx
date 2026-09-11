@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import { Button } from "@/components/ui/button";
+import { PageLoader } from "@/components/ui/page-loader";
 import { formatDate, cn } from "@/lib/utils";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import {
@@ -182,9 +183,7 @@ export function CommentsSection({
 
       <div className="mt-4 space-y-3">
         {!hydrated ? (
-          <div className="flex h-20 items-center justify-center">
-            <div className="h-6 w-6 animate-spin rounded-full border-2 border-[var(--ocean)] border-t-transparent" />
-          </div>
+          <PageLoader compact />
         ) : displayed.length === 0 ? (
           <p className="rounded-2xl bg-white p-6 text-center text-sm text-[var(--ink-muted)] ring-1 ring-[var(--sand-dark)]/40">
             {t("empty")}

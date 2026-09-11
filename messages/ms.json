@@ -110,6 +110,8 @@
     "shareSpotBannerStep2": "📍 Tag lokasi",
     "shareSpotBannerStep3": "🐟 Tips spesies",
     "shareSpotBannerCta": "Kongsi tempat",
+    "emptyTitle": "Jadilah yang pertama kongsi tempat",
+    "emptyDesc": "Jompancing lebih berguna bila pemancing kongsi lokasi sebenar — foto, pin Google, dan tips untuk kaki pancing.",
     "nearbyActivities": "Aktiviti berhampiran",
     "nearbyActivitiesHint": "Peraduan, jualan & meetup — tapis mengikut negeri & daerah.",
     "activityEmptyTitle": "Belum ada acara di sini — jadi yang pertama!",
@@ -205,6 +207,7 @@
     "welcomeBack": "Selamat kembali",
     "spotsShared": "Tempat dikongsi",
     "topicsPosted": "Topik",
+    "listingsPosted": "Senarai",
     "statesLabel": "Negeri",
     "homeStateLabel": "Negeri asal",
     "selectHomeState": "Pilih negeri anda",
@@ -232,7 +235,8 @@
     "clearSearch": "Kembali",
     "spots": "Tempat",
     "forum": "Forum",
-    "activities": "Aktiviti"
+    "activities": "Aktiviti",
+    "listings": "Senarai gear"
   },
   "activities": {
     "title": "Aktiviti & Promosi",
@@ -292,6 +296,7 @@
   "forum": {
     "title": "Forum Pemancing",
     "subtitle": "Bincang tempat, teknik, umpan, kail, spesies ikan & ikan hiasan",
+    "topicCount": "{count} topik",
     "allTopics": "Semua",
     "newTopic": "Topik Baru",
     "noTopics": "Tiada topik dalam kategori ini",
@@ -352,6 +357,13 @@
     "whatsappRequired": "Masukkan nombor WhatsApp yang sah.",
     "postFailed": "Gagal siarkan senarai — sila cuba lagi.",
     "loadingListings": "Memuatkan senarai…",
+    "searchPlaceholder": "Cari gear, jenama, rod, reel…",
+    "filterState": "Negeri",
+    "filterAllStates": "Semua negeri",
+    "resultCount": "{count} senarai",
+    "noFilterResults": "Tiada senarai sepadan carian anda",
+    "tryDifferentFilter": "Cuba kata kunci atau negeri lain.",
+    "clearFilters": "Kosongkan tapisan",
     "noListings": "Belum ada senarai",
     "beFirstSeller": "Jadilah yang pertama jual peralatan di sini!",
     "notFound": "Senarai tidak dijumpai",

@@ -110,6 +110,8 @@
     "shareSpotBannerStep2": "📍 Pin location",
     "shareSpotBannerStep3": "🐟 Add species tips",
     "shareSpotBannerCta": "Share a spot",
+    "emptyTitle": "Be the first to share a spot",
+    "emptyDesc": "Jompancing works best when anglers share real locations — photos, Google pin, and tips for fellow kaki pancing.",
     "nearbyActivities": "Activities near you",
     "nearbyActivitiesHint": "Contests, sales & meetups — filter by state and district.",
     "activityEmptyTitle": "No events here yet — be the first!",
@@ -205,6 +207,7 @@
     "welcomeBack": "Welcome back",
     "spotsShared": "Spots shared",
     "topicsPosted": "Topics",
+    "listingsPosted": "Listings",
     "statesLabel": "States",
     "homeStateLabel": "Home state",
     "selectHomeState": "Select your home state",
@@ -232,7 +235,8 @@
     "clearSearch": "Go back",
     "spots": "Spots",
     "forum": "Forum",
-    "activities": "Activities"
+    "activities": "Activities",
+    "listings": "Gear listings"
   },
   "activities": {
     "title": "Activities & Promotions",
@@ -292,6 +296,7 @@
   "forum": {
     "title": "Anglers Forum",
     "subtitle": "Discuss spots, techniques, bait, hooks, fish species & ornamental fish",
+    "topicCount": "{count} topics",
     "allTopics": "All",
     "newTopic": "New Topic",
     "noTopics": "No topics in this category",
@@ -352,6 +357,13 @@
     "whatsappRequired": "Enter a valid WhatsApp number.",
     "postFailed": "Could not publish listing — please try again.",
     "loadingListings": "Loading listings…",
+    "searchPlaceholder": "Search gear, brand, rod, reel…",
+    "filterState": "State",
+    "filterAllStates": "All states",
+    "resultCount": "{count} listings",
+    "noFilterResults": "No listings match your search",
+    "tryDifferentFilter": "Try another keyword or state.",
+    "clearFilters": "Clear filters",
     "noListings": "No listings yet",
     "beFirstSeller": "Be the first to sell gear here!",
     "notFound": "Listing not found",

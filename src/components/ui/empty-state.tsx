@@ -12,7 +12,8 @@ interface EmptyStateProps {
     | "/login"
     | "/forum/new"
     | "/activities/promote"
-    | "/marketplace/new";
+    | "/marketplace/new"
+    | "/marketplace";
   className?: string;
 }
 

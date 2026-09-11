@@ -6,6 +6,7 @@ import { ChevronDown, MapPin, Navigation } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { getAreasByDistrict } from "@/data/malaysia-areas";
+import { parseWaterTypeParam } from "@/lib/water-types";
 import { malaysiaStates } from "@/data/malaysia-states";
 import { setSpotsShowAllPreference } from "@/lib/near-me-preferences";
 import { useUserLocation } from "@/hooks/use-user-location";
@@ -37,7 +38,7 @@ export function RegionFilters({
   const userLocation = useUserLocation(locale);
   const searchParams = useSearchParams();
   const [applyingGps, setApplyingGps] = useState(false);
-  const preservedWater = searchParams.get("water");
+  const preservedWater = parseWaterTypeParam(searchParams.get("water"));
 
   const selectedState = malaysiaStates.find((s) => s.id === currentState);
   const areas =

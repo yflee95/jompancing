@@ -16,6 +16,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useForum } from "@/components/providers/forum-provider";
+import { useMarketplace } from "@/components/providers/marketplace-provider";
 import { useUserSpots } from "@/components/providers/spots-provider";
 import { AppImage } from "@/components/ui/app-image";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ export function ProfileExplore() {
   const tCommon = useTranslations("common");
   const { user, logout, updateProfile } = useAuth();
   const { userPosts } = useForum();
+  const { listings } = useMarketplace();
   const { getMySpots } = useUserSpots();
   const locale = useLocale() as Locale;
 
@@ -37,6 +39,11 @@ export function ProfileExplore() {
 
   const myTopics = userPosts.filter((p) => p.authorName === user.name);
   const mySpots = getMySpots(user.id);
+  const myListings = listings.filter(
+    (listing) =>
+      listing.authorId === user.id ||
+      listing.sellerName === user.name,
+  );
   const homeState = user.homeStateId
     ? malaysiaStates.find((s) => s.id === user.homeStateId)
     : undefined;
@@ -98,7 +105,7 @@ export function ProfileExplore() {
             {[
               { value: mySpots.length, label: tProfile("spotsShared") },
               { value: myTopics.length, label: tProfile("topicsPosted") },
-              { value: malaysiaStates.length, label: tProfile("statesLabel") },
+              { value: myListings.length, label: tProfile("listingsPosted") },
             ].map(({ value, label }) => (
               <div
                 key={label}

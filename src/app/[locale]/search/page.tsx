@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SearchExplore } from "@/components/search/search-explore";
-import { globalSearch } from "@/lib/search";
+import { loadGlobalSearchResults } from "@/lib/global-search-server";
 import type { Locale } from "@/i18n/routing";
 
 interface SearchPageProps {
@@ -19,11 +19,12 @@ export default async function SearchPage({
   const t = await getTranslations("search");
 
   const query = q?.trim() ?? "";
-  const initialResults = globalSearch(query);
+  const initialResults = await loadGlobalSearchResults(query);
   const total =
     initialResults.spots.length +
     initialResults.forum.length +
-    initialResults.activities.length;
+    initialResults.activities.length +
+    initialResults.listings.length;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 pb-24 md:pb-8">

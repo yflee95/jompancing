@@ -4,6 +4,7 @@ import { SpotsExplore } from "@/components/spots/spots-explore";
 
 import { buildPageMetadata } from "@/lib/seo";
 import { loadPublicSpots } from "@/lib/public-spots";
+import { parseWaterTypeParam } from "@/lib/water-types";
 import type { Locale } from "@/i18n/routing";
 
 
@@ -74,14 +75,7 @@ export default async function SpotsPage({
         filterDistrict={district}
 
         filterArea={area}
-        filterWater={
-          water === "saltwater" ||
-          water === "freshwater" ||
-          water === "pond" ||
-          water === "river"
-            ? water
-            : undefined
-        }
+        filterWater={parseWaterTypeParam(water)}
       />
 
     </div>

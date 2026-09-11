@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { SpotsMap } from "@/components/map/spots-map";
 import { RegionFilters } from "@/components/shared/region-filters";
+import { WaterTypeFilters } from "@/components/shared/water-type-filters";
 import {
   getPublicUserSpots,
   useUserSpots,
@@ -27,6 +28,7 @@ interface MapExploreProps {
   filterState?: string;
   filterDistrict?: string;
   filterArea?: string;
+  filterWater?: import("@/types").WaterType;
 }
 
 export function MapExplore({
@@ -34,6 +36,7 @@ export function MapExplore({
   filterState,
   filterDistrict,
   filterArea,
+  filterWater,
 }: MapExploreProps) {
   const { userSpots } = useUserSpots();
   const t = useTranslations("map");
@@ -44,6 +47,7 @@ export function MapExplore({
     effectiveState,
     effectiveDistrict,
     effectiveArea,
+    effectiveWater,
     isResolvingLocation,
     userLocation,
   } = useNearMeSpotFilters({
@@ -51,6 +55,7 @@ export function MapExplore({
     filterState,
     filterDistrict,
     filterArea,
+    filterWater,
   });
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -63,16 +68,18 @@ export function MapExplore({
     [initialSpots, userSpots],
   );
 
-  const regionSpots = useMemo(
-    () =>
-      filterSpotsByRegion(
-        publicSpots,
-        effectiveState,
-        effectiveDistrict,
-        effectiveArea,
-      ),
-    [publicSpots, effectiveState, effectiveDistrict, effectiveArea],
-  );
+  const regionSpots = useMemo(() => {
+    let list = filterSpotsByRegion(
+      publicSpots,
+      effectiveState,
+      effectiveDistrict,
+      effectiveArea,
+    );
+    if (effectiveWater) {
+      list = list.filter((spot) => spot.waterType === effectiveWater);
+    }
+    return list;
+  }, [publicSpots, effectiveState, effectiveDistrict, effectiveArea, effectiveWater]);
 
   const spotsWithDistance = useMemo(() => {
     const base = regionSpots.map((spot) => {
@@ -147,6 +154,7 @@ export function MapExplore({
             currentArea={filterArea}
             compact
           />
+          <WaterTypeFilters className="mt-2" compact />
 
           {isResolvingLocation ? (
             <p className="mt-3 rounded-2xl bg-[var(--sand)] px-4 py-6 text-center text-sm text-[var(--ink-muted)]">

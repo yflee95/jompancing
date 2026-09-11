@@ -423,6 +423,78 @@ export const mockArticles: GuideArticle[] = [
       "https://images.unsplash.com/photo-1498654200943-1088dd4438ea?w=800&q=80",
     publishedAt: "2026-01-10T00:00:00Z",
   },
+  {
+    id: "guide-4",
+    slug: "patin-pond-fishing-malaysia",
+    title: {
+      ms: "Memancing Patin di Kolam Berbayar",
+      en: "Patin Pond Fishing in Malaysia",
+      zh: "马来西亚巴丁鱼收费钓场指南",
+    },
+    excerpt: {
+      ms: "Umpan, sesi, dan tip untuk kolam patin popular.",
+      en: "Baits, sessions, and tips for popular patin ponds.",
+      zh: "热门巴丁鱼塘的饵料、场次与技巧。",
+    },
+    body: {
+      ms: "Kolam patin popular di Lembah Klang, Johor, dan Utara — sesi pagi/malam 4–6 jam.\n\nUmpan pellet + aroma patin, atau ikan kecil hidup. Rod medium 6–7 kaki, tali 20–30 lb.\n\nTanya yuran masuk, had tangkapan, dan sama ada live bait dibenarkan sebelum bayar.",
+      en: "Patin ponds are popular across Klang Valley, Johor, and the north — morning/night sessions of 4–6 hours.\n\nUse pellet with patin scent or small live bait. Medium 6–7 ft rod, 20–30 lb line.\n\nAsk entry fee, keep limits, and live-bait rules before paying.",
+      zh: "巴丁鱼塘在巴生谷、柔佛和北部都很常见——早场/夜场通常 4–6 小时。\n\n饵料可用巴丁味颗粒或小鱼活饵。中硬 6–7 尺竿，20–30 lb 线。\n\n付费前先问入场费、带走限制和是否允许活饵。",
+    },
+    category: "tips",
+    readMinutes: 7,
+    imageUrl:
+      "https://images.unsplash.com/photo-1544551763-77a415543845?w=800&q=80",
+    publishedAt: "2026-02-15T00:00:00Z",
+  },
+  {
+    id: "guide-5",
+    slug: "shore-jetty-fishing-safety",
+    title: {
+      ms: "Keselamatan Memancing Jeti & Pantai",
+      en: "Shore & Jetty Fishing Safety",
+      zh: "岸钓与码头安全须知",
+    },
+    excerpt: {
+      ms: "Slippery decks, ombak, dan gear asas untuk pemancing baru.",
+      en: "Slippery decks, swell, and basic gear for new anglers.",
+      zh: "湿滑码头、涌浪，以及新手必备装备。",
+    },
+    body: {
+      ms: "Pakai kasut grip, jangan duduk di tepi jeti tanpa pagar. Perhatikan ombak dan bot lalu.\n\nBawa torch, first aid mini, dan air minum. Jangan memancing solo di jeti terpencil waktu malam.\n\nSimpul tali yang betul dan jaga jarak dari pemancing lain — especially semasa cast.",
+      en: "Wear grippy shoes; avoid sitting on unguarded jetty edges. Watch swell and passing boats.\n\nBring a torch, mini first aid, and water. Avoid solo night fishing on remote jetties.\n\nTie solid knots and keep casting distance from other anglers.",
+      zh: "穿防滑鞋，不要坐在无护栏的码头边缘。留意涌浪和过往船只。\n\n带上手电、简易急救包和饮用水。避免独自在偏远码头夜钓。\n\n打牢线结，抛投时与其他钓友保持距离。",
+    },
+    category: "gear",
+    readMinutes: 5,
+    imageUrl:
+      "https://images.unsplash.com/photo-1505118380757-91db5dda3b55?w=800&q=80",
+    publishedAt: "2026-02-20T00:00:00Z",
+  },
+  {
+    id: "guide-6",
+    slug: "best-bait-freshwater-malaysia",
+    title: {
+      ms: "Umpan Terbaik Air Tawar Malaysia",
+      en: "Best Freshwater Baits in Malaysia",
+      zh: "马来西亚淡水钓最佳饵料",
+    },
+    excerpt: {
+      ms: "Cacing, udang, ikan hidup & artificial untuk sungai dan tasik.",
+      en: "Worms, prawns, live bait & lures for rivers and lakes.",
+      zh: "蚯蚓、虾、活饵与假饵——河流和湖泊适用。",
+    },
+    body: {
+      ms: "Sungai: cacing tanah, udang galah kecil, ikan hidup untuk haruan/sebarau.\n\nTasik/empangan: ikan kecil, udang, dan paste ikan untuk talapia/kelah.\n\nKolam: ikut spesies target — patin suka pellet, talapia suka paste.\n\nSimpan umpan hidup dalam bekas beroksigen dan jangan campur air laut ke air tawar.",
+      en: "Rivers: earthworms, small prawns, live bait for haruan/sebarau.\n\nLakes/dams: small fish, prawns, and paste for talapia/kelah.\n\nPonds: match the target — patin likes pellet, talapia likes paste.\n\nKeep live bait aerated and never mix saltwater into freshwater bait.",
+      zh: "河流：蚯蚓、小虾、活饵钓生鱼/西刀。\n\n湖泊/水坝：小鱼、虾、鱼糊钓罗非/吉罗。\n\n钓场：按目标鱼种——巴丁喜颗粒，罗非喜鱼糊。\n\n活饵要充氧保存，勿把海水混入淡水饵。",
+    },
+    category: "species",
+    readMinutes: 6,
+    imageUrl:
+      "https://images.unsplash.com/photo-1519709093765-457415791451?w=800&q=80",
+    publishedAt: "2026-02-25T00:00:00Z",
+  },
 ];
 
 export function getSpotBySlug(slug: string): FishingSpot | undefined {

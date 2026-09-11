@@ -23,6 +23,7 @@ import {
 import { SpotCard } from "@/components/spots/spot-card";
 
 import { SpotFilters } from "@/components/spots/spot-filters";
+import { WaterTypeFilters } from "@/components/shared/water-type-filters";
 
 import { Button } from "@/components/ui/button";
 
@@ -200,18 +201,13 @@ export function SpotsExplore({
 
 
       <SpotFilters
-
         locale={locale}
-
         currentState={filterState}
-
         currentDistrict={filterDistrict}
-
         currentArea={filterArea}
-
       />
 
-
+      <WaterTypeFilters className="mt-3" compact />
 
       <div className="mb-4 mt-4 flex gap-2">
 
