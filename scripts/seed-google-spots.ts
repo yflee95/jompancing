@@ -1,5 +1,13 @@
 /**
- * Seed curated fishing spots from Google Places into Supabase.
+ * Seed curated fishing spots from Google Places — per named area (州 → 縣 → 區域).
+ *
+ * Target: up to 2 unique spots per area (1 is acceptable if Google has no second match).
+ * Each google_place_id is used once across the whole site (no cross-area duplicates).
+ *
+ * Examples:
+ *   Selangor → Petaling → SS2
+ *   Johor → Johor Bahru → Masai
+ *   Penang → Northeast → Gurney
  *
  * Prerequisites:
  * - Run supabase/migrations/006_curated_google_spots.sql
@@ -8,24 +16,29 @@
  *
  * Usage:
  *   npm run seed:spots
- *   npm run seed:spots -- --district=johor-bahru
+ *   npm run seed:spots -- --state=johor
+ *   npm run seed:spots -- --district=petaling
+ *   npm run seed:spots -- --area=ss2
  *   npm run seed:spots -- --dry-run
  */
 import { createClient } from "@supabase/supabase-js";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { malaysiaStates } from "../src/data/malaysia-states";
-import { getGeneralAreaId } from "../src/data/malaysia-areas";
+import { malaysiaAreas } from "../src/data/malaysia-areas";
 import {
   buildGoogleMapsPlaceUrl,
   buildGooglePhotoFetchUrl,
   fetchGooglePlaceDetails,
-  searchGooglePlaces,
+  geocodeAreaCenter,
+  searchGooglePlacesPage,
+  type GooglePlaceCandidate,
+  type GooglePlacesSearchOptions,
 } from "../src/lib/google-places-server";
 import { slugify } from "../src/lib/slug";
 import type { WaterType } from "../src/types";
 
-const SPOTS_PER_DISTRICT = 2;
+const SPOTS_PER_AREA = 2;
 const SEED_USER_ID = "c0ffee00-0000-4000-8000-000000000001";
 const SEED_EMAIL = "curated@jompancing.my";
 const SEED_NAME = "Jompancing";
@@ -34,9 +47,11 @@ loadEnvFile();
 
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
+const stateFilter = args.find((a) => a.startsWith("--state="))?.split("=")[1];
 const districtFilter = args
   .find((a) => a.startsWith("--district="))
   ?.split("=")[1];
+const areaFilter = args.find((a) => a.startsWith("--area="))?.split("=")[1];
 
 function loadEnvFile() {
   const envPath = resolve(process.cwd(), ".env.local");
@@ -71,13 +86,134 @@ function isFishingRelated(name: string, types: string[]): boolean {
   );
 }
 
-function buildQueries(districtEn: string, stateEn: string): string[] {
+function buildQueries(
+  areaEn: string,
+  areaMs: string,
+  districtEn: string,
+  stateEn: string,
+): string[] {
   return [
-    `fishing spot ${districtEn} ${stateEn} Malaysia`,
-    `kolam memancing ${districtEn} Malaysia`,
-    `jeti memancing ${districtEn} Malaysia`,
-    `fishing jetty ${districtEn} Malaysia`,
+    `fishing spot ${areaEn} ${districtEn} Malaysia`,
+    `kolam memancing ${areaEn} ${stateEn}`,
+    `jeti memancing ${areaEn} Malaysia`,
+    `tempat memancing ${areaMs || areaEn}`,
+    `fishing jetty ${areaEn} ${districtEn}`,
+    `kolam pancing ${areaEn}`,
+    `port memancing ${areaEn}`,
+    `fishing pond ${areaEn} ${stateEn}`,
   ];
+}
+
+function getLocationLabels(
+  stateId: string,
+  districtId: string,
+): { stateEn: string; districtEn: string } | null {
+  const state = malaysiaStates.find((s) => s.id === stateId);
+  if (!state) return null;
+  const district = state.districts.find((d) => d.id === districtId);
+  if (!district) return null;
+  return { stateEn: state.name.en, districtEn: district.name.en };
+}
+
+async function trimExcessCuratedSpots(
+  supabase: SeedSupabase,
+  stateId: string,
+  districtId: string,
+  areaId: string,
+): Promise<string[]> {
+  const { data: rows } = await supabase
+    .from("spots")
+    .select("id, google_place_id, featured, created_at")
+    .eq("state_id", stateId)
+    .eq("district_id", districtId)
+    .eq("area_id", areaId)
+    .eq("source", "google")
+    .order("featured", { ascending: false })
+    .order("created_at", { ascending: true });
+
+  const spots = rows ?? [];
+  if (spots.length <= SPOTS_PER_AREA) return [];
+
+  const remove = spots.slice(SPOTS_PER_AREA);
+  const freedPlaceIds: string[] = [];
+
+  for (const spot of remove) {
+    const { error } = await supabase.from("spots").delete().eq("id", spot.id);
+    if (error) {
+      console.warn(`  trim failed (${spot.id}):`, error.message);
+      continue;
+    }
+    console.log(`  − removed extra curated spot`);
+    if (spot.google_place_id) freedPlaceIds.push(spot.google_place_id);
+  }
+
+  return freedPlaceIds;
+}
+
+async function cleanupLegacyDistrictSpots(supabase: SeedSupabase): Promise<number> {
+  const { data: rows } = await supabase
+    .from("spots")
+    .select("id, google_place_id, area_id")
+    .eq("source", "google")
+    .like("area_id", "%-general");
+
+  const legacy = (rows ?? []).filter((r: { area_id: string }) =>
+    r.area_id.endsWith("-general"),
+  );
+  if (legacy.length === 0) return 0;
+
+  let removed = 0;
+  for (const spot of legacy) {
+    const { error } = await supabase.from("spots").delete().eq("id", spot.id);
+    if (!error) removed++;
+  }
+
+  console.log(`\n🧹 Removed ${removed} legacy district-level curated spots`);
+  return removed;
+}
+
+async function loadGlobalUsedPlaceIds(
+  supabase: SeedSupabase,
+): Promise<Set<string>> {
+  const used = new Set<string>();
+  const { data } = await supabase
+    .from("spots")
+    .select("google_place_id")
+    .not("google_place_id", "is", null);
+
+  for (const row of data ?? []) {
+    if (row.google_place_id) used.add(row.google_place_id);
+  }
+  return used;
+}
+
+async function collectCandidates(
+  query: string,
+  searchOptions: GooglePlacesSearchOptions,
+): Promise<GooglePlaceCandidate[]> {
+  const collected: GooglePlaceCandidate[] = [];
+  let pageToken: string | undefined;
+
+  for (let page = 0; page < 2; page++) {
+    let pageResult;
+    try {
+      pageResult = await searchGooglePlacesPage(query, {
+        ...searchOptions,
+        pageToken,
+      });
+    } catch (error) {
+      if (page === 0) throw error;
+      break;
+    }
+
+    collected.push(...pageResult.results);
+    if (!pageResult.nextPageToken) break;
+
+    pageToken = pageResult.nextPageToken;
+    await sleep(2100);
+  }
+
+  return collected;
 }
 
 function buildDescription(
@@ -156,37 +292,68 @@ async function uploadPlacePhoto(
   return data.publicUrl;
 }
 
-async function seedDistrict(
+async function seedArea(
   supabase: SeedSupabase,
+  globalUsedPlaceIds: Set<string>,
   stateId: string,
   stateEn: string,
   districtId: string,
   districtEn: string,
-) {
-  console.log(`\n📍 ${districtEn}, ${stateEn}`);
+  areaId: string,
+  areaEn: string,
+  areaMs: string,
+): Promise<"ok" | "partial" | "empty" | "skipped"> {
+  console.log(`\n📍 ${stateEn} → ${districtEn} → ${areaEn}`);
+
+  if (!dryRun) {
+    const freedPlaceIds = await trimExcessCuratedSpots(
+      supabase,
+      stateId,
+      districtId,
+      areaId,
+    );
+    for (const placeId of freedPlaceIds) {
+      globalUsedPlaceIds.delete(placeId);
+    }
+  }
 
   const { data: existingRows } = await supabase
     .from("spots")
     .select("google_place_id")
     .eq("state_id", stateId)
     .eq("district_id", districtId)
+    .eq("area_id", areaId)
     .eq("source", "google");
 
-  const seen = new Set(
+  const areaPlaceIds = new Set(
     (existingRows ?? [])
       .map((r: { google_place_id: string | null }) => r.google_place_id)
       .filter(Boolean) as string[],
   );
 
+  const existingCount = areaPlaceIds.size;
+  const needed = SPOTS_PER_AREA - existingCount;
+
+  if (needed <= 0) {
+    console.log(`  ✓ already has ${existingCount} curated spots`);
+    return "skipped";
+  }
+
+  const center = await geocodeAreaCenter(areaEn, districtEn, stateEn);
+  await sleep(200);
+  const searchOptions: GooglePlacesSearchOptions = center
+    ? { lat: center.lat, lng: center.lng, radiusM: 12_000 }
+    : {};
+
   let inserted = 0;
-  const queries = buildQueries(districtEn, stateEn);
+  const queries = buildQueries(areaEn, areaMs, districtEn, stateEn);
 
   for (const query of queries) {
-    if (inserted >= SPOTS_PER_DISTRICT) break;
+    if (inserted >= needed) break;
 
-    let results;
+    let results: GooglePlaceCandidate[];
     try {
-      results = await searchGooglePlaces(query);
+      results = await collectCandidates(query, searchOptions);
     } catch (error) {
       console.warn(`  search failed (${query}):`, error);
       await sleep(300);
@@ -194,8 +361,9 @@ async function seedDistrict(
     }
 
     for (const candidate of results) {
-      if (inserted >= SPOTS_PER_DISTRICT) break;
-      if (seen.has(candidate.placeId)) continue;
+      if (inserted >= needed) break;
+      if (areaPlaceIds.has(candidate.placeId)) continue;
+      if (globalUsedPlaceIds.has(candidate.placeId)) continue;
       if (!isFishingRelated(candidate.name, candidate.types)) continue;
 
       await sleep(250);
@@ -220,7 +388,8 @@ async function seedDistrict(
       console.log(`  + ${title}`);
 
       if (dryRun) {
-        seen.add(details.placeId);
+        areaPlaceIds.add(details.placeId);
+        globalUsedPlaceIds.add(details.placeId);
         inserted++;
         continue;
       }
@@ -238,7 +407,7 @@ async function seedDistrict(
           description_zh: description,
           state_id: stateId,
           district_id: districtId,
-          area_id: getGeneralAreaId(districtId),
+          area_id: areaId,
           lat: details.lat,
           lng: details.lng,
           water_type: waterType,
@@ -258,11 +427,15 @@ async function seedDistrict(
         .single();
 
       if (insertError) {
+        if (insertError.message.includes("google_place_id")) {
+          globalUsedPlaceIds.add(details.placeId);
+        }
         console.warn("  insert failed:", insertError.message);
         continue;
       }
 
-      seen.add(details.placeId);
+      areaPlaceIds.add(details.placeId);
+      globalUsedPlaceIds.add(details.placeId);
       inserted++;
 
       if (details.photoReference && spotRow?.id) {
@@ -289,11 +462,16 @@ async function seedDistrict(
     await sleep(300);
   }
 
-  if (inserted < SPOTS_PER_DISTRICT) {
-    console.warn(
-      `  ⚠ only ${inserted}/${SPOTS_PER_DISTRICT} spots found — try adding manually`,
-    );
+  const totalNow = existingCount + inserted;
+  if (totalNow === 0) {
+    console.warn(`  ⚠ no spots found for this area`);
+    return "empty";
   }
+  if (totalNow === 1) {
+    console.log(`  ~ only 1 spot found (acceptable)`);
+    return "partial";
+  }
+  return "ok";
 }
 
 async function main() {
@@ -312,27 +490,58 @@ async function main() {
 
   if (!dryRun) {
     await ensureSeedUser(supabase);
+    await cleanupLegacyDistrictSpots(supabase);
   }
 
-  let districtCount = 0;
+  let globalUsedPlaceIds = await loadGlobalUsedPlaceIds(supabase);
+  let areaCount = 0;
+  const emptyAreas: string[] = [];
+  const partialAreas: string[] = [];
 
-  for (const state of malaysiaStates) {
-    for (const district of state.districts) {
-      if (districtFilter && district.id !== districtFilter) continue;
-      districtCount++;
-      await seedDistrict(
-        supabase,
-        state.id,
-        state.name.en,
-        district.id,
-        district.name.en,
-      );
+  for (const area of malaysiaAreas) {
+    if (stateFilter && area.stateId !== stateFilter) continue;
+    if (areaFilter && area.id !== areaFilter) continue;
+    if (districtFilter && area.districtId !== districtFilter) continue;
+
+    const labels = getLocationLabels(area.stateId, area.districtId);
+    if (!labels) {
+      console.warn(`\n⚠ skipping ${area.id}: unknown state/district`);
+      continue;
+    }
+
+    areaCount++;
+    const result = await seedArea(
+      supabase,
+      globalUsedPlaceIds,
+      area.stateId,
+      labels.stateEn,
+      area.districtId,
+      labels.districtEn,
+      area.id,
+      area.name.en,
+      area.name.ms,
+    );
+
+    if (result === "empty") {
+      emptyAreas.push(`${labels.stateEn} → ${labels.districtEn} → ${area.name.en}`);
+    } else if (result === "partial") {
+      partialAreas.push(`${labels.stateEn} → ${labels.districtEn} → ${area.name.en}`);
     }
   }
 
   console.log(
-    `\n✅ Done${dryRun ? " (dry run)" : ""} — processed ${districtCount} districts`,
+    `\n✅ Done${dryRun ? " (dry run)" : ""} — processed ${areaCount} areas`,
   );
+  if (partialAreas.length > 0) {
+    console.log(
+      `\n~ ${partialAreas.length} areas with only 1 spot (ok):\n  ${partialAreas.join("\n  ")}`,
+    );
+  }
+  if (emptyAreas.length > 0) {
+    console.warn(
+      `\n⚠ ${emptyAreas.length} areas with no spots:\n  ${emptyAreas.join("\n  ")}`,
+    );
+  }
 }
 
 main().catch((error) => {

@@ -4,6 +4,7 @@ import { CommentsSection } from "@/components/shared/comments-section";
 import type { CommentItem } from "@/components/shared/comments-section";
 import { PhotoAttribution } from "@/components/spots/photo-attribution";
 import { SpotDetailActions } from "@/components/spots/spot-detail-actions";
+import { AdminSpotDelete } from "@/components/spots/admin-spot-delete";
 import { SpotOwnerActions } from "@/components/spots/spot-owner-actions";
 import { SpotJsonLd } from "@/components/seo/spot-json-ld";
 import { AppImage } from "@/components/ui/app-image";
@@ -16,12 +17,15 @@ interface SpotDetailViewProps {
   spot: FishingSpot;
   comments: CommentItem[];
   locale: Locale;
+  /** Dev cleanup — visible only when logged-in admin. */
+  showAdminDelete?: boolean;
 }
 
 export async function SpotDetailView({
   spot,
   comments,
   locale,
+  showAdminDelete = false,
 }: SpotDetailViewProps) {
   const t = await getTranslations("spots");
   const tCommon = await getTranslations("common");
@@ -188,6 +192,10 @@ export async function SpotDetailView({
         />
 
         {isUserGenerated && <SpotOwnerActions spot={spot} />}
+
+        {showAdminDelete && !isUserGenerated && (
+          <AdminSpotDelete spotId={spot.id} />
+        )}
 
         <div className="mt-8">
           <SpotDetailActions

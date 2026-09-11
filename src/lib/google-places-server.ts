@@ -32,41 +32,35 @@ function getKey(): string {
   return key;
 }
 
-export async function searchGooglePlaces(
-  query: string,
-): Promise<GooglePlaceCandidate[]> {
-  const key = getKey();
-  const url = new URL(TEXT_SEARCH_URL);
-  url.searchParams.set("query", query);
-  url.searchParams.set("key", key);
-  url.searchParams.set("region", "my");
+export interface GooglePlacesSearchOptions {
+  /** Bias results toward this point (district center). */
+  lat?: number;
+  lng?: number;
+  /** Search radius in metres when lat/lng are set (default 25 km). */
+  radiusM?: number;
+  /** Follow one next_page_token for more candidates. */
+  pageToken?: string;
+}
 
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Places text search failed: ${response.status}`);
-  }
+type PlacesTextSearchPayload = {
+  status: string;
+  results?: Array<{
+    place_id: string;
+    name: string;
+    formatted_address?: string;
+    geometry?: { location?: { lat?: number; lng?: number } };
+    types?: string[];
+    rating?: number;
+    user_ratings_total?: number;
+  }>;
+  next_page_token?: string;
+  error_message?: string;
+};
 
-  const payload = (await response.json()) as {
-    status: string;
-    results?: Array<{
-      place_id: string;
-      name: string;
-      formatted_address?: string;
-      geometry?: { location?: { lat?: number; lng?: number } };
-      types?: string[];
-      rating?: number;
-      user_ratings_total?: number;
-    }>;
-    error_message?: string;
-  };
-
-  if (payload.status !== "OK" && payload.status !== "ZERO_RESULTS") {
-    throw new Error(
-      payload.error_message ?? `Places text search: ${payload.status}`,
-    );
-  }
-
-  return (payload.results ?? [])
+function mapPlacesResults(
+  rows: PlacesTextSearchPayload["results"],
+): GooglePlaceCandidate[] {
+  return (rows ?? [])
     .filter(
       (row) =>
         row.place_id &&
@@ -84,6 +78,95 @@ export async function searchGooglePlaces(
       rating: row.rating,
       userRatingsTotal: row.user_ratings_total,
     }));
+}
+
+export async function searchGooglePlacesPage(
+  query: string,
+  options: GooglePlacesSearchOptions = {},
+): Promise<{ results: GooglePlaceCandidate[]; nextPageToken?: string }> {
+  const key = getKey();
+  const url = new URL(TEXT_SEARCH_URL);
+  url.searchParams.set("key", key);
+  url.searchParams.set("region", "my");
+
+  if (options.pageToken) {
+    url.searchParams.set("pagetoken", options.pageToken);
+  } else {
+    url.searchParams.set("query", query);
+    if (options.lat != null && options.lng != null) {
+      url.searchParams.set("location", `${options.lat},${options.lng}`);
+      url.searchParams.set("radius", String(options.radiusM ?? 25_000));
+    }
+  }
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Places text search failed: ${response.status}`);
+  }
+
+  const payload = (await response.json()) as PlacesTextSearchPayload;
+
+  if (payload.status !== "OK" && payload.status !== "ZERO_RESULTS") {
+    throw new Error(
+      payload.error_message ?? `Places text search: ${payload.status}`,
+    );
+  }
+
+  return {
+    results: mapPlacesResults(payload.results),
+    nextPageToken: payload.next_page_token,
+  };
+}
+
+export async function searchGooglePlaces(
+  query: string,
+  options: GooglePlacesSearchOptions = {},
+): Promise<GooglePlaceCandidate[]> {
+  const { results } = await searchGooglePlacesPage(query, options);
+  return results;
+}
+
+const GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
+
+async function geocodeAddress(
+  address: string,
+): Promise<{ lat: number; lng: number } | null> {
+  const key = getKey();
+  const url = new URL(GEOCODE_URL);
+  url.searchParams.set("address", address);
+  url.searchParams.set("key", key);
+  url.searchParams.set("region", "my");
+
+  const response = await fetch(url);
+  if (!response.ok) return null;
+
+  const payload = (await response.json()) as {
+    status: string;
+    results?: Array<{ geometry?: { location?: { lat?: number; lng?: number } } }>;
+  };
+
+  if (payload.status !== "OK" || !payload.results?.[0]?.geometry?.location) {
+    return null;
+  }
+
+  const { lat, lng } = payload.results[0].geometry.location;
+  if (lat == null || lng == null) return null;
+  return { lat, lng };
+}
+
+export async function geocodeDistrictCenter(
+  districtEn: string,
+  stateEn: string,
+): Promise<{ lat: number; lng: number } | null> {
+  return geocodeAddress(`${districtEn}, ${stateEn}, Malaysia`);
+}
+
+export async function geocodeAreaCenter(
+  areaEn: string,
+  districtEn: string,
+  stateEn: string,
+): Promise<{ lat: number; lng: number } | null> {
+  return geocodeAddress(`${areaEn}, ${districtEn}, ${stateEn}, Malaysia`);
 }
 
 export async function fetchGooglePlaceDetails(

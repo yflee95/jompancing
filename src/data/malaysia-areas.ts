@@ -18,49 +18,73 @@ export const malaysiaAreas: Area[] = [
   { id: "larkin", slug: "larkin", stateId: "johor", districtId: "johor-bahru", name: { ms: "Larkin", en: "Larkin", zh: "Larkin" } },
   { id: "ulu-tiram", slug: "ulu-tiram", stateId: "johor", districtId: "johor-bahru", name: { ms: "Ulu Tiram", en: "Ulu Tiram", zh: "乌鲁地南" } },
   { id: "taman-puteri-wangsa", slug: "taman-puteri-wangsa", stateId: "johor", districtId: "johor-bahru", name: { ms: "Taman Puteri Wangsa", en: "Taman Puteri Wangsa", zh: "公主城花园" } },
+  { id: "masai", slug: "masai", stateId: "johor", districtId: "johor-bahru", name: { ms: "Masai", en: "Masai", zh: "马西" } },
+  { id: "permas-jaya", slug: "permas-jaya", stateId: "johor", districtId: "johor-bahru", name: { ms: "Permas Jaya", en: "Permas Jaya", zh: "Permas Jaya" } },
+  { id: "skudai", slug: "skudai", stateId: "johor", districtId: "johor-bahru", name: { ms: "Skudai", en: "Skudai", zh: "士古来" } },
+  { id: "tebrau", slug: "tebrau", stateId: "johor", districtId: "johor-bahru", name: { ms: "Tebrau", en: "Tebrau", zh: "地不佬" } },
+  { id: "kempas", slug: "kempas", stateId: "johor", districtId: "johor-bahru", name: { ms: "Kempas", en: "Kempas", zh: "金葩斯" } },
+  { id: "senai", slug: "senai", stateId: "johor", districtId: "johor-bahru", name: { ms: "Senai", en: "Senai", zh: "士乃" } },
+  { id: "bandar-seri-alam", slug: "bandar-seri-alam", stateId: "johor", districtId: "johor-bahru", name: { ms: "Bandar Seri Alam", en: "Bandar Seri Alam", zh: "Bandar Seri Alam" } },
+  { id: "taman-molek", slug: "taman-molek", stateId: "johor", districtId: "johor-bahru", name: { ms: "Taman Molek", en: "Taman Molek", zh: "花园摩力" } },
 
   // Johor — Pontian
   { id: "pontian-coast", slug: "pontian-coast", stateId: "johor", districtId: "pontian", name: { ms: "Pesisir Pontian", en: "Pontian Coast", zh: "笨珍沿海" } },
   { id: "pontian-jetty", slug: "pontian-jetty", stateId: "johor", districtId: "pontian", name: { ms: "Jeti Pontian", en: "Pontian Jetty", zh: "笨珍码头" } },
   { id: "kukup", slug: "kukup", stateId: "johor", districtId: "pontian", name: { ms: "Kukup", en: "Kukup", zh: "龟咯" } },
+  { id: "benut", slug: "benut", stateId: "johor", districtId: "pontian", name: { ms: "Benut", en: "Benut", zh: "文律" } },
+  { id: "ayer-baloi", slug: "ayer-baloi", stateId: "johor", districtId: "pontian", name: { ms: "Ayer Baloi", en: "Ayer Baloi", zh: "亚逸峇礼" } },
 
   // Johor — Muar
   { id: "muar-jetty", slug: "muar-jetty", stateId: "johor", districtId: "muar", name: { ms: "Jeti Muar", en: "Muar Jetty", zh: "麻坡码头" } },
   { id: "sungai-muar", slug: "sungai-muar", stateId: "johor", districtId: "muar", name: { ms: "Sungai Muar", en: "Muar River", zh: "麻坡河" } },
   { id: "tanjung-emu", slug: "tanjung-emu", stateId: "johor", districtId: "muar", name: { ms: "Tanjung Emu", en: "Tanjung Emu", zh: "丹绒埃姆" } },
+  { id: "parit-jawa", slug: "parit-jawa", stateId: "johor", districtId: "muar", name: { ms: "Parit Jawa", en: "Parit Jawa", zh: "巴冬爪哇" } },
+  { id: "tanjung-agasi", slug: "tanjung-agasi", stateId: "johor", districtId: "muar", name: { ms: "Tanjung Agas", en: "Tanjung Agas", zh: "丹绒阿加斯" } },
 
   // Johor — Kota Tinggi
   { id: "sungai-rinting", slug: "sungai-rinting", stateId: "johor", districtId: "kotatinggi", name: { ms: "Sungai Rinting", en: "Sungai Rinting", zh: "Rinting 河" } },
   { id: "desaru-coast", slug: "desaru-coast", stateId: "johor", districtId: "kotatinggi", name: { ms: "Pesisir Desaru", en: "Desaru Coast", zh: "迪沙鲁沿海" } },
   { id: "pengerang", slug: "pengerang", stateId: "johor", districtId: "kotatinggi", name: { ms: "Pengerang", en: "Pengerang", zh: "边佳兰" } },
+  { id: "kota-tinggi-town", slug: "kota-tinggi-town", stateId: "johor", districtId: "kotatinggi", name: { ms: "Bandar Kota Tinggi", en: "Kota Tinggi Town", zh: "哥打丁宜市" } },
+  { id: "sungai-ria", slug: "sungai-ria", stateId: "johor", districtId: "kotatinggi", name: { ms: "Sungai Ria", en: "Sungai Ria", zh: "Sungai Ria" } },
 
   // ── Selangor — Petaling ──
   { id: "ss2", slug: "ss2", stateId: "selangor", districtId: "petaling", name: { ms: "SS2", en: "SS2", zh: "SS2" } },
   { id: "kelana-jaya", slug: "kelana-jaya", stateId: "selangor", districtId: "petaling", name: { ms: "Kelana Jaya", en: "Kelana Jaya", zh: "格拉那再也" } },
   { id: "subang-jaya", slug: "subang-jaya", stateId: "selangor", districtId: "petaling", name: { ms: "Subang Jaya", en: "Subang Jaya", zh: "梳邦再也" } },
   { id: "shah-alam-lake", slug: "shah-alam-lake", stateId: "selangor", districtId: "petaling", name: { ms: "Tasik Shah Alam", en: "Shah Alam Lake", zh: "莎阿南湖" } },
+  { id: "puchong", slug: "puchong", stateId: "selangor", districtId: "petaling", name: { ms: "Puchong", en: "Puchong", zh: "蒲种" } },
+  { id: "damansara", slug: "damansara", stateId: "selangor", districtId: "petaling", name: { ms: "Damansara", en: "Damansara", zh: "万达" } },
+  { id: "wangsa-maju", slug: "wangsa-maju", stateId: "selangor", districtId: "petaling", name: { ms: "Wangsa Maju", en: "Wangsa Maju", zh: "旺沙玛珠" } },
 
   // Selangor — Klang
   { id: "klang-town", slug: "klang-town", stateId: "selangor", districtId: "klang", name: { ms: "Bandar Klang", en: "Klang Town", zh: "巴生市" } },
   { id: "port-klang", slug: "port-klang", stateId: "selangor", districtId: "klang", name: { ms: "Pelabuhan Klang", en: "Port Klang", zh: "巴生港" } },
   { id: "pulau-ketam", slug: "pulau-ketam", stateId: "selangor", districtId: "klang", name: { ms: "Pulau Ketam", en: "Pulau Ketam", zh: "吉胆岛" } },
   { id: "kapar-coast", slug: "kapar-coast", stateId: "selangor", districtId: "klang", name: { ms: "Pesisir Kapar", en: "Kapar Coast", zh: "加埔沿海" } },
+  { id: "pandamaran", slug: "pandamaran", stateId: "selangor", districtId: "klang", name: { ms: "Pandamaran", en: "Pandamaran", zh: "班达马兰" } },
+  { id: "telok-gong", slug: "telok-gong", stateId: "selangor", districtId: "klang", name: { ms: "Telok Gong", en: "Telok Gong", zh: "Telok Gong" } },
 
   // Selangor — Hulu Langat
   { id: "cheras-pond", slug: "cheras-pond", stateId: "selangor", districtId: "hulu-langat", name: { ms: "Kolam Cheras", en: "Cheras Ponds", zh: "蕉赖鱼塘" } },
   { id: "kajang", slug: "kajang", stateId: "selangor", districtId: "hulu-langat", name: { ms: "Kajang", en: "Kajang", zh: "加影" } },
   { id: "semenyih", slug: "semenyih", stateId: "selangor", districtId: "hulu-langat", name: { ms: "Semenyih", en: "Semenyih", zh: "士毛月" } },
+  { id: "ampang", slug: "ampang", stateId: "selangor", districtId: "hulu-langat", name: { ms: "Ampang", en: "Ampang", zh: "安邦" } },
+  { id: "bangi", slug: "bangi", stateId: "selangor", districtId: "hulu-langat", name: { ms: "Bangi", en: "Bangi", zh: "万宜" } },
 
   // ── Penang — Timur Laut ──
   { id: "tanjung-bungah", slug: "tanjung-bungah", stateId: "penang", districtId: "timur-laut", name: { ms: "Tanjung Bungah", en: "Tanjung Bungah", zh: "丹绒bungah" } },
   { id: "gurney", slug: "gurney", stateId: "penang", districtId: "timur-laut", name: { ms: "Gurney", en: "Gurney", zh: "Gurney" } },
   { id: "georgetown-jetty", slug: "georgetown-jetty", stateId: "penang", districtId: "timur-laut", name: { ms: "Jeti Georgetown", en: "Georgetown Jetty", zh: "乔治市码头" } },
   { id: "batu-ferringhi", slug: "batu-ferringhi", stateId: "penang", districtId: "timur-laut", name: { ms: "Batu Ferringhi", en: "Batu Ferringhi", zh: "巴都丁宜" } },
+  { id: "pulau-tikus", slug: "pulau-tikus", stateId: "penang", districtId: "timur-laut", name: { ms: "Pulau Tikus", en: "Pulau Tikus", zh: "牛汝莪" } },
+  { id: "tanjung-tokong", slug: "tanjung-tokong", stateId: "penang", districtId: "timur-laut", name: { ms: "Tanjung Tokong", en: "Tanjung Tokong", zh: "丹绒道光" } },
 
   // Penang — Barat Daya
   { id: "balik-pulau", slug: "balik-pulau", stateId: "penang", districtId: "barat-daya", name: { ms: "Balik Pulau", en: "Balik Pulau", zh: "浮罗山背" } },
   { id: "teluk-kumbar", slug: "teluk-kumbar", stateId: "penang", districtId: "barat-daya", name: { ms: "Teluk Kumbar", en: "Teluk Kumbar", zh: "公巴" } },
   { id: "gertak-sanggul", slug: "gertak-sanggul", stateId: "penang", districtId: "barat-daya", name: { ms: "Gertak Sanggul", en: "Gertak Sanggul", zh: "格达桑古" } },
+  { id: "bayan-lepas", slug: "bayan-lepas", stateId: "penang", districtId: "barat-daya", name: { ms: "Bayan Lepas", en: "Bayan Lepas", zh: "峇六拜" } },
 
   // ── Sabah — Kota Kinabalu ──
   { id: "jesselton", slug: "jesselton", stateId: "sabah", districtId: "kota-kinabalu", name: { ms: "Jesselton Point", en: "Jesselton Point", zh: "Jesselton Point" } },

@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getSessionAdminEmail } from "@/lib/admin";
 import { SpotDetailView } from "@/components/spots/spot-detail-view";
 import { UserSpotDetail } from "@/components/spots/user-spot-detail";
 import { buildPageMetadata } from "@/lib/seo";
@@ -66,8 +67,15 @@ export default async function SpotDetailPage({ params }: SpotDetailPageProps) {
           /* empty comments */
         }
 
+        const showAdminDelete = !!(await getSessionAdminEmail());
+
         return (
-          <SpotDetailView spot={dbSpot} comments={dbComments} locale={locale} />
+          <SpotDetailView
+            spot={dbSpot}
+            comments={dbComments}
+            locale={locale}
+            showAdminDelete={showAdminDelete}
+          />
         );
       }
     } catch {
