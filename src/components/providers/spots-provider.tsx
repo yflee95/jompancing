@@ -14,21 +14,24 @@ import {
   deleteSpotFromDb,
   fetchSpotsFromDb,
   insertSpotToDb,
+  updateSpotInDb,
 } from "@/lib/supabase/spots";
 import type {
   FishingSpot,
   LocalizedString,
   NewSpotInput,
+  UpdateSpotInput,
 } from "@/types";
 
 const DEMO_STORAGE_KEY = "jompancing_user_spots";
 
-export type { NewSpotInput };
+export type { NewSpotInput, UpdateSpotInput };
 
 interface SpotsContextValue {
   userSpots: FishingSpot[];
   isLoaded: boolean;
   addSpot: (input: NewSpotInput) => Promise<FishingSpot>;
+  updateSpot: (input: UpdateSpotInput) => Promise<FishingSpot>;
   deleteSpot: (spotId: string) => Promise<void>;
   getUserSpotBySlug: (slug: string) => FishingSpot | undefined;
   getMySpots: (authorId: string) => FishingSpot[];
@@ -144,6 +147,47 @@ export function SpotsProvider({ children }: { children: React.ReactNode }) {
     [useDb, userSpots],
   );
 
+  const updateSpot = useCallback(
+    async (input: UpdateSpotInput): Promise<FishingSpot> => {
+      if (useDb) {
+        const spot = await updateSpotInDb(input);
+        setUserSpots((prev) =>
+          prev.map((s) => (s.id === spot.id ? spot : s)),
+        );
+        return spot;
+      }
+
+      const existing = userSpots.find((s) => s.id === input.spotId);
+      if (!existing) throw new Error("Spot not found");
+
+      const cover = input.photos[0] ?? "";
+      const updated: FishingSpot = {
+        ...existing,
+        title: toLocalized(input.title, input.locale),
+        description: toLocalized(input.description, input.locale),
+        stateId: input.stateId,
+        districtId: input.districtId,
+        areaId: input.areaId,
+        areaName: input.areaName,
+        coordinates: input.coordinates,
+        waterType: input.waterType,
+        species: input.tags.filter(Boolean).slice(0, 5),
+        imageUrl: cover,
+        photos: input.photos,
+        tags: input.tags,
+        googleAddress: input.googleAddress,
+        googleMapsUrl: input.googleMapsUrl,
+        visibility: input.visibility,
+      };
+
+      const next = userSpots.map((s) => (s.id === updated.id ? updated : s));
+      setUserSpots(next);
+      persistDemoSpots(next);
+      return updated;
+    },
+    [useDb, userSpots],
+  );
+
   const deleteSpot = useCallback(
     async (spotId: string): Promise<void> => {
       if (useDb) {
@@ -173,12 +217,13 @@ export function SpotsProvider({ children }: { children: React.ReactNode }) {
       userSpots,
       isLoaded,
       addSpot,
+      updateSpot,
       deleteSpot,
       getUserSpotBySlug,
       getMySpots,
       refreshSpots,
     }),
-    [userSpots, isLoaded, addSpot, deleteSpot, getUserSpotBySlug, getMySpots, refreshSpots],
+    [userSpots, isLoaded, addSpot, updateSpot, deleteSpot, getUserSpotBySlug, getMySpots, refreshSpots],
   );
 
   return (

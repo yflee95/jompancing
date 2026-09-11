@@ -6,7 +6,7 @@ import type {
   SpotVisibility,
   WaterType,
 } from "@/types";
-import type { NewSpotInput } from "@/types";
+import type { NewSpotInput, UpdateSpotInput } from "@/types";
 
 type SpotRow = {
   id: string;
@@ -120,6 +120,97 @@ export async function fetchSpotsFromDb(): Promise<FishingSpot[]> {
   return ((data ?? []) as SpotRow[]).map(mapSpotRow);
 }
 
+async function syncSpotPhotos(
+  authorId: string,
+  spotId: string,
+  photos: string[],
+): Promise<string[]> {
+  const supabase = createClient();
+  const { error: deleteError } = await supabase
+    .from("spot_photos")
+    .delete()
+    .eq("spot_id", spotId);
+  if (deleteError) throw deleteError;
+
+  const photoUrls: string[] = [];
+  for (const [i, photo] of photos.entries()) {
+    if (!photo) continue;
+    const url = photo.startsWith("data:")
+      ? await uploadDataUrlPhoto(authorId, spotId, photo, i)
+      : photo;
+    photoUrls.push(url);
+  }
+
+  if (photoUrls.length > 0) {
+    const { error: photosError } = await supabase.from("spot_photos").insert(
+      photoUrls.map((url, sort_order) => ({
+        spot_id: spotId,
+        url,
+        sort_order,
+      })),
+    );
+    if (photosError) throw photosError;
+  }
+
+  return photoUrls;
+}
+
+export async function updateSpotInDb(input: UpdateSpotInput): Promise<FishingSpot> {
+  const supabase = createClient();
+  const title = input.title.trim();
+  const description = input.description.trim() || "—";
+
+  const { error: updateError } = await supabase
+    .from("spots")
+    .update({
+      title_ms: title,
+      title_en: title,
+      title_zh: title,
+      description_ms: description,
+      description_en: description,
+      description_zh: description,
+      state_id: input.stateId,
+      district_id: input.districtId,
+      area_id: input.areaId,
+      area_name: input.areaName ?? null,
+      lat: input.coordinates.lat,
+      lng: input.coordinates.lng,
+      water_type: input.waterType,
+      google_address: input.googleAddress,
+      google_maps_url: input.googleMapsUrl,
+      visibility: input.visibility,
+      tags: input.tags,
+      species: input.tags.filter(Boolean).slice(0, 5),
+    })
+    .eq("id", input.spotId)
+    .eq("author_id", input.authorId);
+
+  if (updateError) throw updateError;
+
+  const photoUrls = await syncSpotPhotos(
+    input.authorId,
+    input.spotId,
+    input.photos,
+  );
+
+  await supabase
+    .from("spots")
+    .update({ image_url: photoUrls[0] ?? "" })
+    .eq("id", input.spotId);
+
+  const { data: refreshed, error: refreshError } = await supabase
+    .from("spots")
+    .select(SPOT_SELECT)
+    .eq("id", input.spotId)
+    .single();
+
+  if (refreshError || !refreshed) {
+    throw refreshError ?? new Error("Failed to load spot");
+  }
+
+  return mapSpotRow(refreshed as SpotRow);
+}
+
 export async function deleteSpotFromDb(spotId: string): Promise<void> {
   const supabase = createClient();
   const { error } = await supabase.from("spots").delete().eq("id", spotId);
@@ -163,25 +254,13 @@ export async function insertSpotToDb(input: NewSpotInput): Promise<FishingSpot> 
 
   if (spotError || !spotRow) throw spotError ?? new Error("Failed to create spot");
 
-  const photoUrls: string[] = [];
-  for (const [i, photo] of input.photos.entries()) {
-    if (!photo) continue;
-    const url = photo.startsWith("data:")
-      ? await uploadDataUrlPhoto(input.authorId, spotRow.id, photo, i)
-      : photo;
-    photoUrls.push(url);
-  }
+  const photoUrls = await syncSpotPhotos(
+    input.authorId,
+    spotRow.id,
+    input.photos,
+  );
 
   if (photoUrls.length > 0) {
-    const { error: photosError } = await supabase.from("spot_photos").insert(
-      photoUrls.map((url, sort_order) => ({
-        spot_id: spotRow.id,
-        url,
-        sort_order,
-      })),
-    );
-    if (photosError) throw photosError;
-
     await supabase
       .from("spots")
       .update({ image_url: photoUrls[0] })

@@ -158,6 +158,16 @@
     "deleteSpotConfirm": "Padam tempat ini kekal? Tindakan ini tidak boleh dibatalkan.",
     "deleteSpotProgress": "Memadam…",
     "deleteSpotFailed": "Gagal memadam — sila cuba lagi.",
+    "editSpot": "Edit tempat",
+    "editSpotTitle": "Edit tempat anda",
+    "editSpotHint": "Kemas kini foto, penerangan atau lokasi. Komen dan pautan kekal sama.",
+    "editSpotForbidden": "Anda hanya boleh edit tempat yang anda kongsi.",
+    "backToSpot": "Kembali ke tempat",
+    "saveSpot": "Simpan perubahan",
+    "updateSpotProgress": "Menyimpan…",
+    "updateSpotFailed": "Gagal simpan — sila cuba lagi.",
+    "manageSpotTitle": "Tempat anda",
+    "manageSpotDesc": "Kemas kini butiran atau buang senarai ini.",
     "loginForDirections": "Log masuk untuk buka navigasi Google Maps",
     "noSpots": "Tiada tempat di kawasan ini lagi",
     "beFirst": "Jadilah yang pertama kongsi tempat di sini!",
@@ -425,6 +435,70 @@
     "verifyEmailStep3": "Kembali ke sini dan log masuk dengan e-mel & kata laluan.",
     "verifyEmailSpam": "Tak terima e-mel? Semak spam atau promotions, atau tunggu beberapa minit.",
     "verifyEmailBackToLogin": "Sudah sahkan — log masuk"
+  },
+  "legal": {
+    "privacyTitle": "Dasar Privasi",
+    "privacyIntro": "Bagaimana Jompancing mengumpul dan menggunakan maklumat anda.",
+    "privacyUpdated": "Kemas kini terakhir: September 2026",
+    "privacySections": [
+      {
+        "title": "Siapa kami",
+        "body": "Jompancing (jompancing.my) ialah platform komuniti memancing Malaysia untuk berkongsi tempat, aktiviti, dan gear."
+      },
+      {
+        "title": "Maklumat yang kami kumpul",
+        "body": "Maklumat akaun (nama, e-mel, foto profil), kandungan yang anda siarkan (tempat, foto, forum, komen, senarai kedai, aktiviti), dan lokasi anggaran jika anda guna GPS."
+      },
+      {
+        "title": "Cara kami guna",
+        "body": "Untuk operasi perkhidmatan: papar siaran anda, kekalkan log masuk, perbaiki peta dan carian. Kami tidak jual data peribadi anda."
+      },
+      {
+        "title": "Pihak ketiga",
+        "body": "Kami guna Supabase, Vercel, dan Google (Maps & carian alamat). WhatsApp untuk kedai dan aktiviti berlaku di luar platform antara pengguna."
+      },
+      {
+        "title": "Pilihan anda",
+        "body": "Anda boleh padam tempat sendiri, log keluar, atau hubungi kami untuk padam akaun. Siaran tetamu masih cipta sesi auth sementara untuk muat naik foto."
+      },
+      {
+        "title": "Hubungi",
+        "body": "Soalan: hello@jompancing.my"
+      }
+    ],
+    "termsTitle": "Terma Penggunaan",
+    "termsIntro": "Peraturan menggunakan Jompancing.",
+    "termsUpdated": "Kemas kini terakhir: September 2026",
+    "termsSections": [
+      {
+        "title": "Penerimaan",
+        "body": "Dengan menggunakan Jompancing anda bersetuju dengan terma ini."
+      },
+      {
+        "title": "Kandungan anda",
+        "body": "Anda miliki foto dan teks yang disiarkan. Anda beri kami lesen untuk papar di platform. Jangan siar kandungan haram atau foto orang lain tanpa izin."
+      },
+      {
+        "title": "Kelakuan komuniti",
+        "body": "Bersikap hormat. Tiada gangguan, spam, atau penipuan. Kami boleh buang kandungan atau gantung akaun."
+      },
+      {
+        "title": "Kedai & aktiviti",
+        "body": "Jual beli COD dan acara adalah antara pengguna — Jompancing tidak bertanggungjawab atas pertikaian atau kerugian."
+      },
+      {
+        "title": "Keselamatan memancing",
+        "body": "Semak undang-undang, lesen, dan cuaca tempatan. Lokasi tempat dari pengguna dan mungkin tidak tepat. Anda tanggung risiko sendiri."
+      },
+      {
+        "title": "Penafian",
+        "body": "Perkhidmatan disediakan \"seadanya\". Kami boleh ubah atau hentikan ciri pada bila-bila masa."
+      },
+      {
+        "title": "Hubungi",
+        "body": "Soalan: hello@jompancing.my"
+      }
+    ]
   },
   "footer": {
     "about": "Tentang",

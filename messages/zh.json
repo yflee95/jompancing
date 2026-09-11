@@ -158,6 +158,16 @@
     "deleteSpotConfirm": "确定永久删除此钓点？此操作无法撤销。",
     "deleteSpotProgress": "删除中…",
     "deleteSpotFailed": "删除失败 — 请重试。",
+    "editSpot": "编辑钓点",
+    "editSpotTitle": "编辑你的钓点",
+    "editSpotHint": "可更新照片、描述或位置。留言和链接保持不变。",
+    "editSpotForbidden": "你只能编辑自己分享的钓点。",
+    "backToSpot": "返回钓点",
+    "saveSpot": "保存更改",
+    "updateSpotProgress": "保存中…",
+    "updateSpotFailed": "保存失败，请重试。",
+    "manageSpotTitle": "你的钓点",
+    "manageSpotDesc": "更新内容或移除此钓点。",
     "loginForDirections": "登录后打开 Google 地图导航",
     "noSpots": "此区域暂无钓点",
     "beFirst": "成为第一个分享钓点的人！",
@@ -425,6 +435,70 @@
     "verifyEmailStep3": "回到此页，用邮箱和密码登录。",
     "verifyEmailSpam": "没收到邮件？请查看垃圾邮件或推广文件夹，或稍等几分钟。",
     "verifyEmailBackToLogin": "已确认 — 去登录"
+  },
+  "legal": {
+    "privacyTitle": "隐私政策",
+    "privacyIntro": "Jompancing 如何收集和使用你的信息。",
+    "privacyUpdated": "最后更新：2026年9月",
+    "privacySections": [
+      {
+        "title": "我们是谁",
+        "body": "Jompancing（jompancing.my）是马来西亚钓鱼社区平台，用于分享钓点、活动和渔具信息。"
+      },
+      {
+        "title": "我们收集的信息",
+        "body": "账户信息（姓名、邮箱、头像）、你发布的内容（钓点、照片、论坛、留言、商城、活动），以及你启用 GPS 时的大致位置。"
+      },
+      {
+        "title": "如何使用",
+        "body": "用于运营服务：向其他钓友展示你的内容、保持登录、改进地图和搜索。我们不会出售你的个人数据。"
+      },
+      {
+        "title": "第三方服务",
+        "body": "我们使用 Supabase、Vercel 和 Google（地图与地址搜索）。商城和活动的 WhatsApp 联系在用户之间进行，不在平台内完成交易。"
+      },
+      {
+        "title": "你的选择",
+        "body": "你可删除自己的钓点、随时登出，或联系我们删除账户。访客发钓点仍会创建临时会话以上传照片。"
+      },
+      {
+        "title": "联系",
+        "body": "问题请联系：hello@jompancing.my"
+      }
+    ],
+    "termsTitle": "使用条款",
+    "termsIntro": "使用 Jompancing 的规则。",
+    "termsUpdated": "最后更新：2026年9月",
+    "termsSections": [
+      {
+        "title": "接受条款",
+        "body": "使用 Jompancing 即表示你同意这些条款。"
+      },
+      {
+        "title": "你的内容",
+        "body": "你保留所发布照片和文字的所有权，并授权我们在平台上展示。请勿发布违法内容或他人照片。"
+      },
+      {
+        "title": "社区行为",
+        "body": "请互相尊重。禁止骚扰、 spam 或诈骗。我们可删除内容或暂停账户。"
+      },
+      {
+        "title": "商城与活动",
+        "body": "货到付款和线下活动由用户自行交易，Jompancing 不对纠纷或损失负责。"
+      },
+      {
+        "title": "钓鱼与安全",
+        "body": "请遵守当地法规、执照和天气。钓点位置由用户提供，可能不准确，安全自负。"
+      },
+      {
+        "title": "免责声明",
+        "body": "服务按「现状」提供，我们可随时更改或停止功能。"
+      },
+      {
+        "title": "联系",
+        "body": "问题请联系：hello@jompancing.my"
+      }
+    ]
   },
   "footer": {
     "about": "关于",

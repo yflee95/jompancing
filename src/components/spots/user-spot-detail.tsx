@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ExternalLink, Lock, MapPin, Trash2 } from "lucide-react";
+import { useEffect } from "react";
+import { ExternalLink, Lock, MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useUserSpots } from "@/components/providers/spots-provider";
-import { Button } from "@/components/ui/button";
 import { CommentsSection } from "@/components/shared/comments-section";
 import { SpotDetailActions } from "@/components/spots/spot-detail-actions";
+import { SpotOwnerActions } from "@/components/spots/spot-owner-actions";
 import { Badge } from "@/components/ui/badge";
 import { getSpotLocationLine } from "@/lib/spot-location";
 import { getLocalizedText } from "@/types";
@@ -22,11 +21,8 @@ interface UserSpotDetailProps {
 export function UserSpotDetail({ slug, locale }: UserSpotDetailProps) {
   const t = useTranslations("spots");
   const { user } = useAuth();
-  const router = useRouter();
-  const { getUserSpotBySlug, deleteSpot, isLoaded } = useUserSpots();
+  const { getUserSpotBySlug, isLoaded } = useUserSpots();
   const spot = getUserSpotBySlug(slug);
-  const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   useEffect(() => {
     if (spot) {
@@ -149,33 +145,7 @@ export function UserSpotDetail({ slug, locale }: UserSpotDetailProps) {
           title={t("comments")}
         />
 
-        {isOwner && (
-          <div className="mt-8 rounded-2xl border border-red-100 bg-red-50/50 p-4">
-            <p className="text-sm font-medium text-red-800">{t("deleteSpotTitle")}</p>
-            <p className="mt-1 text-xs text-red-700/80">{t("deleteSpotDesc")}</p>
-            {deleteError && (
-              <p className="mt-2 text-xs text-red-600">{deleteError}</p>
-            )}
-            <Button
-              type="button"
-              variant="outline"
-              disabled={deleting}
-              className="mt-3 border-red-200 text-red-700 hover:bg-red-100 hover:text-red-800"
-              onClick={() => {
-                if (!window.confirm(t("deleteSpotConfirm"))) return;
-                setDeleting(true);
-                setDeleteError(null);
-                void deleteSpot(spot.id)
-                  .then(() => router.push("/spots"))
-                  .catch(() => setDeleteError(t("deleteSpotFailed")))
-                  .finally(() => setDeleting(false));
-              }}
-            >
-              <Trash2 className="h-4 w-4" />
-              {deleting ? t("deleteSpotProgress") : t("deleteSpot")}
-            </Button>
-          </div>
-        )}
+        {isOwner && <SpotOwnerActions spot={spot} />}
 
         <div className="mt-8">
           <SpotDetailActions lat={spot.coordinates.lat} lng={spot.coordinates.lng} />

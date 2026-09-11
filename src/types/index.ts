@@ -58,6 +58,25 @@ export interface Coordinates {
   lng: number;
 }
 
+export interface UpdateSpotInput {
+  spotId: string;
+  authorId: string;
+  locale: Locale;
+  title: string;
+  description: string;
+  googleAddress: string;
+  googleMapsUrl: string;
+  coordinates: Coordinates;
+  waterType: WaterType;
+  tags: string[];
+  photos: string[];
+  visibility: SpotVisibility;
+  stateId: string;
+  districtId: string;
+  areaId: string;
+  areaName?: string;
+}
+
 export interface NewSpotInput {
   title: string;
   description: string;

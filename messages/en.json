@@ -158,6 +158,16 @@
     "deleteSpotConfirm": "Delete this spot permanently? This cannot be undone.",
     "deleteSpotProgress": "Deleting…",
     "deleteSpotFailed": "Could not delete — please try again.",
+    "editSpot": "Edit spot",
+    "editSpotTitle": "Edit your spot",
+    "editSpotHint": "Update photos, description, or location. Comments and link stay the same.",
+    "editSpotForbidden": "You can only edit spots you shared.",
+    "backToSpot": "Back to spot",
+    "saveSpot": "Save changes",
+    "updateSpotProgress": "Saving…",
+    "updateSpotFailed": "Could not save — please try again.",
+    "manageSpotTitle": "Your spot",
+    "manageSpotDesc": "Update details or remove this listing.",
     "loginForDirections": "Sign in to open Google Maps directions",
     "noSpots": "No spots in this area yet",
     "beFirst": "Be the first to share a spot here!",
@@ -425,6 +435,70 @@
     "verifyEmailStep3": "Come back here and log in with your email and password.",
     "verifyEmailSpam": "Didn't get the email? Check spam or promotions, or wait a few minutes and try again.",
     "verifyEmailBackToLogin": "I've confirmed — log in"
+  },
+  "legal": {
+    "privacyTitle": "Privacy Policy",
+    "privacyIntro": "How Jompancing collects and uses your information.",
+    "privacyUpdated": "Last updated: September 2026",
+    "privacySections": [
+      {
+        "title": "Who we are",
+        "body": "Jompancing (jompancing.my) is a Malaysia fishing community platform. We help anglers share spots, join activities, and connect on gear listings."
+      },
+      {
+        "title": "Information we collect",
+        "body": "Account info (name, email, profile photo via Google or email sign-in), content you post (spots, photos, forum posts, comments, marketplace listings, activities), and approximate location when you choose GPS features."
+      },
+      {
+        "title": "How we use it",
+        "body": "To run the service: show your posts to other users, keep you signed in, improve maps and search, and prevent abuse. We do not sell your personal data."
+      },
+      {
+        "title": "Third parties",
+        "body": "We use Supabase (database & auth), Vercel (hosting), and Google (Maps & address search). WhatsApp contact for marketplace and activities happens off-platform between users."
+      },
+      {
+        "title": "Your choices",
+        "body": "You can delete spots you own, sign out anytime, or contact us to request account deletion. Guest (anonymous) spot posts still create a temporary auth session to upload photos."
+      },
+      {
+        "title": "Contact",
+        "body": "Questions: hello@jompancing.my"
+      }
+    ],
+    "termsTitle": "Terms of Use",
+    "termsIntro": "Rules for using Jompancing.",
+    "termsUpdated": "Last updated: September 2026",
+    "termsSections": [
+      {
+        "title": "Acceptance",
+        "body": "By using Jompancing you agree to these terms. If you disagree, please do not use the site."
+      },
+      {
+        "title": "Your content",
+        "body": "You keep ownership of photos and text you post. You grant us a licence to display and share them on the platform so other anglers can see them. Do not post illegal content, private property trespass encouragement, or others' photos without permission."
+      },
+      {
+        "title": "Community conduct",
+        "body": "Be respectful. No harassment, spam, scams, or false spot information. We may remove content or suspend accounts that break these rules."
+      },
+      {
+        "title": "Marketplace & activities",
+        "body": "Buy/sell and event listings are user-generated. COD and meet-ups are between users — Jompancing is not a party to those transactions and is not responsible for disputes, injuries, or losses."
+      },
+      {
+        "title": "Fishing & safety",
+        "body": "Fishing involves risk. Check local laws, licences, and weather. Spot locations are user-submitted and may be inaccurate. You are responsible for your own safety."
+      },
+      {
+        "title": "Disclaimer",
+        "body": "The service is provided \"as is\" without warranties. We may change or discontinue features at any time."
+      },
+      {
+        "title": "Contact",
+        "body": "Questions: hello@jompancing.my"
+      }
+    ]
   },
   "footer": {
     "about": "About",
