@@ -14,3 +14,10 @@ export const localeLabels: Record<Locale, string> = {
   en: "English",
   zh: "中文",
 };
+
+/** Compact labels shown in the locale switcher buttons */
+export const localeSwitcherLabels: Record<Locale, string> = {
+  ms: "MS",
+  en: "EN",
+  zh: "中",
+};

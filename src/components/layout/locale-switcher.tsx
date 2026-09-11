@@ -3,7 +3,7 @@
 import { Globe } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
-import { localeLabels, type Locale } from "@/i18n/routing";
+import { localeSwitcherLabels, type Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
 interface LocaleSwitcherProps {
@@ -40,7 +40,7 @@ export function LocaleSwitcher({
         )}
         aria-hidden
       />
-      {(Object.keys(localeLabels) as Locale[]).map((loc) => (
+      {(Object.keys(localeSwitcherLabels) as Locale[]).map((loc) => (
         <button
           key={loc}
           type="button"
@@ -58,7 +58,7 @@ export function LocaleSwitcher({
           aria-label={t(loc)}
           aria-current={locale === loc ? "true" : undefined}
         >
-          {loc.toUpperCase()}
+          {localeSwitcherLabels[loc]}
         </button>
       ))}
     </div>
