@@ -186,11 +186,39 @@ export async function getForumSlugs(): Promise<SitemapSlugEntry[]> {
 
 
 
-export function getActivitySlugs(): SitemapSlugEntry[] {
-  return mockActivities.map((activity) => ({
-    slug: activity.slug,
-    lastModified: safeDate(activity.startDate),
-  }));
+export async function getActivitySlugs(): Promise<SitemapSlugEntry[]> {
+  const seen = new Set<string>();
+  const entries: SitemapSlugEntry[] = [];
+
+  for (const activity of mockActivities) {
+    if (seen.has(activity.slug)) continue;
+    seen.add(activity.slug);
+    entries.push({
+      slug: activity.slug,
+      lastModified: safeDate(activity.startDate),
+    });
+  }
+
+  if (!isSupabaseConfigured()) return entries;
+
+  try {
+    const { fetchPublicActivitySlugsFromDb } = await import(
+      "@/lib/supabase/activities-server"
+    );
+    const rows = await fetchPublicActivitySlugsFromDb();
+    for (const row of rows) {
+      if (!row.slug || seen.has(row.slug)) continue;
+      seen.add(row.slug);
+      entries.push({
+        slug: row.slug,
+        lastModified: safeDate(row.start_date),
+      });
+    }
+  } catch {
+    /* mock slugs only */
+  }
+
+  return entries;
 }
 
 export async function getMarketplaceSlugs(): Promise<SitemapSlugEntry[]> {

@@ -12,7 +12,7 @@ import {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const spotSlugs = await getPublicSpotSlugs();
   const forumSlugs = await getForumSlugs();
-  const activitySlugs = getActivitySlugs();
+  const activitySlugs = await getActivitySlugs();
   const marketplaceSlugs = await getMarketplaceSlugs();
   const entries: MetadataRoute.Sitemap = [];
 
