@@ -11,6 +11,7 @@ interface LoginGateClientProps {
   listingTitle: string;
   loginMessage: string;
   contactLabel: string;
+  compact?: boolean;
 }
 
 export function LoginGateClient({
@@ -18,14 +19,24 @@ export function LoginGateClient({
   listingTitle,
   loginMessage,
   contactLabel,
+  compact = false,
 }: LoginGateClientProps) {
   const { isRegisteredUser } = useAuth();
 
   if (!isRegisteredUser) {
     return (
       <div className="rounded-2xl bg-[var(--sand)] p-3 text-center ring-1 ring-[var(--sand-dark)]/40">
-        <p className="text-[11px] text-[var(--ink-muted)]">{loginMessage}</p>
-        <Button asChild size="sm" variant="outline" className="mt-2 w-full">
+        {!compact ? (
+          <p className="text-[11px] leading-relaxed text-[var(--ink-muted)]">
+            {loginMessage}
+          </p>
+        ) : null}
+        <Button
+          asChild
+          size="sm"
+          variant={compact ? "default" : "outline"}
+          className={`w-full whitespace-normal text-center leading-snug${compact ? "" : " mt-2"}`}
+        >
           <Link href="/login">{contactLabel}</Link>
         </Button>
       </div>
@@ -34,7 +45,7 @@ export function LoginGateClient({
 
   return (
     <Button
-      className="w-full"
+      className="w-full whitespace-normal text-center leading-snug"
       size="sm"
       onClick={() => {
         window.open(

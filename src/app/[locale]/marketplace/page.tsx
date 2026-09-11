@@ -28,7 +28,7 @@ export default async function MarketplacePage({
   setRequestLocale(locale);
 
   return (
-    <div className="mx-auto max-w-6xl overflow-x-hidden px-4 py-6 pb-28 md:pb-8">
+    <div className="mx-auto min-w-0 max-w-6xl px-4 py-6 pb-28 md:pb-8">
       <MarketplaceExplore locale={locale} />
     </div>
   );

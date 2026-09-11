@@ -11,7 +11,7 @@ const railShell =
   "tap-card relative w-[42vw] max-w-[180px] min-w-[140px] shrink-0 snap-start overflow-hidden rounded-3xl md:w-full md:max-w-none md:min-w-0";
 
 const gridShell =
-  "relative overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-travel)] ring-1 ring-black/[0.04]";
+  "relative h-full min-w-0 w-full overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-travel)] ring-1 ring-black/[0.04]";
 
 interface ListingAddCardProps {
   layout?: ShelfLayout;
@@ -33,7 +33,7 @@ export function ListingAddCard({ layout = "rail" }: ListingAddCardProps) {
       <div
         className={cn(
           "relative flex flex-col items-center justify-center p-4 text-center",
-          layout === "rail" ? "aspect-square" : "aspect-square min-h-[220px]",
+          "aspect-square",
         )}
       >
         <div
@@ -78,10 +78,7 @@ export function ListingPlaceholderCard({ layout = "rail" }: ListingPlaceholderCa
       )}
     >
       <div
-        className={cn(
-          "flex aspect-square flex-col items-center justify-center p-4 text-center",
-          layout === "grid" && "min-h-[220px]",
-        )}
+        className="flex aspect-square flex-col items-center justify-center p-4 text-center"
       >
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/50">
           <ShoppingBag className="h-5 w-5 text-[var(--ink-muted)]/40" />
