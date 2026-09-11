@@ -1,35 +1,48 @@
 "use client";
 
 import {
-  CalendarDays,
   Home,
-  MapPin,
-  MessageSquare,
+  Map,
   PlusCircle,
+  ShoppingBag,
+  User,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
+type NavHref =
+  | "/"
+  | "/map"
+  | "/post"
+  | "/marketplace"
+  | "/profile";
+
 type NavItem = {
-  href: "/" | "/spots" | "/post" | "/forum" | "/activities";
+  href: NavHref;
   icon: typeof Home;
   labelKey:
     | "nav.home"
-    | "nav.spots"
+    | "nav.map"
     | "nav.post"
-    | "nav.forum"
-    | "nav.activities";
+    | "nav.marketplace"
+    | "nav.profile";
   accent?: boolean;
 };
 
-const navItems: NavItem[] = [
+/** Mobile: core daily actions — explore home/desktop nav for spots, forum, activities. */
+const mobileNavItems: NavItem[] = [
   { href: "/", icon: Home, labelKey: "nav.home" },
-  { href: "/spots", icon: MapPin, labelKey: "nav.spots" },
+  { href: "/map", icon: Map, labelKey: "nav.map" },
   { href: "/post", icon: PlusCircle, labelKey: "nav.post", accent: true },
-  { href: "/forum", icon: MessageSquare, labelKey: "nav.forum" },
-  { href: "/activities", icon: CalendarDays, labelKey: "nav.activities" },
+  { href: "/marketplace", icon: ShoppingBag, labelKey: "nav.marketplace" },
+  { href: "/profile", icon: User, labelKey: "nav.profile" },
 ];
+
+function isNavActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname.startsWith(href);
+}
 
 export function BottomNav() {
   const pathname = usePathname();
@@ -37,17 +50,17 @@ export function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--sand-dark)]/50 bg-white/95 pb-safe backdrop-blur-xl md:hidden">
-      <div className="mx-auto flex h-[4.25rem] max-w-lg items-center justify-around px-2">
-        {navItems.map(({ href, icon: Icon, labelKey, accent }) => {
-          const isActive =
-            href === "/" ? pathname === "/" : pathname.startsWith(href);
+      <div className="mx-auto flex h-[4.25rem] max-w-lg items-center justify-around px-1">
+        {mobileNavItems.map(({ href, icon: Icon, labelKey, accent }) => {
+          const isActive = isNavActive(pathname, href);
 
           if (accent) {
             return (
               <Link
                 key={href}
                 href={href}
-                className="flex -mt-6 h-[3.25rem] w-[3.25rem] items-center justify-center rounded-full bg-[var(--accent)] text-white shadow-lg shadow-[var(--accent-glow)]"
+                aria-label={t(labelKey)}
+                className="flex -mt-6 h-[3.25rem] w-[3.25rem] shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-white shadow-lg shadow-[var(--accent-glow)]"
               >
                 <Icon className="h-6 w-6" />
               </Link>
@@ -59,14 +72,14 @@ export function BottomNav() {
               key={href}
               href={href}
               className={cn(
-                "relative flex flex-col items-center gap-0.5 px-2 py-1 text-[10px] font-medium transition-colors",
+                "relative flex min-w-0 flex-1 flex-col items-center gap-0.5 px-1 py-1 text-[10px] font-medium transition-colors",
                 isActive
                   ? "text-[var(--ocean)]"
                   : "text-[var(--ink-muted)]",
               )}
             >
-              <Icon className={cn("h-5 w-5", isActive && "stroke-[2.5]")} />
-              <span>{t(labelKey)}</span>
+              <Icon className={cn("h-5 w-5 shrink-0", isActive && "stroke-[2.5]")} />
+              <span className="max-w-full truncate">{t(labelKey)}</span>
               {isActive && (
                 <span className="absolute -bottom-0.5 h-1 w-1 rounded-full bg-[var(--ocean)]" />
               )}
@@ -94,16 +107,15 @@ export function DesktopNav() {
 
   return (
     <nav className="hidden border-b border-[var(--sand-dark)]/40 bg-white/60 md:block">
-      <div className="mx-auto flex max-w-7xl items-center gap-1 px-4 py-1.5 md:px-6">
+      <div className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 py-1.5 md:px-6 scrollbar-none">
         {items.map(({ href, labelKey }) => {
-          const isActive =
-            href === "/" ? pathname === "/" : pathname.startsWith(href);
+          const isActive = isNavActive(pathname, href);
           return (
             <Link
               key={href}
               href={href}
               className={cn(
-                "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                "shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors",
                 isActive
                   ? "bg-[var(--ocean)] text-white"
                   : "text-[var(--ink-muted)] hover:bg-[var(--ocean-light)] hover:text-[var(--ocean)]",
