@@ -151,7 +151,7 @@ function GooglePickerInner({
           if (!latLng) return;
           void applyPin({ lat: latLng.lat, lng: latLng.lng });
         }}
-        className="h-56 w-full sm:h-64"
+        className="h-[min(52vh,420px)] min-h-[280px] w-full sm:min-h-[360px]"
         style={{ width: "100%", height: "100%" }}
       >
         <GoogleMapCamera pinCoords={pinCoords} liveCoords={liveCoords} />
@@ -362,7 +362,10 @@ function LeafletPicker({
 
   return (
     <div className={cn("relative overflow-hidden rounded-2xl ring-1 ring-[var(--sand-dark)]/50", className)}>
-      <div ref={containerRef} className="h-56 w-full sm:h-64" />
+      <div
+        ref={containerRef}
+        className="h-[min(52vh,420px)] min-h-[280px] w-full sm:min-h-[360px]"
+      />
       <div className="pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-black/35 to-transparent px-3 py-2">
         <p className="text-[11px] font-medium text-white drop-shadow">
           {t("mapPickerHint")}
