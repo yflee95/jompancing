@@ -18,7 +18,11 @@ import { resolvePinLocation } from "@/lib/resolve-pin-location";
 import { cn } from "@/lib/utils";
 import type { Coordinates } from "@/types";
 import type { Locale } from "@/i18n/routing";
-import type { Map as LeafletMap, Marker as LeafletMarker } from "leaflet";
+import type {
+  CircleMarker as LeafletCircleMarker,
+  Map as LeafletMap,
+  Marker as LeafletMarker,
+} from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 export interface SpotLocationMapPickerProps {
@@ -238,7 +242,7 @@ function LeafletPicker({
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const pinMarkerRef = useRef<LeafletMarker | null>(null);
-  const userMarkerRef = useRef<LeafletMarker | null>(null);
+  const userMarkerRef = useRef<LeafletCircleMarker | null>(null);
   const [resolving, setResolving] = useState(false);
   const resolvingRef = useRef(false);
 
