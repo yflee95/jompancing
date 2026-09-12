@@ -25,6 +25,11 @@ import { HomeSpotSection } from "@/components/home/home-spot-section";
 import { useUserLocation } from "@/hooks/use-user-location";
 import { getDistanceKm } from "@/lib/geo";
 import { mergePublicSpots } from "@/lib/merge-public-spots";
+import {
+  buildHomeDeckSpots,
+  NEARBY_RADIUS_KM,
+  type SpotWithDistance,
+} from "@/lib/spot-deck-ranking";
 import { buildSpotsBrowseHref } from "@/lib/spots-browse";
 import { mockArticles, mockForumPosts } from "@/data/mock-data";
 import {
@@ -33,14 +38,9 @@ import {
 } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
-type SpotWithDistance = FishingSpot & { distanceKm?: number };
-
 interface HomeExploreProps {
   spots: FishingSpot[];
 }
-
-const NEARBY_RADIUS_KM = 120;
-const DECK_SIZE = 8;
 
 function sortNearbyHot(a: SpotWithDistance, b: SpotWithDistance): number {
   if (a.featured !== b.featured) return a.featured ? -1 : 1;
@@ -111,15 +111,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
       filtered = filtered.filter((s) => s.waterType !== "pond");
     }
 
-    if (hasGps) {
-      const withinRadius = filtered.filter(
-        (s) => s.distanceKm !== undefined && s.distanceKm <= NEARBY_RADIUS_KM,
-      );
-      const pool = withinRadius.length >= 4 ? withinRadius : filtered;
-      return [...pool].sort(sortNearbyHot).slice(0, DECK_SIZE);
-    }
-
-    return [...filtered].sort(sortNationwideHot).slice(0, DECK_SIZE);
+    return buildHomeDeckSpots(filtered, { hasGps });
   }, [spotsWithDistance, activeCategory, hasGps]);
 
   const nearbyHotSpots = useMemo(() => {

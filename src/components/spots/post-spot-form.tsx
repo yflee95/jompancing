@@ -24,6 +24,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { AddressAutocomplete } from "@/components/spots/address-autocomplete";
 import { LocationSelectors } from "@/components/spots/location-selectors";
+import { SpotLocationMapPicker } from "@/components/spots/spot-location-map-picker";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useUserSpots } from "@/components/providers/spots-provider";
 import { getGeneralAreaId } from "@/data/malaysia-areas";
@@ -32,7 +33,7 @@ import { Input, Label, Textarea } from "@/components/ui/input";
 import { useUserLocation } from "@/hooks/use-user-location";
 import { isValidGoogleMapsUrl, parseGoogleMapsUrl } from "@/lib/google-maps";
 import { cn } from "@/lib/utils";
-import type { SpotVisibility, WaterType } from "@/types";
+import type { Coordinates, SpotVisibility, WaterType } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
 const WATER_TYPES: { id: WaterType; icon: typeof Waves }[] = [
@@ -102,6 +103,7 @@ export function PostSpotForm({ defaultWaterType }: PostSpotFormProps = {}) {
   const [districtId, setDistrictId] = useState("");
   const [areaId, setAreaId] = useState("");
   const [areaName, setAreaName] = useState("");
+  const [pinCoords, setPinCoords] = useState<Coordinates | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const userLocation = useUserLocation(locale);
@@ -119,6 +121,7 @@ export function PostSpotForm({ defaultWaterType }: PostSpotFormProps = {}) {
     setAreaName("");
     setGoogleAddress("");
     setGoogleMapsUrl("");
+    setPinCoords(null);
   }
 
   function handleDistrictChange(id: string) {
@@ -127,6 +130,7 @@ export function PostSpotForm({ defaultWaterType }: PostSpotFormProps = {}) {
     setAreaName("");
     setGoogleAddress("");
     setGoogleMapsUrl("");
+    setPinCoords(null);
   }
 
   function applyRegionFromAddress(nextStateId: string, nextDistrictId: string) {
@@ -443,6 +447,18 @@ export function PostSpotForm({ defaultWaterType }: PostSpotFormProps = {}) {
 
         <FormSection step="03" title={t("locationSection")} subtitle={t("locationHint")}>
           <div className="space-y-4">
+            <SpotLocationMapPicker
+              locale={locale}
+              userCoords={userLocation.coords}
+              pinCoords={pinCoords}
+              onPinCoordsChange={setPinCoords}
+              onMapsUrlChange={setGoogleMapsUrl}
+              onAddressChange={setGoogleAddress}
+              onRegionMatch={({ stateId: nextStateId, districtId: nextDistrictId }) =>
+                applyRegionFromAddress(nextStateId, nextDistrictId)
+              }
+            />
+
             <LocationSelectors
               locale={locale}
               stateId={stateId}

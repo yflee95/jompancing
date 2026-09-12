@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { reverseGoogleRegion } from "@/lib/google-geocoding-server";
+import { reverseGoogleLocation } from "@/lib/google-geocoding-server";
 import { getGoogleGeocodingApiKey } from "@/lib/google-maps-config";
 import { matchRegionFromNominatim } from "@/lib/reverse-geocode";
 import type { Locale } from "@/i18n/routing";
@@ -30,10 +30,17 @@ async function reverseGeocodeWithNominatim(
 
   if (!res.ok) return null;
 
-  const data = (await res.json()) as { address?: Record<string, string> };
-  return data.address
-    ? matchRegionFromNominatim(data.address, locale)
-    : null;
+  const data = (await res.json()) as {
+    address?: Record<string, string>;
+    display_name?: string;
+  };
+
+  if (!data.address) return null;
+
+  return {
+    region: matchRegionFromNominatim(data.address, locale),
+    address: data.display_name?.trim() ?? null,
+  };
 }
 
 export async function GET(request: NextRequest) {
@@ -43,23 +50,28 @@ export async function GET(request: NextRequest) {
   const locale = (searchParams.get("locale") ?? "en") as Locale;
 
   if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
-    return NextResponse.json({ region: null }, { status: 400 });
+    return NextResponse.json({ region: null, address: null }, { status: 400 });
   }
 
   try {
     if (getGoogleGeocodingApiKey()) {
-      const googleRegion = await reverseGoogleRegion(lat, lng, locale);
-      if (googleRegion) {
-        return NextResponse.json({ region: googleRegion, source: "google" });
+      const googleHit = await reverseGoogleLocation(lat, lng, locale);
+      if (googleHit) {
+        return NextResponse.json({
+          region: googleHit.region,
+          address: googleHit.address,
+          source: "google",
+        });
       }
     }
 
-    const osmRegion = await reverseGeocodeWithNominatim(lat, lng, locale);
+    const osmHit = await reverseGeocodeWithNominatim(lat, lng, locale);
     return NextResponse.json({
-      region: osmRegion,
-      source: osmRegion ? "osm" : null,
+      region: osmHit?.region ?? null,
+      address: osmHit?.address ?? null,
+      source: osmHit ? "osm" : null,
     });
   } catch {
-    return NextResponse.json({ region: null }, { status: 502 });
+    return NextResponse.json({ region: null, address: null }, { status: 502 });
   }
 }

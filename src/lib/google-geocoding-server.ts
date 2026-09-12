@@ -3,6 +3,7 @@ import { getGoogleGeocodingApiKey } from "@/lib/google-maps-config";
 import {
   matchRegionFromGoogleComponents,
   toGoogleGeocodingLanguage,
+  type InferredUserRegion,
 } from "@/lib/reverse-geocode";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -132,6 +133,15 @@ export async function reverseGoogleRegion(
   lng: number,
   locale: Locale,
 ) {
+  const hit = await reverseGoogleLocation(lat, lng, locale);
+  return hit?.region ?? null;
+}
+
+export async function reverseGoogleLocation(
+  lat: number,
+  lng: number,
+  locale: Locale,
+): Promise<{ region: InferredUserRegion; address: string } | null> {
   const apiKey = getGoogleGeocodingApiKey();
   if (!apiKey) return null;
 
@@ -147,8 +157,15 @@ export async function reverseGoogleRegion(
   const data = (await res.json()) as GoogleGeocodeResponse;
   if (data.status !== "OK" || !data.results?.[0]) return null;
 
-  return matchRegionFromGoogleComponents(
-    data.results[0].address_components,
+  const result = data.results[0];
+  const region = matchRegionFromGoogleComponents(
+    result.address_components,
     locale,
   );
+  if (!region) return null;
+
+  return {
+    region,
+    address: result.formatted_address,
+  };
 }
