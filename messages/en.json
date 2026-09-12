@@ -433,7 +433,7 @@
     "detailsSection": "Spot details",
     "detailsHint": "Tell anglers what makes this place special",
     "locationSection": "Pin on map",
-    "locationHint": "Blue dot = you · Tap the map to pin · Drag to adjust",
+    "locationHint": "Tap the map to pin your spot — Google Maps link fills automatically",
     "pinRequired": "Please pin a spot on the map first",
     "defaultSpotTitle": "Shared fishing spot",
     "mapPickerHint": "Blue dot = you · Tap map to pin spot · Drag pin to adjust",

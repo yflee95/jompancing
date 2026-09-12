@@ -433,7 +433,7 @@
     "detailsSection": "Butiran tempat",
     "detailsHint": "Ceritakan apa yang istimewa di sini",
     "locationSection": "Pin di peta",
-    "locationHint": "Titik biru = anda · Ketik peta untuk pin · Seret untuk laraskan",
+    "locationHint": "Ketik peta untuk pin tempat — pautan Google Maps diisi automatik",
     "pinRequired": "Sila pin tempat di peta dahulu",
     "defaultSpotTitle": "Tempat memancing dikongsi",
     "mapPickerHint": "Titik biru = anda · Ketik peta untuk pin · Seret pin untuk laraskan",

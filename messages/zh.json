@@ -433,7 +433,7 @@
     "detailsSection": "钓点详情",
     "detailsHint": "告诉钓友这里有什么特别",
     "locationSection": "地图定位",
-    "locationHint": "蓝点 = 你的位置 · 点击地图钉选 · 可拖动微调",
+    "locationHint": "点击地图钉选钓点 — Google Maps 链接会自动填入",
     "pinRequired": "请先在地图上钉选钓点",
     "defaultSpotTitle": "钓友分享的钓点",
     "mapPickerHint": "蓝点 = 你的位置 · 点击地图钉选 · 可拖动图钉微调",
