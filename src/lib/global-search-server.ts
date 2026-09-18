@@ -1,4 +1,5 @@
 import { mockForumPosts } from "@/data/mock-data";
+import { shouldUseMockContent } from "@/lib/mock-content";
 import { loadPublicSpots } from "@/lib/public-spots";
 import {
   searchActivitiesInList,
@@ -53,7 +54,10 @@ export async function loadGlobalSearchResults(
   return {
     spots: searchSpotsInList(spots, normalized),
     forum: dedupeForum(
-      searchForumInList([...forumDb, ...mockForumPosts], normalized),
+      searchForumInList(
+        [...forumDb, ...(shouldUseMockContent() ? mockForumPosts : [])],
+        normalized,
+      ),
     ),
     activities: searchActivitiesInList(activities, normalized),
     listings: searchListingsInList(listings, normalized),

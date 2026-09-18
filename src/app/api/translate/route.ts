@@ -1,4 +1,9 @@
 import { NextResponse } from "next/server";
+import {
+  getClientIp,
+  rateLimit,
+  rateLimitResponse,
+} from "@/lib/rate-limit";
 import { z } from "zod";
 import { locales, type Locale } from "@/i18n/routing";
 import { detectLocaleFromText } from "@/lib/translate/detect-locale";
@@ -65,6 +70,12 @@ function columnName(field: "body" | "title", locale: Locale): string {
 }
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const limited = rateLimit(`translate:${ip}`, 40, 60_000);
+  if (!limited.ok) {
+    return rateLimitResponse(limited.retryAfterSec);
+  }
+
   let payload: unknown;
   try {
     payload = await request.json();

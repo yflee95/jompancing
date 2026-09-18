@@ -1,4 +1,5 @@
 import { mockActivities, mockForumPosts } from "@/data/mock-data";
+import { shouldUseMockContent } from "@/lib/mock-content";
 import { getDistrictById, getStateById } from "@/data/malaysia-states";
 import type {
   Activity,
@@ -124,13 +125,17 @@ export function globalSearch(query: string): GlobalSearchResults {
     return { spots: [], forum: [], activities: [], listings: [] };
   }
 
-  const forum = mockForumPosts.filter((post) =>
-    matchesSearchTerms(forumSearchText(post), normalized),
-  );
+  const forum = shouldUseMockContent()
+    ? mockForumPosts.filter((post) =>
+        matchesSearchTerms(forumSearchText(post), normalized),
+      )
+    : [];
 
-  const activities = mockActivities.filter((activity) =>
-    matchesSearchTerms(activitySearchText(activity), normalized),
-  );
+  const activities = shouldUseMockContent()
+    ? mockActivities.filter((activity) =>
+        matchesSearchTerms(activitySearchText(activity), normalized),
+      )
+    : [];
 
   return { spots: [], forum, activities, listings: [] };
 }

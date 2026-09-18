@@ -22,7 +22,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const path of PUBLIC_STATIC_PATHS) {
       entries.push({
         url: absoluteUrl(localePath(locale, path)),
-        lastModified: new Date(),
         changeFrequency: path === "" ? "daily" : "weekly",
         priority: path === "" ? 1 : 0.8,
       });

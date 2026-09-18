@@ -18,6 +18,7 @@ import { ForumProvider } from "@/components/providers/forum-provider";
 import { ActivitiesProvider } from "@/components/providers/activities-provider";
 import { MarketplaceProvider } from "@/components/providers/marketplace-provider";
 import { SpotsProvider } from "@/components/providers/spots-provider";
+import { UserLocationShell } from "@/components/providers/user-location-shell";
 import { routing } from "@/i18n/routing";
 import { WebsiteJsonLd } from "@/components/seo/website-json-ld";
 import { buildRootMetadata } from "@/lib/seo";
@@ -91,26 +92,28 @@ export default async function LocaleLayout({
       <body className="min-h-full bg-[var(--sand)] pb-20 antialiased md:pb-0">
         <WebsiteJsonLd locale={locale as "ms" | "en" | "zh"} description={t("description")} />
         <NextIntlClientProvider messages={messages}>
-          <AuthProvider>
-            <ForumProvider>
-            <SpotsProvider>
-            <ActivitiesProvider>
-            <MarketplaceProvider>
-              <Suspense fallback={null}>
-                <RouteProgress />
-              </Suspense>
-              <Suspense fallback={<div className="sticky top-0 z-50 h-14 border-b border-[var(--sand-dark)]/50 bg-[var(--sand)]/95" />}>
-                <SiteHeader />
-              </Suspense>
-              <ConditionalDesktopNav />
-              <main className="min-h-[calc(100vh-8rem)]">{children}</main>
-              <ConditionalFooter />
-              <BottomNav />
-            </MarketplaceProvider>
-            </ActivitiesProvider>
-            </SpotsProvider>
-            </ForumProvider>
-          </AuthProvider>
+          <UserLocationShell locale={locale as "ms" | "en" | "zh"}>
+            <AuthProvider>
+              <ForumProvider>
+                <SpotsProvider>
+                  <ActivitiesProvider>
+                    <MarketplaceProvider>
+                      <Suspense fallback={null}>
+                        <RouteProgress />
+                      </Suspense>
+                      <Suspense fallback={<div className="sticky top-0 z-50 h-14 border-b border-[var(--sand-dark)]/50 bg-[var(--sand)]/95" />}>
+                        <SiteHeader />
+                      </Suspense>
+                      <ConditionalDesktopNav />
+                      <main className="min-h-[calc(100vh-8rem)]">{children}</main>
+                      <ConditionalFooter />
+                      <BottomNav />
+                    </MarketplaceProvider>
+                  </ActivitiesProvider>
+                </SpotsProvider>
+              </ForumProvider>
+            </AuthProvider>
+          </UserLocationShell>
         </NextIntlClientProvider>
       </body>
     </html>

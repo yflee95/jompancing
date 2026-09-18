@@ -1,4 +1,5 @@
 import { mockForumPosts } from "@/data/mock-data";
+import { shouldUseMockContent } from "@/lib/mock-content";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { fetchForumPostsFromDb } from "@/lib/supabase/forum";
 import type { ForumCategory, ForumPost } from "@/types";
@@ -23,9 +24,10 @@ export async function loadPublicForumPosts(
     }
   }
 
+  const mockPosts = shouldUseMockContent() ? mockForumPosts : [];
   const seenIds = new Set<string>();
   const seenSlugs = new Set<string>();
-  const merged = [...dbPosts, ...mockForumPosts].filter((post) => {
+  const merged = [...dbPosts, ...mockPosts].filter((post) => {
     if (seenIds.has(post.id) || seenSlugs.has(post.slug)) return false;
     seenIds.add(post.id);
     seenSlugs.add(post.slug);

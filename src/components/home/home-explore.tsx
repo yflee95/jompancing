@@ -32,6 +32,7 @@ import {
 } from "@/lib/spot-deck-ranking";
 import { buildSpotsBrowseHref } from "@/lib/spots-browse";
 import { mockArticles, mockForumPosts } from "@/data/mock-data";
+import { shouldUseMockContent } from "@/lib/mock-content";
 import {
   type FishingSpot,
   type WaterType,
@@ -186,7 +187,10 @@ export function HomeExplore({ spots }: HomeExploreProps) {
   const forumCount = useMemo(() => {
     const ids = new Set<string>();
     const slugs = new Set<string>();
-    for (const post of [...userPosts, ...mockForumPosts]) {
+    const forumPosts = shouldUseMockContent()
+      ? [...userPosts, ...mockForumPosts]
+      : userPosts;
+    for (const post of forumPosts) {
       if (ids.has(post.id) || slugs.has(post.slug)) continue;
       ids.add(post.id);
       slugs.add(post.slug);

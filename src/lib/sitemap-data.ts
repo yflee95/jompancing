@@ -8,6 +8,7 @@ import {
 
 } from "@/data/mock-data";
 
+import { shouldUseMockContent } from "@/lib/mock-content";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 import { fetchForumPostsFromDb } from "@/lib/supabase/forum";
@@ -114,23 +115,16 @@ export async function getForumSlugs(): Promise<SitemapSlugEntry[]> {
 
 
 
-  for (const post of mockForumPosts) {
-
-    if (seen.has(post.slug)) continue;
-
-    seen.add(post.slug);
-
-    entries.push({
-
-      slug: post.slug,
-
-      lastModified: safeDate(post.createdAt),
-
-    });
-
+  if (shouldUseMockContent()) {
+    for (const post of mockForumPosts) {
+      if (seen.has(post.slug)) continue;
+      seen.add(post.slug);
+      entries.push({
+        slug: post.slug,
+        lastModified: safeDate(post.createdAt),
+      });
+    }
   }
-
-
 
   if (!isSupabaseConfigured()) return entries;
 
@@ -174,13 +168,15 @@ export async function getActivitySlugs(): Promise<SitemapSlugEntry[]> {
   const seen = new Set<string>();
   const entries: SitemapSlugEntry[] = [];
 
-  for (const activity of mockActivities) {
-    if (seen.has(activity.slug)) continue;
-    seen.add(activity.slug);
-    entries.push({
-      slug: activity.slug,
-      lastModified: safeDate(activity.startDate),
-    });
+  if (shouldUseMockContent()) {
+    for (const activity of mockActivities) {
+      if (seen.has(activity.slug)) continue;
+      seen.add(activity.slug);
+      entries.push({
+        slug: activity.slug,
+        lastModified: safeDate(activity.startDate),
+      });
+    }
   }
 
   if (!isSupabaseConfigured()) return entries;

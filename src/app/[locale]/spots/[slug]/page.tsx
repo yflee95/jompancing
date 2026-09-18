@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: SpotDetailPageProps) {
       path: `/spots/${slug}`,
       title: spot ? t("privateSpot") : t("notFound"),
       description: t("subtitle"),
-      noIndex: spot?.visibility === "private",
+      noIndex: true,
     });
   }
 

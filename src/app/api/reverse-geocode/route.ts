@@ -1,4 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  getClientIp,
+  rateLimit,
+  rateLimitResponse,
+} from "@/lib/rate-limit";
 import { reverseGoogleLocation } from "@/lib/google-geocoding-server";
 import { getGoogleGeocodingApiKey } from "@/lib/google-maps-config";
 import { matchRegionFromNominatim } from "@/lib/reverse-geocode";
@@ -44,6 +49,12 @@ async function reverseGeocodeWithNominatim(
 }
 
 export async function GET(request: NextRequest) {
+  const ip = getClientIp(request);
+  const limited = rateLimit(`reverse-geocode:${ip}`, 60, 60_000);
+  if (!limited.ok) {
+    return rateLimitResponse(limited.retryAfterSec);
+  }
+
   const { searchParams } = request.nextUrl;
   const lat = Number(searchParams.get("lat"));
   const lng = Number(searchParams.get("lng"));

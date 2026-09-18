@@ -5,6 +5,7 @@ import {
   getForumPostBySlug,
   getForumRepliesForPost,
 } from "@/data/mock-data";
+import { shouldUseMockContent } from "@/lib/mock-content";
 import { buildPageMetadata } from "@/lib/seo";
 import { fetchCommentsForThreadServer } from "@/lib/supabase/comments";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -17,16 +18,18 @@ interface ForumThreadPageProps {
 }
 
 async function resolveForumPost(slug: string) {
-  const mockPost = getForumPostBySlug(slug);
-  if (mockPost) return { post: mockPost, source: "mock" as const };
+  if (isSupabaseConfigured()) {
+    try {
+      const dbPost = await fetchForumPostBySlugFromDb(slug);
+      if (dbPost) return { post: dbPost, source: "db" as const };
+    } catch {
+      /* fall through */
+    }
+  }
 
-  if (!isSupabaseConfigured()) return null;
-
-  try {
-    const dbPost = await fetchForumPostBySlugFromDb(slug);
-    if (dbPost) return { post: dbPost, source: "db" as const };
-  } catch {
-    /* fall through */
+  if (shouldUseMockContent()) {
+    const mockPost = getForumPostBySlug(slug);
+    if (mockPost) return { post: mockPost, source: "mock" as const };
   }
 
   return null;
@@ -43,6 +46,7 @@ export async function generateMetadata({ params }: ForumThreadPageProps) {
       path: `/forum/${slug}`,
       title: t("notFound"),
       description: t("subtitle"),
+      noIndex: true,
     });
   }
 

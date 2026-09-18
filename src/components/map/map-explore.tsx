@@ -1,10 +1,20 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import { MapPin, Navigation } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { SpotsMap } from "@/components/map/spots-map";
+
+const SpotsMap = dynamic(
+  () => import("@/components/map/spots-map").then((mod) => mod.SpotsMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-[min(70vh,640px)] min-h-[320px] w-full animate-pulse rounded-2xl bg-[var(--sand-dark)]/20" />
+    ),
+  },
+);
 import { RegionFilters } from "@/components/shared/region-filters";
 import { WaterTypeFilters } from "@/components/shared/water-type-filters";
 import {

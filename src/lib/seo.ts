@@ -22,9 +22,12 @@ export function localePath(locale: Locale, path = ""): string {
 }
 
 export function buildLanguageAlternates(path = ""): Record<string, string> {
-  return Object.fromEntries(
-    locales.map((locale) => [locale, localePath(locale, path)]),
-  );
+  return {
+    "x-default": localePath("ms", path),
+    ...Object.fromEntries(
+      locales.map((locale) => [locale, localePath(locale, path)]),
+    ),
+  };
 }
 
 interface PageMetadataInput {

@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { mockActivities } from "@/data/mock-data";
+import { shouldUseMockContent } from "@/lib/mock-content";
 import { slugify } from "@/lib/slug";
 import { computeFreePromotionEnd } from "@/lib/promotion";
 import { normalizeActivities } from "@/lib/activities";
@@ -131,7 +132,10 @@ export function ActivitiesProvider({ children }: { children: React.ReactNode }) 
 
   const activities = useMemo(
     () =>
-      normalizeActivities([...userActivities, ...mockActivities]),
+      normalizeActivities([
+        ...userActivities,
+        ...(shouldUseMockContent() ? mockActivities : []),
+      ]),
     [userActivities],
   );
 

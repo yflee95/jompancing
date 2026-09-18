@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
+  getClientIp,
+  rateLimit,
+  rateLimitResponse,
+} from "@/lib/rate-limit";
+import {
   buildOsmSearchVariants,
   rankResultsByState,
 } from "@/lib/address-query";
@@ -95,7 +100,19 @@ async function searchOsm(
   return [];
 }
 
+function checkAddressSearchRateLimit(request: NextRequest): Response | null {
+  const ip = getClientIp(request);
+  const limited = rateLimit(`address-search:${ip}`, 30, 60_000);
+  if (!limited.ok) {
+    return rateLimitResponse(limited.retryAfterSec);
+  }
+  return null;
+}
+
 export async function GET(request: NextRequest) {
+  const rateLimited = checkAddressSearchRateLimit(request);
+  if (rateLimited) return rateLimited;
+
   const { searchParams } = request.nextUrl;
   const q = searchParams.get("q")?.trim();
   const locale = (searchParams.get("locale") ?? "en") as Locale;
@@ -137,6 +154,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const rateLimited = checkAddressSearchRateLimit(request);
+  if (rateLimited) return rateLimited;
+
   try {
     const body = (await request.json()) as {
       query?: string;

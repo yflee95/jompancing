@@ -20,9 +20,22 @@ import {
   Waves,
   X,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
-import { SpotLocationMapPicker } from "@/components/spots/spot-location-map-picker";
+
+const SpotLocationMapPicker = dynamic(
+  () =>
+    import("@/components/spots/spot-location-map-picker").then(
+      (mod) => mod.SpotLocationMapPicker,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-[min(72vh,520px)] min-h-[280px] w-full animate-pulse rounded-2xl bg-[var(--sand-dark)]/20" />
+    ),
+  },
+);
 import { useAuth } from "@/components/providers/auth-provider";
 import { useUserSpots } from "@/components/providers/spots-provider";
 import { getGeneralAreaId } from "@/data/malaysia-areas";
