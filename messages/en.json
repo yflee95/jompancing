@@ -1,7 +1,8 @@
 {
   "metadata": {
     "title": "Jompancing — Malaysia Fishing Platform",
-    "description": "Share fishing spots, join activities, buy & sell gear — the angler community across Malaysia."
+    "description": "Share fishing spots, join activities, buy & sell gear — the angler community across Malaysia.",
+    "homeDescription": "Find fishing spots, ponds, jetties and angling locations across Malaysia. Share your spot, read guides, and join the Jompancing community."
   },
   "common": {
     "appName": "Jompancing",
@@ -127,6 +128,13 @@
   "spots": {
     "title": "Fishing Spots",
     "subtitle": "Share & discover spots — your photos, your tags, Google address required",
+    "seoBrowseDescription": "Fishing spots across Malaysia — ponds, jetties, rivers and sea. Share your spot or browse by state.",
+    "seoStateTitle": "Fishing spots in {state}",
+    "seoStateDescription": "Ponds, jetties and fishing locations in {state}. {count, plural, =0 {Be the first to share a spot} other {# spots listed}} on Jompancing.",
+    "seoStatePondTitle": "Fishing ponds in {state}",
+    "seoStatePondDescription": "Pond fishing and pay ponds in {state}. {count, plural, =0 {Share your favourite pond} other {# locations listed}}.",
+    "seoDistrictTitle": "Fishing spots — {district}, {state}",
+    "seoDistrictDescription": "Angling spots in {district}, {state}. {count, plural, =0 {No spots yet — share yours} other {# places to explore}}.",
     "tabCommunity": "Community",
     "tabMine": "My Spots",
     "noMySpots": "You haven't shared a spot yet",

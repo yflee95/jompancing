@@ -1,7 +1,8 @@
 {
   "metadata": {
     "title": "Jompancing — 马来西亚钓鱼平台",
-    "description": "分享钓点、参与活动、买卖渔具 — 全马钓友社区。"
+    "description": "分享钓点、参与活动、买卖渔具 — 全马钓友社区。",
+    "homeDescription": "查找马来西亚钓点、钓场、码头与海钓地点。分享你的钓点、阅读指南，加入 Jompancing 钓友社区。"
   },
   "common": {
     "appName": "Jompancing",
@@ -127,6 +128,13 @@
   "spots": {
     "title": "钓点",
     "subtitle": "分享与发现钓点 — 自己拍照、自己 tag、必须填 Google 地址",
+    "seoBrowseDescription": "马来西亚钓点列表 — 钓场、码头、河流与海钓。按州浏览或分享你的钓点。",
+    "seoStateTitle": "{state}钓点",
+    "seoStateDescription": "浏览{state}的钓场、码头与钓点。{count, plural, =0 {成为第一个分享钓点的人} other {共#个钓点}} — Jompancing 社区。",
+    "seoStatePondTitle": "{state}钓场 / 收费塘",
+    "seoStatePondDescription": "{state}的钓场与收费塘。{count, plural, =0 {欢迎分享你常去的钓场} other {共#个地点}}。",
+    "seoDistrictTitle": "钓点 — {state}{district}",
+    "seoDistrictDescription": "{state}{district}的钓点。{count, plural, =0 {暂无钓点，欢迎分享} other {共#处可探索}}。",
     "tabCommunity": "社区",
     "tabMine": "我的钓点",
     "noMySpots": "你还没有分享钓点",

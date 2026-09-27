@@ -60,6 +60,10 @@ interface SpotsExploreProps {
   filterArea?: string;
   filterWater?: import("@/types").WaterType;
 
+  pageTitle?: string;
+
+  pageSubtitle?: string;
+
 }
 
 
@@ -76,6 +80,8 @@ export function SpotsExplore({
 
   filterArea,
   filterWater,
+  pageTitle,
+  pageSubtitle,
 
 }: SpotsExploreProps) {
 
@@ -176,11 +182,13 @@ export function SpotsExplore({
 
           <h1 className="font-serif-display text-2xl font-bold text-[var(--ink)]">
 
-            {t("title")}
+            {pageTitle ?? t("title")}
 
           </h1>
 
-          <p className="mt-1 text-sm text-[var(--ink-muted)]">{t("subtitle")}</p>
+          <p className="mt-1 text-sm text-[var(--ink-muted)]">
+            {pageSubtitle ?? t("subtitle")}
+          </p>
 
         </div>
 

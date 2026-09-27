@@ -1,7 +1,8 @@
 {
   "metadata": {
     "title": "Jompancing — Platform Memancing Malaysia",
-    "description": "Kongsi tempat memancing, aktiviti, jual beli peralatan — komuniti pemancing seluruh Malaysia."
+    "description": "Kongsi tempat memancing, aktiviti, jual beli peralatan — komuniti pemancing seluruh Malaysia.",
+    "homeDescription": "Cari tempat memancing, kolam ikan, jeti dan spot di seluruh Malaysia. Kongsi lokasi, baca panduan, sertai komuniti pemancing Jompancing."
   },
   "common": {
     "appName": "Jompancing",
@@ -127,6 +128,13 @@
   "spots": {
     "title": "Tempat Memancing",
     "subtitle": "Kongsi & temui lokasi — foto sendiri, tag sendiri, alamat Google wajib",
+    "seoBrowseDescription": "Senarai tempat memancing di Malaysia — kolam, jeti, sungai dan laut. Kongsi spot anda atau cari mengikut negeri.",
+    "seoStateTitle": "Tempat memancing di {state}",
+    "seoStateDescription": "Temui kolam, jeti dan lokasi memancing di {state}. {count, plural, =0 {Jadilah yang pertama kongsi spot} other {# spot dalam senarai}} — komuniti Jompancing.",
+    "seoStatePondTitle": "Kolam memancing di {state}",
+    "seoStatePondDescription": "Kolam ikan dan tempat memancing komersial di {state}. {count, plural, =0 {Kongsi kolam kegemaran anda} other {# lokasi dalam senarai}}.",
+    "seoDistrictTitle": "Tempat memancing — {district}, {state}",
+    "seoDistrictDescription": "Spot memancing di {district}, {state}. {count, plural, =0 {Tiada spot lagi — kongsi lokasi anda} other {# tempat untuk mula}}.",
     "tabCommunity": "Komuniti",
     "tabMine": "Tempat Saya",
     "noMySpots": "Anda belum kongsi tempat",

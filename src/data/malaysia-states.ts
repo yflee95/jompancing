@@ -249,6 +249,16 @@ export function getStateById(stateId: string): State | undefined {
   return malaysiaStates.find((state) => state.id === stateId);
 }
 
+export function getStateBySlug(slug: string): State | undefined {
+  return malaysiaStates.find(
+    (state) => state.slug === slug || state.id === slug,
+  );
+}
+
+export function isReservedSpotStateSlug(slug: string): boolean {
+  return Boolean(getStateBySlug(slug));
+}
+
 export function getDistrictById(
   stateId: string,
   districtId: string,

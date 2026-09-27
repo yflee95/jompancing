@@ -1,6 +1,7 @@
 import { ArrowLeft, Clock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { GuideArticleJsonLd } from "@/components/seo/guide-article-json-ld";
 import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
@@ -25,6 +26,7 @@ export async function GuideArticleContent({
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-6 pb-24">
+      <GuideArticleJsonLd article={article} locale={locale} />
       <Link
         href="/guide"
         className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--ocean)] hover:underline"

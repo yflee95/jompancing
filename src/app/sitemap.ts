@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { locales } from "@/i18n/routing";
 import { absoluteUrl, localePath } from "@/lib/seo";
+import { getSpotStateLandingPaths } from "@/lib/spots-seo";
 import {
   getActivitySlugs,
   getForumSlugs,
@@ -16,6 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const activitySlugs = await getActivitySlugs();
   const marketplaceSlugs = await getMarketplaceSlugs();
   const guideSlugs = await getGuideSlugs();
+  const stateSpotPaths = getSpotStateLandingPaths();
   const entries: MetadataRoute.Sitemap = [];
 
   for (const locale of locales) {
@@ -24,6 +26,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: absoluteUrl(localePath(locale, path)),
         changeFrequency: path === "" ? "daily" : "weekly",
         priority: path === "" ? 1 : 0.8,
+      });
+    }
+
+    for (const path of stateSpotPaths) {
+      entries.push({
+        url: absoluteUrl(localePath(locale, path)),
+        changeFrequency: "weekly",
+        priority: 0.75,
       });
     }
 

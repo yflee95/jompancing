@@ -1,86 +1,84 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-
-import { SpotsExplore } from "@/components/spots/spots-explore";
-
+import { redirect } from "@/i18n/navigation";
+import { SpotsRegionShell } from "@/components/spots/spots-region-shell";
+import { getStateById } from "@/data/malaysia-states";
 import { buildPageMetadata } from "@/lib/seo";
 import { loadPublicSpots } from "@/lib/public-spots";
-import { parseWaterTypeParam } from "@/lib/water-types";
+import { filterSpotsByRegion } from "@/lib/spot-location";
+import {
+  getSpotsSeoCopy,
+  parseSpotsSearchParams,
+} from "@/lib/spots-seo";
 import type { Locale } from "@/i18n/routing";
 
-
-
 export async function generateMetadata({
-
   params,
-
-}: {
-
-  params: Promise<{ locale: Locale }>;
-
-}) {
-
-  const { locale } = await params;
-
-  const t = await getTranslations({ locale, namespace: "spots" });
-
-  return buildPageMetadata({
-    locale,
-    path: "/spots",
-    title: t("title"),
-    description: t("subtitle"),
-  });
-
-}
-
-
-
-export default async function SpotsPage({
-
-  params,
-
   searchParams,
-
 }: {
-
   params: Promise<{ locale: Locale }>;
-
   searchParams: Promise<{
     state?: string;
     district?: string;
     area?: string;
     water?: string;
   }>;
-
 }) {
-
   const { locale } = await params;
+  const filters = parseSpotsSearchParams(await searchParams);
+  const t = await getTranslations({ locale, namespace: "spots" });
 
-  const { state, district, area, water } = await searchParams;
+  let spotCount: number | undefined;
+  if (filters.stateId) {
+    const spots = await loadPublicSpots();
+    let list = filterSpotsByRegion(
+      spots,
+      filters.stateId,
+      filters.districtId,
+      filters.areaId,
+    );
+    if (filters.water) {
+      list = list.filter((spot) => spot.waterType === filters.water);
+    }
+    spotCount = list.length;
+  }
 
-  setRequestLocale(locale);
-  const spots = await loadPublicSpots();
+  const copy = getSpotsSeoCopy({ locale, t, filters, spotCount });
 
-  return (
-
-    <div className="mx-auto max-w-6xl px-4 py-6 pb-24 md:pb-8">
-
-      <SpotsExplore
-
-        initialSpots={spots}
-
-        locale={locale}
-
-        filterState={state}
-
-        filterDistrict={district}
-
-        filterArea={area}
-        filterWater={parseWaterTypeParam(water)}
-      />
-
-    </div>
-
-  );
-
+  return buildPageMetadata({
+    locale,
+    path: copy.path,
+    title: copy.title,
+    description: copy.description,
+  });
 }
 
+export default async function SpotsPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: Locale }>;
+  searchParams: Promise<{
+    state?: string;
+    district?: string;
+    area?: string;
+    water?: string;
+  }>;
+}) {
+  const { locale } = await params;
+  const { state, district, area, water } = await searchParams;
+  setRequestLocale(locale);
+
+  if (
+    state &&
+    getStateById(state) &&
+    !district &&
+    !area &&
+    !water
+  ) {
+    redirect({ href: `/spots/${state}`, locale });
+  }
+
+  const filters = parseSpotsSearchParams({ state, district, area, water });
+
+  return <SpotsRegionShell locale={locale} filters={filters} />;
+}

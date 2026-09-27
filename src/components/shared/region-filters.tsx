@@ -4,8 +4,9 @@ import { useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import { ChevronDown, MapPin, Navigation } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useRouter, usePathname } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { getAreasByDistrict } from "@/data/malaysia-areas";
+import { buildSpotsSeoPath } from "@/lib/spots-seo";
 import { parseWaterTypeParam } from "@/lib/water-types";
 import { malaysiaStates } from "@/data/malaysia-states";
 import { setSpotsShowAllPreference } from "@/lib/near-me-preferences";
@@ -34,7 +35,6 @@ export function RegionFilters({
   const t = useTranslations("spots");
   const tPost = useTranslations("post");
   const router = useRouter();
-  const pathname = usePathname();
   const userLocation = useUserLocation(locale);
   const searchParams = useSearchParams();
   const [applyingGps, setApplyingGps] = useState(false);
@@ -57,13 +57,13 @@ export function RegionFilters({
       setSpotsShowAllPreference(false);
     }
 
-    const params = new URLSearchParams();
-    if (stateId) params.set("state", stateId);
-    if (districtId) params.set("district", districtId);
-    if (areaId) params.set("area", areaId);
-    if (preservedWater) params.set("water", preservedWater);
-    const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname);
+    const href = buildSpotsSeoPath({
+      stateId,
+      districtId,
+      areaId,
+      water: preservedWater,
+    });
+    router.replace(href);
   }
 
   function applyGpsRegion() {

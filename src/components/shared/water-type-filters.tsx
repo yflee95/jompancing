@@ -4,6 +4,10 @@ import { Compass, Droplets, MapPin, Sparkles, Waves } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import {
+  buildSpotsSeoPath,
+  parseSpotsLocationFromUrl,
+} from "@/lib/spots-seo";
 import { parseWaterTypeParam } from "@/lib/water-types";
 import type { WaterType } from "@/types";
 import { cn } from "@/lib/utils";
@@ -34,14 +38,12 @@ export function WaterTypeFilters({ className, compact }: WaterTypeFiltersProps) 
     parseWaterTypeParam(searchParams.get("water")) ?? "all";
 
   function setWater(water: WaterType | "all") {
-    const params = new URLSearchParams(searchParams.toString());
-    if (water === "all") {
-      params.delete("water");
-    } else {
-      params.set("water", water);
-    }
-    const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    const base = parseSpotsLocationFromUrl(pathname, searchParams);
+    const href = buildSpotsSeoPath({
+      ...base,
+      water: water === "all" ? undefined : water,
+    });
+    router.replace(href, { scroll: false });
   }
 
   return (
