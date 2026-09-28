@@ -59,6 +59,58 @@ export const SPOT_SEO_ENRICHMENTS: SpotSeoEnrichment[] = [
     extraTags: ["kolam", "berbayar"],
   },
   {
+    match: /pusat memancing shah|fishing spot shah|shah alam.*memancing/i,
+    description_ms:
+      "Pusat / spot memancing Shah Alam & Lembah Klang — kolam, tasik atau jeti mengikut lokasi. Sesuai sesi keluarga; semak waktu, yuran dan peraturan tempat. Parkir & cuaca panas — bawa air minum.",
+    description_en:
+      "Shah Alam / Klang Valley fishing spot — pond, lake or jetty depending on venue. Check hours, fees and rules; bring water in hot weather.",
+    description_zh:
+      "莎阿南 / 巴生谷钓点 — 钓塘、湖泊或码头视场地而定。确认时间与收费，注意防暑补水。",
+    extraTags: ["shah alam", "selangor"],
+  },
+  {
+    match: /port mancing tnb|tnb.*port/i,
+    description_ms:
+      "Port / jeti memancing berhampiran kawasan TNB — lokasi cast ke tasik atau saluran air tawar. Patuhi tanda keselamatan utiliti; jangan memancing di kawasan larangan. Semak akses jalan dan waktu operasi.",
+    description_en:
+      "TNB-area fishing port — freshwater lake or canal fishing. Obey utility safety signs and no-fishing zones; check road access and hours.",
+    description_zh:
+      "TNB 附近钓点 — 淡水湖或渠道。遵守安全告示与禁钓区，确认道路与开放时间。",
+    extraTags: ["tnb", "port"],
+  },
+  {
+    match: /semenyih|danau semenyih/i,
+    description_ms:
+      "Kolam / tasik berhampiran Semenyih & Danau Semenyih — memancing air tawar popular di Selangor. Semak yuran kolam, umpan dibenarkan dan sesi siang/malam. Sesuai patin, talapia dan udang galah (mengikut venue).",
+    description_en:
+      "Semenyih / Danau Semenyih area — popular Selangor freshwater ponds. Check fees, bait rules and day/night sessions.",
+    description_zh:
+      "Semenyih / 士毛月湖一带 — 雪兰莪淡水钓场。确认收费、饵料与日夜场次。",
+    species: ["patin", "talapia", "udang galah"],
+    extraTags: ["semenyih", "selangor"],
+  },
+  {
+    match: /98 fishing village|fishing village/i,
+    description_ms:
+      "98 Fishing Village — destinasi memancing & makanan laut, sesuai keluarga. Semak pakej memancing, waktu operasi dan tempat letak kereta. Kongsi pengalaman di Jompancing.",
+    description_en:
+      "98 Fishing Village — fishing and seafood destination for families. Check fishing packages, hours and parking.",
+    description_zh:
+      "98 Fishing Village — 钓鱼与海鲜休闲点，适合家庭。确认套餐、营业时间与停车。",
+    extraTags: ["kolam", "family"],
+  },
+  {
+    match: /river resource|klang gate|sg klang/i,
+    description_ms:
+      "River Resource / Klang Gate — memancing sungai & tasik empangan di Lembah Klang. Perhatikan aras air, lesen jika perlu, dan keselamatan tepi air. Ikan talapia, patin dan species sungai mengikut musim.",
+    description_en:
+      "River Resource / Klang Gate — river and dam fishing in Klang Valley. Mind water level, licensing and bank safety.",
+    description_zh:
+      "Klang Gate / 河流资源区 — 河谷水坝与河流钓点。注意水位、证照与岸堤安全。",
+    species: ["talapia", "patin", "kelah"],
+    extraTags: ["klang", "empangan"],
+  },
+  {
     match: /jeti|jetty|pier/i,
     description_ms:
       "Jeti memancing — lokasi cast dari tepi jeti ke air laut atau estuari. Bawa sinker & jig sesuai arus; awal pagi dan petang biasanya lebih produktif. Patuhi tanda larangan dan jaga keselamatan anak-anak di jeti.",
@@ -74,6 +126,8 @@ export const SPOT_SEO_ENRICHMENTS: SpotSeoEnrichment[] = [
 export const GENERIC_SEED_DESCRIPTION_MARKERS = [
   /curated from Google Maps for Malaysian anglers/i,
   /Verify access rules and tides before fishing/i,
+  /Jom pancing & kongsi tips di Jompancing/i,
+  /Share tips on Jompancing\.\s*$/i,
 ];
 
 export function isThinOrGenericDescription(text: string): boolean {
