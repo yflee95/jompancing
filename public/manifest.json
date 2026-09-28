@@ -1,8 +1,10 @@
 {
+  "id": "/ms",
   "name": "Jompancing",
   "short_name": "Jompancing",
   "description": "Jom pancing — tempat memancing, kolam ikan & komuniti pemancing Malaysia",
   "start_url": "/ms",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0f766e",
   "theme_color": "#0d9488",

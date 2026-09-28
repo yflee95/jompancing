@@ -4,12 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/check-node-version.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings 0",
     "typecheck": "tsc --noEmit",
     "seed:spots": "tsx scripts/seed-google-spots.ts",
-    "enrich:spot-seo": "tsx scripts/enrich-spot-seo.ts"
+    "enrich:spot-seo": "tsx scripts/enrich-spot-seo.ts",
+    "preseed:spots": "node scripts/check-node-version.mjs",
+    "preenrich:spot-seo": "node scripts/check-node-version.mjs"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.10",
