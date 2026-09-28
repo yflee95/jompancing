@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Suspense } from "react";
 import { Inter, Noto_Sans_SC, Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
@@ -66,6 +65,14 @@ export async function generateMetadata({
       template: `%s | Jompancing`,
     },
     manifest: "/manifest.json",
+    icons: {
+      icon: [
+        { url: "/icon.svg", type: "image/svg+xml" },
+        { url: "/icon", sizes: "512x512", type: "image/png" },
+      ],
+      shortcut: "/icon.svg",
+      apple: [{ url: "/icon", sizes: "512x512", type: "image/png" }],
+    },
   };
 }
 
@@ -118,7 +125,6 @@ export default async function LocaleLayout({
           </UserLocationShell>
         </NextIntlClientProvider>
         <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );
