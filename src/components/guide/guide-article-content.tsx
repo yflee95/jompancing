@@ -2,6 +2,7 @@ import { ArrowLeft, Clock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { GuideArticleJsonLd } from "@/components/seo/guide-article-json-ld";
+import { ShareActions } from "@/components/shared/share-actions";
 import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
@@ -58,6 +59,13 @@ export async function GuideArticleContent({
           </span>
           <span>{formatDate(article.publishedAt, locale)}</span>
         </div>
+
+        <ShareActions
+          className="mt-4"
+          path={`/guide/${article.slug}`}
+          title={title}
+          compact
+        />
 
         <div className="prose prose-neutral mt-8 max-w-none">
           {paragraphs.map((paragraph) => (

@@ -14,11 +14,6 @@ export function WebsiteJsonLd({ locale, description }: WebsiteJsonLdProps) {
     description,
     url: absoluteUrl(localePath(locale)),
     inLanguage: locale,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${absoluteUrl(localePath(locale, "/search"))}?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
   };
 
   return (

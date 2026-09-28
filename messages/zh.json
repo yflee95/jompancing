@@ -11,6 +11,9 @@
     "search": "搜索钓点、活动、渔具...",
     "viewAll": "查看全部",
     "share": "分享",
+    "copyLink": "复制链接",
+    "linkCopied": "已复制",
+    "shareWhatsApp": "WhatsApp",
     "save": "保存",
     "cancel": "取消",
     "submit": "提交",
@@ -39,7 +42,8 @@
     "guide": "指南",
     "forum": "论坛",
     "profile": "我的",
-    "post": "分享"
+    "post": "分享",
+    "more": "更多"
   },
   "locale": {
     "label": "语言",
@@ -570,6 +574,11 @@
         "body": "问题请联系：hello@jompancing.my"
       }
     ]
+  },
+  "trust": {
+    "reportContent": "举报内容",
+    "reportEmailSubject": "举报：{label}",
+    "reportEmailBody": "我要举报以下内容：\n\n{label}\n{url}\n\n原因：\n"
   },
   "footer": {
     "about": "关于",

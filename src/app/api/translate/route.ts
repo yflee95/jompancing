@@ -13,6 +13,7 @@ import {
   getSourceText,
   hasCachedTranslation,
 } from "@/lib/translate/ugc-text";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { createServiceSupabaseClient } from "@/lib/supabase/service";
 import { isDbThreadId } from "@/lib/supabase/comments";
 import type { LocalizedString } from "@/types";
@@ -85,6 +86,11 @@ export async function POST(request: Request) {
 
   const ephemeral = ephemeralSchema.safeParse(payload);
   if (ephemeral.success) {
+    const ephemeralLimit = rateLimit(`translate-ephemeral:${ip}`, 25, 60_000);
+    if (!ephemeralLimit.ok) {
+      return rateLimitResponse(ephemeralLimit.retryAfterSec);
+    }
+
     const { text, sourceLocale, targetLocale } = ephemeral.data;
     if (sourceLocale === targetLocale) {
       return NextResponse.json({ translation: text.trim(), cached: true });
@@ -115,11 +121,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid content id" }, { status: 400 });
   }
 
+  const authClient = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await authClient.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "Sign in required" }, { status: 401 });
+  }
+
+  const persistLimit = rateLimit(`translate-persist:${user.id}`, 30, 60_000);
+  if (!persistLimit.ok) {
+    return rateLimitResponse(persistLimit.retryAfterSec);
+  }
+
   try {
-    const supabase = createServiceSupabaseClient();
+    const serviceSupabase = createServiceSupabaseClient();
 
     if (contentType === "comment") {
-      const { data, error } = await supabase
+      const { data, error } = await authClient
         .from("thread_comments")
         .select("source_locale, body_ms, body_en, body_zh")
         .eq("id", id)
@@ -149,7 +168,7 @@ export async function POST(request: Request) {
         targetLocale,
       );
 
-      const { error: updateError } = await supabase
+      const { error: updateError } = await serviceSupabase
         .from("thread_comments")
         .update({ [columnName("body", targetLocale)]: translation })
         .eq("id", id);
@@ -161,7 +180,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ translation, cached: false, sourceLocale });
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await authClient
       .from("forum_posts")
       .select(
         "source_locale, title_ms, title_en, title_zh, body_ms, body_en, body_zh",
@@ -193,7 +212,7 @@ export async function POST(request: Request) {
       targetLocale,
     );
 
-    const { error: updateError } = await supabase
+    const { error: updateError } = await serviceSupabase
       .from("forum_posts")
       .update({ [columnName(field, targetLocale)]: translation })
       .eq("id", id);

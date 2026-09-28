@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Suspense } from "react";
 import { Inter, Noto_Sans_SC, Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
@@ -115,6 +117,8 @@ export default async function LocaleLayout({
             </AuthProvider>
           </UserLocationShell>
         </NextIntlClientProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

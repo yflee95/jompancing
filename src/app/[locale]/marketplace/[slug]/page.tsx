@@ -46,6 +46,9 @@ export async function generateMetadata({ params }: ListingDetailPageProps) {
 export default async function ListingDetailPage({ params }: ListingDetailPageProps) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  const listing = await resolveListing(slug);
 
-  return <ListingDetailView slug={slug} locale={locale} />;
+  return (
+    <ListingDetailView slug={slug} locale={locale} initialListing={listing} />
+  );
 }

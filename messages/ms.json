@@ -11,6 +11,9 @@
     "search": "Cari tempat, aktiviti, peralatan...",
     "viewAll": "Lihat semua",
     "share": "Kongsi",
+    "copyLink": "Salin pautan",
+    "linkCopied": "Disalin",
+    "shareWhatsApp": "WhatsApp",
     "save": "Simpan",
     "cancel": "Batal",
     "submit": "Hantar",
@@ -39,7 +42,8 @@
     "guide": "Panduan",
     "forum": "Forum",
     "profile": "Profil",
-    "post": "Kongsi"
+    "post": "Kongsi",
+    "more": "Lagi"
   },
   "locale": {
     "label": "Bahasa",
@@ -570,6 +574,11 @@
         "body": "Soalan: hello@jompancing.my"
       }
     ]
+  },
+  "trust": {
+    "reportContent": "Lapor kandungan",
+    "reportEmailSubject": "Lapor: {label}",
+    "reportEmailBody": "Saya ingin melapor kandungan ini:\n\n{label}\n{url}\n\nSebab:\n"
   },
   "footer": {
     "about": "Tentang",

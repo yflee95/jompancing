@@ -37,7 +37,7 @@ export function ProfileExplore() {
 
   if (!user) return null;
 
-  const myTopics = userPosts.filter((p) => p.authorName === user.name);
+  const myTopics = userPosts.filter((p) => p.authorId === user.id);
   const mySpots = getMySpots(user.id);
   const myListings = listings.filter(
     (listing) =>

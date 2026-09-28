@@ -78,29 +78,42 @@ export function TranslatableText({
 
     try {
       const canPersist = contentId && isDbThreadId(contentId);
-      const response = await fetch("/api/translate", {
+      const ephemeralBody = {
+        text: sourceText,
+        sourceLocale: resolvedSource,
+        targetLocale: locale,
+      };
+      const persistBody = canPersist
+        ? {
+            contentType,
+            id: contentId,
+            field,
+            targetLocale: locale,
+          }
+        : null;
+
+      let response = await fetch("/api/translate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          canPersist
-            ? {
-                contentType,
-                id: contentId,
-                field,
-                targetLocale: locale,
-              }
-            : {
-                text: sourceText,
-                sourceLocale: resolvedSource,
-                targetLocale: locale,
-              },
-        ),
+        body: JSON.stringify(persistBody ?? ephemeralBody),
       });
 
-      const data = (await response.json()) as {
+      let data = (await response.json()) as {
         translation?: string;
         error?: string;
       };
+
+      if (!response.ok && persistBody && response.status === 401) {
+        response = await fetch("/api/translate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(ephemeralBody),
+        });
+        data = (await response.json()) as {
+          translation?: string;
+          error?: string;
+        };
+      }
 
       if (!response.ok || !data.translation) {
         throw new Error(data.error ?? "Translation failed");

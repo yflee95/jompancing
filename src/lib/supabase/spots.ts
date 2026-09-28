@@ -1,3 +1,4 @@
+import { ensureUniqueSpotSlugBase } from "@/lib/reserved-spot-slugs";
 import { slugify } from "@/lib/slug";
 import { createClient } from "@/lib/supabase/client";
 import type {
@@ -230,7 +231,7 @@ export async function deleteSpotFromDb(spotId: string): Promise<void> {
 
 export async function insertSpotToDb(input: NewSpotInput): Promise<FishingSpot> {
   const supabase = createClient();
-  const baseSlug = slugify(input.title) || "spot";
+  const baseSlug = ensureUniqueSpotSlugBase(slugify(input.title) || "spot");
   const slug = `${baseSlug}-${Date.now().toString(36)}`;
   const title = input.title;
   const description = input.description || "—";

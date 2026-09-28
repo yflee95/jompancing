@@ -63,6 +63,7 @@ export function mapForumRow(row: ForumRow): ForumPost {
     body: toLocalized(row, "body"),
     sourceLocale: row.source_locale ?? "ms",
     category: row.category as ForumCategory,
+    authorId: row.author_id,
     authorName: row.profiles?.name ?? "Angler",
     replyCount,
     viewCount,

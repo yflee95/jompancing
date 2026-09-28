@@ -91,6 +91,7 @@ export function ForumProvider({ children }: { children: React.ReactNode }) {
         body: createSourceLocalizedText(input.body, input.locale),
         sourceLocale: input.locale,
         category: input.category,
+        authorId: input.authorId,
         authorName: input.authorName,
         replyCount: 0,
         viewCount: 1,

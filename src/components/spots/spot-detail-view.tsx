@@ -6,6 +6,8 @@ import { PhotoAttribution } from "@/components/spots/photo-attribution";
 import { SpotDetailActions } from "@/components/spots/spot-detail-actions";
 import { AdminSpotDelete } from "@/components/spots/admin-spot-delete";
 import { SpotOwnerActions } from "@/components/spots/spot-owner-actions";
+import { ReportContentLink } from "@/components/shared/report-content-link";
+import { ShareActions } from "@/components/shared/share-actions";
 import { SpotJsonLd } from "@/components/seo/spot-json-ld";
 import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
@@ -162,6 +164,13 @@ export async function SpotDetailView({
           {t("postedBy")} {spot.authorName}
         </p>
 
+        <ShareActions
+          className="mt-4"
+          path={`/spots/${spot.slug}`}
+          title={getLocalizedText(spot.title, locale)}
+          compact
+        />
+
         <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {[
             {
@@ -209,6 +218,14 @@ export async function SpotDetailView({
         {showAdminDelete && !isUserGenerated && (
           <AdminSpotDelete spotId={spot.id} />
         )}
+
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+          <ReportContentLink
+            locale={locale}
+            path={`/spots/${spot.slug}`}
+            contentLabel={getLocalizedText(spot.title, locale)}
+          />
+        </div>
 
         <div className="mt-8">
           <SpotDetailActions

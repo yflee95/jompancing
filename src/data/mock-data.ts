@@ -59,6 +59,7 @@ export const mockActivities: Activity[] = [];
 export const mockForumPosts: ForumPost[] = [
   {
     id: "fp-1",
+    authorId: "00000000-0000-4000-8000-000000000001",
     slug: "best-bait-siakap-jb",
     title: {
       ms: "Umpan terbaik untuk siakap di JB?",
@@ -81,6 +82,7 @@ export const mockForumPosts: ForumPost[] = [
   },
   {
     id: "fp-2",
+    authorId: "00000000-0000-4000-8000-000000000002",
     slug: "hook-size-river-fishing",
     title: {
       ms: "Saiz mata kail untuk memancing sungai",
@@ -102,6 +104,7 @@ export const mockForumPosts: ForumPost[] = [
   },
   {
     id: "fp-3",
+    authorId: "00000000-0000-4000-8000-000000000003",
     slug: "danga-bay-night-tips",
     title: {
       ms: "Tips memancing malam di Danga Bay",
@@ -123,6 +126,7 @@ export const mockForumPosts: ForumPost[] = [
   },
   {
     id: "fp-4",
+    authorId: "00000000-0000-4000-8000-000000000004",
     slug: "lure-casting-technique",
     title: {
       ms: "Teknik casting lure untuk pemula",
@@ -144,6 +148,7 @@ export const mockForumPosts: ForumPost[] = [
   },
   {
     id: "fp-5",
+    authorId: "00000000-0000-4000-8000-000000000005",
     slug: "arowana-vs-koi-pond",
     title: {
       ms: "Kolam arowana vs koi — pengalaman?",
@@ -165,6 +170,7 @@ export const mockForumPosts: ForumPost[] = [
   },
   {
     id: "fp-6",
+    authorId: "00000000-0000-4000-8000-000000000006",
     slug: "identify-talang-vs-ebek",
     title: {
       ms: "Cara bezakan talang vs ebek?",
@@ -186,6 +192,7 @@ export const mockForumPosts: ForumPost[] = [
   },
   {
     id: "fp-7",
+    authorId: "00000000-0000-4000-8000-000000000007",
     slug: "best-spots-pontian",
     title: {
       ms: "Tempat memancing best di Pontian?",
@@ -207,6 +214,7 @@ export const mockForumPosts: ForumPost[] = [
   },
   {
     id: "fp-8",
+    authorId: "00000000-0000-4000-8000-000000000008",
     slug: "soft-plastic-vs-hard-lure",
     title: {
       ms: "Soft plastic vs hard lure — bila guna?",

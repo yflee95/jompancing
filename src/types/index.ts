@@ -186,6 +186,7 @@ export interface ForumPost {
   body: LocalizedString;
   sourceLocale?: Locale;
   category: ForumCategory;
+  authorId: string;
   authorName: string;
   replyCount: number;
   viewCount: number;

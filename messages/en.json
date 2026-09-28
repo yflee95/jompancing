@@ -11,6 +11,9 @@
     "search": "Search spots, activities, gear...",
     "viewAll": "View all",
     "share": "Share",
+    "copyLink": "Copy link",
+    "linkCopied": "Copied",
+    "shareWhatsApp": "WhatsApp",
     "save": "Save",
     "cancel": "Cancel",
     "submit": "Submit",
@@ -39,7 +42,8 @@
     "guide": "Guide",
     "forum": "Forum",
     "profile": "Profile",
-    "post": "Share"
+    "post": "Share",
+    "more": "More"
   },
   "locale": {
     "label": "Language",
@@ -570,6 +574,11 @@
         "body": "Questions: hello@jompancing.my"
       }
     ]
+  },
+  "trust": {
+    "reportContent": "Report content",
+    "reportEmailSubject": "Report: {label}",
+    "reportEmailBody": "I would like to report this content:\n\n{label}\n{url}\n\nReason:\n"
   },
   "footer": {
     "about": "About",

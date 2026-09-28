@@ -1,27 +1,17 @@
 "use client";
 
-import {
-  Home,
-  MapPin,
-  MessageSquare,
-  PlusCircle,
-  ShoppingBag,
-} from "lucide-react";
+import { Home, Map, MapPin, PlusCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
+import { MobileMoreNavButton } from "@/components/layout/mobile-more-sheet";
 import { cn } from "@/lib/utils";
 
-type MobileNavHref = "/" | "/spots" | "/post" | "/forum" | "/marketplace";
+type MobileNavHref = "/" | "/spots" | "/post" | "/map";
 
 type NavItem = {
   href: MobileNavHref;
   icon: typeof Home;
-  labelKey:
-    | "nav.home"
-    | "nav.spots"
-    | "nav.post"
-    | "nav.forum"
-    | "nav.marketplace";
+  labelKey: "nav.home" | "nav.spots" | "nav.post" | "nav.map";
   accent?: boolean;
 };
 
@@ -29,8 +19,7 @@ const mobileNavItems: NavItem[] = [
   { href: "/", icon: Home, labelKey: "nav.home" },
   { href: "/spots", icon: MapPin, labelKey: "nav.spots" },
   { href: "/post", icon: PlusCircle, labelKey: "nav.post", accent: true },
-  { href: "/forum", icon: MessageSquare, labelKey: "nav.forum" },
-  { href: "/marketplace", icon: ShoppingBag, labelKey: "nav.marketplace" },
+  { href: "/map", icon: Map, labelKey: "nav.map" },
 ];
 
 function isNavActive(pathname: string, href: string): boolean {
@@ -45,41 +34,41 @@ export function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--sand-dark)]/50 bg-white/95 pb-safe backdrop-blur-xl md:hidden">
       <div className="mx-auto flex h-[4.25rem] max-w-lg items-center justify-around px-1">
-        {mobileNavItems.map(({ href, icon: Icon, labelKey, accent }) => {
-          const isActive = isNavActive(pathname, href);
-
-          if (accent) {
-            return (
-              <Link
-                key={href}
-                href={href}
-                aria-label={t(labelKey)}
-                className="flex -mt-6 h-[3.25rem] w-[3.25rem] shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-white shadow-lg shadow-[var(--accent-glow)]"
-              >
-                <Icon className="h-6 w-6" />
-              </Link>
-            );
-          }
-
-          return (
+        {mobileNavItems.map(({ href, icon: Icon, labelKey, accent }) =>
+          accent ? (
+            <Link
+              key={href}
+              href={href}
+              aria-label={t(labelKey)}
+              className="flex -mt-6 h-[3.25rem] w-[3.25rem] shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-white shadow-lg shadow-[var(--accent-glow)]"
+            >
+              <Icon className="h-6 w-6" />
+            </Link>
+          ) : (
             <Link
               key={href}
               href={href}
               className={cn(
                 "relative flex min-w-0 flex-1 flex-col items-center gap-0.5 px-1 py-1 text-[10px] font-medium transition-colors",
-                isActive
+                isNavActive(pathname, href)
                   ? "text-[var(--ocean)]"
                   : "text-[var(--ink-muted)]",
               )}
             >
-              <Icon className={cn("h-5 w-5 shrink-0", isActive && "stroke-[2.5]")} />
+              <Icon
+                className={cn(
+                  "h-5 w-5 shrink-0",
+                  isNavActive(pathname, href) && "stroke-[2.5]",
+                )}
+              />
               <span className="max-w-full truncate">{t(labelKey)}</span>
-              {isActive && (
+              {isNavActive(pathname, href) && (
                 <span className="absolute -bottom-0.5 h-1 w-1 rounded-full bg-[var(--ocean)]" />
               )}
             </Link>
-          );
-        })}
+          ),
+        )}
+        <MobileMoreNavButton />
       </div>
     </nav>
   );

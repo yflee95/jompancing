@@ -9,21 +9,26 @@ import { Badge } from "@/components/ui/badge";
 import { getGeneralAreaId } from "@/data/malaysia-areas";
 import { getSpotLocationLine } from "@/lib/spot-location";
 import { formatDate, formatPrice } from "@/lib/utils";
-import { getLocalizedText } from "@/types";
+import { getLocalizedText, type MarketplaceListing } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
 interface ListingDetailViewProps {
   slug: string;
   locale: Locale;
+  initialListing?: MarketplaceListing | null;
 }
 
-export function ListingDetailView({ slug, locale }: ListingDetailViewProps) {
+export function ListingDetailView({
+  slug,
+  locale,
+  initialListing = null,
+}: ListingDetailViewProps) {
   const t = useTranslations("marketplace");
   const tCommon = useTranslations("common");
   const { getListingBySlug, isLoaded } = useMarketplace();
-  const listing = getListingBySlug(slug);
+  const listing = getListingBySlug(slug) ?? initialListing ?? undefined;
 
-  if (!isLoaded) {
+  if (!listing && !isLoaded && !initialListing) {
     return (
       <div className="flex min-h-[40vh] items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--ocean)] border-t-transparent" />
