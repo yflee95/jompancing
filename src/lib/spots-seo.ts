@@ -5,8 +5,59 @@ import {
   malaysiaStates,
 } from "@/data/malaysia-states";
 import type { Locale } from "@/i18n/routing";
+import { getSpotSpeciesLine } from "@/lib/spot-angler-info";
+import { getSpotLocationLine } from "@/lib/spot-location";
+import { truncateMetaDescription } from "@/lib/seo";
 import { parseWaterTypeParam } from "@/lib/water-types";
-import { getLocalizedText, type WaterType } from "@/types";
+import { getLocalizedText, type FishingSpot, type WaterType } from "@/types";
+
+const MIN_SPOT_DESCRIPTION_CHARS = 72;
+
+type SpotsTranslate = (
+  key: string,
+  values?: Record<string, string | number>,
+) => string;
+
+/** SERP-friendly title + description for individual spot pages (long-tail queries). */
+export function buildSpotDetailSeo({
+  spot,
+  locale,
+  t,
+}: {
+  spot: FishingSpot;
+  locale: Locale;
+  t: SpotsTranslate;
+}): { title: string; description: string } {
+  const name = getLocalizedText(spot.title, locale).trim();
+  const location = getSpotLocationLine(spot, locale).trim();
+  const rawDescription = getLocalizedText(spot.description, locale).trim();
+  const waterLabel = t(
+    spot.waterType as "saltwater" | "freshwater" | "pond" | "river",
+  );
+  const species = getSpotSpeciesLine(spot);
+
+  const title = location
+    ? t("seoSpotTitle", { name, location })
+    : t("seoSpotTitleNoLocation", { name });
+
+  let description: string;
+  if (rawDescription.length >= MIN_SPOT_DESCRIPTION_CHARS) {
+    description = truncateMetaDescription(rawDescription);
+  } else {
+    const extra = rawDescription || spot.googleAddress.trim();
+    description = truncateMetaDescription(
+      t("seoSpotDescriptionRich", {
+        name,
+        location: location || spot.googleAddress.trim(),
+        water: waterLabel,
+        species,
+        extra,
+      }),
+    );
+  }
+
+  return { title, description };
+}
 
 export interface SpotsBrowseFilters {
   stateId?: string;

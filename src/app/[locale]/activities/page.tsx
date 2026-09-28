@@ -20,8 +20,8 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: "/activities",
-    title: t("title"),
-    description: t("subtitle"),
+    title: t("seoListTitle"),
+    description: t("seoListDescription"),
   });
 }
 

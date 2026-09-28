@@ -3,6 +3,7 @@ import { ActivityDetailContent } from "@/components/activities/activity-detail-c
 import { ActivityDetailView } from "@/components/activities/activity-detail-view";
 import { getActivityBySlug } from "@/data/mock-data";
 import { shouldUseMockContent } from "@/lib/mock-content";
+import { buildActivityDetailSeo } from "@/lib/content-seo";
 import { buildPageMetadata } from "@/lib/seo";
 import { fetchActivityBySlugFromDb } from "@/lib/supabase/activities-server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -45,11 +46,18 @@ export async function generateMetadata({ params }: ActivityDetailPageProps) {
     });
   }
 
+  const seo = buildActivityDetailSeo({
+    title: getLocalizedText(activity.title, locale),
+    description: getLocalizedText(activity.description, locale),
+    venue: getLocalizedText(activity.venue, locale),
+    t,
+  });
+
   return buildPageMetadata({
     locale,
     path: `/activities/${slug}`,
-    title: getLocalizedText(activity.title, locale),
-    description: getLocalizedText(activity.description, locale),
+    title: seo.title,
+    description: seo.description,
     ogImage: activity.imageUrl || undefined,
     ogType: "article",
   });

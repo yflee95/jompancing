@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint . --max-warnings 0",
     "typecheck": "tsc --noEmit",
-    "seed:spots": "tsx scripts/seed-google-spots.ts"
+    "seed:spots": "tsx scripts/seed-google-spots.ts",
+    "enrich:spot-seo": "tsx scripts/enrich-spot-seo.ts"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.10",

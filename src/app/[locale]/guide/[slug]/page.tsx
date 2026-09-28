@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { GuideArticleContent } from "@/components/guide/guide-article-content";
 import { getArticleBySlug } from "@/data/mock-data";
+import { buildGuideArticleSeo } from "@/lib/content-seo";
 import { buildPageMetadata } from "@/lib/seo";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -24,11 +25,18 @@ export async function generateMetadata({ params }: GuideArticlePageProps) {
     });
   }
 
+  const seo = buildGuideArticleSeo({
+    title: getLocalizedText(article.title, locale),
+    excerpt: getLocalizedText(article.excerpt, locale),
+    categoryLabel: t(`categories.${article.category}` as "categories.tips"),
+    t,
+  });
+
   return buildPageMetadata({
     locale,
     path: `/guide/${slug}`,
-    title: getLocalizedText(article.title, locale),
-    description: getLocalizedText(article.excerpt, locale),
+    title: seo.title,
+    description: seo.description,
     ogImage: article.imageUrl,
     ogType: "article",
   });

@@ -11,6 +11,15 @@ export function SiteFooter() {
     <footer className="border-t border-[var(--sand-dark)]/40 bg-white py-6">
       <div className="mx-auto flex max-w-4xl flex-col items-center gap-3 px-4">
         <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-medium text-[var(--ink-muted)]">
+          <Link href="/spots" className="hover:text-[var(--ocean)]">
+            {t("nav.spots")}
+          </Link>
+          <Link href="/guide" className="hover:text-[var(--ocean)]">
+            {t("nav.guide")}
+          </Link>
+          <Link href="/map" className="hover:text-[var(--ocean)]">
+            {t("nav.map")}
+          </Link>
           <Link href="/privacy" className="hover:text-[var(--ocean)]">
             {t("footer.privacy")}
           </Link>

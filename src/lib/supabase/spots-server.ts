@@ -35,15 +35,30 @@ export async function fetchPublicSpotsFromDb(): Promise<FishingSpot[]> {
   return ((data ?? []) as Parameters<typeof mapSpotRow>[0][]).map(mapSpotRow);
 }
 
+type PublicSpotSlugRow = {
+  slug: string;
+  created_at: string | null;
+  updated_at?: string | null;
+};
+
 export async function fetchPublicSpotSlugsFromDb(): Promise<
-  { slug: string; created_at: string | null }[]
+  PublicSpotSlugRow[]
 > {
   const supabase = createPublicSupabaseClient();
-  const { data, error } = await supabase
+  const withUpdated = await supabase
+    .from("spots")
+    .select("slug, created_at, updated_at")
+    .eq("visibility", "public");
+
+  if (!withUpdated.error) {
+    return (withUpdated.data ?? []) as PublicSpotSlugRow[];
+  }
+
+  const fallback = await supabase
     .from("spots")
     .select("slug, created_at")
     .eq("visibility", "public");
 
-  if (error) throw error;
-  return data ?? [];
+  if (fallback.error) throw fallback.error;
+  return (fallback.data ?? []) as PublicSpotSlugRow[];
 }

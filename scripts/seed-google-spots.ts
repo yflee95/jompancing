@@ -216,21 +216,46 @@ async function collectCandidates(
   return collected;
 }
 
-function buildDescription(
+function buildDescriptionMs(
   name: string,
   address: string,
+  waterType: WaterType,
   rating?: number,
   reviews?: number,
 ): string {
+  const waterLabel: Record<WaterType, string> = {
+    pond: "kolam memancing",
+    river: "tepi sungai",
+    freshwater: "tasik / empangan",
+    saltwater: "jeti / laut",
+  };
   const parts = [
-    `${name} — curated from Google Maps for Malaysian anglers.`,
-    address,
+    `${name} — tempat ${waterLabel[waterType]} di Malaysia (${address}).`,
+    "Semak waktu operasi, yuran dan peraturan tempatan sebelum pergi.",
+    "Jom pancing & kongsi tips di Jompancing.",
   ];
-  if (rating && reviews) {
-    parts.push(`Google rating ${rating}/5 (${reviews} reviews).`);
+  if (rating && reviews && reviews >= 5) {
+    parts.splice(
+      1,
+      0,
+      `Google Maps ${rating}/5 (${reviews} ulasan) — rujukan lokasi sahaja.`,
+    );
   }
-  parts.push("Verify access rules and tides before fishing.");
   return parts.join(" ");
+}
+
+function buildDescriptionEn(
+  name: string,
+  address: string,
+  waterType: WaterType,
+): string {
+  const waterLabel: Record<WaterType, string> = {
+    pond: "pay pond",
+    river: "river bank",
+    freshwater: "lake / dam",
+    saltwater: "jetty / sea",
+  };
+  return `${name} — ${waterLabel[waterType]} fishing in Malaysia (${address}). Check hours, fees and local rules. Share tips on Jompancing.`;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -371,13 +396,19 @@ async function seedArea(
       if (!details) continue;
 
       const title = details.name.trim();
-      const description = buildDescription(
+      const waterType = inferWaterType(title, details.types);
+      const descriptionMs = buildDescriptionMs(
         title,
         details.address,
+        waterType,
         details.rating,
         details.userRatingsTotal,
       );
-      const waterType = inferWaterType(title, details.types);
+      const descriptionEn = buildDescriptionEn(
+        title,
+        details.address,
+        waterType,
+      );
       const slug = `${slugify(title) || "spot"}-${details.placeId.slice(-8)}`;
       const mapsUrl = buildGoogleMapsPlaceUrl(
         details.placeId,
@@ -402,9 +433,9 @@ async function seedArea(
           title_ms: title,
           title_en: title,
           title_zh: title,
-          description_ms: description,
-          description_en: description,
-          description_zh: description,
+          description_ms: descriptionMs,
+          description_en: descriptionEn,
+          description_zh: descriptionEn,
           state_id: stateId,
           district_id: districtId,
           area_id: areaId,

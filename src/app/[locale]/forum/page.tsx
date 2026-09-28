@@ -24,8 +24,8 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: "/forum",
-    title: t("title"),
-    description: t("subtitle"),
+    title: t("seoListTitle"),
+    description: t("seoListDescription"),
   });
 }
 

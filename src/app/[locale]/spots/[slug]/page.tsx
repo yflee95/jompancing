@@ -10,7 +10,7 @@ import { filterSpotsByRegion } from "@/lib/spot-location";
 import { fetchCommentsForThreadServer } from "@/lib/supabase/comments";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { fetchSpotBySlugFromDb } from "@/lib/supabase/spots-server";
-import { getSpotsSeoCopy } from "@/lib/spots-seo";
+import { buildSpotDetailSeo, getSpotsSeoCopy } from "@/lib/spots-seo";
 import { parseWaterTypeParam } from "@/lib/water-types";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -80,11 +80,13 @@ export async function generateMetadata({
     });
   }
 
+  const seo = buildSpotDetailSeo({ spot, locale, t });
+
   return buildPageMetadata({
     locale,
     path: `/spots/${slug}`,
-    title: getLocalizedText(spot.title, locale),
-    description: getLocalizedText(spot.description, locale),
+    title: seo.title,
+    description: seo.description,
     ogImage: spot.imageUrl || undefined,
     ogType: "article",
   });

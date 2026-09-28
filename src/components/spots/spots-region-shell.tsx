@@ -1,7 +1,9 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SpotsExplore } from "@/components/spots/spots-explore";
 import { SpotsRegionItemListJsonLd } from "@/components/seo/spots-region-itemlist-json-ld";
+import { SpotsStatesSeoNav } from "@/components/seo/spots-states-seo-nav";
 import { getStateById } from "@/data/malaysia-states";
+import { getLocalizedText } from "@/types";
 import { loadPublicSpots } from "@/lib/public-spots";
 import { filterSpotsByRegion } from "@/lib/spot-location";
 import {
@@ -51,6 +53,7 @@ export async function SpotsRegionShell({ locale, filters }: SpotsRegionShellProp
         <SpotsRegionItemListJsonLd
           locale={locale}
           stateId={state.id}
+          stateName={getLocalizedText(state.name, locale)}
           spots={filtered.slice(0, 24)}
         />
       ) : null}
@@ -66,6 +69,7 @@ export async function SpotsRegionShell({ locale, filters }: SpotsRegionShellProp
           pageSubtitle={subtitle}
         />
       </div>
+      {!state ? <SpotsStatesSeoNav locale={locale} /> : null}
     </>
   );
 }

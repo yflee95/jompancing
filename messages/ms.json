@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Jompancing — Platform Memancing Malaysia",
-    "description": "Kongsi tempat memancing, aktiviti, jual beli peralatan — komuniti pemancing seluruh Malaysia.",
-    "homeDescription": "Cari tempat memancing, kolam ikan, jeti dan spot di seluruh Malaysia. Kongsi lokasi, baca panduan, sertai komuniti pemancing Jompancing."
+    "title": "Jompancing — Jom Pancing | Tempat Memancing Malaysia",
+    "description": "Jom pancing! Kongsi tempat memancing, kolam ikan, jeti & spot — komuniti pemancing seluruh Malaysia.",
+    "homeDescription": "Jom pancing — cari tempat memancing, kolam ikan, jeti dan spot di seluruh Malaysia. Kongsi lokasi, baca panduan, sertai komuniti Jompancing."
   },
   "common": {
     "appName": "Jompancing",
@@ -31,7 +31,24 @@
     "new": "Baru",
     "nearYou": "Berhampiran anda",
     "photoUnavailable": "Foto tidak tersedia",
-    "submitting": "Menghantar…"
+    "submitting": "Menghantar…",
+    "notFoundTitle": "Halaman tidak dijumpai",
+    "notFoundDescription": "Pautan mungkin rosak atau halaman telah dialihkan.",
+    "backHome": "Kembali ke utama"
+  },
+  "seoHub": {
+    "heading": "Tempat memancing mengikut negeri",
+    "intro": "Jompancing — jom pancing & kongsi spot. Cari kolam ikan, jeti, sungai dan laut di seluruh Malaysia.",
+    "statesNavLabel": "Negeri",
+    "statesTitle": "Tempat pancing mengikut negeri",
+    "stateSpotsLink": "Tempat memancing {state}",
+    "spotsNavLabel": "Spot popular",
+    "spotsTitle": "Spot memancing popular",
+    "exploreNavLabel": "Terokai Jompancing",
+    "linkSpots": "Semua tempat memancing",
+    "linkMap": "Peta spot",
+    "linkGuide": "Panduan memancing",
+    "linkActivities": "Aktiviti & peraduan"
   },
   "nav": {
     "home": "Utama",
@@ -132,7 +149,15 @@
   "spots": {
     "title": "Tempat Memancing",
     "subtitle": "Kongsi & temui lokasi — foto sendiri, tag sendiri, alamat Google wajib",
-    "seoBrowseDescription": "Senarai tempat memancing di Malaysia — kolam, jeti, sungai dan laut. Kongsi spot anda atau cari mengikut negeri.",
+    "seoBrowseDescription": "Senarai tempat pancing & memancing di Malaysia — kolam, jeti, sungai dan laut. Jom pancing: kongsi spot atau cari mengikut negeri.",
+    "seoSpotTitle": "{name} — {location}",
+    "seoSpotTitleNoLocation": "{name} — tempat memancing",
+    "seoSpotDescriptionRich": "{name}, {location}. {water}. Ikan: {species}. {extra} — Jompancing, jom pancing & kongsi spot.",
+    "seoBreadcrumbLabel": "Navigasi tempat memancing",
+    "seoBreadcrumbSpots": "Tempat memancing",
+    "seoMoreInState": "Lagi tempat memancing di {state}",
+    "seoMoreInStateHint": "Jeti, kolam ikan, sungai & laut — semua spot komuniti dalam negeri ini.",
+    "seoBrowseStateCta": "Lihat semua spot di {state} →",
     "seoStateTitle": "Tempat memancing di {state}",
     "seoStateDescription": "Temui kolam, jeti dan lokasi memancing di {state}. {count, plural, =0 {Jadilah yang pertama kongsi spot} other {# spot dalam senarai}} — komuniti Jompancing.",
     "seoStatePondTitle": "Kolam memancing di {state}",
@@ -231,6 +256,8 @@
   "map": {
     "title": "Peta",
     "subtitle": "Layari tempat awam di peta — bukan halaman kongsi",
+    "seoTitle": "Peta tempat memancing Malaysia",
+    "seoDescription": "Peta interaktif kolam, jeti & spot memancing awam di Malaysia — cari lokasi berhampiran di Jompancing.",
     "exploreNote": "Peta untuk teroka. Untuk kongsi tempat dengan foto & alamat Google, guna + Kongsi.",
     "findingLocation": "Mencari lokasi...",
     "spotsOnMap": "{count} tempat awam",
@@ -298,6 +325,10 @@
     "filterDistrict": "Daerah",
     "filterAll": "Semua",
     "viewDetails": "Lihat butiran →",
+    "seoListTitle": "Aktiviti & peraduan memancing Malaysia",
+    "seoListDescription": "Peraduan memancing, jualan tackle, meetup pemancing — tapis mengikut negeri di Jompancing.",
+    "seoActivityTitle": "{title} — aktiviti memancing",
+    "seoActivityDescriptionRich": "{title} di {venue}. {excerpt} — daftar & hubungi penganjur di Jompancing.",
     "notFound": "Aktiviti tidak dijumpai",
     "noActivities": "Tiada aktiviti di kawasan ini",
     "tryDifferentRegion": "Cuba negeri lain atau tukar susunan.",
@@ -323,6 +354,10 @@
     "topicTitlePlaceholder": "cth. Umpan terbaik untuk siakap?",
     "topicBody": "Kandungan",
     "topicBodyPlaceholder": "Kongsi soalan atau pengalaman anda...",
+    "seoListTitle": "Forum pemancing Malaysia",
+    "seoListDescription": "Bincang tempat pancing, umpan, teknik, kail dan spesies ikan — komuniti Jompancing.",
+    "seoThreadTitle": "{title} — forum pemancing",
+    "seoThreadDescriptionRich": "{title}: {excerpt} — baca & balas di forum Jompancing.",
     "notFound": "Topik tidak dijumpai",
     "postFailed": "Gagal siarkan topik — sila cuba lagi.",
     "categories": {
@@ -391,6 +426,10 @@
     "clearFilters": "Kosongkan tapisan",
     "noListings": "Belum ada senarai",
     "beFirstSeller": "Jadilah yang pertama jual peralatan di sini!",
+    "seoListTitle": "Jual beli peralatan memancing — COD Malaysia",
+    "seoListDescription": "Rod, reel, umpan & aksesori memancing terpakai atau baru — hubungi penjual via WhatsApp, COD.",
+    "seoListingTitle": "{title} — jualan peralatan memancing",
+    "seoListingDescriptionRich": "{title} — {price}. {excerpt} COD via Jompancing marketplace.",
     "notFound": "Senarai tidak dijumpai",
     "seller": "Penjual",
     "deleteListing": "Buang senarai",
@@ -417,6 +456,10 @@
   "guide": {
     "title": "Panduan Memancing",
     "subtitle": "Tips, spesies ikan, peraturan & musim — untuk pemancing Malaysia",
+    "seoListTitle": "Panduan memancing Malaysia",
+    "seoListDescription": "Tips memancing, spesies ikan, peraturan, peralatan & musim — artikel untuk pemancing Malaysia.",
+    "seoArticleTitle": "{title} — panduan memancing",
+    "seoArticleDescriptionRich": "{title} ({category}). {excerpt} — Jompancing panduan pemancing.",
     "readMore": "Baca lagi",
     "backToGuide": "Kembali ke panduan",
     "notFound": "Artikel tidak dijumpai",

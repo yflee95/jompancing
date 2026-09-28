@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Jompancing — Malaysia Fishing Platform",
-    "description": "Share fishing spots, join activities, buy & sell gear — the angler community across Malaysia.",
-    "homeDescription": "Find fishing spots, ponds, jetties and angling locations across Malaysia. Share your spot, read guides, and join the Jompancing community."
+    "title": "Jompancing — Go Fishing | Malaysia Fishing Spots",
+    "description": "Share fishing spots, ponds, jetties & angling locations — Malaysia's angler community on Jompancing.",
+    "homeDescription": "Find fishing spots, pay ponds, jetties and rivers across Malaysia. Share your spot, read guides, and join the Jompancing community."
   },
   "common": {
     "appName": "Jompancing",
@@ -31,7 +31,24 @@
     "new": "New",
     "nearYou": "Near you",
     "photoUnavailable": "Photo unavailable",
-    "submitting": "Submitting…"
+    "submitting": "Submitting…",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "The link may be broken or the page may have moved.",
+    "backHome": "Back to home"
+  },
+  "seoHub": {
+    "heading": "Fishing spots by state",
+    "intro": "Jompancing — find ponds, jetties, rivers and sea fishing across Malaysia. Share your spot with the community.",
+    "statesNavLabel": "States",
+    "statesTitle": "Browse by state",
+    "stateSpotsLink": "Fishing spots in {state}",
+    "spotsNavLabel": "Popular spots",
+    "spotsTitle": "Popular fishing spots",
+    "exploreNavLabel": "Explore Jompancing",
+    "linkSpots": "All fishing spots",
+    "linkMap": "Spot map",
+    "linkGuide": "Fishing guide",
+    "linkActivities": "Events & contests"
   },
   "nav": {
     "home": "Home",
@@ -132,7 +149,15 @@
   "spots": {
     "title": "Fishing Spots",
     "subtitle": "Share & discover spots — your photos, your tags, Google address required",
-    "seoBrowseDescription": "Fishing spots across Malaysia — ponds, jetties, rivers and sea. Share your spot or browse by state.",
+    "seoBrowseDescription": "Fishing spots across Malaysia — ponds, jetties, rivers and sea. Share your spot or browse by state on Jompancing.",
+    "seoSpotTitle": "{name} — {location}",
+    "seoSpotTitleNoLocation": "{name} — fishing spot",
+    "seoSpotDescriptionRich": "{name}, {location}. {water}. Species: {species}. {extra} — Jompancing fishing community.",
+    "seoBreadcrumbLabel": "Fishing spot navigation",
+    "seoBreadcrumbSpots": "Fishing spots",
+    "seoMoreInState": "More fishing spots in {state}",
+    "seoMoreInStateHint": "Ponds, jetties, rivers and sea — community spots in this state.",
+    "seoBrowseStateCta": "Browse all spots in {state} →",
     "seoStateTitle": "Fishing spots in {state}",
     "seoStateDescription": "Ponds, jetties and fishing locations in {state}. {count, plural, =0 {Be the first to share a spot} other {# spots listed}} on Jompancing.",
     "seoStatePondTitle": "Fishing ponds in {state}",
@@ -231,6 +256,8 @@
   "map": {
     "title": "Map",
     "subtitle": "Browse public spots on the map — not for posting",
+    "seoTitle": "Malaysia fishing spots map",
+    "seoDescription": "Interactive map of ponds, jetties and public fishing spots in Malaysia — find places near you on Jompancing.",
     "exploreNote": "Map is for exploring. To share a spot with photos & Google address, tap + Share.",
     "findingLocation": "Finding location...",
     "spotsOnMap": "{count} public spots",
@@ -298,6 +325,10 @@
     "filterDistrict": "District",
     "filterAll": "All",
     "viewDetails": "View details →",
+    "seoListTitle": "Fishing events & contests in Malaysia",
+    "seoListDescription": "Tournaments, tackle sales, angler meetups — filter by state on Jompancing.",
+    "seoActivityTitle": "{title} — fishing event",
+    "seoActivityDescriptionRich": "{title} at {venue}. {excerpt} — register via Jompancing.",
     "notFound": "Activity not found",
     "noActivities": "No activities in this area",
     "tryDifferentRegion": "Try another state or change the sort.",
@@ -323,6 +354,10 @@
     "topicTitlePlaceholder": "e.g. Best bait for barramundi?",
     "topicBody": "Content",
     "topicBodyPlaceholder": "Share your question or experience...",
+    "seoListTitle": "Malaysia anglers forum",
+    "seoListDescription": "Discuss fishing spots, bait, techniques, hooks and species — Jompancing community.",
+    "seoThreadTitle": "{title} — anglers forum",
+    "seoThreadDescriptionRich": "{title}: {excerpt} — read and reply on Jompancing.",
     "notFound": "Topic not found",
     "postFailed": "Could not publish topic — please try again.",
     "categories": {
@@ -391,6 +426,10 @@
     "clearFilters": "Clear filters",
     "noListings": "No listings yet",
     "beFirstSeller": "Be the first to sell gear here!",
+    "seoListTitle": "Buy & sell fishing gear — COD Malaysia",
+    "seoListDescription": "Rods, reels, bait and tackle — contact sellers on WhatsApp, meet COD.",
+    "seoListingTitle": "{title} — fishing gear for sale",
+    "seoListingDescriptionRich": "{title} — {price}. {excerpt} COD on Jompancing marketplace.",
     "notFound": "Listing not found",
     "seller": "Seller",
     "deleteListing": "Remove listing",
@@ -417,6 +456,10 @@
   "guide": {
     "title": "Fishing Guide",
     "subtitle": "Tips, fish species, regulations & seasons — for Malaysian anglers",
+    "seoListTitle": "Malaysia fishing guide",
+    "seoListDescription": "Angling tips, fish species, rules, gear and seasons — articles for Malaysian anglers.",
+    "seoArticleTitle": "{title} — fishing guide",
+    "seoArticleDescriptionRich": "{title} ({category}). {excerpt} — Jompancing angler guide.",
     "readMore": "Read more",
     "backToGuide": "Back to guide",
     "notFound": "Article not found",

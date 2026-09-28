@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       entries.push({
         url: absoluteUrl(localePath(locale, path)),
         changeFrequency: "weekly",
-        priority: 0.75,
+        priority: 0.8,
       });
     }
 
@@ -42,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: absoluteUrl(localePath(locale, `/spots/${spot.slug}`)),
         lastModified: spot.lastModified,
         changeFrequency: "weekly",
-        priority: 0.7,
+        priority: 0.85,
       });
     }
 
@@ -78,7 +78,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: absoluteUrl(localePath(locale, `/guide/${article.slug}`)),
         lastModified: article.lastModified,
         changeFrequency: "monthly",
-        priority: 0.6,
+        priority: 0.72,
       });
     }
   }

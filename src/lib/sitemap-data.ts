@@ -87,7 +87,7 @@ export async function getPublicSpotSlugs(): Promise<SitemapSlugEntry[]> {
 
         slug: row.slug,
 
-        lastModified: safeDate(row.created_at),
+        lastModified: safeDate(row.updated_at ?? row.created_at),
 
       });
 

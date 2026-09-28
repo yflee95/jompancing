@@ -5,6 +5,7 @@ import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { mockArticles } from "@/data/mock-data";
+import { GuideIndexJsonLd } from "@/components/seo/guide-index-json-ld";
 import { buildPageMetadata } from "@/lib/seo";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -19,8 +20,8 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: "/guide",
-    title: t("title"),
-    description: t("subtitle"),
+    title: t("seoListTitle"),
+    description: t("seoListDescription"),
   });
 }
 
@@ -35,6 +36,8 @@ export default async function GuidePage({
   const tCommon = await getTranslations("common");
 
   return (
+    <>
+      <GuideIndexJsonLd locale={locale} />
     <div className="mx-auto max-w-6xl px-4 py-6">
       <h1 className="font-serif-display text-2xl font-bold text-[var(--ink)]">
         {t("title")}
@@ -74,5 +77,6 @@ export default async function GuidePage({
         ))}
       </div>
     </div>
+    </>
   );
 }

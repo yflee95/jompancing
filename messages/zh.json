@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Jompancing — 马来西亚钓鱼平台",
-    "description": "分享钓点、参与活动、买卖渔具 — 全马钓友社区。",
-    "homeDescription": "查找马来西亚钓点、钓场、码头与海钓地点。分享你的钓点、阅读指南，加入 Jompancing 钓友社区。"
+    "title": "Jompancing — 去钓鱼 | 马来西亚钓点",
+    "description": "分享钓点、钓场、码头与海钓 — 马来西亚钓友社区 Jompancing。",
+    "homeDescription": "查找马来西亚钓点、收费塘、码头与河流。分享你的钓点、阅读指南，加入 Jompancing 钓友社区。"
   },
   "common": {
     "appName": "Jompancing",
@@ -31,7 +31,24 @@
     "new": "最新",
     "nearYou": "附近",
     "photoUnavailable": "图片不可用",
-    "submitting": "提交中…"
+    "submitting": "提交中…",
+    "notFoundTitle": "页面未找到",
+    "notFoundDescription": "链接可能无效或页面已移动。",
+    "backHome": "返回首页"
+  },
+  "seoHub": {
+    "heading": "按州浏览钓点",
+    "intro": "Jompancing — 查找马来西亚钓场、码头、河流与海钓。与钓友分享你的钓点。",
+    "statesNavLabel": "州属",
+    "statesTitle": "按州浏览",
+    "stateSpotsLink": "{state}钓点",
+    "spotsNavLabel": "热门钓点",
+    "spotsTitle": "热门钓点",
+    "exploreNavLabel": "探索 Jompancing",
+    "linkSpots": "全部钓点",
+    "linkMap": "钓点地图",
+    "linkGuide": "钓鱼指南",
+    "linkActivities": "活动与比赛"
   },
   "nav": {
     "home": "首页",
@@ -132,7 +149,15 @@
   "spots": {
     "title": "钓点",
     "subtitle": "分享与发现钓点 — 自己拍照、自己 tag、必须填 Google 地址",
-    "seoBrowseDescription": "马来西亚钓点列表 — 钓场、码头、河流与海钓。按州浏览或分享你的钓点。",
+    "seoBrowseDescription": "马来西亚钓点列表 — 钓场、码头、河流与海钓。按州浏览或分享你的钓点 — Jompancing。",
+    "seoSpotTitle": "{name} — {location}",
+    "seoSpotTitleNoLocation": "{name} — 钓点",
+    "seoSpotDescriptionRich": "{name}，{location}。{water}。鱼种：{species}。{extra} — Jompancing 钓友社区。",
+    "seoBreadcrumbLabel": "钓点导航",
+    "seoBreadcrumbSpots": "钓点",
+    "seoMoreInState": "{state}更多钓点",
+    "seoMoreInStateHint": "钓场、码头、河流与海钓 — 本州社区钓点。",
+    "seoBrowseStateCta": "浏览{state}全部钓点 →",
     "seoStateTitle": "{state}钓点",
     "seoStateDescription": "浏览{state}的钓场、码头与钓点。{count, plural, =0 {成为第一个分享钓点的人} other {共#个钓点}} — Jompancing 社区。",
     "seoStatePondTitle": "{state}钓场 / 收费塘",
@@ -231,6 +256,8 @@
   "map": {
     "title": "地图",
     "subtitle": "在地图上浏览公开钓点 — 不是发布页面",
+    "seoTitle": "马来西亚钓点地图",
+    "seoDescription": "互动地图浏览钓场、码头与公开钓点 — 在 Jompancing 查找附近地点。",
     "exploreNote": "地图用于探索。要分享钓点（照片 + Google 地址），请点 + 分享。",
     "findingLocation": "正在定位...",
     "spotsOnMap": "{count} 个公开钓点",
@@ -298,6 +325,10 @@
     "filterDistrict": "县/区",
     "filterAll": "全部",
     "viewDetails": "查看详情 →",
+    "seoListTitle": "马来西亚钓鱼活动与比赛",
+    "seoListDescription": "钓鱼比赛、渔具特卖、钓友聚会 — 在 Jompancing 按州筛选。",
+    "seoActivityTitle": "{title} — 钓鱼活动",
+    "seoActivityDescriptionRich": "{title}，地点：{venue}。{excerpt} — 在 Jompancing 报名联系。",
     "notFound": "找不到活动",
     "noActivities": "此区域暂无活动",
     "tryDifferentRegion": "试试其他州属或更换排序。",
@@ -323,6 +354,10 @@
     "topicTitlePlaceholder": "例如：钓金目鲈最好的饵料？",
     "topicBody": "内容",
     "topicBodyPlaceholder": "分享你的问题或经验...",
+    "seoListTitle": "马来西亚钓友论坛",
+    "seoListDescription": "讨论钓点、饵料、技巧、鱼钩与鱼种 — Jompancing 社区。",
+    "seoThreadTitle": "{title} — 钓友论坛",
+    "seoThreadDescriptionRich": "{title}：{excerpt} — 在 Jompancing 阅读与回复。",
     "notFound": "找不到帖子",
     "postFailed": "发布失败，请重试。",
     "categories": {
@@ -391,6 +426,10 @@
     "clearFilters": "清除筛选",
     "noListings": "暂无商品",
     "beFirstSeller": "成为第一个在此出售渔具的人！",
+    "seoListTitle": "买卖渔具 — 马来西亚面交",
+    "seoListDescription": "鱼竿、渔轮、饵料与配件 — WhatsApp 联系卖家，面交 COD。",
+    "seoListingTitle": "{title} — 渔具出售",
+    "seoListingDescriptionRich": "{title} — {price}。{excerpt} Jompancing 面交。",
     "notFound": "找不到商品",
     "seller": "卖家",
     "deleteListing": "删除商品",
@@ -417,6 +456,10 @@
   "guide": {
     "title": "钓鱼指南",
     "subtitle": "技巧、鱼种、法规与季节 — 马来西亚钓友必读",
+    "seoListTitle": "马来西亚钓鱼指南",
+    "seoListDescription": "钓鱼技巧、鱼种、法规、装备与季节 — 马来西亚钓友文章。",
+    "seoArticleTitle": "{title} — 钓鱼指南",
+    "seoArticleDescriptionRich": "{title}（{category}）。{excerpt} — Jompancing 钓友指南。",
     "readMore": "阅读更多",
     "backToGuide": "返回指南",
     "notFound": "找不到文章",

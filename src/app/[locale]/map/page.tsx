@@ -15,8 +15,8 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: "/map",
-    title: t("title"),
-    description: t("subtitle"),
+    title: t("seoTitle"),
+    description: t("seoDescription"),
   });
 }
 

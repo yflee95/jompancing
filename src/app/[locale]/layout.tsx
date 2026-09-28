@@ -58,12 +58,17 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
 
+  const googleVerification = process.env.GOOGLE_SITE_VERIFICATION?.trim();
+
   return {
     ...buildRootMetadata(locale as "ms" | "en" | "zh", t("title"), t("description")),
     title: {
       default: t("title"),
       template: `%s | Jompancing`,
     },
+    ...(googleVerification
+      ? { verification: { google: googleVerification } }
+      : {}),
     manifest: "/manifest.json",
     icons: {
       icon: [

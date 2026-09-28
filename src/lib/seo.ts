@@ -3,6 +3,26 @@ import { locales, type Locale } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/constants";
 
 export const SITE_NAME = "Jompancing";
+export const META_DESCRIPTION_MAX = 160;
+
+export function truncateMetaDescription(
+  text: string,
+  max = META_DESCRIPTION_MAX,
+): string {
+  const normalized = text.replace(/\s+/g, " ").trim();
+  if (!normalized) return "";
+  if (normalized.length <= max) return normalized;
+  return `${normalized.slice(0, max - 1).trimEnd()}…`;
+}
+
+/** Strip simple markdown / newlines for meta descriptions. */
+export function plainTextForMeta(text: string): string {
+  return text
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/[#*_>`~]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 /** Default social preview — served by app/opengraph-image.tsx */
 export const DEFAULT_OG_IMAGE_PATH = "/opengraph-image";
@@ -40,6 +60,8 @@ interface PageMetadataInput {
   ogImage?: string | null;
   noIndex?: boolean;
   ogType?: "website" | "article";
+  /** Skip layout title template (e.g. when title already includes brand). */
+  titleAbsolute?: boolean;
 }
 
 export function buildPageMetadata({
@@ -50,39 +72,49 @@ export function buildPageMetadata({
   ogImage,
   noIndex = false,
   ogType = "website",
+  titleAbsolute = false,
 }: PageMetadataInput): Metadata {
   const canonicalPath = localePath(locale, path);
+  const metaDescription = truncateMetaDescription(
+    plainTextForMeta(description),
+  );
   const imageUrl = ogImage
     ? ogImage.startsWith("http")
       ? ogImage
       : absoluteUrl(ogImage)
     : absoluteUrl(DEFAULT_OG_IMAGE_PATH);
+  const alternateLocales = locales.filter((l) => l !== locale);
 
   return {
-    title,
-    description,
+    title: titleAbsolute ? { absolute: title } : title,
+    description: metaDescription,
     alternates: {
       canonical: canonicalPath,
       languages: buildLanguageAlternates(path),
     },
     openGraph: {
       title,
-      description,
+      description: metaDescription,
       url: absoluteUrl(canonicalPath),
       siteName: SITE_NAME,
       locale,
+      alternateLocale: alternateLocales,
       type: ogType,
       images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
       title,
-      description,
+      description: metaDescription,
       images: [imageUrl],
     },
     robots: noIndex
       ? { index: false, follow: false, googleBot: { index: false, follow: false } }
-      : { index: true, follow: true },
+      : {
+          index: true,
+          follow: true,
+          googleBot: { index: true, follow: true, "max-image-preview": "large" },
+        },
   };
 }
 

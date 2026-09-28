@@ -14,8 +14,8 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: "/marketplace",
-    title: t("title"),
-    description: t("subtitle"),
+    title: t("seoListTitle"),
+    description: t("seoListDescription"),
   });
 }
 

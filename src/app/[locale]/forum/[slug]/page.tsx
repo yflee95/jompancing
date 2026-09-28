@@ -6,6 +6,7 @@ import {
   getForumRepliesForPost,
 } from "@/data/mock-data";
 import { shouldUseMockContent } from "@/lib/mock-content";
+import { buildForumThreadSeo } from "@/lib/content-seo";
 import { buildPageMetadata } from "@/lib/seo";
 import { fetchCommentsForThreadServer } from "@/lib/supabase/comments";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -51,11 +52,16 @@ export async function generateMetadata({ params }: ForumThreadPageProps) {
   }
 
   const { post } = resolved;
+  const seo = buildForumThreadSeo({
+    title: getLocalizedText(post.title, locale),
+    body: getLocalizedText(post.body, locale),
+    t,
+  });
   return buildPageMetadata({
     locale,
     path: `/forum/${slug}`,
-    title: getLocalizedText(post.title, locale),
-    description: getLocalizedText(post.body, locale),
+    title: seo.title,
+    description: seo.description,
     ogType: "article",
   });
 }

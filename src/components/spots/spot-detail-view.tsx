@@ -8,7 +8,9 @@ import { AdminSpotDelete } from "@/components/spots/admin-spot-delete";
 import { SpotOwnerActions } from "@/components/spots/spot-owner-actions";
 import { ReportContentLink } from "@/components/shared/report-content-link";
 import { ShareActions } from "@/components/shared/share-actions";
+import { SpotBreadcrumbNav } from "@/components/seo/spot-breadcrumb-nav";
 import { SpotJsonLd } from "@/components/seo/spot-json-ld";
+import { buildSpotDetailSeo } from "@/lib/spots-seo";
 import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -17,6 +19,8 @@ import {
   getSpotSpeciesLine,
 } from "@/lib/spot-angler-info";
 import { getSpotLocationLine } from "@/lib/spot-location";
+import { getStateById } from "@/data/malaysia-states";
+import { Link } from "@/i18n/navigation";
 import { getLocalizedText, type FishingSpot } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
@@ -38,10 +42,19 @@ export async function SpotDetailView({
   const tCommon = await getTranslations("common");
   const isUserGenerated = spot.isUserGenerated;
   const hasMockHero = !isUserGenerated || !spot.photos.length;
+  const seo = buildSpotDetailSeo({ spot, locale, t });
+  const state = getStateById(spot.stateId);
+  const stateName = state ? getLocalizedText(state.name, locale) : "";
 
   return (
     <article className="mx-auto max-w-4xl px-4 pb-28 sm:pb-8">
-      <SpotJsonLd spot={spot} locale={locale} />
+      <SpotJsonLd
+        spot={spot}
+        locale={locale}
+        description={seo.description}
+        breadcrumbSpotsLabel={t("seoBreadcrumbSpots")}
+      />
+      <SpotBreadcrumbNav spot={spot} locale={locale} />
 
       {hasMockHero ? (
         <div className="relative -mx-4 aspect-[4/5] overflow-hidden sm:mx-0 sm:aspect-[16/10] sm:rounded-3xl">
@@ -226,6 +239,23 @@ export async function SpotDetailView({
             contentLabel={getLocalizedText(spot.title, locale)}
           />
         </div>
+
+        {state && (
+          <div className="mt-8 rounded-2xl bg-[var(--ocean-light)]/40 p-4 ring-1 ring-[var(--sand-dark)]/30">
+            <p className="text-sm font-semibold text-[var(--ink)]">
+              {t("seoMoreInState", { state: stateName })}
+            </p>
+            <p className="mt-1 text-xs text-[var(--ink-muted)]">
+              {t("seoMoreInStateHint")}
+            </p>
+            <Link
+              href={`/spots/${state.slug}`}
+              className="mt-3 inline-flex text-sm font-medium text-[var(--ocean)] hover:underline"
+            >
+              {t("seoBrowseStateCta", { state: stateName })}
+            </Link>
+          </div>
+        )}
 
         <div className="mt-8">
           <SpotDetailActions
