@@ -48,7 +48,7 @@ function getOAuthRedirectTo(locale: Locale): string {
   const base =
     (typeof window !== "undefined"
       ? window.location.origin
-      : SITE_URL.replace(/\/$/, "")) || "https://jompancing.my";
+      : SITE_URL.replace(/\/$/, "")) || "https://www.jompancing.my";
   return `${base}/auth/callback?next=/${locale}/profile`;
 }
 

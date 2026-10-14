@@ -28,7 +28,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "spots" });
 
   let spotCount: number | undefined;
-  if (filters.stateId) {
+  if (filters.stateId || filters.water === "pond") {
     const spots = await loadPublicSpots();
     let list = filterSpotsByRegion(
       spots,
@@ -47,7 +47,7 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: copy.path,
-    title: copy.title,
+    title: filters.stateId ? copy.title : t("seoBrowseTitle"),
     description: copy.description,
   });
 }

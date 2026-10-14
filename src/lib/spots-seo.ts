@@ -66,26 +66,23 @@ export interface SpotsBrowseFilters {
   water?: WaterType;
 }
 
-/** Canonical path after locale, e.g. `/spots/johor?water=pond`. */
+/** Canonical path after locale for the curated indexable spot landing pages. */
 export function buildSpotsSeoPath(filters: SpotsBrowseFilters): string {
   const { stateId, districtId, areaId, water } = filters;
 
   if (stateId && getStateById(stateId)) {
-    const params = new URLSearchParams();
-    if (districtId) params.set("district", districtId);
-    if (areaId) params.set("area", areaId);
-    if (water) params.set("water", water);
-    const query = params.toString();
-    return query ? `/spots/${stateId}?${query}` : `/spots/${stateId}`;
+    // This district landing page already earns Search Console impressions and clicks.
+    if (stateId === "johor" && districtId === "johor-bahru" && !areaId && !water) {
+      return "/spots/johor?district=johor-bahru";
+    }
+    if (water === "pond" && !districtId && !areaId) {
+      return `/spots/${stateId}?water=pond`;
+    }
+    return `/spots/${stateId}`;
   }
 
-  const params = new URLSearchParams();
-  if (stateId) params.set("state", stateId);
-  if (districtId) params.set("district", districtId);
-  if (areaId) params.set("area", areaId);
-  if (water) params.set("water", water);
-  const query = params.toString();
-  return query ? `/spots?${query}` : "/spots";
+  if (water === "pond") return "/spots?water=pond";
+  return "/spots";
 }
 
 export function parseSpotsSearchParams(searchParams: {
@@ -146,6 +143,14 @@ export function getSpotsSeoCopy({
   const districtName = district ? getLocalizedText(district.name, locale) : "";
   const count = spotCount ?? 0;
 
+  if (!state && filters.water === "pond") {
+    return {
+      path,
+      title: t("seoNationalPondTitle"),
+      description: t("seoNationalPondDescription", { count }),
+    };
+  }
+
   if (state && filters.water === "pond") {
     return {
       path,
@@ -155,14 +160,21 @@ export function getSpotsSeoCopy({
   }
 
   if (state && district) {
+    if (state.id === "johor" && district.id === "johor-bahru") {
+      return {
+        path,
+        title: t("seoDistrictTitle", { district: districtName, state: stateName }),
+        description: t("seoDistrictDescription", {
+          district: districtName,
+          state: stateName,
+          count,
+        }),
+      };
+    }
     return {
-      path,
-      title: t("seoDistrictTitle", { district: districtName, state: stateName }),
-      description: t("seoDistrictDescription", {
-        district: districtName,
-        state: stateName,
-        count,
-      }),
+      path: `/spots/${state.slug}`,
+      title: t("seoStateTitle", { state: stateName }),
+      description: t("seoStateDescription", { state: stateName, count }),
     };
   }
 

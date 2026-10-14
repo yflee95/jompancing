@@ -29,6 +29,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
+    entries.push({
+      url: absoluteUrl(localePath(locale, "/spots?water=pond")),
+      changeFrequency: "weekly",
+      priority: 0.85,
+    });
+
     for (const path of stateSpotPaths) {
       entries.push({
         url: absoluteUrl(localePath(locale, path)),

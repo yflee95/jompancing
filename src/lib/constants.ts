@@ -1,7 +1,7 @@
 export const APP_NAME = "Jompancing";
 
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://jompancing.my";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.jompancing.my";
 
 export const DEMO_USER = {
   id: "demo-user-1",

@@ -7,6 +7,8 @@ interface SpotsRegionItemListJsonLdProps {
   stateId: string;
   stateName: string;
   spots: FishingSpot[];
+  listPath?: string;
+  listName?: string;
 }
 
 export function SpotsRegionItemListJsonLd({
@@ -14,18 +16,25 @@ export function SpotsRegionItemListJsonLd({
   stateId,
   stateName,
   spots,
+  listPath,
+  listName,
 }: SpotsRegionItemListJsonLdProps) {
   if (spots.length === 0) return null;
 
-  const listUrl = absoluteUrl(localePath(locale, `/spots/${stateId}`));
+  const listUrl = absoluteUrl(
+    localePath(locale, listPath ?? `/spots/${stateId}`),
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name:
-      locale === "ms"
+      listName ??
+      (locale === "ms"
         ? `Tempat memancing di ${stateName}`
-        : `Fishing spots in ${stateName}`,
+        : locale === "zh"
+          ? `${stateName}钓点`
+          : `Fishing spots in ${stateName}`),
     url: listUrl,
     itemListElement: spots.map((spot, index) => ({
       "@type": "ListItem",

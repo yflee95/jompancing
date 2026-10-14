@@ -1,7 +1,7 @@
 # Jompancing — Developer Cookbook
 
 Malaysia fishing community: **spots**, **map**, **forum**, **activities**, **marketplace (COD)**, **guide**.  
-Production: **https://jompancing.my** · Repo: **yflee95/jompancing** · Deploy: **Vercel** · DB/Auth: **Supabase**
+Production: **https://www.jompancing.my** · Repo: **yflee95/jompancing** · Deploy: **Vercel** · DB/Auth: **Supabase**
 
 ---
 
@@ -153,7 +153,7 @@ flowchart TB
    - Enable **Anonymous** sign-in (guest spot post)
    - **Google** OAuth optional
    - Redirect URLs: `http://localhost:3000/**`, production domains
-   - Site URL: `https://jompancing.my/ms` (prod)
+   - Site URL: `https://www.jompancing.my/ms` (prod)
 
 5. **Curated spots (optional)**
 
@@ -333,7 +333,7 @@ npm run enrich:spot-seo -- --slug=paradise-fishing-villa-zsFfQ7qE
 
 Rules: `src/data/spot-seo-enrichments.ts` — extend regex + copy, then re-run script.
 
-**GSC:** sitemap `https://jompancing.my/sitemap.xml`; request indexing for top `/ms/spots/*` after copy changes.
+**GSC:** sitemap `https://www.jompancing.my/sitemap.xml`; request indexing for top `/ms/spots/*` after copy changes.
 
 ---
 
