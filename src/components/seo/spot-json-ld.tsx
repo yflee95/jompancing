@@ -23,7 +23,7 @@ export function SpotJsonLd({
     description?.trim() || getLocalizedText(spot.description, locale);
   const spotUrl = absoluteUrl(localePath(locale, `/spots/${spot.slug}`));
   const spotsIndexUrl = absoluteUrl(localePath(locale, "/spots"));
-  const state = getStateById(spot.stateId);
+  const state = spot.isUserGenerated ? getStateById(spot.stateId) : null;
   const stateUrl = state
     ? absoluteUrl(localePath(locale, `/spots/${state.slug}`))
     : spotsIndexUrl;

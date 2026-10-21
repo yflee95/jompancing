@@ -29,7 +29,9 @@ export function buildSpotDetailSeo({
   t: SpotsTranslate;
 }): { title: string; description: string } {
   const name = getLocalizedText(spot.title, locale).trim();
-  const location = getSpotLocationLine(spot, locale).trim();
+  const location = spot.isUserGenerated
+    ? getSpotLocationLine(spot, locale).trim()
+    : "";
   const rawDescription = getLocalizedText(spot.description, locale).trim();
   const waterLabel = t(
     spot.waterType as "saltwater" | "freshwater" | "pond" | "river",

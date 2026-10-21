@@ -17,9 +17,13 @@ export function getSpotLocationLine(
   spot: Pick<
     FishingSpot,
     "stateId" | "districtId" | "areaId" | "areaName"
-  >,
+  > & Partial<Pick<FishingSpot, "isUserGenerated" | "googleAddress">>,
   locale: Locale,
 ): string {
+  // Google-seeded region fields can disagree with the provider address. Do not
+  // present the derived state/district as confirmed until someone verifies it.
+  if (spot.isUserGenerated === false) return spot.googleAddress?.trim() ?? "";
+
   const state = getStateById(spot.stateId);
   const district = getDistrictById(spot.stateId, spot.districtId);
   const areaLabel = getSpotAreaLabel(spot, locale);

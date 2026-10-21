@@ -64,7 +64,7 @@ export function SpotCard({ spot, locale, showPrivateBadge }: SpotCardProps) {
                   ? t(spot.waterType as "saltwater" | "freshwater" | "pond" | "river")
                   : t("googlePlaceListing")}
               </span>
-              {spot.tags[0] && (
+              {spot.isUserGenerated && spot.tags[0] && (
                 <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] text-white/90">
                   {spot.tags[0]}
                 </span>

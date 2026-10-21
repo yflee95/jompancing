@@ -15,7 +15,7 @@ export async function SpotBreadcrumbNav({
   locale,
 }: SpotBreadcrumbNavProps) {
   const t = await getTranslations("spots");
-  const state = getStateById(spot.stateId);
+  const state = spot.isUserGenerated ? getStateById(spot.stateId) : null;
   const district = getDistrictById(spot.stateId, spot.districtId);
   const stateName = state ? getLocalizedText(state.name, locale) : "";
   const districtName = district ? getLocalizedText(district.name, locale) : "";

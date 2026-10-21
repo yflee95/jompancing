@@ -131,9 +131,11 @@ export function HomeSpotRailCard({
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-1.5">
             <span className="rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur-sm">
-              {tSpots(spot.waterType as "saltwater" | "freshwater" | "pond" | "river")}
+              {spot.isUserGenerated
+                ? tSpots(spot.waterType as "saltwater" | "freshwater" | "pond" | "river")
+                : tSpots("googlePlaceListing")}
             </span>
-            {spot.species[0] && (
+            {spot.isUserGenerated && spot.species[0] && (
               <span className="rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur-sm">
                 {spot.species[0]}
               </span>
