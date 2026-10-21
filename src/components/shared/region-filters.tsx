@@ -38,6 +38,7 @@ export function RegionFilters({
   const userLocation = useUserLocation(locale);
   const searchParams = useSearchParams();
   const [applyingGps, setApplyingGps] = useState(false);
+  const [locationError, setLocationError] = useState(false);
   const preservedWater = parseWaterTypeParam(searchParams.get("water"));
 
   const selectedState = malaysiaStates.find((s) => s.id === currentState);
@@ -66,27 +67,37 @@ export function RegionFilters({
     router.replace(href);
   }
 
-  function applyGpsRegion() {
-    const region = userLocation.region;
-    if (!region) return;
+  async function applyGpsRegion() {
+    if (applyingGps || userLocation.status === "pending") return;
+    setLocationError(false);
     setApplyingGps(true);
-    setSpotsShowAllPreference(false);
-    updateParams(region.stateId, region.districtId);
-    setApplyingGps(false);
+    try {
+      const location = userLocation.region
+        ? userLocation
+        : await userLocation.requestLocation();
+      const region = location.region;
+      if (!region) {
+        setLocationError(true);
+        return;
+      }
+      updateParams(region.stateId, region.districtId);
+    } catch {
+      setLocationError(true);
+    } finally {
+      setApplyingGps(false);
+    }
   }
-
-  const canUseGps =
-    userLocation.status === "granted" && Boolean(userLocation.region);
 
   return (
     <div
       className={cn(
-        "flex items-center gap-2 overflow-x-auto scrollbar-none",
+        "space-y-1",
         compact ? "pb-0" : "mt-3 pb-0.5",
         className,
       )}
       aria-label={t("locationSection")}
     >
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
       {!compact && (
         <MapPin
           className="hidden h-4 w-4 shrink-0 text-[var(--ocean)] sm:block"
@@ -97,14 +108,15 @@ export function RegionFilters({
       <button
         type="button"
         onClick={applyGpsRegion}
-        disabled={!canUseGps || applyingGps}
-        title={tPost("useMyLocation")}
+        disabled={userLocation.status === "pending" || applyingGps}
+        title={t("nearMeLocationNotice")}
+        aria-describedby="near-me-location-notice"
         className={cn(
           "inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 font-semibold transition ring-1",
           compact ? "h-8 text-[10px]" : "h-9 text-[11px]",
-          canUseGps
-            ? "bg-[var(--ocean-light)] text-[var(--ocean-dark)] ring-[var(--ocean)]/25 hover:bg-[var(--ocean-light)]/80"
-            : "cursor-not-allowed bg-white text-[var(--ink-muted)] ring-[var(--sand-dark)]/40 opacity-60",
+          userLocation.status === "pending"
+            ? "cursor-wait bg-white text-[var(--ink-muted)] ring-[var(--sand-dark)]/40"
+            : "bg-[var(--ocean-light)] text-[var(--ocean-dark)] ring-[var(--ocean)]/25 hover:bg-[var(--ocean-light)]/80",
         )}
       >
         <Navigation
@@ -132,7 +144,6 @@ export function RegionFilters({
           </option>
         ))}
       </FilterPill>
-
       <FilterPill
         compact={compact}
         label={t("filterDistrict")}
@@ -166,6 +177,20 @@ export function RegionFilters({
           </option>
         ))}
       </FilterPill>
+      <span id="near-me-location-notice" className="sr-only">
+        {t("nearMeLocationNotice")}
+      </span>
+      </div>
+      {userLocation.status === "idle" && (
+        <p className="text-[10px] leading-relaxed text-[var(--ink-muted)]">
+          {t("nearMeLocationNotice")}
+        </p>
+      )}
+      {locationError && (
+        <p role="status" className="text-[10px] text-[var(--ink-muted)]">
+          {t("nearMeLocationError")}
+        </p>
+      )}
     </div>
   );
 }

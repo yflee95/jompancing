@@ -63,6 +63,18 @@ export function HomeExplore({ spots }: HomeExploreProps) {
   const userLocation = useUserLocation(locale);
 
   const [activeCategory, setActiveCategory] = useState<WaterType | "all">("all");
+  const [locationError, setLocationError] = useState(false);
+
+  const requestNearbySpots = useCallback(async () => {
+    if (userLocation.status === "pending") return;
+    setLocationError(false);
+    try {
+      const result = await userLocation.requestLocation();
+      if (!result.coords) setLocationError(true);
+    } catch {
+      setLocationError(true);
+    }
+  }, [userLocation]);
 
   const hasGps = userLocation.status === "granted" && userLocation.coords !== null;
   const locating = userLocation.status === "pending";
@@ -260,6 +272,8 @@ export function HomeExplore({ spots }: HomeExploreProps) {
         locating={locating}
         hasGps={hasGps}
         nearbyCount={nearbyCount}
+        onRequestLocation={() => void requestNearbySpots()}
+        locationError={locationError}
       />
 
       <div id="home-browse" className="scroll-mt-4 border-t border-[var(--sand-dark)]/30">

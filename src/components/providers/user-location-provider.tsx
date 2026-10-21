@@ -3,8 +3,9 @@
 import {
   createContext,
   useContext,
-  useEffect,
+  useCallback,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -12,7 +13,7 @@ import type { Coordinates } from "@/types";
 import type { InferredUserRegion } from "@/lib/reverse-geocode";
 import type { Locale } from "@/i18n/routing";
 
-export type UserLocationStatus = "pending" | "granted" | "denied";
+export type UserLocationStatus = "idle" | "pending" | "granted" | "denied";
 
 export interface UserLocationState {
   status: UserLocationStatus;
@@ -20,13 +21,17 @@ export interface UserLocationState {
   region: InferredUserRegion | null;
 }
 
+export interface UserLocationContextValue extends UserLocationState {
+  requestLocation: (locale?: Locale) => Promise<UserLocationState>;
+}
+
 const initialState: UserLocationState = {
-  status: "pending",
+  status: "idle",
   coords: null,
   region: null,
 };
 
-const UserLocationContext = createContext<UserLocationState | null>(null);
+const UserLocationContext = createContext<UserLocationContextValue | null>(null);
 
 export function UserLocationProvider({
   locale,
@@ -36,55 +41,74 @@ export function UserLocationProvider({
   children: ReactNode;
 }) {
   const [state, setState] = useState<UserLocationState>(initialState);
+  const requestInFlight = useRef<Promise<UserLocationState> | null>(null);
 
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setState({ status: "denied", coords: null, region: null });
-      return;
-    }
+  const requestLocation = useCallback((requestLocale: Locale = locale) => {
+    if (requestInFlight.current) return requestInFlight.current;
 
-    let cancelled = false;
+    setState({ status: "pending", coords: null, region: null });
+    const request = new Promise<UserLocationState>((resolve) => {
+      if (!navigator.geolocation) {
+        const unavailable = { status: "denied", coords: null, region: null } as const;
+        setState(unavailable);
+        resolve(unavailable);
+        return;
+      }
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        if (cancelled) return;
-        const coords = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        };
+      const deny = () => {
+        const denied = { status: "denied", coords: null, region: null } as const;
+        setState(denied);
+        resolve(denied);
+      };
 
-        setState({ status: "granted", coords, region: null });
+      try {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const coords = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            setState({ status: "granted", coords, region: null });
 
-        void fetch(
-          `/api/reverse-geocode?lat=${coords.lat}&lng=${coords.lng}&locale=${locale}`,
-        )
-          .then((res) => (res.ok ? res.json() : { region: null }))
-          .then((data: { region: InferredUserRegion | null }) => {
-            if (cancelled) return;
-            setState((prev) =>
-              prev.status === "granted"
-                ? { ...prev, region: data.region ?? null }
-                : prev,
-            );
-          })
-          .catch(() => {
-            /* coords still usable */
-          });
-      },
-      () => {
-        if (!cancelled) {
-          setState({ status: "denied", coords: null, region: null });
-        }
-      },
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 },
-    );
+            let region: InferredUserRegion | null = null;
+            try {
+              const response = await fetch(
+                `/api/reverse-geocode?lat=${coords.lat}&lng=${coords.lng}&locale=${requestLocale}`,
+              );
+              if (response.ok) {
+                const data = (await response.json()) as {
+                  region: InferredUserRegion | null;
+                };
+                region = data.region ?? null;
+              }
+            } catch {
+              // The coordinates can still sort nearby spots if area lookup fails.
+            }
 
-    return () => {
-      cancelled = true;
+            const located = { status: "granted", coords, region } as const;
+            setState(located);
+            resolve(located);
+          },
+          deny,
+          { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 },
+        );
+      } catch {
+        deny();
+      }
+    });
+
+    requestInFlight.current = request;
+    const clearRequest = () => {
+      if (requestInFlight.current === request) requestInFlight.current = null;
     };
+    void request.then(clearRequest, clearRequest);
+    return request;
   }, [locale]);
 
-  const value = useMemo(() => state, [state]);
+  const value = useMemo(
+    () => ({ ...state, requestLocation }),
+    [state, requestLocation],
+  );
 
   return (
     <UserLocationContext.Provider value={value}>
@@ -93,6 +117,6 @@ export function UserLocationProvider({
   );
 }
 
-export function useUserLocationFromContext(): UserLocationState | null {
+export function useUserLocationFromContext(): UserLocationContextValue | null {
   return useContext(UserLocationContext);
 }

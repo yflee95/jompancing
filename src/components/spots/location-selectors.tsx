@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Navigation } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { getAreasByDistrict, getGeneralAreaId } from "@/data/malaysia-areas";
@@ -38,6 +38,8 @@ export function LocationSelectors({
   const t = useTranslations("spots");
   const tPost = useTranslations("post");
   const userLocation = useUserLocation(locale);
+  const [applyingGps, setApplyingGps] = useState(false);
+  const [locationError, setLocationError] = useState(false);
 
   const selectedState = malaysiaStates.find((s) => s.id === stateId);
   const areas = useMemo(
@@ -50,15 +52,27 @@ export function LocationSelectors({
   const selectClass =
     "h-11 w-full rounded-2xl border-0 bg-[var(--sand)] px-4 text-sm ring-1 ring-[var(--sand-dark)]/60 outline-none focus:ring-2 focus:ring-[var(--ocean)]/30";
 
-  function applyGpsRegion() {
-    const region = userLocation.region;
-    if (!region) return;
-    onStateChange(region.stateId);
-    onDistrictChange(region.districtId);
+  async function applyGpsRegion() {
+    if (applyingGps || userLocation.status === "pending") return;
+    setLocationError(false);
+    setApplyingGps(true);
+    try {
+      const location = userLocation.region
+        ? userLocation
+        : await userLocation.requestLocation();
+      const region = location.region;
+      if (!region) {
+        setLocationError(true);
+        return;
+      }
+      onStateChange(region.stateId);
+      onDistrictChange(region.districtId);
+    } catch {
+      setLocationError(true);
+    } finally {
+      setApplyingGps(false);
+    }
   }
-
-  const canUseGps =
-    userLocation.status === "granted" && Boolean(userLocation.region);
 
   return (
     <div className="space-y-4 rounded-2xl bg-[var(--ocean-light)]/40 p-4 ring-1 ring-[var(--ocean)]/10">
@@ -69,12 +83,12 @@ export function LocationSelectors({
         <button
           type="button"
           onClick={applyGpsRegion}
-          disabled={!canUseGps}
+          disabled={applyingGps || userLocation.status === "pending"}
           className={cn(
             "inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold transition",
-            canUseGps
-              ? "bg-white text-[var(--ocean-dark)] shadow-sm ring-1 ring-[var(--ocean)]/20 hover:bg-[var(--ocean-light)]"
-              : "cursor-not-allowed bg-white/50 text-[var(--ink-muted)] ring-1 ring-[var(--sand-dark)]/30",
+            userLocation.status === "pending"
+              ? "cursor-wait bg-white/50 text-[var(--ink-muted)] ring-1 ring-[var(--sand-dark)]/30"
+              : "bg-white text-[var(--ocean-dark)] shadow-sm ring-1 ring-[var(--ocean)]/20 hover:bg-[var(--ocean-light)]",
           )}
         >
           <Navigation
@@ -85,11 +99,14 @@ export function LocationSelectors({
           />
           {userLocation.status === "pending"
             ? tPost("gpsDetecting")
-            : canUseGps
-              ? tPost("useMyLocation")
-              : tPost("gpsUnavailable")}
+            : tPost("useMyLocation")}
         </button>
       </div>
+      {locationError && (
+        <p role="status" className="-mt-2 text-xs text-[var(--ink-muted)]">
+          {tPost("locationRequestError")}
+        </p>
+      )}
 
       <div className="space-y-1.5">
         <Label htmlFor="state">{t("filterState")} *</Label>

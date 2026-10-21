@@ -152,6 +152,8 @@
   "spots": {
     "title": "Fishing Spots",
     "subtitle": "Share & discover spots — your photos, your tags, Google address required",
+    "nearMeLocationNotice": "Tap Near me to find nearby spots. We send your coordinates to Google or OpenStreetMap to identify your area.",
+    "nearMeLocationError": "We couldn't identify your area. Check browser location permission or choose a state manually.",
     "seoBrowseTitle": "Fishing Ponds & Angling Spots in Malaysia",
     "claimPondTitle": "Own or manage this pond?",
     "pondOwnerPageTitle": "Help anglers discover your fishing pond",
@@ -214,8 +216,8 @@
     "seoStateDescription": "Ponds, jetties and fishing locations in {state}. {count, plural, =0 {Be the first to share a spot} other {# spots listed}} on Jompancing.",
     "seoStatePondTitle": "Fishing ponds in {state}",
     "seoStatePondDescription": "Pond fishing and pay ponds in {state}. {count, plural, =0 {Share your favourite pond} other {# locations listed}}.",
-    "seoDistrictTitle": "Fishing Spots in {district}, {state} — Ponds & Jetties",
-    "seoDistrictDescription": "Find fishing spots around {district}, {state}, including ponds, jetties and community locations. Explore {count, plural, =0 {locations shared by anglers} other {# angling locations}} and check each spot's address and details.",
+    "seoDistrictTitle": "Fishing Ponds & Spots Near {district}, {state} | Jompancing",
+    "seoDistrictDescription": "Explore {count, plural, =0 {fishing spots} other {# fishing spots}} near {district}, {state}. Check addresses and listed details, then confirm access, fees and hours before your trip.",
     "tabCommunity": "Community",
     "tabMine": "My Spots",
     "noMySpots": "You haven't shared a spot yet",
@@ -629,7 +631,7 @@
       },
       {
         "title": "Information we collect",
-        "body": "Account info (name, email, profile photo via Google or email sign-in), content you post (spots, photos, forum posts, comments, marketplace listings, activities), pond listing requests you submit, and approximate location when you choose GPS features. Business contact details in pond requests stay private and are used to verify and respond to the request."
+        "body": "Account info (name, email, profile photo via Google or email sign-in), content you post (spots, photos, forum posts, comments, marketplace listings, activities), pond listing requests you submit, and device coordinates when you choose a GPS feature. We use coordinates to sort nearby spots or help place a spot pin, and send them to Google or OpenStreetMap for reverse geocoding. A location is public only if you choose to publish a spot with that pin. Business contact details in pond requests stay private and are used to verify and respond to the request."
       },
       {
         "title": "How we use it",

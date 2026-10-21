@@ -55,6 +55,8 @@ interface HomeSpotDeckProps {
   locating: boolean;
   hasGps: boolean;
   nearbyCount: number;
+  onRequestLocation: () => void;
+  locationError: boolean;
 }
 
 function getWrappedOffset(i: number, index: number, count: number) {
@@ -73,9 +75,12 @@ export function HomeSpotDeck({
   locating,
   hasGps,
   nearbyCount,
+  onRequestLocation,
+  locationError,
 }: HomeSpotDeckProps) {
   const t = useTranslations("home");
   const tSpots = useTranslations("spots");
+  const tPost = useTranslations("post");
 
   const [index, setIndex] = useState(0);
   const [dragPx, setDragPx] = useState(0);
@@ -270,16 +275,36 @@ export function HomeSpotDeck({
 
       <div className="relative z-10 mx-auto flex min-h-[88vh] max-w-lg flex-col px-4 pb-6 pt-4 md:min-h-0 md:max-w-4xl md:px-8 md:pb-8 md:pt-2 lg:min-h-[min(760px,calc(100vh-9rem))] lg:max-w-7xl lg:grid lg:grid-cols-[minmax(280px,0.78fr)_minmax(0,1.22fr)] lg:grid-rows-[1fr_auto_auto] lg:items-center lg:gap-x-10 lg:gap-y-3 lg:px-10 xl:gap-x-16 xl:px-12">
         <div className="shrink-0 md:mx-auto md:max-w-2xl md:text-center lg:col-start-1 lg:row-start-1 lg:mx-0 lg:max-w-xl lg:text-left">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/75 px-3 py-1.5 text-xs font-medium text-[var(--ocean)] shadow-sm ring-1 ring-white/80 backdrop-blur-md md:mx-auto">
-            <Navigation
-              className={cn("h-3.5 w-3.5", locating && "animate-pulse")}
-            />
-            {locating
-              ? t("findingLocation")
-              : hasGps
-                ? `${locationLabel ?? t("yourLocation")} · ${t("spotsNearby", { count: nearbyCount })}`
-                : (locationLabel ?? t("popularSpots"))}
-          </div>
+          {hasGps ? (
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/75 px-3 py-1.5 text-xs font-medium text-[var(--ocean)] shadow-sm ring-1 ring-white/80 backdrop-blur-md md:mx-auto">
+              <Navigation className="h-3.5 w-3.5" />
+              {`${locationLabel ?? t("yourLocation")} · ${t("spotsNearby", { count: nearbyCount })}`}
+            </div>
+          ) : (
+            <div className="md:mx-auto">
+              <button
+                type="button"
+                onClick={onRequestLocation}
+                disabled={locating}
+                aria-describedby="home-location-notice"
+                title={tSpots("nearMeLocationNotice")}
+                className="inline-flex items-center gap-2 rounded-full bg-white/75 px-3 py-1.5 text-xs font-semibold text-[var(--ocean)] shadow-sm ring-1 ring-white/80 backdrop-blur-md transition hover:bg-white disabled:cursor-wait"
+              >
+                <Navigation
+                  className={cn("h-3.5 w-3.5", locating && "animate-pulse")}
+                />
+                {locating ? tPost("gpsDetecting") : tPost("nearMe")}
+              </button>
+              <p
+                id="home-location-notice"
+                className="mt-1 max-w-sm text-[10px] leading-relaxed text-[var(--ink-muted)]"
+              >
+                {locationError
+                  ? tSpots("nearMeLocationError")
+                  : tSpots("nearMeLocationNotice")}
+              </p>
+            </div>
+          )}
 
           <h1 className="font-serif-display mt-4 text-2xl font-bold text-[var(--ink)] md:text-3xl lg:max-w-md lg:text-4xl xl:text-5xl">
             {t("deckTitle")}

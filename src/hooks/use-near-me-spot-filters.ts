@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
 import { useSearchParams } from "next/navigation";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { useUserLocation } from "@/hooks/use-user-location";
 import {
   getSpotsShowAllPreference,
   setSpotsShowAllPreference,
+  subscribeSpotsShowAllPreference,
 } from "@/lib/near-me-preferences";
 import { parseWaterTypeParam } from "@/lib/water-types";
 import type { WaterType } from "@/types";
@@ -40,15 +41,15 @@ export function useNearMeSpotFilters({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const userLocation = useUserLocation(locale);
-  const [showAll, setShowAll] = useState(false);
+  const showAll = useSyncExternalStore(
+    subscribeSpotsShowAllPreference,
+    getSpotsShowAllPreference,
+    () => false,
+  );
 
   const waterFromUrl =
     parseWaterTypeParam(searchParams.get("water")) ?? filterWater;
   const areaFromUrl = searchParams.get("area") ?? filterArea;
-
-  useEffect(() => {
-    setShowAll(getSpotsShowAllPreference());
-  }, []);
 
   const hasUrlFilter = Boolean(filterState || filterDistrict || filterArea);
 
@@ -95,7 +96,6 @@ export function useNearMeSpotFilters({
 
   function chooseShowAll() {
     setSpotsShowAllPreference(true);
-    setShowAll(true);
     const params = new URLSearchParams();
     appendPreservedParams(params, areaFromUrl, waterFromUrl);
     const query = params.toString();
@@ -104,7 +104,6 @@ export function useNearMeSpotFilters({
 
   function chooseNearMe() {
     setSpotsShowAllPreference(false);
-    setShowAll(false);
     const region = userLocation.region;
     if (!region) return;
     const params = new URLSearchParams();

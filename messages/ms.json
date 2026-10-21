@@ -152,6 +152,8 @@
   "spots": {
     "title": "Tempat Memancing",
     "subtitle": "Kongsi & temui lokasi — foto sendiri, tag sendiri, alamat Google wajib",
+    "nearMeLocationNotice": "Ketik Berdekatan untuk mencari spot berhampiran. Koordinat anda dihantar kepada Google atau OpenStreetMap untuk mengenal pasti kawasan.",
+    "nearMeLocationError": "Kawasan anda tidak dapat dikenal pasti. Semak kebenaran lokasi pelayar atau pilih negeri secara manual.",
     "seoBrowseTitle": "Kolam Pancing & Port Memancing di Malaysia",
     "claimPondTitle": "Pemilik atau pengurus kolam ini?",
     "pondOwnerPageTitle": "Bantu pemancing temui kolam anda",
@@ -214,8 +216,8 @@
     "seoStateDescription": "Cari port memancing, kolam pancing, jeti dan sungai di {state}. Semak {count, plural, =0 {lokasi yang dikongsi komuniti} other {# lokasi memancing}}, lihat maklumat spot dan rancang trip anda bersama Jompancing.",
     "seoStatePondTitle": "Kolam Pancing di {state} — Senarai Lokasi",
     "seoStatePondDescription": "Terokai kolam pancing di {state}. Semak {count, plural, =0 {lokasi yang dikongsi pemancing} other {# pilihan kolam}}, kemudian kongsi pengalaman anda dengan komuniti Jompancing.",
-    "seoDistrictTitle": "Port Memancing di {district}, {state} — Kolam & Jeti",
-    "seoDistrictDescription": "Cari port memancing sekitar {district}, {state}, termasuk kolam pancing, jeti dan lokasi komuniti. Terokai {count, plural, =0 {lokasi yang dikongsi pemancing} other {# lokasi memancing}}, kemudian semak alamat dan butiran spot.",
+    "seoDistrictTitle": "Kolam Pancing & Port Memancing {district} | Jompancing",
+    "seoDistrictDescription": "Cari kolam pancing dan port memancing di sekitar {district}, {state}. Semak {count, plural, =0 {lokasi memancing} other {# lokasi memancing}}, alamat dan maklumat yang tersedia. Sahkan akses, bayaran dan waktu operasi dengan pengusaha.",
     "tabCommunity": "Komuniti",
     "tabMine": "Tempat Saya",
     "noMySpots": "Anda belum kongsi tempat",
@@ -629,7 +631,7 @@
       },
       {
         "title": "Maklumat yang kami kumpul",
-        "body": "Maklumat akaun (nama, e-mel, foto profil), kandungan yang anda siarkan (tempat, foto, forum, komen, senarai kedai, aktiviti), permintaan senarai kolam yang anda hantar, dan lokasi anggaran jika anda guna GPS. Maklumat hubungan perniagaan dalam permintaan kolam dirahsiakan dan digunakan untuk pengesahan serta balasan."
+        "body": "Maklumat akaun (nama, e-mel, foto profil), kandungan yang anda siarkan (tempat, foto, forum, komen, senarai kedai, aktiviti), permintaan senarai kolam yang anda hantar, dan koordinat peranti apabila anda memilih ciri GPS. Kami menggunakannya untuk menyusun spot berdekatan atau membantu meletakkan pin, dan menghantarnya kepada Google atau OpenStreetMap untuk geokod songsang. Lokasi hanya dipaparkan kepada umum jika anda memilih untuk menerbitkan spot dengan pin itu. Maklumat hubungan perniagaan dalam permintaan kolam dirahsiakan dan digunakan untuk pengesahan serta balasan."
       },
       {
         "title": "Cara kami guna",

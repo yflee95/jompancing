@@ -152,6 +152,8 @@
   "spots": {
     "title": "钓点",
     "subtitle": "分享与发现钓点 — 自己拍照、自己 tag、必须填 Google 地址",
+    "nearMeLocationNotice": "点“附近”查找周边钓点。坐标会发送给 Google 或 OpenStreetMap，以识别你所在的区域。",
+    "nearMeLocationError": "无法识别你所在的区域。请检查浏览器定位权限，或手动选择州。",
     "seoBrowseTitle": "马来西亚钓场、钓点与钓鱼码头",
     "claimPondTitle": "你是这个鱼塘的老板或管理者吗？",
     "pondOwnerPageTitle": "让钓友发现你的鱼塘",
@@ -214,8 +216,8 @@
     "seoStateDescription": "浏览{state}的钓场、码头与钓点。{count, plural, =0 {成为第一个分享钓点的人} other {共#个钓点}} — Jompancing 社区。",
     "seoStatePondTitle": "{state}钓场 / 收费塘",
     "seoStatePondDescription": "{state}的钓场与收费塘。{count, plural, =0 {欢迎分享你常去的钓场} other {共#个地点}}。",
-    "seoDistrictTitle": "{state}{district}钓点 — 钓场与码头",
-    "seoDistrictDescription": "查找{state}{district}附近的钓点，包括钓场、码头与社区分享地点。浏览{count, plural, =0 {钓友分享的地点} other {共#个钓鱼地点}}，查看地址与详情。",
+    "seoDistrictTitle": "{state}{district}钓场与钓点｜Jompancing",
+    "seoDistrictDescription": "查找{state}{district}附近的钓场与钓点，浏览{count, plural, =0 {钓鱼地点} other {共#个钓鱼地点}}及现有地址资料。出发前请向经营者确认是否开放、收费和营业时间。",
     "tabCommunity": "社区",
     "tabMine": "我的钓点",
     "noMySpots": "你还没有分享钓点",
@@ -629,7 +631,7 @@
       },
       {
         "title": "我们收集的信息",
-        "body": "账户信息（姓名、邮箱、头像）、你发布的内容（钓点、照片、论坛、留言、商城、活动）、你提交的鱼塘页面申请，以及你启用 GPS 时的大致位置。鱼塘申请中的商家联系方式会保密，仅用于核实和回复申请。"
+        "body": "账户信息（姓名、邮箱、头像）、你发布的内容（钓点、照片、论坛、留言、商城、活动）、你提交的鱼塘页面申请，以及你选择 GPS 功能时提供的设备坐标。我们用坐标排序附近钓点或协助放置钓点标记，并将坐标发送给 Google 或 OpenStreetMap 进行反向地理编码。只有你选择发布带有该标记的钓点时，位置才会公开。鱼塘申请中的商家联系方式会保密，仅用于核实和回复申请。"
       },
       {
         "title": "如何使用",
