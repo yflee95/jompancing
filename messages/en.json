@@ -731,5 +731,43 @@
     "privacy": "Privacy",
     "contact": "Contact",
     "copyright": "© {year} Jompancing. Malaysia's angler community."
+  },
+  "fish": {
+    "title": "Fish species guide",
+    "subtitle": "Explore fish found in Malaysia by habitat, learn what they eat naturally, and get practical starter bait, lure and rig ideas.",
+    "hotTitle": "Fish anglers are looking for",
+    "viewAll": "View all fish",
+    "allHabitats": "All waters",
+    "count": "{count} species",
+    "viewFish": "View fish guide →",
+    "photoBy": "Photo:",
+    "photoSource": "Source",
+    "habitats": {
+      "freshwater": "Freshwater",
+      "river": "River & stream",
+      "brackish": "Estuary & brackish",
+      "sea": "Sea & coast"
+    },
+    "styles": {
+      "bait": "Bait fishing",
+      "lure": "Lure fishing",
+      "both": "Bait & lures"
+    },
+    "detail": {
+      "wildDiet": "What it eats in the wild",
+      "baitTips": "Bait to try",
+      "lureTips": "Lures to try",
+      "starterRig": "Starter setup",
+      "habitat": "Habitat",
+      "method": "Fishing style",
+      "source": "Species reference",
+      "photo": "Photo credit",
+      "noteTitle": "Local names can vary",
+      "note": "Common names and the exact species can vary by region and fishery. Treat bait and rig advice as starting points, follow venue rules, and adjust to current, tide and conditions.",
+      "browseSpots": "Find fishing spots",
+      "back": "All fish"
+    },
+    "seoTitle": "Malaysia Fish Species Guide",
+    "seoDescription": "Browse Malaysian freshwater, river, estuary and sea fish. Learn fish habitats, natural diet, bait and lure ideas, and starter rigs."
   }
 }

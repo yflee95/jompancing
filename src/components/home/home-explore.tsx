@@ -18,6 +18,7 @@ import { HomeShareSpotBanner } from "@/components/home/home-share-spot-banner";
 import { HomeSpotDeck } from "@/components/home/home-spot-deck";
 import { HomeSpotRailCard } from "@/components/home/home-spot-rail-card";
 import { HomeSpotSection } from "@/components/home/home-spot-section";
+import { HomeFishSection } from "@/components/fish/fish-catalog";
 import { useUserLocation } from "@/hooks/use-user-location";
 import { getDistanceKm } from "@/lib/geo";
 import { mergePublicSpots } from "@/lib/merge-public-spots";
@@ -224,6 +225,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
     return (
       <div className="bg-[var(--sand)] pb-24 md:pb-12">
         <HomeEmptyWelcome />
+        <HomeFishSection />
         <div id="home-browse" className="scroll-mt-4 border-t border-[var(--sand-dark)]/30">
           <HomeShareSpotBanner
             locale={locale}
@@ -275,6 +277,8 @@ export function HomeExplore({ spots }: HomeExploreProps) {
         onRequestLocation={() => void requestNearbySpots()}
         locationError={locationError}
       />
+
+      <HomeFishSection />
 
       <div id="home-browse" className="scroll-mt-4 border-t border-[var(--sand-dark)]/30">
         <HomeShareSpotBanner

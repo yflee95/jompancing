@@ -6,6 +6,7 @@ import {
   getActivitySlugs,
   getForumSlugs,
   getGuideSlugs,
+  getFishSlugs,
   getMarketplaceSlugs,
   getPublicSpotSlugs,
   PUBLIC_STATIC_PATHS,
@@ -17,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const activitySlugs = await getActivitySlugs();
   const marketplaceSlugs = await getMarketplaceSlugs();
   const guideSlugs = await getGuideSlugs();
+  const fishSlugs = getFishSlugs();
   const stateSpotPaths = getSpotStateLandingPaths();
   const entries: MetadataRoute.Sitemap = [];
 
@@ -99,6 +101,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: article.lastModified,
         changeFrequency: "monthly",
         priority: 0.72,
+      });
+    }
+
+    for (const slug of fishSlugs) {
+      entries.push({
+        url: absoluteUrl(localePath(locale, `/fish/${slug}`)),
+        changeFrequency: "monthly",
+        priority: 0.65,
       });
     }
   }

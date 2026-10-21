@@ -731,5 +731,43 @@
     "privacy": "隐私",
     "contact": "联系",
     "copyright": "© {year} Jompancing. 马来西亚钓友社区。"
+  },
+  "fish": {
+    "title": "马来西亚鱼种指南",
+    "subtitle": "按栖息水域探索马来西亚常见鱼类，了解自然食性，并参考入门饵料、路亚和钓组建议。",
+    "hotTitle": "钓友常找的鱼种",
+    "viewAll": "查看全部鱼种",
+    "allHabitats": "所有水域",
+    "count": "{count} 种鱼",
+    "viewFish": "查看鱼种指南 →",
+    "photoBy": "照片：",
+    "photoSource": "来源",
+    "habitats": {
+      "freshwater": "淡水",
+      "river": "河流与溪流",
+      "brackish": "河口与半咸水",
+      "sea": "海水与沿岸"
+    },
+    "styles": {
+      "bait": "用饵垂钓",
+      "lure": "路亚垂钓",
+      "both": "用饵与路亚"
+    },
+    "detail": {
+      "wildDiet": "自然食性",
+      "baitTips": "可尝试的饵料",
+      "lureTips": "可尝试的路亚",
+      "starterRig": "入门钓组建议",
+      "habitat": "栖息水域",
+      "method": "垂钓方式",
+      "source": "鱼种资料",
+      "photo": "照片署名",
+      "noteTitle": "俗名可能因地区而异",
+      "note": "各地俗名和实际鱼种可能不同。饵料与钓组建议仅供入门参考，请遵守场地规定，并根据水流、潮汐和实际情况调整。",
+      "browseSpots": "寻找钓点",
+      "back": "全部鱼种"
+    },
+    "seoTitle": "马来西亚鱼种指南",
+    "seoDescription": "浏览马来西亚淡水、河流、河口和海水鱼种，了解栖息环境、自然食性、饵料路亚建议和入门钓组。"
   }
 }

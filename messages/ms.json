@@ -731,5 +731,43 @@
     "privacy": "Privasi",
     "contact": "Hubungi",
     "copyright": "© {year} Jompancing. Komuniti pemancing Malaysia."
+  },
+  "fish": {
+    "title": "Panduan spesies ikan",
+    "subtitle": "Terokai ikan di Malaysia mengikut habitat, ketahui makanan semula jadinya dan lihat cadangan umpan, gewang serta rig permulaan.",
+    "hotTitle": "Ikan pilihan pemancing",
+    "viewAll": "Lihat semua ikan",
+    "allHabitats": "Semua habitat",
+    "count": "{count} spesies",
+    "viewFish": "Lihat panduan ikan →",
+    "photoBy": "Foto:",
+    "photoSource": "Sumber",
+    "habitats": {
+      "freshwater": "Air tawar",
+      "river": "Sungai & anak sungai",
+      "brackish": "Muara & air payau",
+      "sea": "Laut & pesisir"
+    },
+    "styles": {
+      "bait": "Memancing umpan",
+      "lure": "Memancing gewang",
+      "both": "Umpan & gewang"
+    },
+    "detail": {
+      "wildDiet": "Makanan semula jadi",
+      "baitTips": "Umpan untuk dicuba",
+      "lureTips": "Gewang untuk dicuba",
+      "starterRig": "Set permulaan",
+      "habitat": "Habitat",
+      "method": "Cara memancing",
+      "source": "Rujukan spesies",
+      "photo": "Kredit foto",
+      "noteTitle": "Nama tempatan mungkin berbeza",
+      "note": "Nama biasa dan spesies sebenar boleh berbeza mengikut kawasan dan kolam. Anggap cadangan umpan serta rig sebagai titik permulaan, ikut peraturan lokasi dan sesuaikan dengan arus, pasang surut serta keadaan.",
+      "browseSpots": "Cari lokasi memancing",
+      "back": "Semua ikan"
+    },
+    "seoTitle": "Panduan Spesies Ikan Malaysia",
+    "seoDescription": "Terokai ikan air tawar, sungai, muara dan laut di Malaysia. Lihat habitat, makanan semula jadi, cadangan umpan, gewang dan rig permulaan."
   }
 }

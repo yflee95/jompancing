@@ -30,6 +30,7 @@ export const PUBLIC_STATIC_PATHS = [
   "/forum",
 
   "/guide",
+  "/fish",
 
   "/marketplace",
   "/pond-owners",
@@ -46,6 +47,10 @@ export interface SitemapSlugEntry {
 
   lastModified: Date;
 
+}
+
+export function getFishSlugs(): string[] {
+  return ["haruan", "toman", "sebarau", "siakap", "patin", "tilapia", "keli", "jenahak", "kembung"];
 }
 
 
