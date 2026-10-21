@@ -551,6 +551,8 @@
     "seoArticleDescriptionRich": "{title} ({category}). {excerpt} — Jompancing angler guide.",
     "readMore": "Read more",
     "backToGuide": "Back to guide",
+    "findSpotsCta": "Find your next fishing spot",
+    "findSpotsCtaHint": "Browse fishing ponds, jetties, rivers and coastal spots across Malaysia.",
     "notFound": "Article not found",
     "categories": {
       "tips": "Tips & Techniques",

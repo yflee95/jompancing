@@ -551,6 +551,8 @@
     "seoArticleDescriptionRich": "{title}（{category}）。{excerpt} — Jompancing 钓友指南。",
     "readMore": "阅读更多",
     "backToGuide": "返回指南",
+    "findSpotsCta": "寻找下一个钓点",
+    "findSpotsCtaHint": "浏览马来西亚各地的钓鱼场、码头、河流与海钓地点。",
     "notFound": "找不到文章",
     "categories": {
       "tips": "技巧",

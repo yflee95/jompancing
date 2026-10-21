@@ -77,6 +77,18 @@ export async function GuideArticleContent({
             </p>
           ))}
         </div>
+
+        <Link
+          href="/spots"
+          className="mt-8 block rounded-2xl border border-[var(--sand-dark)] bg-[var(--surface)] p-5 transition-colors hover:border-[var(--ocean)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ocean)]"
+        >
+          <span className="font-semibold text-[var(--ocean)]">
+            {t("findSpotsCta")}
+          </span>
+          <span className="mt-1 block text-sm text-[var(--ink-muted)]">
+            {t("findSpotsCtaHint")}
+          </span>
+        </Link>
       </div>
     </article>
   );
