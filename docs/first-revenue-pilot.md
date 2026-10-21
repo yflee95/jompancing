@@ -1,6 +1,6 @@
 # JomPancing 首笔收入试点
 
-状态：首家商家试点进行中。实收收入 RM0，已发出 2 封商家邀约，经营者承诺 0；其中 Kolam Pancing Syawal / Sungai Rekoh 的 Business 账号和 D’Tiram 的公开目录号码各收到一封免费资料核对邀请。D’Tiram 号码尚未由商家自有渠道核实。等待回复；未承诺流量或收费服务。
+状态：首家商家试点进行中。实收收入 RM0，已发出 3 封商家/赛事资料核对邀约，经营者承诺 0；其中 Kolam Pancing Syawal / Sungai Rekoh 的 Business 账号、D’Tiram 的公开目录号码和 Joran Fest 官方赛事号码各收到一封免费资料核对邀请。D’Tiram 号码尚未由商家自有渠道核实；Joran Fest WhatsApp 消息状态尚未确认送达。未承诺流量或收费服务。
 
 ## 运营检查点（2026-10-21）
 
@@ -64,7 +64,9 @@
 - **Damai Fishing Village（Johor Bahru，未联系）**：已有 JomPancing 地点页，当前线上页面正确隐藏导入的鱼种与设施并标明垂钓许可尚未核实；搜索缓存仍可能显示旧的自动生成介绍，故不把旧摘要当作当前资料。Facebook 页面 `facebook.com/damai.fishingvillage` 的页面标题与商家名一致，但公开页要求登录，无法在当前浏览器核验其最新内容。FindGlocal 镜像显示该页面在 2026-10-01 至 10-05 有频繁鱼种活动、时段和票价更新，并多次附 +60 19-754 9931；该镜像不是经营者自有渠道，号码和详情均待经营者确认。可作为下一位候选，邀请时只发至核验后的官方页面，不使用镜像目录号码。[JomPancing listing](https://www.jompancing.my/en/spots/damai-fishing-village-6umU4Ong)、[Facebook 页面](https://www.facebook.com/damai.fishingvillage)、[FindGlocal mirror](https://www.findglocal.com/MY/Johor-Bahru/1841843772552302/Damai-Fishing-Village)。
 - **Joran Fest（Johor，公开活动供给线索，尚未联系）**：主办方官网列出 Siri 5 为 2026-11-01、Siri 6 为 2026-12-06、Siri 7 为 2027-01-03、Siri 8 为 2027-02-07，地点栏写 Pantai Mesra, Sri Menanti, Muar；官方联系方式列 `admin@joranfest.com`、赛事 +60 11-2846 0499、报名 +60 12-708 5669。官网同页的报名方式/费用文字似乎对应较早场次，不可复制给未来场次；邀约时应先向主办方确认日期、开放报名方式、价格和参赛条件，再免费提供活动页。不要用旧报名余额或名额信息误导钓友。[Joran Fest 官方日程及联系方式](https://joranfest.com/)、[Visit Johor 活动页](https://visitjohor2026.my/events/joran-fest/)。
 
-执行顺序调整为等待 Syawal 与 D’Tiram 回复；发出邀请后 7 天内不重复联系。后续新邀约先从经营者自有主页或其确认的商业渠道核对对象，不用目录号码批量发送。
+Joran Fest 邀约记录（2026-10-21）：通过用户指定的 WhatsApp 账号，向官网列出的赛事号码 +60 11-2846 0499 发送免费核实邀请，询问日期/地点、报名状态、费用及官方注册链接；明确只发布主办方确认的信息，不收费、不承诺客流，并说明错误联系人可告知适当渠道且不再联系。WhatsApp 显示 Delivered。尚未收到回复；收到主办方确认前不发布新活动页，不复制官网旧场次的报名/费用文字。
+
+执行顺序调整为等待 Syawal、D’Tiram 与 Joran Fest 回复；发出邀请后 7 天内不重复联系。后续新邀约先从经营者自有主页或其确认的商业渠道核对对象，不用目录号码批量发送。
 
 备选是 Kolam Pancing PDS，位于 Selangor；官网信息较完整，可在本地试点后再联系：<https://kolampancingpds.com/>。官网天气模块请求失败，不要把其天气数据当作可用服务来宣传。
 
@@ -86,7 +88,7 @@
 
 | 指标 | 记录定义 | 目前状态 |
 |---|---|---|
-| 商家邀约数 | 通过经营者公开业务渠道发送的个性化邀约 | 2（2026-10-21，Syawal 与 D’Tiram，WhatsApp；后者号码尚未由商家自有渠道核实） |
+| 商家/赛事邀约数 | 通过公开业务渠道发送的个性化核实邀约 | 3（2026-10-21，Syawal、D’Tiram、Joran Fest；D’Tiram 号码尚未由商家自有渠道核实；Joran Fest WhatsApp 状态待送达确认） |
 | 回复数 | 商家主动回复，不含系统送达/已读 | 0 |
 | 资料确认数 | 商家逐项确认公开的地址、时段、收费或规则 | 0 |
 | 纠错完成数 | 已核实并更新的钓点资料 | 0 |
@@ -99,7 +101,7 @@
 1. 活动/渔具 WhatsApp 联系体验、GPS 点击后授权、Johor Bahru 三语搜索摘要及导入地点资料可信度修复均已发布。
 2. 从 2026-10-21 上线后继续累积至少 28 天，再在 Search Console 用相同查询和 Johor Bahru 页面比较 CTR、点击与排名（约 2026-11-18 后查看；考虑数据延迟）。不把排名或曝光当作收入。
 3. `pond_claim_requests` 表与 RLS 已只读确认；接下来在不插入合成生产申请的前提下，补做用户授权下的端到端验证或等待第一条真实商家申请。
-4. 等待 Syawal 与 D’Tiram 对资料核对邀请回复。7 天内不重复联系；若需跟进，先确认授权与收件对象身份。只在收到同意并完成身份核验后发送核对链接并开始更新资料。
+4. 等待 Syawal、D’Tiram 与 Joran Fest 对核实邀请回复；Joran Fest 号码来自官方官网，消息状态仍待送达确认。7 天内不重复联系；只在收到主办方确认后整理 JomPancing 活动页，不复制官网旧场次报名/费用文字。
 5. 让经营者检查资料并记录确认依据及日期。使用 Vercel Analytics 报告实际页面访问；Hobby 没有自定义事件，所以当前不宣称统计地图路线或 WhatsApp 点击。
 6. 试点结束后，以真实数据和经营者意愿决定是否测试赞助展示；未确认付费意愿前不收款、不公开承诺效果。
 
