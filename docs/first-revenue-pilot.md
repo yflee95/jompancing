@@ -6,6 +6,13 @@
 
 来源：<https://konelayan.sabah.gov.my/4.%20pusat-media-tab/aktiviti%202026/10.%20oktober/1001%20-%20Pertandingan%20Santai%20Mini%20Game%20Memancing%20Ko-Nelayan%202026.html>
 
+## 搜索流量与转化测量复核（2026-10-21）
+
+- 登录的 Search Console 性能报告在约 6 小时前更新；当前选择“最近 3 个月”，图表日期为 2026-09-09 至 2026-10-18：174 次点击、11.4K 次曝光、CTR 1.5%、平均排名 7；查询表共 593 条。高意图词 `kolam pancing near me` 为 615 次曝光、3 次点击（约 0.49% CTR）；`kolam pancing udang near me` 为 75 次曝光、4 次点击（约 5.33% CTR）。这仍证明有搜索需求，但流量及订单/询问规模尚未证明商业收入。
+- 先修复线上 www/apex canonical、robots 与 sitemap 主机名不一致的问题，再用 Search Console 对相同查询及页面比较后续曝光和 CTR，避免把搜索引擎分散的 URL 信号误当成标题优化结果。
+- 当前 Vercel Hobby 项目不适合商业用途；官方计划页同时说明 Hobby 为个人、非商业用途。官方自定义事件说明列出 custom events 仅适用于 Pro 和 Enterprise，所以目前不能从 Vercel Web Analytics 免费档统计导航点击或商家表单转化。没有为了埋点升级或产生费用。需要先完成合规托管迁移，再决定无需付费的测量方式或由账号持有人批准预算。
+- 官方依据：[Vercel Hobby plan](https://vercel.com/docs/plans/hobby)、[Vercel custom events](https://vercel.com/docs/analytics/custom-events)。
+
 状态：首家商家试点进行中。实收收入 RM0，已发出 6 条商家/赛事资料核对或免费刊登邀请，经营者承诺 0；Kolam Pancing Syawal / Sungai Rekoh、D’Tiram、Joran Fest、Ko-Nelayan、MM Fishing Tackle 与 Southern Pro Tackle 各收到一条邀请。D’Tiram 号码尚未由商家自有渠道核实；Ko-Nelayan、Joran Fest、MM Fishing Tackle 与 Southern Pro Tackle 邀请均已送达；Joran Fest 联系人表示会告知管理层，之后发来一个 OK 贴图，但未提供赛事资料或确认转交结果。未承诺流量或收费服务。
 
 ## 运营检查点（2026-10-21）
