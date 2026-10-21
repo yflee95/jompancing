@@ -74,6 +74,8 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 
 - **MBSA / Pertandingan Memancing Shah Alam（待核实，未联系）**：Visit Selangor 活动列表提到 2026 年 10 月 Taman Tasik Barat、Seksyen 14 的钓鱼比赛，但没有确切日期、报名状态或费用；州旅游活动日历同样只标注月份，且日期可能为暂定。MBSA 官方总机为 +60 3-5510 5133，但 WhatsApp 新聊天搜索显示没有该号码对应的 WhatsApp 账号。遵照当前只使用用户指定 WhatsApp 渠道的选择，暂不改用电话或邮件联系，也不发布活动。来源：[Visit Selangor 活动列表](https://visitselangor.my/events/pertandingan-memancing-shah-alam/)、[Selangor 2026 活动日历 PDF](https://selangor.travel/wp-content/uploads/2017/04/Calendar-of-Events-2026-2.pdf)。
 
+- **渔具联盟收入候选（待确认，未注册）**：Kanicen Nix 官网页脚的 Affiliate Dashboard 链接目前跳转到需要注册账户并勾选条款的页面；没有找到公开佣金比例、资格或付款规则。暂不以此作为可用收入渠道，也没有创建账户或接受条款。来源：[Kanicen Nix 官方网站](https://kanicen.com/)。
+
 备选是 Kolam Pancing PDS，位于 Selangor；官网信息较完整，可在本地试点后再联系：<https://kolampancingpds.com/>。官网天气模块请求失败，不要把其天气数据当作可用服务来宣传。
 
 ### 首次联系文案（马来文）
@@ -104,7 +106,7 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 
 ## 当前执行顺序
 
-1. 活动/渔具 WhatsApp 联系体验、GPS 点击后授权、Johor Bahru 三语搜索摘要及导入地点资料可信度修复均已发布。
+1. 活动/渔具 WhatsApp 联系体验、GPS 点击后授权、Johor Bahru 三语搜索摘要、导入地点资料可信度修复均已发布；渔具市场空状态现同时给卖家刊登入口和钓友浏览钓点的回退入口（`34f3b3c`）。
 2. 从 2026-10-21 上线后继续累积至少 28 天，再在 Search Console 用相同查询和 Johor Bahru 页面比较 CTR、点击与排名（约 2026-11-18 后查看；考虑数据延迟）。不把排名或曝光当作收入。
 3. `pond_claim_requests` 表与 RLS 已只读确认；接下来在不插入合成生产申请的前提下，补做用户授权下的端到端验证或等待第一条真实商家申请。
 4. 等待 Syawal、D’Tiram、Joran Fest、Ko-Nelayan 与 MM Fishing Tackle 对邀请回复。Joran Fest 联系人表示会告知管理层，暂无赛事资料确认；其他邀约发出后 7 天内不重复联系。只在收到主办方确认后整理 JomPancing 活动页，不复制官网旧场次的报名/费用文字。MBSA 活动暂不联系，因为其官方总机在 WhatsApp 搜索中没有账号。
