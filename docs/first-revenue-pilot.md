@@ -262,7 +262,7 @@ Netlify 当前官方文档称 OpenNext 适配器零配置支持现代 Next.js，
 
 ## 新鱼塘经营者线索（2026-10-21）
 
-针对创办人缺少鱼塘老板联络方式的问题，整理了 5 个未在当前公开 `/ms/spots` 页面 HTML 中出现的经营者候选名单，覆盖 Seri Kembangan、Semenyih、Simpang Renggam、Hulu Langat 和 Jeram。优先使用经营者自有网站或场地方租户目录公开的商务渠道；目录/地图平台线索标注为中等可信，联系前先核验账号和号码。名单、来源、优先级与低承诺邀约草稿见 [`merchant-prospect-pipeline.md`](./merchant-prospect-pipeline.md)。本次没有发送消息或拨打电话；仍需创办人明确授权要联系的具体商家，且不承诺客流或收入。
+针对创办人缺少鱼塘老板联络方式的问题，整理了 5 个未在当前公开 `/ms/spots` 页面 HTML 中出现的经营者候选名单，覆盖 Seri Kembangan、Semenyih、Simpang Renggam、Hulu Langat 和 Jeram。优先使用经营者自有网站或场地方租户目录公开的商务渠道；目录/地图平台线索标注为中等可信，联系前先核验账号和号码。名单、来源、优先级与邀约草稿见 [`merchant-prospect-pipeline.md`](./merchant-prospect-pipeline.md)。2026-10-21 已按创办人授权，向 The Atmosphere 官方租户页公开的 Xia Lai Le 号码发送一次免费资料核实邀请；WhatsApp 显示 Delivered，尚无已读或回复。其余四家未联系；没有承诺客流或收入，不在无回复时自动追发。
 
 ## 鱼塘收费措辞与资料可信度（2026-10-21）
 
