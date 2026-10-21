@@ -14,6 +14,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { fetchForumPostsFromDb } from "@/lib/supabase/forum";
 
 import { fetchPublicSpotSlugsFromDb } from "@/lib/supabase/spots-server";
+import { FISH_SPECIES } from "@/data/fish-catalog";
 
 
 
@@ -50,7 +51,7 @@ export interface SitemapSlugEntry {
 }
 
 export function getFishSlugs(): string[] {
-  return ["haruan", "toman", "sebarau", "siakap", "patin", "tilapia", "keli", "jenahak", "kembung"];
+  return FISH_SPECIES.map((fish) => fish.slug);
 }
 
 
