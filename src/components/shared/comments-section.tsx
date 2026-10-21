@@ -3,7 +3,7 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { MessageCircle, Send } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { PageLoader } from "@/components/ui/page-loader";
@@ -84,14 +84,17 @@ export function CommentsSection({
   const t = useTranslations("comments");
   const { user, isRegisteredUser } = useAuth();
   const activeLocale = useLocale() as Locale;
+  const pathname = usePathname();
   const [draft, setDraft] = useState("");
   const [userComments, setUserComments] = useState<CommentItem[]>([]);
-  const [hydrated, setHydrated] = useState(false);
+  const [hydratedThreadId, setHydratedThreadId] = useState<string | null>(null);
   const [posting, setPosting] = useState(false);
   const [postError, setPostError] = useState<string | null>(null);
 
   const useDb =
     isSupabaseConfigured() && isDbThreadId(threadId);
+  const hydrated = hydratedThreadId === threadId;
+  const loginReturnPath = `/${activeLocale}${pathname}#${id}`;
 
   const loadComments = useCallback(async () => {
     if (useDb) {
@@ -104,12 +107,11 @@ export function CommentsSection({
     } else {
       setUserComments(loadStoredComments(threadId));
     }
-    setHydrated(true);
+    setHydratedThreadId(threadId);
   }, [threadId, threadType, useDb]);
 
   useEffect(() => {
-    setHydrated(false);
-    void loadComments();
+    void Promise.resolve().then(loadComments);
   }, [loadComments]);
 
   const displayed = useMemo(() => {
@@ -254,7 +256,9 @@ export function CommentsSection({
               {t("loginToPost")}
             </p>
             <Button asChild size="sm">
-              <Link href="/login">{t("login")}</Link>
+              <Link href={`/login?next=${encodeURIComponent(loginReturnPath)}`}>
+                {t("login")}
+              </Link>
             </Button>
           </div>
         )}
