@@ -51,6 +51,17 @@
 
 候选页面：<https://www.jompancing.my/ms/spots/kolam-pancing-sungai-rekoh-7mmCYQ2g>。商家页面：<https://www.facebook.com/kolampancingsyawal/>。佐证来源：<https://www.waze.com/live-map/directions/my/johor/masai/kolam-pancing-syawal-kampung-teluk-jawa-masai?to=place.ChIJBwj4ddEU2jERG1l7mmCYQ2g>、<https://mohredahangler.wixsite.com/pancing/senarai-kolam-air-masin>。2026-10-21 已通过用户指定 WhatsApp 账号发送首封邀约；收件界面显示 +60 17-755 8132 Business Account。号码源自 Waze 条目，商家关系尚待对方回复确认。
 
+### 后续候选筛查（2026-10-21）
+
+以下只作为内部线索，不代表经营者已确认，也没有向这些对象发送消息：
+
+- **优先观察 D'tiram（Ulu Tiram）**：同名 JomPancing 页面已经存在，且 Search Console 的 `kolam pancing udang near me` 查询中有 47 次曝光、1 次点击，是当前较强的既有搜索入口。第三方目录与 Trip.com 出现相同电话，但没有找到经营者自有页面来确认号码；营业时间、设施、鱼种和收费的目录描述不可直接采用。来源：[JomPancing 页面](https://www.jompancing.my/ms/spots/kolam-pancing-udang-galah-dtiram-38ASfoao)、[Trip.com](https://hk.trip.com/travel-guide/attraction/ulu-tiram/kolam-pancing-udang-galah-d-tiram-153188719/)、[第三方目录](https://kedaipancingnearme.my/johor/ulu-tiram/kolam-pancing-udang-galah-dtiram/)。
+- **Kempas 候选**：已有 `Kolam Pancing Udang Galah Kempas` 页面；电话和 Facebook 链接目前只在目录中出现，尚未能由商家自有渠道独立核对。[JomPancing 页面](https://www.jompancing.my/ms/spots/kolam-pancing-udang-galah-kempas-NxgcD_5Y)、[目录](https://kedaipancingnearme.my/johor/johor-bahru/kolam-pancing-udang-galah-kempas/)。
+- **Pusat Memancing Udang Galah TikTokBP**：已有 JomPancing 页面；公开目录列有电话，但没有找到商家自有社交页面来确认身份和联系方式。[JomPancing 页面](https://www.jompancing.my/ms/spots/pusat-memancing-udang-galah-tiktokbp-cNAjoodM)、[WorldOrgs](https://my.worldorgs.com/katalog/johor-bahru/pusat-hiburan/pusatmemancingudanggalahtiktok)、[BizMalay](https://www.bizmalay.com/en/pusat-memancing-udang-galah-tiktok-012-744-9433)。
+- **Kolam Memancing Udang Biru**：Pasir Gudang 页面声称的 Facebook 地址为 `facebook.com/udangbr/`，但两家目录的联系电话不一致。先不联系、不把任一号码写入公开页面，直到经营者自有页面确认。[WorldOrgs](https://my.worldorgs.com/katalog/pasir-gudang/kedai-pemburuan-dan-memancing/kolam-memancing-udang-biru)、[另一目录](https://kedaipancingnearme.my/johor/kampung-pasir-gudang-baru/kolam-memancing-udang-biru/)。
+
+执行顺序仍是等 Syawal 回复；7 天后最多跟进一次。之后先从经营者自有主页或其确认的商业渠道核对对象，再决定是否邀请一位新的经营者，不用目录号码批量发送。
+
 备选是 Kolam Pancing PDS，位于 Selangor；官网信息较完整，可在本地试点后再联系：<https://kolampancingpds.com/>。官网天气模块请求失败，不要把其天气数据当作可用服务来宣传。
 
 ### 首次联系文案（马来文）
