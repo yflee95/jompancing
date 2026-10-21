@@ -13,7 +13,8 @@ interface EmptyStateProps {
     | "/forum/new"
     | "/activities/promote"
     | "/marketplace/new"
-    | "/marketplace";
+    | "/marketplace"
+    | `mailto:${string}`;
   className?: string;
 }
 
@@ -37,7 +38,11 @@ export function EmptyState({
       )}
       {actionLabel && actionHref && (
         <Button asChild className="mt-6" size="lg">
-          <Link href={actionHref}>{actionLabel}</Link>
+          {actionHref.startsWith("mailto:") ? (
+            <a href={actionHref}>{actionLabel}</a>
+          ) : (
+            <Link href={actionHref}>{actionLabel}</Link>
+          )}
         </Button>
       )}
     </div>

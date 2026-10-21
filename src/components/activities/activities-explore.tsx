@@ -9,6 +9,7 @@ import { useActivities } from "@/components/providers/activities-provider";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FREE_PROMOTION_DAYS, PAID_PROMOTION_DAILY_RM } from "@/lib/promotion";
 import { filterActivitiesByRegion } from "@/lib/activities";
+import { getEventSubmissionHref } from "@/lib/event-submission";
 import type { ActivitySort } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
@@ -44,23 +45,27 @@ export function ActivitiesExplore({
           </h1>
           <p className="mt-1 text-sm text-[var(--ink-muted)]">{t("subtitle")}</p>
         </div>
-        <Link
-          href="/activities/promote"
-          className="tap-card inline-flex shrink-0 items-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-md shadow-[var(--accent-glow)]"
-        >
-          <Megaphone className="h-4 w-4" />
-          {t("promote")}
-        </Link>
+        {activities.length > 0 && (
+          <Link
+            href="/activities/promote"
+            className="tap-card inline-flex shrink-0 items-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-md shadow-[var(--accent-glow)]"
+          >
+            <Megaphone className="h-4 w-4" />
+            {t("promote")}
+          </Link>
+        )}
       </div>
 
-      <div className="mb-6 rounded-2xl bg-[var(--ocean-light)] p-4 ring-1 ring-[var(--ocean)]/15">
-        <p className="text-sm font-semibold text-[var(--ocean-dark)]">
-          {t("promoteDesc", {
-            days: FREE_PROMOTION_DAYS,
-            price: PAID_PROMOTION_DAILY_RM,
-          })}
-        </p>
-      </div>
+      {filtered.length > 0 && (
+        <div className="mb-6 rounded-2xl bg-[var(--ocean-light)] p-4 ring-1 ring-[var(--ocean)]/15">
+          <p className="text-sm font-semibold text-[var(--ocean-dark)]">
+            {t("promoteDesc", {
+              days: FREE_PROMOTION_DAYS,
+              price: PAID_PROMOTION_DAILY_RM,
+            })}
+          </p>
+        </div>
+      )}
 
       <ActivityFilters
         locale={locale}
@@ -74,8 +79,8 @@ export function ActivitiesExplore({
           className="mt-6"
           title={t("noActivities")}
           description={t("noActivitiesPromoteHint")}
-          actionLabel={t("promote")}
-          actionHref="/activities/promote"
+          actionLabel={t("submitEventDetails")}
+          actionHref={getEventSubmissionHref(locale)}
         />
       ) : (
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
