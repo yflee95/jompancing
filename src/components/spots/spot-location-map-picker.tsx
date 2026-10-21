@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   APIProvider,
   AdvancedMarker,
@@ -8,13 +8,14 @@ import {
   Marker,
   useMap,
 } from "@vis.gl/react-google-maps";
-import { Crosshair, Loader2, MapPin } from "lucide-react";
+import { Crosshair, Loader2, MapPin, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { getGoogleMapsApiKey, getGoogleMapsMapId } from "@/lib/google-maps-config";
 import { buildGoogleMapsCoordsUrl } from "@/lib/google-maps";
 import { isValidMalaysiaCoordinate } from "@/lib/address-query";
 import { MALAYSIA_MAP_CENTER } from "@/lib/geo";
 import { resolvePinLocation } from "@/lib/resolve-pin-location";
+import { searchOsmAddresses, type AddressSuggestion } from "@/lib/address-search";
 import { cn } from "@/lib/utils";
 import type { Coordinates } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -41,6 +42,127 @@ interface PickerRuntimeProps {
   requestLocation: () => Promise<Coordinates | null>;
   requestingLocation: boolean;
   locationError: boolean;
+}
+
+function MapPlaceSearch({
+  locale,
+  disabled,
+  onSelect,
+}: {
+  locale: Locale;
+  disabled: boolean;
+  onSelect: (place: AddressSuggestion) => void;
+}) {
+  const t = useTranslations("post");
+  const listId = useId();
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<AddressSuggestion[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const controllerRef = useRef<AbortController | null>(null);
+
+  useEffect(
+    () => () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      controllerRef.current?.abort();
+    },
+    [],
+  );
+
+  function handleQueryChange(value: string) {
+    setQuery(value);
+    setResults([]);
+    setSearched(false);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    controllerRef.current?.abort();
+
+    const normalized = value.trim();
+    if (normalized.length < 2) {
+      setLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    controllerRef.current = controller;
+    setLoading(true);
+    timerRef.current = setTimeout(() => {
+      void searchOsmAddresses("", undefined, normalized, locale, 6, controller.signal).then(
+        (matches) => {
+          if (controller.signal.aborted) return;
+          setResults(matches);
+          setLoading(false);
+          setSearched(true);
+        },
+      );
+    }, 350);
+  }
+
+  return (
+    <div className="absolute left-3 right-14 top-3 z-[1001]">
+      <div className="relative">
+        {loading ? (
+          <Loader2 className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-[var(--ocean)]" />
+        ) : (
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--ocean)]" />
+        )}
+        <input
+          value={query}
+          disabled={disabled}
+          onChange={(event) => handleQueryChange(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") setResults([]);
+          }}
+          placeholder={t("placeSearchPlaceholder")}
+          aria-label={t("placeSearchPlaceholder")}
+          role="combobox"
+          aria-autocomplete="list"
+          aria-haspopup="listbox"
+          aria-controls={listId}
+          aria-expanded={results.length > 0 || (searched && query.trim().length >= 2)}
+          className="h-11 w-full rounded-xl border-0 bg-white/95 py-2 pl-10 pr-3 text-sm text-[var(--ink)] shadow-md ring-1 ring-black/10 outline-none placeholder:text-[var(--ink-muted)] focus:ring-2 focus:ring-[var(--ocean)]/40 disabled:opacity-60"
+        />
+      </div>
+
+      {(results.length > 0 || (searched && query.trim().length >= 2)) && (
+        <ul
+          id={listId}
+          role="listbox"
+          className="mt-1 max-h-48 overflow-y-auto rounded-xl bg-white py-1 shadow-lg ring-1 ring-black/10"
+        >
+          {results.map((place) => (
+            <li key={place.id} role="option" aria-selected={false}>
+              <button
+                type="button"
+                onClick={() => {
+                  onSelect(place);
+                  setQuery(place.label);
+                  setResults([]);
+                  setSearched(false);
+                }}
+                className="flex w-full items-start gap-2.5 px-3 py-2.5 text-left hover:bg-[var(--ocean-light)]/60"
+              >
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--ocean)]" />
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium text-[var(--ink)]">
+                    {place.label}
+                  </span>
+                  <span className="mt-0.5 block line-clamp-2 text-xs text-[var(--ink-muted)]">
+                    {place.address}
+                  </span>
+                </span>
+              </button>
+            </li>
+          ))}
+          {searched && results.length === 0 && (
+            <li className="px-3 py-2.5 text-sm text-[var(--ink-muted)]">
+              {t("placeSearchNoResults")}
+            </li>
+          )}
+        </ul>
+      )}
+    </div>
+  );
 }
 
 function PinMarker({ active }: { active?: boolean }) {
@@ -77,11 +199,13 @@ function GoogleMapCamera({
   useEffect(() => {
     if (!map || !pinCoords) return;
     map.panTo({ lat: pinCoords.lat, lng: pinCoords.lng });
+    map.setZoom(14);
   }, [map, pinCoords]);
 
   useEffect(() => {
     if (!map || pinCoords || !liveCoords) return;
     map.panTo({ lat: liveCoords.lat, lng: liveCoords.lng });
+    map.setZoom(14);
   }, [map, liveCoords, pinCoords]);
 
   return null;
@@ -110,6 +234,7 @@ function GooglePickerInner({
     () => pinCoords ?? liveCoords ?? userCoords ?? MALAYSIA_MAP_CENTER,
     [pinCoords, liveCoords, userCoords],
   );
+  const initialZoom = pinCoords || liveCoords || userCoords ? 14 : 6;
 
   const applyPin = useCallback(
     async (coords: Coordinates) => {
@@ -146,12 +271,17 @@ function GooglePickerInner({
 
   const userPosition = liveCoords ?? userCoords;
 
+  const selectPlace = useCallback(
+    (place: AddressSuggestion) => void applyPin(place.coordinates),
+    [applyPin],
+  );
+
   return (
     <div className={cn("relative overflow-hidden rounded-2xl ring-1 ring-[var(--sand-dark)]/50", className)}>
       <Map
         mapId={mapId}
         defaultCenter={center}
-        defaultZoom={14}
+        defaultZoom={initialZoom}
         gestureHandling="greedy"
         disableDefaultUI
         zoomControl
@@ -193,7 +323,13 @@ function GooglePickerInner({
           ))}
       </Map>
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-[1000] bg-gradient-to-b from-black/35 to-transparent px-3 py-2">
+      <MapPlaceSearch
+        locale={locale}
+        disabled={requestingLocation || resolving}
+        onSelect={selectPlace}
+      />
+
+      <div className="pointer-events-none absolute bottom-3 left-3 z-[1000] max-w-[52%] rounded-lg bg-white/90 px-2 py-1">
         <p className="text-[11px] font-medium text-white drop-shadow">
           {t("mapPickerHint")}
         </p>
@@ -275,6 +411,7 @@ function LeafletPicker({
   const initialCenterRef = useRef(
     pinCoords ?? liveCoords ?? userCoords ?? MALAYSIA_MAP_CENTER,
   );
+  const initialZoomRef = useRef(pinCoords || liveCoords || userCoords ? 14 : 6);
 
   const applyPin = useCallback(
     async (coords: Coordinates) => {
@@ -327,7 +464,7 @@ function LeafletPicker({
         attributionControl: true,
       }).setView(
         [initialCenterRef.current.lat, initialCenterRef.current.lng],
-        14,
+        initialZoomRef.current,
       );
 
       L.control.zoom({ position: "topright" }).addTo(map);
@@ -401,6 +538,7 @@ function LeafletPicker({
           pinMarkerRef.current.setLatLng([pinCoords.lat, pinCoords.lng]);
         }
         map.panTo([pinCoords.lat, pinCoords.lng]);
+        map.setZoom(14);
         userInteractedRef.current = true;
       } else if (
         userPosition &&
@@ -413,13 +551,23 @@ function LeafletPicker({
     });
   }, [mapReady, liveCoords, pinCoords, userCoords]);
 
+  const selectPlace = useCallback(
+    (place: AddressSuggestion) => void applyPin(place.coordinates),
+    [applyPin],
+  );
+
   return (
     <div className={cn("relative overflow-hidden rounded-2xl ring-1 ring-[var(--sand-dark)]/50", className)}>
       <div
         ref={containerRef}
         className="h-[min(52vh,420px)] min-h-[280px] w-full sm:min-h-[360px]"
       />
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-[1000] bg-gradient-to-b from-black/35 to-transparent px-3 py-2">
+      <MapPlaceSearch
+        locale={locale}
+        disabled={requestingLocation || resolving}
+        onSelect={selectPlace}
+      />
+      <div className="pointer-events-none absolute bottom-3 left-3 z-[1000] max-w-[52%] rounded-lg bg-white/90 px-2 py-1">
         <p className="text-[11px] font-medium text-white drop-shadow">
           {t("mapPickerHint")}
         </p>
