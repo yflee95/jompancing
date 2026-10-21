@@ -8,7 +8,7 @@ import { LocationSelectors } from "@/components/spots/location-selectors";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useActivities } from "@/components/providers/activities-provider";
 import { getGeneralAreaId } from "@/data/malaysia-areas";
-import { FREE_PROMOTION_DAYS, getPromotionInquiryHref, PAID_PROMOTION_DAILY_RM } from "@/lib/promotion";
+import { FREE_PROMOTION_DAYS, PAID_PROMOTION_DAILY_RM } from "@/lib/promotion";
 import { Button } from "@/components/ui/button";
 import { Input, Label, Textarea } from "@/components/ui/input";
 import type { ActivityType } from "@/types";
@@ -275,12 +275,6 @@ export function PromoteActivityForm() {
         <CalendarDays className="mt-0.5 h-3.5 w-3.5 shrink-0" />
         {t("renewalNote", { price: PAID_PROMOTION_DAILY_RM })}
       </p>
-      <a
-        href={getPromotionInquiryHref({ locale })}
-        className="mx-auto inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-4 text-sm font-semibold text-[var(--ocean)] underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ocean)]"
-      >
-        {t("renewPromotion")}
-      </a>
     </form>
   );
 }

@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { buildPageMetadata } from "@/lib/seo";
+import { FREE_PROMOTION_DAYS, PAID_PROMOTION_DAILY_RM } from "@/lib/promotion";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -13,7 +14,7 @@ export async function generateMetadata({
     locale,
     path: "/activities/promote",
     title: t("promote"),
-    description: t("promotePageDesc"),
+    description: t("promotePageDesc", { days: FREE_PROMOTION_DAYS, price: PAID_PROMOTION_DAILY_RM }),
     noIndex: true,
   });
 }

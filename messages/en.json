@@ -371,7 +371,7 @@
     "meetup": "Meetup",
     "promote": "Promote Activity",
     "promoteDesc": "First listing gets {days} days of FREE promotion. Afterward, optional promotion is RM{price}/day; no automatic renewal or charge.",
-    "promotePageDesc": "List your contest, sale, workshop or meetup. New listings include a free promotion trial.",
+    "promotePageDesc": "List your contest, sale, workshop or meetup. New listings get {days} days of free promotion. After that, optional promotion costs RM{price}/day; no automatic renewal or charge.",
     "freeTrialBadge": "{days} days free promotion",
     "freeTrialDesc": "Your activity appears on the home page and activities list for {days} days — no payment needed. After that, optional promotion is RM{price}/day. Email us to ask about availability; there is no automatic renewal or charge.",
     "promoteFormTitle": "Activity details",

@@ -371,7 +371,7 @@
     "meetup": "Perjumpaan",
     "promote": "Promosikan Aktiviti",
     "promoteDesc": "Senarai pertama mendapat promosi PERCUMA selama {days} hari. Selepas itu, promosi pilihan berharga RM{price}/hari; tiada pembaharuan atau caj automatik.",
-    "promotePageDesc": "Senaraikan peraduan, jualan, bengkel atau meetup. Senarai baharu termasuk percubaan promosi percuma.",
+    "promotePageDesc": "Senaraikan peraduan, jualan, bengkel atau meetup. Senarai baharu mendapat promosi percuma selama {days} hari. Selepas itu, promosi pilihan berharga RM{price}/hari; tiada pembaharuan atau caj automatik.",
     "freeTrialBadge": "Promosi percuma {days} hari",
     "freeTrialDesc": "Aktiviti anda muncul di laman utama & senarai aktiviti selama {days} hari — tanpa bayaran. Selepas itu, promosi berbayar pilihan ialah RM{price}/hari. E-mel kami untuk semak kekosongan; tiada pembaharuan atau caj automatik.",
     "promoteFormTitle": "Butiran aktiviti",

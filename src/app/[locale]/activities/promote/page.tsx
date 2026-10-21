@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PromoteActivityForm } from "@/components/activities/promote-activity-form";
+import { FREE_PROMOTION_DAYS, getPromotionInquiryHref, PAID_PROMOTION_DAILY_RM } from "@/lib/promotion";
 import type { Locale } from "@/i18n/routing";
 
 export default async function PromoteActivityPage({
@@ -18,8 +19,14 @@ export default async function PromoteActivityPage({
           {t("promote")}
         </h1>
         <p className="mt-1.5 text-sm text-[var(--ink-muted)] md:text-base">
-          {t("promotePageDesc")}
+          {t("promotePageDesc", { days: FREE_PROMOTION_DAYS, price: PAID_PROMOTION_DAILY_RM })}
         </p>
+        <a
+          href={getPromotionInquiryHref({ locale })}
+          className="mt-3 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--ocean)] px-4 py-2 text-sm font-bold text-white"
+        >
+          {t("renewPromotion")}
+        </a>
       </div>
       <PromoteActivityForm />
     </div>

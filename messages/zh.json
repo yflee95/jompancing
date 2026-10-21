@@ -371,7 +371,7 @@
     "meetup": "聚会",
     "promote": "推广活动",
     "promoteDesc": "首次上架享 {days} 天免费推广。之后可选择 RM{price}/天的付费推广；不会自动续费或扣款。",
-    "promotePageDesc": "上架比赛、促销、工作坊或聚会。新活动含免费推广试用。",
+    "promotePageDesc": "发布比赛、促销、工作坊或聚会，新活动可免费推广 {days} 天。之后可选择 RM{price}/天的付费推广；不会自动续费或扣款。",
     "freeTrialBadge": "免费推广 {days} 天",
     "freeTrialDesc": "活动将在首页和活动列表免费展示 {days} 天。之后可选择 RM{price}/天的付费推广。请发邮件询问档期；不会自动续费或扣款。",
     "promoteFormTitle": "活动详情",
