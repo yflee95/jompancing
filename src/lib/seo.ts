@@ -86,6 +86,7 @@ export function buildPageMetadata({
   const alternateLocales = locales.filter((l) => l !== locale);
 
   return {
+    metadataBase: new URL(getSiteOrigin()),
     title: titleAbsolute ? { absolute: title } : title,
     description: metaDescription,
     alternates: {

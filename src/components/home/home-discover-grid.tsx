@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 interface HomeDiscoverGridProps {
   title: string;
   labels: Record<DiscoverTileId, string>;
-  counts: Record<DiscoverTileId, number>;
+  counts: Record<DiscoverTileId, number | null>;
 }
 
 export function HomeDiscoverGrid({
@@ -47,7 +47,11 @@ export function HomeDiscoverGrid({
                   <p className="text-sm font-bold text-white drop-shadow-sm">
                     {label}
                   </p>
-                  <p className="text-xs text-white/80">{count}+</p>
+                  {count != null && count > 0 && (
+                    <p className="text-xs text-white/80">
+                      {count.toLocaleString()}
+                    </p>
+                  )}
                 </div>
               </Link>
             );

@@ -1,4 +1,4 @@
-const minMajor = 20;
+const minMajor = 22;
 const major = Number.parseInt(process.versions.node.split(".")[0] ?? "0", 10);
 
 if (major < minMajor) {

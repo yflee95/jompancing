@@ -32,6 +32,7 @@ export const PUBLIC_STATIC_PATHS = [
   "/guide",
 
   "/marketplace",
+  "/pond-owners",
   "/privacy",
   "/terms",
 

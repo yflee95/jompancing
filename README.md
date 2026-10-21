@@ -147,6 +147,9 @@ flowchart TB
    | 6 | `006_curated_google_spots.sql` |
    | 7 | `007_ugc_translation.sql` |
    | 8 | `008_spots_updated_at.sql` |
+   | 9 | `009_pond_claim_requests.sql` |
+
+   Pond owner enquiries need migration 009 applied in Supabase SQL Editor and `SUPABASE_SERVICE_ROLE_KEY` configured before forms can save submissions. Admins can review them at `/{locale}/admin/pond-claims` when `ADMIN_EMAILS` includes their signed-in account.
 
 4. **Supabase Auth** (see `.env.example` § Vercel deploy checklist)
 
@@ -461,7 +464,7 @@ User path with spaces breaks `nvm use`. Call Node explicitly:
 ### Recipe: Production deploy
 
 1. Merge to `master` (or push commit).
-2. Vercel builds with Node 20+ (`engines`, `vercel.json`).
+2. Vercel builds with Node 22+ (`engines`, `.nvmrc`).
 3. Confirm env vars on Vercel match `.env.example`.
 4. Smoke test: `/ms`, `/ms/spots`, one spot URL, login.
 5. Optional: GSC URL inspection on changed URLs.

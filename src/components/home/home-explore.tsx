@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useActivities } from "@/components/providers/activities-provider";
 import { useForum } from "@/components/providers/forum-provider";
@@ -12,11 +12,7 @@ import {
 } from "@/components/providers/spots-provider";
 import { HomeActivitySection } from "@/components/home/home-activity-section";
 import { HomeListingsSection } from "@/components/home/home-listings-section";
-import {
-  HomePaidPondAddCard,
-  HomePaidPondPlaceholderCard,
-} from "@/components/home/home-paid-pond-shelf-cards";
-import { buildListingShelfSlots } from "@/components/marketplace/listing-shelf-cards";
+import { HomePaidPondAddCard } from "@/components/home/home-paid-pond-shelf-cards";
 import { HomeDiscoverGrid } from "@/components/home/home-discover-grid";
 import { HomeShareSpotBanner } from "@/components/home/home-share-spot-banner";
 import { HomeSpotDeck } from "@/components/home/home-spot-deck";
@@ -62,8 +58,8 @@ export function HomeExplore({ spots }: HomeExploreProps) {
   const locale = useLocale() as Locale;
   const { userSpots } = useUserSpots();
   const { activities } = useActivities();
-  const { listings } = useMarketplace();
-  const { userPosts } = useForum();
+  const { listings, isLoaded: marketplaceLoaded } = useMarketplace();
+  const { userPosts, isLoaded: forumLoaded } = useForum();
   const userLocation = useUserLocation(locale);
 
   const [activeCategory, setActiveCategory] = useState<WaterType | "all">("all");
@@ -88,23 +84,39 @@ export function HomeExplore({ spots }: HomeExploreProps) {
       .sort(sortNearbyHot);
   }, [allPublicSpots, hasGps, userLocation.coords]);
 
-  const filterByCategory = <T extends FishingSpot>(list: T[]): T[] =>
-    activeCategory === "all"
-      ? list
-      : list.filter((s) => s.waterType === activeCategory);
+  const filterByCategory = useCallback(
+    <T extends FishingSpot>(list: T[]): T[] =>
+      activeCategory === "all"
+        ? list
+        : list.filter((s) => s.waterType === activeCategory),
+    [activeCategory],
+  );
 
-  const nearbyPaidPonds = useMemo(() => {
-    if (!hasGps) return [];
-    return spotsWithDistance
-      .filter(
-        (s) =>
-          s.waterType === "pond" &&
-          s.distanceKm !== undefined &&
-          s.distanceKm <= NEARBY_RADIUS_KM,
-      )
-      .sort((a, b) => (a.distanceKm ?? 0) - (b.distanceKm ?? 0))
-      .slice(0, 8);
-  }, [spotsWithDistance, hasGps]);
+  const pondPool = useMemo(
+    () =>
+      spotsWithDistance
+        .filter((spot) => spot.waterType === "pond")
+        .sort(sortNationwideHot),
+    [spotsWithDistance],
+  );
+
+  const nearbyPonds = useMemo(
+    () =>
+      hasGps
+        ? pondPool
+            .filter(
+              (spot) =>
+                spot.distanceKm !== undefined &&
+                spot.distanceKm <= NEARBY_RADIUS_KM,
+            )
+            .sort((a, b) => (a.distanceKm ?? 0) - (b.distanceKm ?? 0))
+            .slice(0, 3)
+        : [],
+    [hasGps, pondPool],
+  );
+
+  const pondRecommendations =
+    nearbyPonds.length > 0 ? nearbyPonds : pondPool.slice(0, 3);
 
   const deckSpots = useMemo(() => {
     let filtered = filterByCategory(spotsWithDistance);
@@ -113,7 +125,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
     }
 
     return buildHomeDeckSpots(filtered, { hasGps });
-  }, [spotsWithDistance, activeCategory, hasGps]);
+  }, [spotsWithDistance, filterByCategory, activeCategory, hasGps]);
 
   const nearbyHotSpots = useMemo(() => {
     let filtered = filterByCategory(spotsWithDistance);
@@ -130,7 +142,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
     }
 
     return [...filtered].sort(sortNationwideHot).slice(0, 10);
-  }, [spotsWithDistance, activeCategory, hasGps]);
+  }, [spotsWithDistance, filterByCategory, activeCategory, hasGps]);
 
   const nearbyIds = useMemo(
     () => new Set(nearbyHotSpots.map((s) => s.id)),
@@ -142,14 +154,9 @@ export function HomeExplore({ spots }: HomeExploreProps) {
       .filter((s) => !nearbyIds.has(s.id))
       .sort(sortNationwideHot)
       .slice(0, 6);
-  }, [allPublicSpots, activeCategory, nearbyIds]);
+  }, [allPublicSpots, filterByCategory, nearbyIds]);
 
   const showPaidPondSection = activeCategory === "all";
-
-  const paidPondShelfSlots = useMemo(
-    () => buildListingShelfSlots(nearbyPaidPonds, 4),
-    [nearbyPaidPonds],
-  );
 
   const nearbyCount = hasGps
     ? spotsWithDistance.filter(
@@ -178,13 +185,16 @@ export function HomeExplore({ spots }: HomeExploreProps) {
     return undefined;
   }, [userLocation.region]);
 
-  const nearbyPaidPondsHref = buildSpotsBrowseHref({
-    stateId: inferredRegion?.stateId,
-    districtId: inferredRegion?.districtId,
+  const nearbyPondsHref = buildSpotsBrowseHref({
+    stateId:
+      nearbyPonds.length > 0 ? inferredRegion?.stateId : undefined,
+    districtId:
+      nearbyPonds.length > 0 ? inferredRegion?.districtId : undefined,
     water: "pond",
   });
 
   const forumCount = useMemo(() => {
+    if (!forumLoaded) return null;
     const ids = new Set<string>();
     const slugs = new Set<string>();
     const forumPosts = shouldUseMockContent()
@@ -196,7 +206,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
       slugs.add(post.slug);
     }
     return ids.size;
-  }, [userPosts]);
+  }, [userPosts, forumLoaded]);
 
   if (allPublicSpots.length === 0) {
     return (
@@ -229,7 +239,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
             counts={{
               forum: forumCount,
               map: 0,
-              shop: listings.length,
+              shop: marketplaceLoaded ? listings.length : null,
               guide: mockArticles.length,
             }}
           />
@@ -241,6 +251,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
   return (
     <div className="bg-[var(--sand)] pb-24 md:pb-12">
       <HomeSpotDeck
+        key={`${activeCategory}:${deckSpots.length}`}
         spots={deckSpots}
         locale={locale}
         activeCategory={activeCategory}
@@ -262,33 +273,33 @@ export function HomeExplore({ spots }: HomeExploreProps) {
 
         {showPaidPondSection && (
           <HomeSpotSection
-            title={t("nearbyPaidPonds")}
-            subtitle={
-              hasGps ? t("nearbyPaidPondsHint") : t("nearbyPaidPondsHintNoGps")
+            title={
+              nearbyPonds.length > 0
+                ? t("nearbyPonds")
+                : t("popularPonds")
             }
-            href={nearbyPaidPondsHref}
+            subtitle={
+              nearbyPonds.length > 0
+                ? t("nearbyPondsHint")
+                : t("popularPondsHint")
+            }
+            href={nearbyPondsHref}
             linkLabel={tCommon("viewAll")}
             className="border-t border-[var(--sand-dark)]/20 bg-white/40 py-5 md:py-6"
             mobilePeek
           >
-            {paidPondShelfSlots.map((slot, index) => {
-              if (slot.kind === "item") {
-                return (
-                  <HomeSpotRailCard
-                    key={slot.value.id}
-                    spot={slot.value}
-                    locale={locale}
-                    distanceKm={slot.value.distanceKm}
-                    showPaid
-                    layout="peek"
-                  />
-                );
-              }
-              if (slot.kind === "add") {
-                return <HomePaidPondAddCard key="add" />;
-              }
-              return <HomePaidPondPlaceholderCard key={`placeholder-${index}`} />;
-            })}
+            {pondRecommendations.map((spot) => (
+              <HomeSpotRailCard
+                key={spot.id}
+                spot={spot}
+                locale={locale}
+                distanceKm={
+                  nearbyPonds.length > 0 ? spot.distanceKm : undefined
+                }
+                layout="peek"
+              />
+            ))}
+            <HomePaidPondAddCard key="add" />
           </HomeSpotSection>
         )}
 
@@ -335,7 +346,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
           counts={{
             forum: forumCount,
             map: allPublicSpots.length,
-            shop: listings.length,
+            shop: marketplaceLoaded ? listings.length : null,
             guide: mockArticles.length,
           }}
         />

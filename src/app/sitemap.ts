@@ -35,6 +35,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.85,
     });
 
+    entries.push({
+      url: absoluteUrl(localePath(locale, "/spots/johor?district=johor-bahru")),
+      changeFrequency: "weekly",
+      priority: 0.85,
+    });
+
+    for (const statePath of stateSpotPaths) {
+      entries.push({
+        url: absoluteUrl(localePath(locale, `${statePath}?water=pond`)),
+        changeFrequency: "weekly",
+        priority: 0.8,
+      });
+    }
+
     for (const path of stateSpotPaths) {
       entries.push({
         url: absoluteUrl(localePath(locale, path)),

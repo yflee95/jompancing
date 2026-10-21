@@ -28,6 +28,7 @@ const DEMO_STORAGE_KEY = "jompancing_marketplace_listings";
 interface MarketplaceContextValue {
   listings: MarketplaceListing[];
   isLoaded: boolean;
+  loadError: boolean;
   addListing: (input: NewMarketplaceListingInput) => Promise<MarketplaceListing>;
   updateListing: (input: UpdateMarketplaceListingInput) => Promise<MarketplaceListing>;
   deleteListing: (listingId: string) => Promise<void>;
@@ -82,14 +83,17 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
   const useDb = isSupabaseConfigured();
   const [userListings, setUserListings] = useState<MarketplaceListing[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [loadError, setLoadError] = useState(false);
 
   const refreshListings = useCallback(async () => {
+    setLoadError(false);
     if (useDb) {
       try {
         const rows = await fetchListingsClient();
         setUserListings(rows);
       } catch {
         setUserListings([]);
+        setLoadError(true);
       }
     } else {
       setUserListings(loadDemoListings());
@@ -180,6 +184,7 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
     () => ({
       listings,
       isLoaded,
+      loadError,
       addListing,
       updateListing,
       deleteListing,
@@ -189,6 +194,7 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
     [
       listings,
       isLoaded,
+      loadError,
       addListing,
       updateListing,
       deleteListing,

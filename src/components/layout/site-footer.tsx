@@ -20,6 +20,9 @@ export function SiteFooter() {
           <Link href="/map" className="hover:text-[var(--ocean)]">
             {t("nav.map")}
           </Link>
+          <Link href="/pond-owners" className="hover:text-[var(--ocean)]">
+            {t("footer.pondOwners")}
+          </Link>
           <Link href="/privacy" className="hover:text-[var(--ocean)]">
             {t("footer.privacy")}
           </Link>

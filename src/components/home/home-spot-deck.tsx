@@ -16,10 +16,12 @@ import {
   Compass,
   MapPin,
   Navigation,
+  PlusCircle,
   Sparkles,
   Waves,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { HomeDeckCommentSheet } from "@/components/home/home-deck-comment-sheet";
 import { HomeSpotDeckActions } from "@/components/home/home-spot-deck-actions";
 import { HomeSpotDeckCard } from "@/components/home/home-spot-deck-card";
@@ -74,13 +76,12 @@ export function HomeSpotDeck({
 }: HomeSpotDeckProps) {
   const t = useTranslations("home");
   const tSpots = useTranslations("spots");
-  const tCommon = useTranslations("common");
 
   const [index, setIndex] = useState(0);
   const [dragPx, setDragPx] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [commentCountTick, setCommentCountTick] = useState(0);
+  const [, setCommentCountTick] = useState(0);
 
   const dragStartX = useRef<number | null>(null);
   const dragStartY = useRef<number | null>(null);
@@ -93,10 +94,6 @@ export function HomeSpotDeck({
   const count = spots.length;
   const activeSpot = spots[index];
   const activeSpotId = activeSpot?.id;
-
-  useEffect(() => {
-    setIndex(0);
-  }, [activeCategory, spots.length]);
 
   useEffect(() => {
     function onCommentAdded() {
@@ -229,15 +226,10 @@ export function HomeSpotDeck({
     [],
   );
 
-  const seedComments = useMemo(() => {
-    if (!activeSpot) return [];
-    return getSpotCommentItems(activeSpot.id);
-  }, [activeSpot, commentCountTick]);
-
-  const activeCommentCount = useMemo(() => {
-    if (!activeSpot) return 0;
-    return getSpotCommentCount(activeSpot.id, activeSpot.commentCount);
-  }, [activeSpot, commentCountTick]);
+  const seedComments = activeSpot ? getSpotCommentItems(activeSpot.id) : [];
+  const activeCommentCount = activeSpot
+    ? getSpotCommentCount(activeSpot.id, activeSpot.commentCount)
+    : 0;
 
   const blockNavigate = useCallback(() => didDrag.current, []);
 
@@ -249,7 +241,7 @@ export function HomeSpotDeck({
   }, []);
 
   return (
-    <section className="relative min-h-[88vh] overflow-hidden md:min-h-0 md:py-8 lg:py-10">
+    <section className="relative min-h-[88vh] overflow-hidden md:min-h-0 md:py-8 lg:py-10 lg:min-h-[min(820px,calc(100vh-8rem))]">
       {/* Ambient backgrounds — keep mounted, crossfade (no reload flash) */}
       {count > 0 && (
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
@@ -276,8 +268,8 @@ export function HomeSpotDeck({
         </div>
       )}
 
-      <div className="relative z-10 mx-auto flex min-h-[88vh] max-w-lg flex-col px-4 pb-6 pt-4 md:min-h-0 md:max-w-4xl md:px-8 md:pb-8 md:pt-2 lg:max-w-5xl">
-        <div className="shrink-0 md:mx-auto md:max-w-2xl md:text-center">
+      <div className="relative z-10 mx-auto flex min-h-[88vh] max-w-lg flex-col px-4 pb-6 pt-4 md:min-h-0 md:max-w-4xl md:px-8 md:pb-8 md:pt-2 lg:min-h-[min(760px,calc(100vh-9rem))] lg:max-w-7xl lg:grid lg:grid-cols-[minmax(280px,0.78fr)_minmax(0,1.22fr)] lg:grid-rows-[1fr_auto_auto] lg:items-center lg:gap-x-10 lg:gap-y-3 lg:px-10 xl:gap-x-16 xl:px-12">
+        <div className="shrink-0 md:mx-auto md:max-w-2xl md:text-center lg:col-start-1 lg:row-start-1 lg:mx-0 lg:max-w-xl lg:text-left">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/75 px-3 py-1.5 text-xs font-medium text-[var(--ocean)] shadow-sm ring-1 ring-white/80 backdrop-blur-md md:mx-auto">
             <Navigation
               className={cn("h-3.5 w-3.5", locating && "animate-pulse")}
@@ -289,12 +281,12 @@ export function HomeSpotDeck({
                 : (locationLabel ?? t("popularSpots"))}
           </div>
 
-          <h1 className="font-serif-display mt-4 text-2xl font-bold text-[var(--ink)] md:text-3xl">
+          <h1 className="font-serif-display mt-4 text-2xl font-bold text-[var(--ink)] md:text-3xl lg:max-w-md lg:text-4xl xl:text-5xl">
             {t("deckTitle")}
           </h1>
-          <p className="mt-1 text-sm text-[var(--ink-muted)]">{t("deckHint")}</p>
+          <p className="mt-1 text-sm text-[var(--ink-muted)] lg:mt-3 lg:max-w-md lg:text-base lg:leading-relaxed">{t("deckHint")}</p>
 
-          <div className="mt-4 flex gap-2 overflow-x-auto pb-1 scrollbar-none md:justify-center">
+          <div className="mt-4 flex gap-2 overflow-x-auto pb-1 scrollbar-none md:justify-center lg:flex-wrap lg:justify-start">
             {CATEGORIES.map(({ id, icon: Icon }) => (
               <button
                 key={id}
@@ -312,10 +304,27 @@ export function HomeSpotDeck({
               </button>
             ))}
           </div>
+
+          <div className="mt-3 flex items-center justify-center gap-2 lg:justify-start">
+            <Link
+              href="/spots"
+              className="tap-card inline-flex h-10 items-center gap-2 rounded-full bg-[var(--ocean)] px-4 text-xs font-semibold text-white shadow-sm transition hover:bg-[var(--ocean-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ocean)]/40"
+            >
+              <Compass className="h-4 w-4" />
+              {t("deckBrowseAll")}
+            </Link>
+            <Link
+              href="/post"
+              className="tap-card inline-flex h-10 items-center gap-2 rounded-full bg-white/85 px-4 text-xs font-semibold text-[var(--ocean-dark)] ring-1 ring-white transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ocean)]/40"
+            >
+              <PlusCircle className="h-4 w-4" />
+              {t("deckShareSpot")}
+            </Link>
+          </div>
         </div>
 
         <div
-          className="relative mx-auto mt-6 w-full flex-1 touch-pan-y select-none md:mt-8 md:max-w-3xl"
+          className="relative mx-auto mt-6 w-full flex-1 touch-pan-y select-none md:mt-8 md:max-w-3xl lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:my-auto lg:mt-0 lg:max-w-none"
           style={{ perspective: "1400px" }}
           {...deckPointerHandlers}
         >
@@ -325,7 +334,7 @@ export function HomeSpotDeck({
             </div>
           ) : (
             <>
-              <div className="relative mx-auto h-[min(420px,52vh)] w-full max-w-[min(100%,420px)] md:h-[min(500px,56vh)] md:max-w-[440px] lg:max-w-[480px]">
+              <div className="relative mx-auto h-[min(420px,52vh)] w-full max-w-[min(100%,420px)] md:h-[min(500px,56vh)] md:max-w-[440px] lg:h-[min(620px,68vh)] lg:max-w-[560px] xl:max-w-[600px]">
                 {spots.map((spot, i) => (
                   <HomeSpotDeckCard
                     key={spot.id}
@@ -373,7 +382,7 @@ export function HomeSpotDeck({
         </div>
 
         {count > 0 && (
-          <div className="mt-4 shrink-0 text-center">
+          <div className="mt-4 shrink-0 text-center lg:col-start-2 lg:row-start-3 lg:mt-0">
             <div className="flex justify-center gap-1.5">
               {spots.map((s, i) => (
                 <button
@@ -398,7 +407,7 @@ export function HomeSpotDeck({
 
         <a
           href="#home-browse"
-          className="deck-scroll-hint mt-5 flex flex-col items-center gap-1 text-xs font-medium text-[var(--ocean)]/80"
+          className="deck-scroll-hint mt-5 flex flex-col items-center gap-1 text-xs font-medium text-[var(--ocean)]/80 lg:col-start-1 lg:row-start-2 lg:mt-0 lg:items-start"
         >
           <span>{t("deckScrollMore")}</span>
           <ChevronDown className="h-5 w-5" />

@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: GuideArticlePageProps) {
       path: `/guide/${slug}`,
       title: t("notFound"),
       description: t("subtitle"),
+      noIndex: true,
     });
   }
 

@@ -6,6 +6,7 @@ import { PhotoAttribution } from "@/components/spots/photo-attribution";
 import { SpotDetailActions } from "@/components/spots/spot-detail-actions";
 import { AdminSpotDelete } from "@/components/spots/admin-spot-delete";
 import { SpotOwnerActions } from "@/components/spots/spot-owner-actions";
+import { PondClaimForm } from "@/components/spots/pond-claim-form";
 import { ReportContentLink } from "@/components/shared/report-content-link";
 import { ShareActions } from "@/components/shared/share-actions";
 import { SpotBreadcrumbNav } from "@/components/seo/spot-breadcrumb-nav";
@@ -225,6 +226,10 @@ export async function SpotDetailView({
           locale={locale}
           title={t("comments")}
         />
+
+        {spot.waterType === "pond" && (
+          <PondClaimForm spotId={spot.id} defaultLocation={spot.googleAddress} />
+        )}
 
         {isUserGenerated && <SpotOwnerActions spot={spot} />}
 
