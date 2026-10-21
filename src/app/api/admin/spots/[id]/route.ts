@@ -50,13 +50,14 @@ export async function PATCH(request: Request, context: RouteContext) {
 
   try {
     const supabase = createServiceSupabaseClient();
+    const verifiedAt = new Date().toISOString();
     const { error } = await supabase
       .from("spots")
       .update({
         verified_opening_hours: (details.openingHours as string).trim(),
         verified_fees: (details.fees as string).trim(),
         verified_rules: (details.rules as string).trim(),
-        owner_verified_at: new Date().toISOString(),
+        owner_verified_at: verifiedAt,
       })
       .eq("id", id);
     if (error) throw error;
@@ -70,7 +71,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     for (const locale of locales) {
       revalidatePath(`/${locale}/spots/${spot.slug}`);
     }
-    return NextResponse.json({ ok: true, verifiedAt: new Date().toISOString() });
+    return NextResponse.json({ ok: true, verifiedAt });
   } catch {
     return NextResponse.json({ error: "update_failed" }, { status: 500 });
   }
