@@ -459,6 +459,7 @@
     "title": "Comments",
     "empty": "No comments yet. Be the first!",
     "placeholder": "Share your tips or experience...",
+    "spotReportHint": "Help anglers plan: add your visit date, species targeted or caught, bait or method, and any access or fee changes. Community reports are not venue-confirmed; avoid sharing private access details.",
     "post": "Post",
     "posting": "Posting…",
     "postFailed": "Could not post comment — please try again.",

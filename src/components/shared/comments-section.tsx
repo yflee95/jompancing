@@ -221,6 +221,11 @@ export function CommentsSection({
       </div>
 
       <div className="mt-4 rounded-2xl bg-white p-4 ring-1 ring-[var(--sand-dark)]/40">
+        {threadType === "spot" && (
+          <p className="mb-3 rounded-xl bg-[var(--ocean-light)]/50 p-3 text-xs leading-relaxed text-[var(--ink-muted)]">
+            {t("spotReportHint")}
+          </p>
+        )}
         {isRegisteredUser ? (
           <form onSubmit={handleSubmit}>
             <textarea
