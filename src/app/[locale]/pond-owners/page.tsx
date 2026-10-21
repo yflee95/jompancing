@@ -35,6 +35,24 @@ export default async function PondOwnersPage({ params }: { params: Promise<{ loc
         ))}
       </div>
 
+      <section className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="rounded-2xl bg-white p-5 ring-1 ring-[var(--sand-dark)]/40">
+          <h2 className="text-base font-semibold text-[var(--ink)]">{t("pondOwnerReviewTitle")}</h2>
+          <p className="mt-2 text-sm leading-relaxed text-[var(--ink-muted)]">{t("pondOwnerReviewBody")}</p>
+        </div>
+        <div className="rounded-2xl bg-[var(--ocean-light)]/50 p-5 ring-1 ring-[var(--sand-dark)]/40">
+          <h2 className="text-base font-semibold text-[var(--ink)]">{t("pondOwnerStepsTitle")}</h2>
+          <ol className="mt-3 space-y-3 text-sm leading-relaxed text-[var(--ink-muted)]">
+            {[t("pondOwnerStep1"), t("pondOwnerStep2"), t("pondOwnerStep3")].map((step, index) => (
+              <li key={step} className="flex items-start gap-3">
+                <span aria-hidden="true" className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-xs font-semibold text-[var(--ocean)] ring-1 ring-[var(--sand-dark)]/50">{index + 1}</span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
       <PondClaimForm initiallyOpen />
     </main>
   );

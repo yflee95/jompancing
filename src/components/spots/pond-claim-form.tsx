@@ -125,6 +125,7 @@ export function PondClaimForm({
                 <div className="space-y-1.5">
                   <Label htmlFor="claim-website">{t("claimWebsite")}</Label>
                   <Input id="claim-website" name="website" type="url" maxLength={300} placeholder="https://" />
+                  <p className="text-xs leading-relaxed text-[var(--ink-muted)]">{t("claimWebsiteHint")}</p>
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="claim-message">{t("claimMessage")}</Label>

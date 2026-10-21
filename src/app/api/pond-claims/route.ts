@@ -88,7 +88,42 @@ export async function POST(request: Request) {
 
   try {
     const supabase = createServiceSupabaseClient();
-    if (spotId) {
+    let linkedSpotId = spotId || null;
+    if (!linkedSpotId && website) {
+      let listingSlug: string | undefined;
+      try {
+        const listingUrl = new URL(website);
+        const isJompancingHost = ["jompancing.my", "www.jompancing.my"].includes(listingUrl.hostname.toLowerCase());
+        const pathParts = listingUrl.pathname.split("/").filter(Boolean);
+        const spotsIndex = pathParts.indexOf("spots");
+        listingSlug = isJompancingHost && spotsIndex >= 0 ? pathParts[spotsIndex + 1] : undefined;
+      } catch {
+        // An invalid URL remains a private business URL; it cannot link a listing.
+      }
+      if (listingSlug) {
+        const { data: matchingSpot, error: listingError } = await supabase
+          .from("spots")
+          .select("id")
+          .eq("slug", listingSlug)
+          .eq("water_type", "pond")
+          .eq("visibility", "public")
+          .maybeSingle();
+        if (listingError) throw listingError;
+        if (!matchingSpot) return NextResponse.json({ error: "spot_not_found" }, { status: 404 });
+        linkedSpotId = matchingSpot.id;
+      }
+    }
+    if (linkedSpotId && linkedSpotId !== spotId) {
+      const { data: spot, error: spotError } = await supabase
+        .from("spots")
+        .select("id")
+        .eq("id", linkedSpotId)
+        .eq("water_type", "pond")
+        .eq("visibility", "public")
+        .maybeSingle();
+      if (spotError) throw spotError;
+      if (!spot) return NextResponse.json({ error: "spot_not_found" }, { status: 404 });
+    } else if (spotId) {
       const { data: spot, error: spotError } = await supabase
         .from("spots")
         .select("id")
@@ -102,7 +137,7 @@ export async function POST(request: Request) {
     }
 
     const { error } = await supabase.from("pond_claim_requests").insert({
-      spot_id: spotId || null,
+      spot_id: linkedSpotId,
       claimant_name: claimantName,
       business_name: businessName,
       business_location: businessLocation,
