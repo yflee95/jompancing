@@ -195,4 +195,4 @@ Search Console 最近 3 个月（页面显示约 5.5 小时前更新）：174 �
 
 ## Search Console 404 修复（2026-10-21）
 
-索引报告最后更新于 2026-10-12，列出 6 个 404。样例均是旧式无语言前缀的 `/spots/{slug}`，但 6 个对应的 `/ms/spots/{slug}` 均仍返回 200；根因是 next-intl 中间件 matcher 只包含根路径及带 `/ms|en|zh` 前缀的路由，漏掉旧钓点链接。已将 `/spots/:path*` 加入 matcher，让旧链接按当前语言路由规则跳转到有效本地化详情；Node 24 下 typecheck、逐文件 lint 和 production build 通过。待部署后逐个核对 6 条旧链接是否重定向成功，并在 Search Console 中只对确认修复的 404 发起验证。
+索引报告最后更新于 2026-10-12，列出 6 个 404。样例均是旧式无语言前缀的 `/spots/{slug}`，对应的 `/ms/spots/{slug}` 页面原本仍返回 200；根因是 next-intl 中间件 matcher 只包含根路径及带 `/ms|en|zh` 前缀的路由，漏掉旧钓点链接。已将 `/spots/:path*` 加入 matcher，让旧链接按当前语言路由规则跳转到有效本地化详情；Node 24 下 typecheck、逐文件 lint 和 production build 通过。提交 `b549016` 已于 2026-10-21 在 Vercel Production Ready。上线后逐个请求 Search Console 列出的 6 条旧 URL，均以 HTTP 200 跳转到对应 `/ms/spots/{slug}` 页面。随后已在 Search Console 对这个 404 问题启动 “Validate Fix”；Google 当前显示 “Validation started”，索引报告尚未重新更新，最终验证结果待 Google 抓取后确认。
