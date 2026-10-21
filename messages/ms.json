@@ -393,6 +393,7 @@
     "renewalNote": "Selepas percubaan percuma, promosi berbayar ialah pilihan pada RM{price}/hari. Kami akan sahkan kekosongan dan bayaran dengan anda dahulu; tiada pembaharuan atau caj automatik.",
     "noActivitiesPromoteHint": "Tahu tentang pertandingan memancing, jualan peralatan, bengkel atau meetup? Hantar maklumat rasmi kepada kami. Kami akan menyemaknya dengan penganjur sebelum diterbitkan. Tiada akaun atau bayaran diperlukan.",
     "submitEventDetails": "Hantar maklumat acara",
+    "browseFishingSpots": "Sedang mencari tempat memancing? Terokai tempat memancing",
     "promotionActive": "Promosi aktif — {days} hari lagi",
     "promotionActiveHint": "Promosi berbayar pilihan ialah RM{price}/hari. Kami akan sahkan dengan anda dahulu; tiada pembaharuan atau caj automatik.",
     "promotionExpired": "Promosi percuma tamat",

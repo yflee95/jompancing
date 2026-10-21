@@ -75,13 +75,20 @@ export function ActivitiesExplore({
       />
 
       {filtered.length === 0 ? (
-        <EmptyState
-          className="mt-6"
-          title={t("noActivities")}
-          description={t("noActivitiesPromoteHint")}
-          actionLabel={t("submitEventDetails")}
-          actionHref={getEventSubmissionHref(locale)}
-        />
+        <div>
+          <EmptyState
+            className="mt-6"
+            title={t("noActivities")}
+            description={t("noActivitiesPromoteHint")}
+            actionLabel={t("submitEventDetails")}
+            actionHref={getEventSubmissionHref(locale)}
+          />
+          <p className="mt-4 text-center text-sm">
+            <Link href="/spots" className="font-semibold text-[var(--ocean)] underline-offset-4 hover:underline">
+              {t("browseFishingSpots")}
+            </Link>
+          </p>
+        </div>
       ) : (
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {filtered.map((activity) => (

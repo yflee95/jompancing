@@ -393,6 +393,7 @@
     "renewalNote": "After the free trial, paid promotion is optional at RM{price}/day. We confirm availability and payment with you first; there is no automatic renewal or charge.",
     "noActivitiesPromoteHint": "Know about a fishing competition, tackle sale, workshop or meetup? Send us the official details. We’ll check them with the organizer before publishing. No account or fee is needed.",
     "submitEventDetails": "Send event details",
+    "browseFishingSpots": "Looking for a place to fish? Explore fishing spots",
     "promotionActive": "Promotion active — {days} day(s) left",
     "promotionActiveHint": "Optional paid promotion is RM{price}/day. We confirm with you first; there is no automatic renewal or charge.",
     "promotionExpired": "Free promotion ended",
