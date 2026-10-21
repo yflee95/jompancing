@@ -186,3 +186,9 @@ ACCESSTRADE Publisher 申请简介草稿（待账户持有人核实后使用）�
 ## 鱼种目录扩充与照片纠错（2026-10-21）
 
 目录从 20 种扩展到 64 种，覆盖马来西亚常见淡水、河流、河口及海水目标鱼。每条新增记录都有三语名称、鱼种说明、初学钓法提示和本地图片；图片逐项记录 Wikimedia Commons 原始页、作者与许可，并在 UI 显示署名。资料尽量匹配学名，俗名存在地区差异时明确提示，鱼塘可否钓获、允许用饵及保育限制仍以场地或主管机关最新规定为准。`Lampam` 旧照片实际是煎炸鱼块，已替换为活体 `Lampam Jawa`（*Barbonymus gonionotus*）照片，并另列 `Lampam Sungai`（*Barbonymus schwanenfeldii*），不再混为同一种。核对来源包括[马来西亚渔业局本地鱼种海报](https://www.dof.gov.my/wp-content/uploads/2024/07/SPESIS-TEMPATAN-POSTER-A1.pdf)和[FishBase 马来西亚淡水鱼清单](https://www.fishbase.se/country/CountryChecklist.php?c_code=458&showAll=yes&vhabitat=fresh)。Node 24 下 `npm run typecheck`、鱼类目录文件 lint 与 `npm run build` 通过。Vercel 提交 `d141afe` 部署为 Ready；生产 `/en/fish` 显示 64 种，三个语言版本合计 192 条鱼种 sitemap URL，Lampam Jawa、Lampam Sungai 详情及新照片均返回 HTTP 200，页面显示照片署名。目录扩大不代表每个钓点都确认有这些鱼。
+
+## SEO 到收入的当前漏斗（2026-10-21）
+
+Search Console 最近 3 个月（页面显示约 5.5 小时前更新）：174 次自然搜索点击、11,400 次曝光、平均 CTR 1.5%、平均排名 7；查询表共有 593 个查询。可见的高意图查询包括 `kolam pancing near me`（615 次曝光、3 次点击）和 `kolam pancing udang near me`（75 次曝光、4 次点击）。这证明钓友开始通过搜索找附近钓点，但每月约 58 次点击的规模还不足以把展示广告当作实际收入来源；目前没有可核验的 SEO 归因收入。优先做好高意图地点页及真实商家资料，后续用经批准的联盟链接或清楚标注的商家赞助测试收入，并记录点击、有效询问和实际佣金。
+
+复查鱼种页转化路径时，发现详情页的“找此鱼钓点”将鱼种 slug 发到只搜索地点/活动/商品的全站搜索，`lampam` 实际返回零结果。已改为诚实的通用钓点浏览链接，三语按钮不再承诺地点鱼种已核实。Node 24 下生产构建通过；本次代码部署与线上链接核验待发布后记录。

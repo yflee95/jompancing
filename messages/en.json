@@ -764,11 +764,10 @@
       "photo": "Photo credit",
       "noteTitle": "Local names can vary",
       "note": "Common names and the exact species can vary by region and fishery. Treat bait and rig advice as starting points, follow venue rules, and adjust to current, tide and conditions.",
-      "browseSpots": "Find fishing spots",
+      "browseSpots": "Browse fishing spots",
       "back": "All fish"
     },
     "seoTitle": "Malaysia Fish Species Guide",
-    "seoDescription": "Browse Malaysian freshwater, river, estuary and sea fish. Learn fish habitats, natural diet, bait and lure ideas, and starter rigs.",
-    "findSpotsWith": "Find {fish} fishing spots"
+    "seoDescription": "Browse Malaysian freshwater, river, estuary and sea fish. Learn fish habitats, natural diet, bait and lure ideas, and starter rigs."
   }
 }
