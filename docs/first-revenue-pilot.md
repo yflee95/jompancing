@@ -74,7 +74,9 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 
 - **MBSA / Pertandingan Memancing Shah Alam（待核实，未联系）**：Visit Selangor 活动列表提到 2026 年 10 月 Taman Tasik Barat、Seksyen 14 的钓鱼比赛，但没有确切日期、报名状态或费用；州旅游活动日历同样只标注月份，且日期可能为暂定。MBSA 官方总机为 +60 3-5510 5133，但 WhatsApp 新聊天搜索显示没有该号码对应的 WhatsApp 账号。遵照当前只使用用户指定 WhatsApp 渠道的选择，暂不改用电话或邮件联系，也不发布活动。来源：[Visit Selangor 活动列表](https://visitselangor.my/events/pertandingan-memancing-shah-alam/)、[Selangor 2026 活动日历 PDF](https://selangor.travel/wp-content/uploads/2017/04/Calendar-of-Events-2026-2.pdf)。
 
-- **渔具联盟收入候选（待确认，未注册）**：Kanicen Nix 官网页脚的 Affiliate Dashboard 链接目前跳转到需要注册账户并勾选条款的页面；没有找到公开佣金比例、资格或付款规则。暂不以此作为可用收入渠道，也没有创建账户或接受条款。来源：[Kanicen Nix 官方网站](https://kanicen.com/)。
+- **渔具联盟收入候选（Lazada，待业者/账号权限确认）**：Lazada 官方资料允许网站/应用作为 Affiliate Media，但须先登记该媒体并获批准；公开说明称佣金按产品类别为 6%–10%、销售验证 15–30 天、最低开票金额 RM90，并以银行转账付款。当前公开条款另写 30 天 cookie 追踪、Affiliate Media 须获批准、申请方保证其为依法注册且有效存续的企业，超 RM100 才开月度发票；RM90/RM100 门槛存在官方页面与条款不一致。暂不申请、提交银行资料或接受协议。若申请通过且运营主体具备资格，可先以诚实的钓具选购指南做小范围试点，展示佣金披露和可核验的点击/成交数据；发布前更新三语 affiliate disclosure 和隐私说明，不做自动跳转或未经批准的推广。来源：[Lazada 官方计划概览](https://pages.lazada.com.my/wow/i/my/corp/affiliate-overview)、[佣金说明](https://pages.lazada.com.my/wow/i/my/corp/affiliate-commission?hybrid=1)、[Affiliate Terms](https://pages.lazada.com.my/wow/i/my/corp/affiliate-terms?hybrid=1)。
+- **Kanicen Nix 联盟线索（未注册）**：官网有 Affiliate Dashboard，但点击后跳转到需要登录/注册及勾选条款的账户页面，未发现公开佣金和付款规则。暂不以此作为已确认收入渠道；未创建账户或接受条款。来源：[Kanicen Nix 官方网站](https://kanicen.com/)。
+- **Shopee Affiliate（未注册）**：Shopee 官方帮助主要说明在公开社交媒体、Shopee Video 和 Live 上分享推广链接；尚未确认 JomPancing 网站本身符合该计划的渠道要求。故当前优先核实 Lazada 网站媒体资格，不代表已有 Shopee 账号或获批资格。来源：[Shopee Affiliate 官方说明](https://help.shopee.com.my/portal/10/article/206059-What-is-the-Shopee-Affiliate-Program)。
 
 备选是 Kolam Pancing PDS，位于 Selangor；官网信息较完整，可在本地试点后再联系：<https://kolampancingpds.com/>。官网天气模块请求失败，不要把其天气数据当作可用服务来宣传。
 
