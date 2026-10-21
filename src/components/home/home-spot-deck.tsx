@@ -140,7 +140,7 @@ export function HomeSpotDeck({
     if (e.button !== 0) return;
     if (
       e.target instanceof HTMLElement &&
-      e.target.closest("[data-deck-action]")
+      e.target.closest("[data-deck-action], [data-deck-control]")
     ) {
       return;
     }
@@ -359,6 +359,7 @@ export function HomeSpotDeck({
 
               <button
                 type="button"
+                data-deck-control
                 aria-label={t("deckPrev")}
                 onClick={() => go(-1)}
                 className="pointer-events-none absolute inset-y-0 left-0 z-40 flex w-[22%] max-w-[140px] items-center justify-start pl-1 md:pl-0 lg:max-w-[160px]"
@@ -369,6 +370,7 @@ export function HomeSpotDeck({
               </button>
               <button
                 type="button"
+                data-deck-control
                 aria-label={t("deckNext")}
                 onClick={() => go(1)}
                 className="pointer-events-none absolute inset-y-0 right-0 z-40 flex w-[22%] max-w-[140px] items-center justify-end pr-1 md:pr-0 lg:max-w-[160px]"
