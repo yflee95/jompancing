@@ -136,6 +136,13 @@ export interface FishingSpot {
   createdAt: string;
   /** Database edit time; this does not imply that venue details were verified. */
   updatedAt?: string;
+  /** Public operator-confirmed facts, published only after admin review. */
+  ownerVerifiedDetails?: {
+    openingHours: string;
+    fees: string;
+    rules: string;
+    verifiedAt: string;
+  };
 }
 
 export interface Activity {

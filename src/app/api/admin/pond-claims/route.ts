@@ -40,7 +40,7 @@ export async function GET() {
     const spotsResult = spotIds.length
       ? await supabase
           .from("spots")
-          .select("id, slug, title_ms, title_en, title_zh")
+          .select("id, slug, title_ms, title_en, title_zh, verified_opening_hours, verified_fees, verified_rules, owner_verified_at")
           .in("id", spotIds)
       : { data: [], error: null };
     if (spotsResult.error) throw spotsResult.error;
@@ -51,6 +51,10 @@ export async function GET() {
       title_ms: string;
       title_en: string;
       title_zh: string;
+      verified_opening_hours: string | null;
+      verified_fees: string | null;
+      verified_rules: string | null;
+      owner_verified_at: string | null;
     }>;
     const spotById = new Map(spots.map((spot) => [spot.id, spot]));
     return NextResponse.json({

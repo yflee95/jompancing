@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { Label, Textarea } from "@/components/ui/input";
 import { formatDate } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 
@@ -19,8 +20,20 @@ type Claim = {
   message: string;
   status: LeadStatus;
   createdAt: string;
-  spot: { slug: string; title_ms: string; title_en: string; title_zh: string } | null;
+  spot: {
+    id: string;
+    slug: string;
+    title_ms: string;
+    title_en: string;
+    title_zh: string;
+    verified_opening_hours: string | null;
+    verified_fees: string | null;
+    verified_rules: string | null;
+    owner_verified_at: string | null;
+  } | null;
 };
+
+type VerifiedDraft = { openingHours: string; fees: string; rules: string };
 
 export function PondClaimAdmin({ locale }: { locale: Locale }) {
   const t = useTranslations("spots.claimAdmin");
@@ -28,6 +41,9 @@ export function PondClaimAdmin({ locale }: { locale: Locale }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [savingSpotId, setSavingSpotId] = useState<string | null>(null);
+  const [verifiedDrafts, setVerifiedDrafts] = useState<Record<string, VerifiedDraft>>({});
+  const [operatorConfirmedSpotIds, setOperatorConfirmedSpotIds] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     let active = true;
@@ -37,7 +53,14 @@ export function PondClaimAdmin({ locale }: { locale: Locale }) {
         return (await response.json()) as { claims: Claim[] };
       })
       .then((result) => {
-        if (active) setClaims(result.claims);
+        if (active) {
+          setClaims(result.claims);
+          setVerifiedDrafts(Object.fromEntries(result.claims.flatMap((claim) => claim.spot ? [[claim.spot.id, {
+            openingHours: claim.spot.verified_opening_hours ?? "",
+            fees: claim.spot.verified_fees ?? "",
+            rules: claim.spot.verified_rules ?? "",
+          }]] : [])));
+        }
       })
       .catch(() => {
         if (active) setError(true);
@@ -65,6 +88,30 @@ export function PondClaimAdmin({ locale }: { locale: Locale }) {
       setError(true);
     } finally {
       setSavingId(null);
+    }
+  }
+
+  async function saveVerifiedDetails(spotId: string) {
+    const draft = verifiedDrafts[spotId];
+    if (!draft) return;
+    setSavingSpotId(spotId);
+    setError(false);
+    try {
+      const response = await fetch(`/api/admin/spots/${spotId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...draft, operatorConfirmed: operatorConfirmedSpotIds[spotId] === true }),
+      });
+      if (!response.ok) throw new Error("Unable to publish verified details");
+      const result = await response.json() as { verifiedAt: string };
+      setClaims((current) => current.map((claim) => claim.spot?.id === spotId
+        ? { ...claim, spot: { ...claim.spot, verified_opening_hours: draft.openingHours.trim(), verified_fees: draft.fees.trim(), verified_rules: draft.rules.trim(), owner_verified_at: result.verifiedAt } }
+        : claim));
+      setOperatorConfirmedSpotIds((current) => ({ ...current, [spotId]: false }));
+    } catch {
+      setError(true);
+    } finally {
+      setSavingSpotId(null);
     }
   }
 
@@ -123,6 +170,46 @@ export function PondClaimAdmin({ locale }: { locale: Locale }) {
               </Button>
             ))}
           </div>
+          {claim.spot && (
+            <section className="mt-5 space-y-3 rounded-2xl border border-[var(--sand-dark)]/50 bg-[var(--sand)]/30 p-4">
+              <div>
+                <h3 className="text-sm font-semibold text-[var(--ink)]">{t("verifiedDetailsTitle")}</h3>
+                <p className="mt-1 text-xs leading-relaxed text-[var(--ink-muted)]">{t("verifiedDetailsHint")}</p>
+                {claim.spot.owner_verified_at && <p className="mt-1 text-xs font-medium text-emerald-800">{t("verifiedDetailsSaved", { date: formatDate(claim.spot.owner_verified_at, locale) })}</p>}
+              </div>
+              {([
+                ["openingHours", t("verifiedOpeningHours")],
+                ["fees", t("verifiedFees")],
+                ["rules", t("verifiedRules")],
+              ] as const).map(([field, label]) => (
+                <div key={field} className="space-y-1.5">
+                  <Label htmlFor={`verified-${field}-${claim.spot!.id}`}>{label}</Label>
+                  <Textarea
+                    id={`verified-${field}-${claim.spot!.id}`}
+                    rows={2}
+                    maxLength={500}
+                    value={verifiedDrafts[claim.spot!.id]?.[field] ?? ""}
+                    onChange={(event) => setVerifiedDrafts((current) => ({
+                      ...current,
+                      [claim.spot!.id]: { ...(current[claim.spot!.id] ?? { openingHours: "", fees: "", rules: "" }), [field]: event.target.value },
+                    }))}
+                  />
+                </div>
+              ))}
+              <label className="flex items-start gap-2 text-xs leading-relaxed text-[var(--ink-muted)]">
+                <input
+                  type="checkbox"
+                  className="mt-0.5 accent-[var(--ocean)]"
+                  checked={operatorConfirmedSpotIds[claim.spot.id] === true}
+                  onChange={(event) => setOperatorConfirmedSpotIds((current) => ({ ...current, [claim.spot!.id]: event.target.checked }))}
+                />
+                <span>{t("operatorConfirmation")}</span>
+              </label>
+              <Button size="sm" disabled={savingSpotId === claim.spot.id || operatorConfirmedSpotIds[claim.spot.id] !== true} onClick={() => void saveVerifiedDetails(claim.spot!.id)}>
+                {savingSpotId === claim.spot.id ? t("verifiedDetailsSaving") : t("verifiedDetailsPublish")}
+              </Button>
+            </section>
+          )}
         </article>
       ))}
     </div>

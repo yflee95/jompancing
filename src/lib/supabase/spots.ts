@@ -40,6 +40,10 @@ type SpotRow = {
   is_curated?: boolean;
   google_place_id?: string | null;
   google_photo_attribution?: string | null;
+  verified_opening_hours?: string | null;
+  verified_fees?: string | null;
+  verified_rules?: string | null;
+  owner_verified_at?: string | null;
   profiles: { name: string; avatar_url: string | null } | null;
   spot_photos: { url: string; sort_order: number }[] | null;
 };
@@ -118,6 +122,14 @@ export function mapSpotRow(row: SpotRow): FishingSpot {
     commentCount: row.comment_count,
     createdAt: row.created_at,
     updatedAt: row.updated_at ?? undefined,
+    ownerVerifiedDetails: row.owner_verified_at
+      ? {
+          openingHours: row.verified_opening_hours ?? "",
+          fees: row.verified_fees ?? "",
+          rules: row.verified_rules ?? "",
+          verifiedAt: row.owner_verified_at,
+        }
+      : undefined,
   };
 }
 

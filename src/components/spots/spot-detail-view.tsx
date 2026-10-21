@@ -197,6 +197,27 @@ export async function SpotDetailView({
           <p className="mt-1 leading-relaxed">{t("beforeYouGoHint")}</p>
         </div>
 
+        {spot.ownerVerifiedDetails && (
+          <section className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-950">
+            <h2 className="text-sm font-semibold">{t("ownerVerifiedTitle")}</h2>
+            <p className="mt-1 text-xs">{t("ownerVerifiedDate", {
+              date: new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeZone: "Asia/Kuala_Lumpur" }).format(new Date(spot.ownerVerifiedDetails.verifiedAt)),
+            })}</p>
+            <dl className="mt-3 space-y-2 text-sm">
+              {([
+                [t("ownerVerifiedHours"), spot.ownerVerifiedDetails.openingHours],
+                [t("ownerVerifiedFees"), spot.ownerVerifiedDetails.fees],
+                [t("ownerVerifiedRules"), spot.ownerVerifiedDetails.rules],
+              ] as const).filter(([, value]) => value.trim()).map(([label, value]) => (
+                <div key={label}>
+                  <dt className="font-semibold">{label}</dt>
+                  <dd className="whitespace-pre-wrap">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )}
+
         {spot.waterType === "pond" && (
           <PondClaimForm spotId={spot.id} defaultLocation={spot.googleAddress} />
         )}
