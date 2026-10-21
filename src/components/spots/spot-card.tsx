@@ -30,7 +30,7 @@ export function SpotCard({ spot, locale, showPrivateBadge }: SpotCardProps) {
             className="absolute inset-0"
             imageClassName="transition duration-500 group-hover:scale-105"
           />
-          {spot.featured && (
+          {spot.featured && spot.isUserGenerated && (
             <span className="badge-accent absolute left-3 top-3 z-10 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide">
               ★ {tCommon("featured")}
             </span>
@@ -60,7 +60,9 @@ export function SpotCard({ spot, locale, showPrivateBadge }: SpotCardProps) {
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <span className="flex items-center gap-1 text-[11px] text-white/70">
                 <MapPin className="h-3 w-3" />
-                {t(spot.waterType as "saltwater" | "freshwater" | "pond" | "river")}
+                {spot.isUserGenerated
+                  ? t(spot.waterType as "saltwater" | "freshwater" | "pond" | "river")
+                  : t("googlePlaceListing")}
               </span>
               {spot.tags[0] && (
                 <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] text-white/90">

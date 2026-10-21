@@ -78,7 +78,7 @@ export async function SpotDetailView({
           <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
           <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-8">
             <div className="flex flex-wrap gap-2">
-              {spot.featured && (
+                {spot.featured && isUserGenerated && (
                 <span className="badge-accent rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide">
                   ★ {tCommon("featured")}
                 </span>
@@ -90,7 +90,9 @@ export async function SpotDetailView({
                 </Badge>
               )}
               <Badge className="bg-white/90 text-[var(--ink)] backdrop-blur-sm">
-                {t(spot.waterType as "saltwater" | "freshwater" | "pond" | "river")}
+                {isUserGenerated
+                  ? t(spot.waterType as "saltwater" | "freshwater" | "pond" | "river")
+                  : t("googlePlaceListing")}
               </Badge>
             </div>
             <h1 className="font-serif-display mt-3 text-3xl font-bold text-white sm:text-4xl">
@@ -213,7 +215,9 @@ export async function SpotDetailView({
         )}
 
         <p className="mt-4 text-base leading-relaxed text-[var(--ink-muted)]">
-          {getLocalizedText(spot.description, locale)}
+          {isUserGenerated
+            ? getLocalizedText(spot.description, locale)
+            : t("googleSeedDescription")}
         </p>
 
         <p className="mt-2 text-sm text-[var(--ink-muted)]">

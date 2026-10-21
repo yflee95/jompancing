@@ -83,7 +83,7 @@ export function mapSpotRow(row: SpotRow): FishingSpot {
     googleAddress: row.google_address,
     googleMapsUrl: row.google_maps_url,
     authorId: row.author_id,
-    authorName: row.profiles?.name ?? "Angler",
+    authorName: row.source === "google" ? "Google Maps" : row.profiles?.name ?? "Angler",
     authorAvatar: row.profiles?.avatar_url ?? undefined,
     visibility: row.visibility,
     isUserGenerated: row.source !== "google",

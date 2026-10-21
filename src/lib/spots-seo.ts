@@ -41,7 +41,14 @@ export function buildSpotDetailSeo({
     : t("seoSpotTitleNoLocation", { name });
 
   let description: string;
-  if (rawDescription.length >= MIN_SPOT_DESCRIPTION_CHARS) {
+  if (!spot.isUserGenerated) {
+    description = truncateMetaDescription(
+      t("seoGoogleSeedDescription", {
+        name,
+        location: location || spot.googleAddress.trim(),
+      }),
+    );
+  } else if (rawDescription.length >= MIN_SPOT_DESCRIPTION_CHARS) {
     description = truncateMetaDescription(rawDescription);
   } else {
     const extra = rawDescription || spot.googleAddress.trim();
