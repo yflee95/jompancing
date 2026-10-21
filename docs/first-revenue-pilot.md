@@ -231,6 +231,10 @@ Search Console 最近 3 个月（页面显示约 5.5 小时前更新）：174 �
 - 实时检查首页点入的 `www` 主机生产页面：`/ms/spots` HTTP 200、title 为 “Kolam Pancing Near Me & Port Memancing Malaysia | Jompancing”，但 canonical 指向 `https://jompancing.my/ms/spots`；`/ms/spots/johor?district=johor-bahru` 也返回 `www` 200 但 canonical 指向 apex。`robots.txt` 与整份 sitemap 仍使用 apex，而 apex 会 308 重定向到 `www`。所以 canonical 对齐修复 `f3e9a7e` 在本地，但线上尚未生效；对 Google 来说，页面曝光数据也确实分散在两个主机名上。
 - 本地 `master` 当前比 `origin/master` 多 5 个提交，包含 `f3e9a7e` 与回访收藏功能等改动；生产发布会触发 Vercel 部署。由于已查明 Vercel Hobby 限于非商业使用，而 JomPancing 的目标是商业运营，不能把当前生产部署当作无风险发布途径。应先取得符合商业用途的托管方式，再部署并复核 canonical、robots、sitemap 和页面主机统一；此前不把本地修复声称为线上已修复。
 
+## Netlify Next.js 托管兼容性复核（2026-10-21）
+
+Netlify 当前官方文档称 OpenNext 适配器零配置支持现代 Next.js，包含 App Router、SSR、ISR、middleware、route handlers、图片优化、国际化和重定向，并建议不固定适配器版本。JomPancing 使用 Next.js 16.4.2 与 App Router，因此无需额外安装或 pin Netlify Next 插件；连接仓库后用 Deploy Preview 检查实际环境变量、Supabase 认证/写入、Google Maps、图片、canonical、robots、sitemap 和三种语言。官方：[Next.js on Netlify](https://docs.netlify.com/build/frameworks/framework-setup-guides/nextjs/overview/)。
+
 ## 个人发布者联盟渠道（2026-10-21）
 
 - 官方资格资料显示，Involve Asia 接受网站主/博客发布者，加入免费；其发布者帮助中心要求网站或博客近 30 天超过 10 次有效内容更新。JomPancing 的线上 sitemap 当前有 192 条鱼种详情 URL（64 种 × 3 语言），其中 44 种是在 2026-10-21 的近期目录更新中新增，因此值得申请人工/系统审核；平台是否把这批物种详情认定为“有效内容更新”仍由平台决定，不夸称已经获批。官方资格说明：[publisher eligibility](https://helpcentre.involve.asia/portal/en/kb/articles/involve-asia-publishers)、[property content and activity requirements](https://helpcentre.involve.asia/portal/en/kb/articles/what-is-property)。
