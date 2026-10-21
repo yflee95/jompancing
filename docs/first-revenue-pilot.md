@@ -126,3 +126,7 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 生产 Johor Bahru 地点列表曾包含地址位于 Kulai 的 Star Fish Leisure Farm。Kulai 是独立县区，Senai 也归 Kulai；此前本地筛选资料把 Senai 放在 Johor Bahru，Google 导入行的地区分类也可能错误。代码现补齐 Johor 县区、将 Senai/Kulai 移入 Kulai，并依据 Google 地址在读取时修正导入地点的 district/area，不改写 Supabase 数据。地区筛选和水域筛选改用保留 query filters 的浏览 URL，避免 SEO canonical 路径清掉用户选择。
 
 发布后应确认 Johor Bahru 列表不再显示 Kulai 地址的地点、Kulai 列表能找到相应地点，且切换水域筛选后仍保留地区条件。此前观察到的 31 条是修正前数量，不能继续当作当前数量。依据：<https://ptj.johor.gov.my/pejabat-tanah-kulai/profil-daerah-kulai/>。
+
+## 钓鱼规定指南修正（2026-10-21）
+
+原指南错误地概括“各州统一管理休闲钓鱼执照”，并把公共河流、海域与水库一概说成通常要许可、把 PERHILITAN 列为购证渠道。现已改为提醒读者按水域、地点与主管机构确认；海岸/海上休闲渔业指向渔业局 eRekreasi，乘船时另向经营者确认船只许可和乘客安全，其他水域向场地方或相关机构核实。已同步马来文、英文、中文标题、摘要和正文，并将阅读时间调整为 2 分钟。依据：渔业局的 [eRekreasi 页面](https://erekreasi.dof.gov.my/) 及[许可常见问题](https://www.dof.gov.my/en/frequently-asked-questions/licensing-faq/)；本指南不再提供各州或各水体的法律结论，出发前应查看最新官方规定。
