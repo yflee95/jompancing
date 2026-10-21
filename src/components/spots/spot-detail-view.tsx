@@ -252,18 +252,30 @@ export async function SpotDetailView({
           compact
         />
 
-        <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {isUserGenerated && (
+          <p className="mt-5 rounded-xl bg-[var(--sand)] px-3 py-2 text-xs leading-relaxed text-[var(--ink-muted)]">
+            {t("communityInfoNote")}
+          </p>
+        )}
+
+        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {[
             {
-              label: t("species"),
+              label: isUserGenerated
+                ? t("communityReportedSpecies")
+                : t("species"),
               value: getSpotSpeciesLine(spot, locale),
             },
             {
-              label: t("bestTime"),
+              label: isUserGenerated
+                ? t("communityReportedBestTime")
+                : t("bestTime"),
               value: getSpotBestTimeLine(spot, locale),
             },
             {
-              label: t("facilities"),
+              label: isUserGenerated
+                ? t("communityReportedFacilities")
+                : t("facilities"),
               value: getSpotFacilitiesLine(spot, locale),
             },
             {
