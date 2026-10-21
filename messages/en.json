@@ -216,7 +216,7 @@
     "seoStateDescription": "Ponds, jetties and fishing locations in {state}. {count, plural, =0 {Be the first to share a spot} other {# spots listed}} on Jompancing.",
     "seoStatePondTitle": "Fishing ponds in {state}",
     "seoStatePondDescription": "Pond fishing and pay ponds in {state}. {count, plural, =0 {Share your favourite pond} other {# locations listed}}.",
-    "seoDistrictTitle": "Fishing Ponds & Spots Near {district}, {state} | Jompancing",
+    "seoDistrictTitle": "Fishing Ponds & Spots Near {district}, {state}",
     "seoDistrictDescription": "Explore {count, plural, =0 {fishing spots} other {# fishing spots}} near {district}, {state}. Check addresses and listed details, then confirm access, fees and hours before your trip.",
     "tabCommunity": "Community",
     "tabMine": "My Spots",

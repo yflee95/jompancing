@@ -216,7 +216,7 @@
     "seoStateDescription": "浏览{state}的钓场、码头与钓点。{count, plural, =0 {成为第一个分享钓点的人} other {共#个钓点}} — Jompancing 社区。",
     "seoStatePondTitle": "{state}钓场 / 收费塘",
     "seoStatePondDescription": "{state}的钓场与收费塘。{count, plural, =0 {欢迎分享你常去的钓场} other {共#个地点}}。",
-    "seoDistrictTitle": "{state}{district}钓场与钓点｜Jompancing",
+    "seoDistrictTitle": "{state}{district}钓场与钓点",
     "seoDistrictDescription": "查找{state}{district}附近的钓场与钓点，浏览{count, plural, =0 {钓鱼地点} other {共#个钓鱼地点}}及现有地址资料。出发前请向经营者确认是否开放、收费和营业时间。",
     "tabCommunity": "社区",
     "tabMine": "我的钓点",
