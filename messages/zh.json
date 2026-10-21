@@ -2,7 +2,7 @@
   "metadata": {
     "title": "Jompancing — 去钓鱼 | 马来西亚钓点",
     "description": "分享钓点、钓场、码头与海钓 — 马来西亚钓友社区 Jompancing。",
-    "homeDescription": "查找马来西亚钓点、收费塘、码头与河流。分享你的钓点、阅读指南，加入 Jompancing 钓友社区。"
+    "homeDescription": "查找马来西亚钓点、鱼塘、码头与河流。分享你的钓点、阅读指南，加入 Jompancing 钓友社区。"
   },
   "common": {
     "appName": "Jompancing",
@@ -107,7 +107,7 @@
     "paidPond": "钓鱼池塘",
     "nearbyPonds": "附近的钓鱼池塘",
     "nearbyPondsHint": "浏览钓友分享、靠近你所在位置的池塘。",
-    "nearbyPaidPondsHintNoGps": "开启定位查看附近钓场 — 或先添加你知道的收费塘。",
+    "nearbyPaidPondsHintNoGps": "开启定位查看附近鱼塘，也可以提交你知道的鱼塘。",
     "paidPondAddBadge": "鱼塘经营者",
     "paidPondAddTitle": "经营钓鱼池塘？提交你的页面",
     "paidPondAddDesc": "免费提交鱼塘资料审核，无需注册账户。",
@@ -220,7 +220,7 @@
       "verifiedDetailsPublish": "发布已确认资料"
     },
     "seoBrowseDescription": "想找附近的钓鱼场？浏览马来西亚各地的钓鱼场、码头、河流与钓点。点击“附近”查找周边地点，也可按州属和地区浏览。",
-    "seoNationalPondTitle": "马来西亚钓场与收费鱼塘 — 浏览地点",
+    "seoNationalPondTitle": "马来西亚钓场与鱼塘 — 浏览地点",
     "seoNationalPondDescription": "浏览马来西亚各地{count, plural, =0 {钓友分享的钓场} other {共#个钓场}}。按州查找，查看地址和钓场详情，并规划下一次出钓。",
     "seoSpotTitle": "{name} — {location}",
     "seoSpotTitleNoLocation": "{name} — 钓点",
@@ -232,8 +232,8 @@
     "seoBrowseStateCta": "浏览{state}全部钓点 →",
     "seoStateTitle": "{state}钓点",
     "seoStateDescription": "浏览{state}的钓场、码头与钓点。{count, plural, =0 {成为第一个分享钓点的人} other {共#个钓点}} — Jompancing 社区。",
-    "seoStatePondTitle": "{state}钓场 / 收费塘",
-    "seoStatePondDescription": "{state}的钓场与收费塘。{count, plural, =0 {欢迎分享你常去的钓场} other {共#个地点}}。",
+    "seoStatePondTitle": "{state}钓场与鱼塘",
+    "seoStatePondDescription": "浏览{state}的鱼塘钓点。{count, plural, =0 {欢迎分享你常去的鱼塘} other {共#个地点}}。",
     "seoDistrictTitle": "{state}{district}钓场与钓点",
     "seoDistrictDescription": "查找{state}{district}附近的钓场与钓点，浏览{count, plural, =0 {钓鱼地点} other {共#个钓鱼地点}}及现有地址资料。出发前请向经营者确认是否开放、收费和营业时间。",
     "tabCommunity": "社区",
