@@ -7,6 +7,7 @@
 - 正式 Vercel 项目已配置 `SUPABASE_SERVICE_ROLE_KEY`（仅核对变量名称和 Production 环境，未读取密钥值）。
 - Supabase 控制台当前显示正在处理技术故障；数据库里的 `pond_claim_requests` 迁移尚未能确认。本地只读探测返回 401，无法判断表是否存在，所以暂不把鱼塘申请表标记为已验证可收单。
 - 已打开 Kolam Pancing PDS 官网公布的 WhatsApp 联系入口。当前需要二维码关联 WhatsApp 账号；未确认 JomPancing 对外发送账号，因此没有发送邀约。不要从私人号外联。
+- Vercel 项目属于 Hobby；2026-10-21 只读检查发现 Web Analytics 未启用，面板展示的是 demo data。先更新三语隐私说明，再启用 Hobby 免费额度内的页面分析；不升级 Pro。Hobby 不支持 Web Analytics 自定义事件，因此暂时不能把页面浏览当作商家联系点击。
 - 最新 Search Console（2026-09-09 至 2026-10-18，报告 7 小时前更新）：174 次点击、11,400 次曝光、CTR 1.5%、平均排名 7。`kolam pancing near me` 有 615 次曝光、3 次点击、CTR 0.5%、平均排名 7.2；该查询主要落到 Johor Bahru 地区页。产品目前能让用户手动按距离筛选，但 GPS 曾在全站打开时自动请求。
 - GPS 现为用户点击后才请求，坐标用途说明与三语隐私文案已上线（提交 `a27ce8d`）。
 - 验证：TypeScript、受影响文件 ESLint、Next.js 生产构建均通过；Vercel 部署成功。生产浏览器已检查地点页；本地预览受浏览器策略拦截。没有点击“附近”按钮，因此没有触发设备定位授权。
@@ -78,6 +79,10 @@ Kolam Pancing PDS 的官方网站列出位置、营业时间、鱼种、收费�
 4. 确认 JomPancing 对外 WhatsApp 账号后，联系一位鱼塘经营者，提供免费资料核对；当前邀约数仍为 0。
 5. 让经营者检查资料并记录确认依据及日期。核实 Vercel Analytics 是否能提供足够的访问数据；若不支持自定义事件，不宣称能报告联系点击。
 6. 试点结束后，以真实数据和经营者意愿决定是否测试赞助展示；未确认付费意愿前不收款、不公开承诺效果。
+
+## 流量分析配置（2026-10-21）
+
+三语隐私政策现说明 Vercel 无 Cookie 网站分析及其收集的汇总页面、来源、概略地区和设备类型数据。待该政策版本上线后，在 Vercel Hobby 项目中启用 Web Analytics，并确认面板开始显示真实数据。Vercel 当前公布的 Hobby 套餐包含每月最多 50,000 个 Web Analytics 事件；Hobby 不支持自定义事件，不能据此声称已统计路线或 WhatsApp 联系点击。来源：<https://vercel.com/docs/analytics/limits-and-pricing>、<https://vercel.com/docs/analytics/privacy-policy>。
 
 ## 地区资料修正（2026-10-21）
 

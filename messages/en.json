@@ -623,7 +623,7 @@
   "legal": {
     "privacyTitle": "Privacy Policy",
     "privacyIntro": "How Jompancing collects and uses your information.",
-    "privacyUpdated": "Last updated: September 2026",
+    "privacyUpdated": "Last updated: October 21, 2026",
     "privacySections": [
       {
         "title": "Who we are",
@@ -639,7 +639,7 @@
       },
       {
         "title": "Third parties",
-        "body": "We use Supabase (database & auth), Vercel (hosting), and Google (Maps & address search). WhatsApp contact for marketplace and activities happens off-platform between users."
+        "body": "We use Supabase (database & auth), Vercel (hosting and, when enabled, cookie-free Web Analytics), and Google (Maps & address search). Vercel Web Analytics provides aggregated page-visit insights such as pages viewed, referrers, general location, and device type; we use these to improve Jompancing and do not use them to identify your account. WhatsApp contact for marketplace and activities happens off-platform between users."
       },
       {
         "title": "Your choices",

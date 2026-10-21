@@ -623,7 +623,7 @@
   "legal": {
     "privacyTitle": "隐私政策",
     "privacyIntro": "Jompancing 如何收集和使用你的信息。",
-    "privacyUpdated": "最后更新：2026年9月",
+    "privacyUpdated": "最后更新：2026年10月21日",
     "privacySections": [
       {
         "title": "我们是谁",
@@ -639,7 +639,7 @@
       },
       {
         "title": "第三方服务",
-        "body": "我们使用 Supabase、Vercel 和 Google（地图与地址搜索）。商城和活动的 WhatsApp 联系在用户之间进行，不在平台内完成交易。"
+        "body": "我们使用 Supabase（数据库与身份验证）、Vercel（网站托管及启用后的无 Cookie 网站分析）和 Google（地图与地址搜索）。Vercel 网站分析提供汇总访问数据，例如浏览页面、来源、概略地区和设备类型；我们用这些数据改进 Jompancing，不会用来识别你的账户。商城和活动的 WhatsApp 联系在用户之间进行，不在平台内完成交易。"
       },
       {
         "title": "你的选择",

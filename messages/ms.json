@@ -623,7 +623,7 @@
   "legal": {
     "privacyTitle": "Dasar Privasi",
     "privacyIntro": "Bagaimana Jompancing mengumpul dan menggunakan maklumat anda.",
-    "privacyUpdated": "Kemas kini terakhir: September 2026",
+    "privacyUpdated": "Kemas kini terakhir: 21 Oktober 2026",
     "privacySections": [
       {
         "title": "Siapa kami",
@@ -639,7 +639,7 @@
       },
       {
         "title": "Pihak ketiga",
-        "body": "Kami guna Supabase, Vercel, dan Google (Maps & carian alamat). WhatsApp untuk kedai dan aktiviti berlaku di luar platform antara pengguna."
+        "body": "Kami menggunakan Supabase (pangkalan data & pengesahan), Vercel (hosting dan, apabila diaktifkan, Analitis Web tanpa kuki), serta Google (Maps & carian alamat). Analitis Web Vercel memberikan statistik lawatan agregat seperti halaman dilihat, sumber rujukan, lokasi umum dan jenis peranti; kami menggunakannya untuk menambah baik Jompancing, bukan untuk mengenal pasti akaun anda. Hubungan WhatsApp untuk kedai dan aktiviti berlaku di luar platform antara pengguna."
       },
       {
         "title": "Pilihan anda",
