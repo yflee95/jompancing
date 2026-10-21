@@ -26,7 +26,7 @@ export default async function FishSpeciesPage({ params }: FishPageProps) {
   if (!fish) notFound();
   const t = await getTranslations("fish");
   const detail = t.raw("detail") as { wildDiet: string; baitTips: string; lureTips: string; starterRig: string; habitat: string; method: string; source: string; photo: string; noteTitle: string; note: string; browseSpots: string; back: string };
-  const labels = { ...detail, styles: { bait: t("styles.bait"), lure: t("styles.lure"), both: t("styles.both") }, habitats: { freshwater: t("habitats.freshwater"), river: t("habitats.river"), brackish: t("habitats.brackish"), sea: t("habitats.sea") } };
+  const labels = { ...detail, browseSpots: t("findSpotsWith", { fish: fish.name[locale] }), styles: { bait: t("styles.bait"), lure: t("styles.lure"), both: t("styles.both") }, habitats: { freshwater: t("habitats.freshwater"), river: t("habitats.river"), brackish: t("habitats.brackish"), sea: t("habitats.sea") } };
   const jsonLd = { "@context": "https://schema.org", "@type": "Article", headline: fish.name[locale], about: fish.latinName, description: fish.overview[locale], image: `https://www.jompancing.my${fish.photo.src}`, author: { "@type": "Organization", name: "Jompancing" }, citation: fish.sourceUrl };
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />

@@ -60,7 +60,7 @@ export function FishDetail({ fish, locale, labels }: FishDetailProps) {
           <p className="mt-2 text-sm leading-6 text-[var(--ink-muted)]">{labels.note}</p>
           <p className="mt-4 text-xs text-[var(--ink-muted)]">{labels.photo}: {fish.photo.credit} · {fish.photo.license} · <a href={fish.photo.sourceUrl} target="_blank" rel="noreferrer" className="font-semibold underline">Wikimedia Commons</a></p>
           <p className="mt-2 text-xs text-[var(--ink-muted)]">{labels.source}: <a href={fish.sourceUrl} target="_blank" rel="noreferrer" className="font-semibold underline">FishBase</a></p>
-          <Link href="/spots" className="mt-5 inline-flex rounded-full bg-[var(--ocean)] px-5 py-3 text-sm font-semibold text-white transition hover:brightness-110">{labels.browseSpots}</Link>
+          <Link href={`/search?q=${encodeURIComponent(fish.slug)}`} className="mt-5 inline-flex rounded-full bg-[var(--ocean)] px-5 py-3 text-sm font-semibold text-white transition hover:brightness-110">{labels.browseSpots}</Link>
         </div>
       </article>
     </main>
