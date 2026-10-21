@@ -1,6 +1,6 @@
 # JomPancing 首笔收入试点
 
-状态：首家商家试点进行中。实收收入 RM0，已发出 4 封商家/赛事资料核对邀约，经营者承诺 0；其中 Kolam Pancing Syawal / Sungai Rekoh 的 Business 账号、D’Tiram 的公开目录号码和 Joran Fest 官方赛事号码各收到一封免费资料核对邀请。D’Tiram 号码尚未由商家自有渠道核实；Joran Fest 与 Ko-Nelayan WhatsApp 邀请均已送达，等待回复。未承诺流量或收费服务。
+状态：首家商家试点进行中。实收收入 RM0，已发出 4 封商家/赛事资料核对邀约，经营者承诺 0；其中 Kolam Pancing Syawal / Sungai Rekoh 的 Business 账号、D’Tiram 的公开目录号码和 Joran Fest 官方赛事号码各收到一封免费资料核对邀请。D’Tiram 号码尚未由商家自有渠道核实；Joran Fest 与 Ko-Nelayan WhatsApp 邀请均已送达；Joran Fest 联系人回复会告知管理层，但管理层尚未回复，活动资料仍待确认。未承诺流量或收费服务。
 
 ## 运营检查点（2026-10-21）
 
@@ -65,10 +65,12 @@
 - **Damai Fishing Village（Johor Bahru，未联系）**：已有 JomPancing 地点页，当前线上页面正确隐藏导入的鱼种与设施并标明垂钓许可尚未核实；搜索缓存仍可能显示旧的自动生成介绍，故不把旧摘要当作当前资料。Facebook 页面 `facebook.com/damai.fishingvillage` 的页面标题与商家名一致，但公开页要求登录，无法在当前浏览器核验其最新内容。FindGlocal 镜像显示该页面在 2026-10-01 至 10-05 有频繁鱼种活动、时段和票价更新，并多次附 +60 19-754 9931；该镜像不是经营者自有渠道，号码和详情均待经营者确认。可作为下一位候选，邀请时只发至核验后的官方页面，不使用镜像目录号码。[JomPancing listing](https://www.jompancing.my/en/spots/damai-fishing-village-6umU4Ong)、[Facebook 页面](https://www.facebook.com/damai.fishingvillage)、[FindGlocal mirror](https://www.findglocal.com/MY/Johor-Bahru/1841843772552302/Damai-Fishing-Village)。
 - **Joran Fest（Johor，公开活动供给线索，已联系）**：主办方官网列出 Siri 5 为 2026-11-01、Siri 6 为 2026-12-06、Siri 7 为 2027-01-03、Siri 8 为 2027-02-07，地点栏写 Pantai Mesra, Sri Menanti, Muar；官方联系方式列 `admin@joranfest.com`、赛事 +60 11-2846 0499、报名 +60 12-708 5669。官网同页的报名方式/费用文字似乎对应较早场次，不可复制给未来场次；邀约时应先向主办方确认日期、开放报名方式、价格和参赛条件，再免费提供活动页。不要用旧报名余额或名额信息误导钓友。[Joran Fest 官方日程及联系方式](https://joranfest.com/)、[Visit Johor 活动页](https://visitjohor2026.my/events/joran-fest/)。
 
-Joran Fest 邀约记录（2026-10-21）：通过用户指定的 WhatsApp 账号，向官网列出的赛事号码 +60 11-2846 0499 发送免费核实邀请，询问日期/地点、报名状态、费用及官方注册链接；明确只发布主办方确认的信息，不收费、不承诺客流，并说明错误联系人可告知适当渠道且不再联系。WhatsApp 显示 Delivered。尚未收到回复；收到主办方确认前不发布新活动页，不复制官网旧场次的报名/费用文字。
+Joran Fest 邀约记录（2026-10-21）：通过用户指定的 WhatsApp 账号，向官网列出的赛事号码 +60 11-2846 0499 发送免费核实邀请；本地时间 15:26 对方回复“Ok，我会告知管理层”，并已回复致谢。这是转交意向，尚未确认比赛日期、地点或报名状态，也未提供报名链接。收到主办方确认前不发布活动页，不复制官网旧场次报名/费用文字。
 Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2026 contest at Taman Mini Akuakultur, Kg. Laya-Laya, Tuaran, 9:00 am–1:00 pm, RM38 per rod, capacity 259, total prizes RM3,800. One free verification invitation was sent to event contact +60 13-281 5567 from the official announcement; WhatsApp shows Delivered. No reply yet. Confirm current registration status and official registration method before publishing. Source: https://konelayan.sabah.gov.my/4.%20pusat-media-tab/aktiviti%202026/10.%20oktober/1001%20-%20Pertandingan%20Santai%20Mini%20Game%20Memancing%20Ko-Nelayan%202026.html
 
-执行顺序调整为等待 Syawal、D’Tiram、Joran Fest 与 Ko-Nelayan 回复；发出邀请后 7 天内不重复联系。后续新邀约先从经营者自有主页或其确认的商业渠道核对对象，不用目录号码批量发送。
+执行顺序调整为等待 Syawal、D’Tiram、Joran Fest 与 Ko-Nelayan 对核实邀请回复；Joran Fest 联系人表示会告知管理层，尚未确认实际转交或收到管理层回复。已表示会转交的邀请给对方合理回复时间，其他邀请发出后 7 天内不重复联系。后续新邀约先核实经营者官方渠道，逐一联络，不批量群发。
+
+- **MBSA / Pertandingan Memancing Shah Alam（待核实，未联系）**：Visit Selangor 活动列表提到 2026 年 10 月 Taman Tasik Barat、Seksyen 14 的钓鱼比赛，但没有确切日期、报名状态或费用；州旅游活动日历同样只标注月份，且日期可能为暂定。MBSA 官方总机为 +60 3-5510 5133，但 WhatsApp 新聊天搜索显示没有该号码对应的 WhatsApp 账号。遵照当前只使用用户指定 WhatsApp 渠道的选择，暂不改用电话或邮件联系，也不发布活动。来源：[Visit Selangor 活动列表](https://visitselangor.my/events/pertandingan-memancing-shah-alam/)、[Selangor 2026 活动日历 PDF](https://selangor.travel/wp-content/uploads/2017/04/Calendar-of-Events-2026-2.pdf)。
 
 备选是 Kolam Pancing PDS，位于 Selangor；官网信息较完整，可在本地试点后再联系：<https://kolampancingpds.com/>。官网天气模块请求失败，不要把其天气数据当作可用服务来宣传。
 
@@ -91,7 +93,7 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 | 指标 | 记录定义 | 目前状态 |
 |---|---|---|
 | 商家/赛事邀约数 | 通过公开业务渠道发送的个性化核实邀约 | 4（2026-10-21，Syawal、D’Tiram、Joran Fest、Ko-Nelayan；D’Tiram 号码尚未由商家自有渠道核实；两条赛事邀请均已送达） |
-| 回复数 | 商家主动回复，不含系统送达/已读 | 0 |
+| 回复数 | 商家主动回复，不含系统送达/已读 | 1（Joran Fest 联系人表示会转交管理层；未确认活动资料） |
 | 资料确认数 | 商家逐项确认公开的地址、时段、收费或规则 | 0 |
 | 纠错完成数 | 已核实并更新的钓点资料 | 0 |
 | 商家联系动作 | 页面上的 WhatsApp / 电话外链点击 | 尚无可靠的自定义事件统计 |
@@ -103,7 +105,7 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 1. 活动/渔具 WhatsApp 联系体验、GPS 点击后授权、Johor Bahru 三语搜索摘要及导入地点资料可信度修复均已发布。
 2. 从 2026-10-21 上线后继续累积至少 28 天，再在 Search Console 用相同查询和 Johor Bahru 页面比较 CTR、点击与排名（约 2026-11-18 后查看；考虑数据延迟）。不把排名或曝光当作收入。
 3. `pond_claim_requests` 表与 RLS 已只读确认；接下来在不插入合成生产申请的前提下，补做用户授权下的端到端验证或等待第一条真实商家申请。
-4. 等待 Syawal、D’Tiram、Joran Fest 与 Ko-Nelayan 对核实邀请回复。两条赛事邀请均已送达；7 天内不重复联系。收到主办方确认后再整理 JomPancing 活动页，不复制官网旧场次报名/费用文字。
+4. 等待 Syawal、D’Tiram、Joran Fest 与 Ko-Nelayan 对核实邀请回复。Joran Fest 联系人表示会告知管理层，暂无赛事资料确认；其他邀约发出后 7 天内不重复联系。只在收到主办方确认后整理 JomPancing 活动页，不复制官网旧场次的报名/费用文字。MBSA 活动暂不联系，因为其官方总机在 WhatsApp 搜索中没有账号。
 5. 让经营者检查资料并记录确认依据及日期。使用 Vercel Analytics 报告实际页面访问；Hobby 没有自定义事件，所以当前不宣称统计地图路线或 WhatsApp 点击。
 6. 试点结束后，以真实数据和经营者意愿决定是否测试赞助展示；未确认付费意愿前不收款、不公开承诺效果。
 
