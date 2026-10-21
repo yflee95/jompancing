@@ -128,7 +128,8 @@ export function PondClaimForm({
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="claim-message">{t("claimMessage")}</Label>
-                  <Textarea id="claim-message" name="message" rows={3} maxLength={1200} placeholder={t("claimMessageHint")} />
+                  <Textarea id="claim-message" name="message" rows={3} maxLength={1200} />
+                  <p className="text-xs leading-relaxed text-[var(--ink-muted)]">{t("claimMessageHint")}</p>
                 </div>
                 <div className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
                   <label htmlFor="claim-company-fax">Company fax</label>
