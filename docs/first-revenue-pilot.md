@@ -10,6 +10,7 @@
 
 - 登录的 Search Console 性能报告在约 6 小时前更新；当前选择“最近 3 个月”，图表日期为 2026-09-09 至 2026-10-18：174 次点击、11.4K 次曝光、CTR 1.5%、平均排名 7；查询表共 593 条。高意图词 `kolam pancing near me` 为 615 次曝光、3 次点击（约 0.49% CTR）；`kolam pancing udang near me` 为 75 次曝光、4 次点击（约 5.33% CTR）。这仍证明有搜索需求，但流量及订单/询问规模尚未证明商业收入。
 - 先修复线上 www/apex canonical、robots 与 sitemap 主机名不一致的问题，再用 Search Console 对相同查询及页面比较后续曝光和 CTR，避免把搜索引擎分散的 URL 信号误当成标题优化结果。
+- 生产 `/ms/spots` 实测返回 HTTP 200，页面标题已是 “Kolam Pancing Near Me & Port Memancing Malaysia | Jompancing”，摘要也已说明附近定位和按地区浏览；canonical 仍指向 `https://jompancing.my/ms/spots`，而首选公开主机是 `www`。当前标题已覆盖主要近场搜索词，优先发布 canonical/robots/sitemap 对齐修复，不再猜测性重写标题。
 - 当前 Vercel Hobby 项目不适合商业用途；官方计划页同时说明 Hobby 为个人、非商业用途。官方自定义事件说明列出 custom events 仅适用于 Pro 和 Enterprise，所以目前不能从 Vercel Web Analytics 免费档统计导航点击或商家表单转化。没有为了埋点升级或产生费用。需要先完成合规托管迁移，再决定无需付费的测量方式或由账号持有人批准预算。
 - 官方依据：[Vercel Hobby plan](https://vercel.com/docs/plans/hobby)、[Vercel custom events](https://vercel.com/docs/analytics/custom-events)。
 
