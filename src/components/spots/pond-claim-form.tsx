@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { BadgeCheck, Building2, ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,18 @@ export function PondClaimForm({
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (!spotId) return;
+
+    const openForClaimLink = () => {
+      if (window.location.hash === "#pond-claim") setOpen(true);
+    };
+
+    openForClaimLink();
+    window.addEventListener("hashchange", openForClaimLink);
+    return () => window.removeEventListener("hashchange", openForClaimLink);
+  }, [spotId]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
