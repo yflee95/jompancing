@@ -26,6 +26,16 @@ export async function ActivityDetailContent({
   const state = getStateById(activity.stateId);
   const district = getDistrictById(activity.stateId, activity.districtId);
   const promoted = isPromotionActive(activity);
+  const venueSearch = [
+    getLocalizedText(activity.venue, locale),
+    district ? getLocalizedText(district.name, locale) : "",
+    state ? getLocalizedText(state.name, locale) : "",
+  ]
+    .filter(Boolean)
+    .join(", ");
+  const directionsUrl = new URL("https://www.google.com/maps/dir/");
+  directionsUrl.searchParams.set("api", "1");
+  directionsUrl.searchParams.set("destination", venueSearch);
 
   return (
     <article className="mx-auto max-w-4xl px-4 pb-32 sm:pb-8">
@@ -93,6 +103,14 @@ export async function ActivityDetailContent({
                 {state && ` · ${getLocalizedText(state.name, locale)}`}
                 {district && ` · ${getLocalizedText(district.name, locale)}`}
               </p>
+              <a
+                href={directionsUrl.toString()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-1 inline-flex text-xs font-semibold text-[var(--ocean)] underline-offset-4 hover:underline"
+              >
+                {t("openInMaps")} ↗
+              </a>
             </div>
           </div>
           <div className="flex items-center gap-3 rounded-2xl bg-white p-4 ring-1 ring-[var(--sand-dark)]/40">

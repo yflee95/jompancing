@@ -414,6 +414,7 @@
     "renewPromotion": "Email to ask about promotion",
     "date": "Date",
     "venue": "Venue",
+    "openInMaps": "Get directions in Google Maps",
     "organizer": "Organizer",
     "fee": "Fee",
     "feeNote": "Fee details — contact organizer to register",

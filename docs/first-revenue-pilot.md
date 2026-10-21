@@ -2,9 +2,10 @@
 
 ## 官方钓鱼活动资料（2026-10-21）
 
-新增 Ko-Nelayan Tuaran Mini Game Fishing Competition 三语活动页。官方公告列出日期为 2026 年 10 月 31 日、上午 9 点至下午 1 点，地点为 Taman Mini Akuakultur (TMA), Kg. Laya-Laya，报名费 RM38/竿、奖品总额 RM3,800、名额有限。JomPancing 未获主办方核实，也不确认当前剩余名额；详情页直接链接主办方公告供读者核对最新报名信息。活动结束后从活动浏览、搜索和 sitemap 排除。本地功能改动尚未发布，因此不能当作已有读者使用或收入的证据。
+新增 Ko-Nelayan Tuaran Mini Game Fishing Competition 三语活动页。官方公告列出日期为 2026 年 10 月 31 日、上午 9 点至下午 1 点，地点为 Taman Mini Akuakultur (TMA), Kg. Laya-Laya，报名费 RM38/竿、奖品总额 RM3,800、名额有限。JomPancing 未获主办方核实，也不确认当前剩余名额；详情页直接链接主办方公告供读者核对最新报名信息。活动地点现可一键打开 Google Maps 导航；这里使用官方 Maps URL，不调用嵌入地图/API key。Node 24 下活动详情三语本地生产服务器均返回 200，HTML 均包含导航和主办方来源链接。活动结束后从活动浏览、搜索和 sitemap 排除。本地功能改动尚未发布，因此不能当作已有读者使用或收入的证据。
 
 来源：<https://konelayan.sabah.gov.my/4.%20pusat-media-tab/aktiviti%202026/10.%20oktober/1001%20-%20Pertandingan%20Santai%20Mini%20Game%20Memancing%20Ko-Nelayan%202026.html>
+Google Maps URL 说明：<https://developers.google.com/maps/documentation/urls/get-started>
 
 ## 搜索流量与转化测量复核（2026-10-21）
 
