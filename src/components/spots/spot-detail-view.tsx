@@ -4,6 +4,7 @@ import { CommentsSection } from "@/components/shared/comments-section";
 import type { CommentItem } from "@/components/shared/comments-section";
 import { PhotoAttribution } from "@/components/spots/photo-attribution";
 import { SpotDetailActions } from "@/components/spots/spot-detail-actions";
+import { SavedSpotButton } from "@/components/spots/saved-spot-button";
 import { AdminSpotDelete } from "@/components/spots/admin-spot-delete";
 import { SpotOwnerActions } from "@/components/spots/spot-owner-actions";
 import { PondClaimForm } from "@/components/spots/pond-claim-form";
@@ -63,6 +64,11 @@ export async function SpotDetailView({
         breadcrumbSpotsLabel={t("seoBreadcrumbSpots")}
       />
       <SpotBreadcrumbNav spot={spot} locale={locale} />
+      {spot.visibility === "public" && (
+        <div className="mt-2 flex justify-end">
+          <SavedSpotButton slug={spot.slug} />
+        </div>
+      )}
 
       {hasMockHero ? (
         <div className="relative -mx-4 aspect-[4/5] overflow-hidden sm:mx-0 sm:aspect-[16/10] sm:rounded-3xl">

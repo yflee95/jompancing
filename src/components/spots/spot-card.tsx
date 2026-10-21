@@ -4,6 +4,7 @@ import { BadgeCheck, Info, Lock, MapPin, MessageCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AppImage } from "@/components/ui/app-image";
+import { SavedSpotButton } from "@/components/spots/saved-spot-button";
 import { getSpotLocationLine } from "@/lib/spot-location";
 import { getLocalizedText, type FishingSpot } from "@/types";
 import type { Locale } from "@/i18n/routing";
@@ -18,8 +19,8 @@ export function SpotCard({ spot, locale, showPrivateBadge }: SpotCardProps) {
   const t = useTranslations("spots");
   const tCommon = useTranslations("common");
   return (
-    <Link href={`/spots/${spot.slug}`} className="group block">
-      <article className="overflow-hidden rounded-3xl bg-white shadow-[0_8px_30px_rgba(44,36,22,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(44,36,22,0.1)]">
+    <article className="relative overflow-hidden rounded-3xl bg-white shadow-[0_8px_30px_rgba(44,36,22,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(44,36,22,0.1)]">
+      <Link href={`/spots/${spot.slug}`} className="group block">
         <div className="relative aspect-[4/5] overflow-hidden">
           <AppImage
             src={spot.imageUrl}
@@ -56,7 +57,7 @@ export function SpotCard({ spot, locale, showPrivateBadge }: SpotCardProps) {
             </span>
           )}
           {(showPrivateBadge || spot.visibility === "private") && (
-            <span className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-black/50 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+            <span className={`absolute right-3 z-10 flex items-center gap-1 rounded-full bg-black/50 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm ${showPrivateBadge || spot.visibility === "private" ? "top-14" : "top-3"}`}>
               <Lock className="h-3 w-3" />
               {t("private")}
             </span>
@@ -96,7 +97,14 @@ export function SpotCard({ spot, locale, showPrivateBadge }: SpotCardProps) {
             </div>
           </div>
         </div>
-      </article>
-    </Link>
+      </Link>
+      {spot.visibility === "public" && (
+        <SavedSpotButton
+          slug={spot.slug}
+          compact
+          className="absolute right-3 top-3 z-20"
+        />
+      )}
+    </article>
   );
 }

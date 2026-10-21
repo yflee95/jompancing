@@ -31,6 +31,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { PageLoader } from "@/components/ui/page-loader";
 
 import { useNearMeSpotFilters } from "@/hooks/use-near-me-spot-filters";
+import { useSavedSpots } from "@/hooks/use-saved-spots";
 import { getDistanceKm } from "@/lib/geo";
 import { mergePublicSpots } from "@/lib/merge-public-spots";
 import { filterSpotsByRegion } from "@/lib/spot-location";
@@ -43,7 +44,7 @@ import { cn } from "@/lib/utils";
 
 
 
-type SpotsTab = "community" | "mine";
+type SpotsTab = "community" | "mine" | "saved";
 
 
 
@@ -92,6 +93,7 @@ export function SpotsExplore({
   const { user } = useAuth();
 
   const { userSpots, isLoaded } = useUserSpots();
+  const { slugs: savedSlugs } = useSavedSpots();
 
   const [tab, setTab] = useState<SpotsTab>("community");
 
@@ -130,7 +132,17 @@ export function SpotsExplore({
 
 
 
-  const baseList = tab === "mine" && user ? mySpots : communitySpots;
+  const savedSlugSet = useMemo(() => new Set(savedSlugs), [savedSlugs]);
+  const savedSpots = useMemo(
+    () => communitySpots.filter((spot) => savedSlugSet.has(spot.slug)),
+    [communitySpots, savedSlugSet],
+  );
+
+  const baseList = tab === "mine" && user
+    ? mySpots
+    : tab === "saved"
+      ? savedSpots
+      : communitySpots;
 
 
 
@@ -271,7 +283,26 @@ export function SpotsExplore({
 
         )}
 
+        <button
+          type="button"
+          onClick={() => setTab("saved")}
+          className={cn(
+            "rounded-full px-4 py-2 text-sm font-medium transition",
+            tab === "saved"
+              ? "bg-[var(--ocean)] text-white shadow-md shadow-[var(--ocean-glow)]"
+              : "bg-white text-[var(--ink-muted)] ring-1 ring-[var(--sand-dark)]/60",
+          )}
+        >
+          {t("savedSpotsTab")} ({savedSpots.length})
+        </button>
+
       </div>
+
+      {tab === "saved" && (
+        <p className="mb-3 text-sm text-[var(--ink-muted)]">
+          {t("savedSpotsDeviceOnly")}
+        </p>
+      )}
 
 
 
@@ -303,19 +334,29 @@ export function SpotsExplore({
 
                 ? t("noMySpots")
 
+                : tab === "saved"
+
+                  ? t("noSavedSpots")
+
                 : t("noSpots")
 
           }
 
           description={
 
-            hasRegionFilter ? t("tryDifferentRegion") : tab === "mine" ? t("shareFirst") : t("beFirst")
+            tab === "saved"
+              ? t("saveSpotsHint")
+              : hasRegionFilter
+                ? t("tryDifferentRegion")
+                : tab === "mine"
+                  ? t("shareFirst")
+                  : t("beFirst")
 
           }
 
-          actionLabel={tNav("post")}
+          actionLabel={tab === "saved" ? undefined : tNav("post")}
 
-          actionHref="/post"
+          actionHref={tab === "saved" ? undefined : "/post"}
 
         />
 
