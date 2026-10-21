@@ -29,7 +29,7 @@
 - 马来西亚带来 100 次点击和 6,613 次曝光。
 - `kolam pancing near me` 有 391 次曝光、2 次点击、平均排名 7.51。
 - Johor Bahru 区域页有 628 次曝光、8 次点击；Johor 州页有 685 次曝光、4 次点击。
-- 活动推广目前提供 2 天免费，之后标价 RM29/天；没有在线付款、自动续期或自助成效归因。已补上通过业务邮箱人工询价的入口后，可作为小规模询价实验，但尚未证实有人愿意付款，不能当作已经可自助结账的收入产品。
+- 活动推广目前提供 2 天免费，之后标价 RM29/天；没有在线付款、自动续期或自助成效归因。2026-10-21 实际打开 `/en/activities`，列表显示 “No activities in this area”；当前没有可证明推广效果的活动库存。因此先把推广视为未验证产品，不主动卖 RM29/天；优先争取一条主办方确认的近期活动并让钓友能发现，再根据真实访问与商家反馈测试价格。公开推广页现有业务邮箱人工询价入口，不代表可自助结账或已有付款意愿。
 
 这些数字是 Search Console 的搜索曝光和点击，不代表网站总访问、钓友实际出钓或商家获得的询问。优先改善高意图地点页的点击率和资料可信度。
 
@@ -62,6 +62,7 @@
 - **Pusat Memancing Udang Galah TikTokBP**：已有 JomPancing 页面；公开目录列有电话，但没有找到商家自有社交页面来确认身份和联系方式。[JomPancing 页面](https://www.jompancing.my/ms/spots/pusat-memancing-udang-galah-tiktokbp-cNAjoodM)、[WorldOrgs](https://my.worldorgs.com/katalog/johor-bahru/pusat-hiburan/pusatmemancingudanggalahtiktok)、[BizMalay](https://www.bizmalay.com/en/pusat-memancing-udang-galah-tiktok-012-744-9433)。
 - **Kolam Memancing Udang Biru**：Pasir Gudang 页面声称的 Facebook 地址为 `facebook.com/udangbr/`，但两家目录的联系电话不一致。先不联系、不把任一号码写入公开页面，直到经营者自有页面确认。[WorldOrgs](https://my.worldorgs.com/katalog/pasir-gudang/kedai-pemburuan-dan-memancing/kolam-memancing-udang-biru)、[另一目录](https://kedaipancingnearme.my/johor/kampung-pasir-gudang-baru/kolam-memancing-udang-biru/)。
 - **Damai Fishing Village（Johor Bahru，未联系）**：已有 JomPancing 地点页，当前线上页面正确隐藏导入的鱼种与设施并标明垂钓许可尚未核实；搜索缓存仍可能显示旧的自动生成介绍，故不把旧摘要当作当前资料。Facebook 页面 `facebook.com/damai.fishingvillage` 的页面标题与商家名一致，但公开页要求登录，无法在当前浏览器核验其最新内容。FindGlocal 镜像显示该页面在 2026-10-01 至 10-05 有频繁鱼种活动、时段和票价更新，并多次附 +60 19-754 9931；该镜像不是经营者自有渠道，号码和详情均待经营者确认。可作为下一位候选，邀请时只发至核验后的官方页面，不使用镜像目录号码。[JomPancing listing](https://www.jompancing.my/en/spots/damai-fishing-village-6umU4Ong)、[Facebook 页面](https://www.facebook.com/damai.fishingvillage)、[FindGlocal mirror](https://www.findglocal.com/MY/Johor-Bahru/1841843772552302/Damai-Fishing-Village)。
+- **Joran Fest（Johor，公开活动供给线索，尚未联系）**：主办方官网列出 Siri 5 为 2026-11-01、Siri 6 为 2026-12-06、Siri 7 为 2027-01-03、Siri 8 为 2027-02-07，地点栏写 Pantai Mesra, Sri Menanti, Muar；官方联系方式列 `admin@joranfest.com`、赛事 +60 11-2846 0499、报名 +60 12-708 5669。官网同页的报名方式/费用文字似乎对应较早场次，不可复制给未来场次；邀约时应先向主办方确认日期、开放报名方式、价格和参赛条件，再免费提供活动页。不要用旧报名余额或名额信息误导钓友。[Joran Fest 官方日程及联系方式](https://joranfest.com/)、[Visit Johor 活动页](https://visitjohor2026.my/events/joran-fest/)。
 
 执行顺序调整为等待 Syawal 与 D’Tiram 回复；发出邀请后 7 天内不重复联系。后续新邀约先从经营者自有主页或其确认的商业渠道核对对象，不用目录号码批量发送。
 
