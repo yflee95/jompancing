@@ -44,7 +44,7 @@ export async function SpotDetailView({
   const isUserGenerated = spot.isUserGenerated;
   const hasMockHero = !isUserGenerated || !spot.photos.length;
   const seo = buildSpotDetailSeo({ spot, locale, t });
-  const state = getStateById(spot.stateId);
+  const state = isUserGenerated ? getStateById(spot.stateId) : null;
   const stateName = state ? getLocalizedText(state.name, locale) : "";
   const updatedAt = spot.updatedAt ? new Date(spot.updatedAt) : null;
   const formattedUpdatedAt = !updatedAt || Number.isNaN(updatedAt.getTime())
@@ -201,7 +201,7 @@ export async function SpotDetailView({
           <PondClaimForm spotId={spot.id} defaultLocation={spot.googleAddress} />
         )}
 
-        {spot.tags.length > 0 && (
+        {isUserGenerated && spot.tags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
             {spot.tags.map((tag) => (
               <span
