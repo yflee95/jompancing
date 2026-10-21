@@ -215,6 +215,10 @@ Search Console 最近 3 个月（页面显示约 5.5 小时前更新）：174 �
 
 索引报告最后更新于 2026-10-12，列出 6 个 404。样例均是旧式无语言前缀的 `/spots/{slug}`，对应的 `/ms/spots/{slug}` 页面原本仍返回 200；根因是 next-intl 中间件 matcher 只包含根路径及带 `/ms|en|zh` 前缀的路由，漏掉旧钓点链接。已将 `/spots/:path*` 加入 matcher，让旧链接按当前语言路由规则跳转到有效本地化详情；Node 24 下 typecheck、逐文件 lint 和 production build 通过。提交 `b549016` 已于 2026-10-21 在 Vercel Production Ready。上线后逐个请求 Search Console 列出的 6 条旧 URL，均以 HTTP 200 跳转到对应 `/ms/spots/{slug}` 页面。随后已在 Search Console 对这个 404 问题启动 “Validate Fix”；Google 当前显示 “Validation started”，索引报告尚未重新更新，最终验证结果待 Google 抓取后确认。
 
+## Canonical 主机名对齐（2026-10-21）
+
+线上复核发现 `https://jompancing.my/ms/spots` 返回 308 到 `https://www.jompancing.my/ms/spots`，但最终 `www` 页面 canonical、`robots.txt` 中的 Sitemap 地址和 `sitemap.xml` 页面 URL 都指向 apex。Google 建议选定一个首选 URL，并让 canonical、sitemap 与永久重定向信号指向同一主机；现将 `SITE_URL` 配置规范化，若环境变量仍写 apex，则统一生成 `www` URL。此源代码修复尚未部署；发布后需复核 canonical、robots、sitemap 与首页 JSON-LD 均使用 `www`。依据：[Google canonical consolidation guidance](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls)。
+
 ## 自然搜索页面质量与商家转化（2026-10-21）
 
 - GSC 页面报告（2026-09-09 至 2026-10-18，报告更新约 6 小时前）中，Johor Bahru 马来文地区页有 11 次点击/1,033 次曝光，未筛选 `/ms/spots` 有 9/1,188，Johor 州页有 8/915。鱼塘详情页也已带来搜索访问：FarmVille 7/242、Kolam Pancing Udang Abg Bard 5/73、Natural Kelong Fishing Pond 5/38。不可一概把钓点详情设为 noindex；先保留能满足搜索需求的页面，集中改善真实资料和下一步行动。
