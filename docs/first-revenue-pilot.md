@@ -137,6 +137,8 @@ Search Console Performance 最近 28 天（2026-09-21 至 2026-10-18，数据最
 
 针对高曝光低点击的马来语搜索，`seoBrowseTitle` 与摘要现明确包含常见检索词 “kolam pancing near me”；Johor Bahru 页标题现加入州名 Johor，保持地区意图清楚。部署后至少观察 28 天，再用同一日期长度、相同页面与查询比较点击率和点击数；搜索摘要可能由 Google 按查询改写，标题调整不保证排名或曝光上升。当前没有自定义事件，仍需后续补上联盟外链及商家联系转化归因，才能验证 SEO 收入。
 
+生产验证：提交 `3d33e64` 的 Vercel Production 部署为 Ready。线上 `/ms/spots` 实际标题为 “Kolam Pancing Near Me & Port Memancing Malaysia | Jompancing”；Johor Bahru 区域页实际标题为 “Kolam Pancing Johor Bahru, Johor | Port Memancing | Jompancing”，摘要显示地区名称及当前地点数。当前仅确认页面元数据更新成功，尚未有足够新搜索数据评估点击率变化。
+
 ## 地区资料修正（2026-10-21）
 
 生产 Johor Bahru 地点列表曾包含地址位于 Kulai 的 Star Fish Leisure Farm。Kulai 是独立县区，Senai 也归 Kulai；此前本地筛选资料把 Senai 放在 Johor Bahru，Google 导入行的地区分类也可能错误。代码现补齐 Johor 县区、将 Senai/Kulai 移入 Kulai，并依据 Google 地址在读取时修正导入地点的 district/area，不改写 Supabase 数据。地区筛选和水域筛选改用保留 query filters 的浏览 URL，避免 SEO canonical 路径清掉用户选择。
