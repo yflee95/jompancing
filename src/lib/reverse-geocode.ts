@@ -1,4 +1,5 @@
 import { malaysiaStates } from "@/data/malaysia-states";
+import { malaysiaAreas } from "@/data/malaysia-areas";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
@@ -85,6 +86,9 @@ function findDistrictInState(
       district.id,
       district.slug,
       ...Object.values(district.name),
+      ...malaysiaAreas
+        .filter((area) => area.stateId === stateId && area.districtId === district.id)
+        .flatMap((area) => Object.values(area.name)),
     ];
     const hit = candidates.some((c) =>
       districtNames.some((name) =>

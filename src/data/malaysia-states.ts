@@ -12,6 +12,11 @@ export const malaysiaStates: State[] = [
         name: { ms: "Johor Bahru", en: "Johor Bahru", zh: "新山" },
       },
       {
+        id: "kulai",
+        slug: "kulai",
+        name: { ms: "Kulai", en: "Kulai", zh: "古来" },
+      },
+      {
         id: "pontian",
         slug: "pontian",
         name: { ms: "Pontian", en: "Pontian", zh: "笨珍" },
@@ -25,6 +30,31 @@ export const malaysiaStates: State[] = [
         id: "kotatinggi",
         slug: "kotatinggi",
         name: { ms: "Kota Tinggi", en: "Kota Tinggi", zh: "哥打丁宜" },
+      },
+      {
+        id: "batu-pahat",
+        slug: "batu-pahat",
+        name: { ms: "Batu Pahat", en: "Batu Pahat", zh: "峇株巴辖" },
+      },
+      {
+        id: "kluang",
+        slug: "kluang",
+        name: { ms: "Kluang", en: "Kluang", zh: "居銮" },
+      },
+      {
+        id: "mersing",
+        slug: "mersing",
+        name: { ms: "Mersing", en: "Mersing", zh: "丰盛港" },
+      },
+      {
+        id: "segamat",
+        slug: "segamat",
+        name: { ms: "Segamat", en: "Segamat", zh: "昔加末" },
+      },
+      {
+        id: "tangkak",
+        slug: "tangkak",
+        name: { ms: "Tangkak", en: "Tangkak", zh: "东甲" },
       },
     ],
   },

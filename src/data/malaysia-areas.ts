@@ -23,7 +23,8 @@ export const malaysiaAreas: Area[] = [
   { id: "skudai", slug: "skudai", stateId: "johor", districtId: "johor-bahru", name: { ms: "Skudai", en: "Skudai", zh: "士古来" } },
   { id: "tebrau", slug: "tebrau", stateId: "johor", districtId: "johor-bahru", name: { ms: "Tebrau", en: "Tebrau", zh: "地不佬" } },
   { id: "kempas", slug: "kempas", stateId: "johor", districtId: "johor-bahru", name: { ms: "Kempas", en: "Kempas", zh: "金葩斯" } },
-  { id: "senai", slug: "senai", stateId: "johor", districtId: "johor-bahru", name: { ms: "Senai", en: "Senai", zh: "士乃" } },
+  { id: "senai", slug: "senai", stateId: "johor", districtId: "kulai", name: { ms: "Senai", en: "Senai", zh: "士乃" } },
+  { id: "kulai-town", slug: "kulai", stateId: "johor", districtId: "kulai", name: { ms: "Bandar Kulai", en: "Kulai Town", zh: "古来市区" } },
   { id: "bandar-seri-alam", slug: "bandar-seri-alam", stateId: "johor", districtId: "johor-bahru", name: { ms: "Bandar Seri Alam", en: "Bandar Seri Alam", zh: "Bandar Seri Alam" } },
   { id: "taman-molek", slug: "taman-molek", stateId: "johor", districtId: "johor-bahru", name: { ms: "Taman Molek", en: "Taman Molek", zh: "花园摩力" } },
 

@@ -78,3 +78,9 @@ Kolam Pancing PDS 的官方网站列出位置、营业时间、鱼种、收费�
 4. 确认 JomPancing 对外 WhatsApp 账号后，联系一位鱼塘经营者，提供免费资料核对；当前邀约数仍为 0。
 5. 让经营者检查资料并记录确认依据及日期。核实 Vercel Analytics 是否能提供足够的访问数据；若不支持自定义事件，不宣称能报告联系点击。
 6. 试点结束后，以真实数据和经营者意愿决定是否测试赞助展示；未确认付费意愿前不收款、不公开承诺效果。
+
+## 地区资料修正（2026-10-21）
+
+生产 Johor Bahru 地点列表曾包含地址位于 Kulai 的 Star Fish Leisure Farm。Kulai 是独立县区，Senai 也归 Kulai；此前本地筛选资料把 Senai 放在 Johor Bahru，Google 导入行的地区分类也可能错误。代码现补齐 Johor 县区、将 Senai/Kulai 移入 Kulai，并依据 Google 地址在读取时修正导入地点的 district/area，不改写 Supabase 数据。地区筛选和水域筛选改用保留 query filters 的浏览 URL，避免 SEO canonical 路径清掉用户选择。
+
+发布后应确认 Johor Bahru 列表不再显示 Kulai 地址的地点、Kulai 列表能找到相应地点，且切换水域筛选后仍保留地区条件。此前观察到的 31 条是修正前数量，不能继续当作当前数量。依据：<https://ptj.johor.gov.my/pejabat-tanah-kulai/profil-daerah-kulai/>。

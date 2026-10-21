@@ -68,6 +68,15 @@ function getGoogleListingDescription(): LocalizedString {
 
 export function mapSpotRow(row: SpotRow): FishingSpot {
   const isGoogleListing = row.source === "google";
+  const googleAddress = row.google_address.toLowerCase();
+  const isKulaiListing =
+    isGoogleListing && /\b(?:kulai(?:jaya)?|senai)\b/.test(googleAddress);
+  const districtId = isKulaiListing ? "kulai" : row.district_id;
+  const areaId = isKulaiListing
+    ? /\bsenai\b/.test(googleAddress)
+      ? "senai"
+      : "kulai-town"
+    : row.area_id;
   const photos = [...(row.spot_photos ?? [])]
     .sort((a, b) => a.sort_order - b.sort_order)
     .map((p) => p.url);
@@ -80,8 +89,8 @@ export function mapSpotRow(row: SpotRow): FishingSpot {
       ? getGoogleListingDescription()
       : toLocalized(row, "description"),
     stateId: row.state_id,
-    districtId: row.district_id,
-    areaId: row.area_id,
+    districtId,
+    areaId,
     areaName: row.area_name ?? undefined,
     coordinates: { lat: row.lat, lng: row.lng },
     waterType: row.water_type as WaterType,
