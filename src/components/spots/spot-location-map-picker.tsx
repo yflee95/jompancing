@@ -13,7 +13,6 @@ import { useTranslations } from "next-intl";
 import { getGoogleMapsApiKey, getGoogleMapsMapId } from "@/lib/google-maps-config";
 import { buildGoogleMapsCoordsUrl } from "@/lib/google-maps";
 import { isValidMalaysiaCoordinate } from "@/lib/address-query";
-import { MALAYSIA_MAP_CENTER } from "@/lib/geo";
 import { resolvePinLocation } from "@/lib/resolve-pin-location";
 import { searchOsmAddresses, type AddressSuggestion } from "@/lib/address-search";
 import { cn } from "@/lib/utils";
@@ -25,6 +24,8 @@ import type {
   Marker as LeafletMarker,
 } from "leaflet";
 import "leaflet/dist/leaflet.css";
+
+const MALAYSIA_PICKER_CENTER: Coordinates = { lat: 4.2, lng: 109 };
 
 export interface SpotLocationMapPickerProps {
   locale: Locale;
@@ -235,10 +236,10 @@ function GooglePickerInner({
   const [resolving, setResolving] = useState(false);
 
   const center = useMemo(
-    () => pinCoords ?? liveCoords ?? userCoords ?? MALAYSIA_MAP_CENTER,
+    () => pinCoords ?? liveCoords ?? userCoords ?? MALAYSIA_PICKER_CENTER,
     [pinCoords, liveCoords, userCoords],
   );
-  const initialZoom = pinCoords || liveCoords || userCoords ? 14 : 6;
+  const initialZoom = pinCoords || liveCoords || userCoords ? 14 : 5;
 
   const applyPin = useCallback(
     async (coords: Coordinates) => {
@@ -334,7 +335,7 @@ function GooglePickerInner({
       />
 
       <div className="pointer-events-none absolute bottom-3 left-3 z-[1000] max-w-[52%] rounded-lg bg-white/90 px-2 py-1">
-        <p className="text-[11px] font-medium text-white drop-shadow">
+        <p className="text-[10px] leading-tight text-[var(--ink-muted)]">
           {t("mapPickerHint")}
         </p>
       </div>
@@ -413,9 +414,9 @@ function LeafletPicker({
   const userInteractedRef = useRef(false);
 
   const initialCenterRef = useRef(
-    pinCoords ?? liveCoords ?? userCoords ?? MALAYSIA_MAP_CENTER,
+    pinCoords ?? liveCoords ?? userCoords ?? MALAYSIA_PICKER_CENTER,
   );
-  const initialZoomRef = useRef(pinCoords || liveCoords || userCoords ? 14 : 6);
+  const initialZoomRef = useRef(pinCoords || liveCoords || userCoords ? 14 : 5);
 
   const applyPin = useCallback(
     async (coords: Coordinates) => {
@@ -571,7 +572,7 @@ function LeafletPicker({
         onSelect={selectPlace}
       />
       <div className="pointer-events-none absolute bottom-3 left-3 z-[1000] max-w-[52%] rounded-lg bg-white/90 px-2 py-1">
-        <p className="text-[11px] font-medium text-white drop-shadow">
+        <p className="text-[10px] leading-tight text-[var(--ink-muted)]">
           {t("mapPickerHint")}
         </p>
       </div>
