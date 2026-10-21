@@ -193,13 +193,13 @@ function GooglePickerInner({
           ))}
       </Map>
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-black/35 to-transparent px-3 py-2">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[1000] bg-gradient-to-b from-black/35 to-transparent px-3 py-2">
         <p className="text-[11px] font-medium text-white drop-shadow">
           {t("mapPickerHint")}
         </p>
       </div>
 
-      <div className="absolute bottom-3 right-3 flex items-center gap-2">
+      <div className="absolute bottom-3 right-3 z-[1000] flex items-center gap-2">
         {resolving && (
           <span className="inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-semibold text-[var(--ink-muted)] shadow">
             <Loader2 className="h-3 w-3 animate-spin" />
@@ -383,6 +383,12 @@ function LeafletPicker({
         if (!pinMarkerRef.current) {
           pinMarkerRef.current = L.marker([pinCoords.lat, pinCoords.lng], {
             draggable: true,
+            icon: L.divIcon({
+              className: "!border-0 !bg-transparent",
+              html: '<div style="display:flex;width:40px;height:40px;align-items:center;justify-content:center;border:3px solid #fff;border-radius:9999px;background:#e2764a;box-shadow:0 2px 10px rgba(42,36,24,.35)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></div>',
+              iconSize: [40, 40],
+              iconAnchor: [20, 40],
+            }),
           })
             .addTo(map)
             .on("dragend", (event) => {
@@ -413,12 +419,12 @@ function LeafletPicker({
         ref={containerRef}
         className="h-[min(52vh,420px)] min-h-[280px] w-full sm:min-h-[360px]"
       />
-      <div className="pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-black/35 to-transparent px-3 py-2">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[1000] bg-gradient-to-b from-black/35 to-transparent px-3 py-2">
         <p className="text-[11px] font-medium text-white drop-shadow">
           {t("mapPickerHint")}
         </p>
       </div>
-      <div className="absolute bottom-3 right-3 flex items-center gap-2">
+      <div className="absolute bottom-3 right-3 z-[1000] flex items-center gap-2">
         {resolving && (
           <span className="inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-semibold text-[var(--ink-muted)] shadow">
             <Loader2 className="h-3 w-3 animate-spin" />
