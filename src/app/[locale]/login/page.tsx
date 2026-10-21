@@ -9,6 +9,8 @@ import { type AuthErrorKey } from "@/lib/auth-errors";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input, Label } from "@/components/ui/input";
+import { EmailVerifyPending } from "@/components/auth/email-verify-pending";
+import { sanitizeAuthRedirect } from "@/lib/safe-redirect";
 import type { Locale } from "@/i18n/routing";
 
 function GoogleIcon({ className }: { className?: string }) {
@@ -59,30 +61,44 @@ export default function LoginPage() {
   const router = useRouter();
 
   const [mode, setMode] = useState<"login" | "signup">("login");
+  const [returnPath, setReturnPath] = useState<string | null>(null);
+  const [returnPathReady, setReturnPathReady] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [pendingVerificationEmail, setPendingVerificationEmail] = useState<
+    string | null
+  >(null);
   const [submitting, setSubmitting] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && user) {
-      router.replace("/profile");
+    if (!isLoading && user && returnPathReady) {
+      router.replace(returnPath ?? "/profile");
     }
-  }, [user, isLoading, router]);
+  }, [user, isLoading, returnPath, returnPathReady, router]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    if (params.get("mode") === "signup") setMode("signup");
+    const requestedNext = sanitizeAuthRedirect(params.get("next"));
+    const localePrefix = `/${locale}`;
+    setReturnPath(
+      requestedNext.startsWith(`${localePrefix}/`)
+        ? requestedNext.slice(localePrefix.length)
+        : null,
+    );
+    setReturnPathReady(true);
     if (params.get("error") === "oauth") {
       setError(t("errors.oauthFailed"));
     }
-  }, [t]);
+  }, [locale, t]);
 
   async function handleGoogleLogin() {
     setError(null);
     setGoogleLoading(true);
-    const result = await loginWithGoogle(locale);
+    const result = await loginWithGoogle(locale, returnPath ?? undefined);
     setGoogleLoading(false);
     if (result.errorKey) {
       setError(authErrorMessage(t, result.errorKey, result.rawMessage));
@@ -113,10 +129,27 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/profile");
+    if (result.needsEmailConfirmation) {
+      setPendingVerificationEmail(email.trim());
+      return;
+    }
+
+    router.push(returnPath ?? "/profile");
   }
 
-  if (isLoading || user) {
+  if (pendingVerificationEmail) {
+    return (
+      <EmailVerifyPending
+        email={pendingVerificationEmail}
+        onBackToLogin={() => {
+          setPendingVerificationEmail(null);
+          setMode("login");
+        }}
+      />
+    );
+  }
+
+  if (isLoading || (user && !returnPathReady)) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--ocean)] border-t-transparent" />

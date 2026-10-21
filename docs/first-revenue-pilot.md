@@ -1,6 +1,6 @@
 # JomPancing 首笔收入试点
 
-状态：首家商家试点进行中。实收收入 RM0，已发出 5 条商家/赛事资料核对或免费刊登邀请，经营者承诺 0；其中 Kolam Pancing Syawal / Sungai Rekoh、D’Tiram、Joran Fest、Ko-Nelayan 与渔具店 MM Fishing Tackle 各收到一条邀请。D’Tiram 号码尚未由商家自有渠道核实；Ko-Nelayan 与 Joran Fest WhatsApp 邀请均已送达，MM Fishing Tackle 邀请已送达；Joran Fest 联系人表示会告知管理层，但管理层尚未回复，活动资料仍待确认。未承诺流量或收费服务。
+状态：首家商家试点进行中。实收收入 RM0，已发出 6 条商家/赛事资料核对或免费刊登邀请，经营者承诺 0；Kolam Pancing Syawal / Sungai Rekoh、D’Tiram、Joran Fest、Ko-Nelayan、MM Fishing Tackle 与 Southern Pro Tackle 各收到一条邀请。D’Tiram 号码尚未由商家自有渠道核实；Ko-Nelayan、Joran Fest、MM Fishing Tackle 与 Southern Pro Tackle 邀请均已送达；Joran Fest 联系人表示会告知管理层，之后发来一个 OK 贴图，但未提供赛事资料或确认转交结果。未承诺流量或收费服务。
 
 ## 运营检查点（2026-10-21）
 
@@ -67,10 +67,13 @@
 
 - **MM Fishing Tackle（Pasir Gudang，渔具商家线索，已联系）**：Kanicen Nix 官方认证经销商名单列出该店、Pasir Gudang 地区与 WhatsApp +60 13-751 1175。2026-10-21 15:33 通过用户指定 WhatsApp 账号发送单条免费刊登邀请：告知市场目前无商品、商家可自行免费刊登一件新/二手渔具、提交的 WhatsApp 会公开，并明确买卖双方自行安排、JomPancing 不处理付款/配送且不承诺成交；消息已送达。暂无回复或刊登。来源：[Kanicen Nix 官方经销商名单](https://kanicen.com/about-us/penjual-sah-produk-kanicen-nix-verified-sellers/)。
 
+- **Southern Pro Tackle Enterprise（Skudai，渔具零售商，已联系）**：官网列有门店资料、WhatsApp +60 11-3313 8082 与“WhatsApp Kami”链接。2026-10-21 15:47 通过用户指定账号发送单条马来文邀请，提供免费刊登一个渔具商品，并明确市场刚启动、没有销量/访客承诺、刊登会公开 WhatsApp 联系方式，交易与配送由买卖双方直接处理。WhatsApp 显示已送达；暂无回复或商品刊登。来源：[Southern Pro Tackle 官方联系页](https://www.southernprofishingtackle.com/contactus/)。
+
 Joran Fest 邀约记录（2026-10-21）：通过用户指定的 WhatsApp 账号，向官网列出的赛事号码 +60 11-2846 0499 发送免费核实邀请；本地时间 15:26 对方回复“Ok，我会告知管理层”，并已回复致谢。这是转交意向，尚未确认比赛日期、地点或报名状态，也未提供报名链接。收到主办方确认前不发布活动页，不复制官网旧场次报名/费用文字。
+Joran Fest 于 15:45 回了一张写着 “ok. alrigt!” 的贴图；这只是礼貌回应，没有新增赛事资料，不计作有效资料确认。
 Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2026 contest at Taman Mini Akuakultur, Kg. Laya-Laya, Tuaran, 9:00 am–1:00 pm, RM38 per rod, capacity 259, total prizes RM3,800. One free verification invitation was sent to event contact +60 13-281 5567 from the official announcement; WhatsApp shows Delivered. No reply yet. Confirm current registration status and official registration method before publishing. Source: https://konelayan.sabah.gov.my/4.%20pusat-media-tab/aktiviti%202026/10.%20oktober/1001%20-%20Pertandingan%20Santai%20Mini%20Game%20Memancing%20Ko-Nelayan%202026.html
 
-执行顺序调整为等待 Syawal、D’Tiram、Joran Fest、Ko-Nelayan 与 MM Fishing Tackle 对邀请回复；Joran Fest 联系人表示会告知管理层，尚未确认实际转交或收到管理层回复。给对方合理回复时间，任一对象 7 天内不重复联系。后续新邀约先核实经营者官方渠道，逐一联络，不批量群发。
+执行顺序调整为等待 Syawal、D’Tiram、Joran Fest、Ko-Nelayan、MM Fishing Tackle 与 Southern Pro Tackle 对邀请回复；Joran Fest 联系人表示会告知管理层，贴图未确认实际转交或活动资料。给对方合理回复时间，任一对象 7 天内不重复联系。后续新邀约先核实经营者官方渠道，逐一联络，不批量群发。
 
 - **MBSA / Pertandingan Memancing Shah Alam（待核实，未联系）**：Visit Selangor 活动列表提到 2026 年 10 月 Taman Tasik Barat、Seksyen 14 的钓鱼比赛，但没有确切日期、报名状态或费用；州旅游活动日历同样只标注月份，且日期可能为暂定。MBSA 官方总机为 +60 3-5510 5133，但 WhatsApp 新聊天搜索显示没有该号码对应的 WhatsApp 账号。遵照当前只使用用户指定 WhatsApp 渠道的选择，暂不改用电话或邮件联系，也不发布活动。来源：[Visit Selangor 活动列表](https://visitselangor.my/events/pertandingan-memancing-shah-alam/)、[Selangor 2026 活动日历 PDF](https://selangor.travel/wp-content/uploads/2017/04/Calendar-of-Events-2026-2.pdf)。
 
@@ -99,8 +102,8 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 
 | 指标 | 记录定义 | 目前状态 |
 |---|---|---|
-| 商家/赛事邀约数 | 通过公开业务渠道发送的个性化核实或免费刊登邀约 | 5（2026-10-21，Syawal、D’Tiram、Joran Fest、Ko-Nelayan、MM Fishing Tackle；D’Tiram 号码尚未由商家自有渠道核实；三条赛事/商家消息显示已送达） |
-| 回复数 | 商家主动回复，不含系统送达/已读 | 1（Joran Fest 联系人表示会转交管理层；未确认活动资料） |
+| 商家/赛事邀约数 | 通过公开业务渠道发送的个性化核实或免费刊登邀约 | 6（2026-10-21，Syawal、D’Tiram、Joran Fest、Ko-Nelayan、MM Fishing Tackle、Southern Pro Tackle；D’Tiram 号码尚未由商家自有渠道核实） |
+| 回复数 | 商家主动回复，不含系统送达/已读 | 1 条有文字的转交回复（Joran Fest；另有一张礼貌贴图，无资料确认） |
 | 资料确认数 | 商家逐项确认公开的地址、时段、收费或规则 | 0 |
 | 纠错完成数 | 已核实并更新的钓点资料 | 0 |
 | 商家联系动作 | 页面上的 WhatsApp / 电话外链点击 | 尚无可靠的自定义事件统计 |
@@ -112,7 +115,7 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 1. 活动/渔具 WhatsApp 联系体验、GPS 点击后授权、Johor Bahru 三语搜索摘要、导入地点资料可信度修复均已发布；渔具市场空状态现同时给卖家刊登入口和钓友浏览钓点的回退入口（`34f3b3c`）。
 2. 从 2026-10-21 上线后继续累积至少 28 天，再在 Search Console 用相同查询和 Johor Bahru 页面比较 CTR、点击与排名（约 2026-11-18 后查看；考虑数据延迟）。不把排名或曝光当作收入。
 3. `pond_claim_requests` 表与 RLS 已只读确认；接下来在不插入合成生产申请的前提下，补做用户授权下的端到端验证或等待第一条真实商家申请。
-4. 等待 Syawal、D’Tiram、Joran Fest、Ko-Nelayan 与 MM Fishing Tackle 对邀请回复。Joran Fest 联系人表示会告知管理层，暂无赛事资料确认；其他邀约发出后 7 天内不重复联系。只在收到主办方确认后整理 JomPancing 活动页，不复制官网旧场次的报名/费用文字。MBSA 活动暂不联系，因为其官方总机在 WhatsApp 搜索中没有账号。
+4. 等待 Syawal、D’Tiram、Joran Fest、Ko-Nelayan、MM Fishing Tackle 与 Southern Pro Tackle 对邀请回复。Joran Fest 联系人表示会告知管理层，暂无赛事资料确认；其他邀约发出后 7 天内不重复联系。只在收到主办方确认后整理 JomPancing 活动页，不复制官网旧场次的报名/费用文字。MBSA 活动暂不联系，因为其官方总机在 WhatsApp 搜索中没有账号。
 5. 让经营者检查资料并记录确认依据及日期。使用 Vercel Analytics 报告实际页面访问；Hobby 没有自定义事件，所以当前不宣称统计地图路线或 WhatsApp 点击。
 6. 试点结束后，以真实数据和经营者意愿决定是否测试赞助展示；未确认付费意愿前不收款、不公开承诺效果。
 
@@ -131,3 +134,7 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 ## 钓鱼规定指南修正（2026-10-21）
 
 原指南错误地概括“各州统一管理休闲钓鱼执照”，并把公共河流、海域与水库一概说成通常要许可、把 PERHILITAN 列为购证渠道。现已改为提醒读者按水域、地点与主管机构确认；海岸/海上休闲渔业指向渔业局 eRekreasi，乘船时另向经营者确认船只许可和乘客安全，其他水域向场地方或相关机构核实。已同步马来文、英文、中文标题、摘要和正文，并将阅读时间调整为 2 分钟。依据：渔业局的 [eRekreasi 页面](https://erekreasi.dof.gov.my/) 及[许可常见问题](https://www.dof.gov.my/en/frequently-asked-questions/licensing-faq/)；本指南不再提供各州或各水体的法律结论，出发前应查看最新官方规定。
+
+## 渔具刊登转化流程修正（2026-10-21）
+
+生产 `/en/marketplace/new` 的检查发现，未登录商家只能看到“Log In”，登录页才有注册入口；完成认证后又会先进入个人页，增加了首次刊登的步骤。代码现提供直接免费注册与登录按钮，并为 email/Google 认证保留返回刊登页的安全内部路径；邮箱需确认时显示现有邮箱验证说明。三语提示已说明创建账户后会回到刊登表。待 Vercel 部署后检查入口、注册模式与返回路径；没有创建真实账户或触发 OAuth。

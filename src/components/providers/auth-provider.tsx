@@ -10,6 +10,7 @@ import {
 } from "react";
 import { DEMO_USER, SITE_URL } from "@/lib/constants";
 import { resolveAuthError, type AuthErrorKey } from "@/lib/auth-errors";
+import { sanitizeAuthRedirect } from "@/lib/safe-redirect";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import type { Locale } from "@/i18n/routing";
@@ -20,6 +21,7 @@ const DEMO_STORAGE_KEY = "jompancing_auth";
 interface AuthResult {
   errorKey: AuthErrorKey | null;
   rawMessage?: string;
+  needsEmailConfirmation?: boolean;
 }
 
 interface AuthContextValue {
@@ -35,7 +37,7 @@ interface AuthContextValue {
     password: string,
     name: string,
   ) => Promise<AuthResult>;
-  loginWithGoogle: (locale: Locale) => Promise<AuthResult>;
+  loginWithGoogle: (locale: Locale, returnPath?: string) => Promise<AuthResult>;
   logout: () => Promise<void>;
   updateProfile: (patch: Partial<UserSession>) => Promise<void>;
   /** Creates an anonymous session when needed so guests can publish spots. */
@@ -44,12 +46,15 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-function getOAuthRedirectTo(locale: Locale): string {
+function getOAuthRedirectTo(locale: Locale, returnPath?: string): string {
   const base =
     (typeof window !== "undefined"
       ? window.location.origin
       : SITE_URL.replace(/\/$/, "")) || "https://www.jompancing.my";
-  return `${base}/auth/callback?next=/${locale}/profile`;
+  const next = sanitizeAuthRedirect(
+    returnPath ? `/${locale}${returnPath}` : `/${locale}/profile`,
+  );
+  return `${base}/auth/callback?next=${encodeURIComponent(next)}`;
 }
 
 function sessionUserFallback(
@@ -222,20 +227,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { errorKey: "emailAlreadyRegistered" };
       }
 
-      return { errorKey: null };
+      return { errorKey: null, needsEmailConfirmation: !data.session };
     },
     [isSupabase],
   );
 
   const loginWithGoogle = useCallback(
-    async (locale: Locale): Promise<AuthResult> => {
+    async (locale: Locale, returnPath?: string): Promise<AuthResult> => {
       if (!isSupabase) {
         return { errorKey: "generic", rawMessage: "Supabase not configured" };
       }
       const supabase = createClient();
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: getOAuthRedirectTo(locale) },
+        options: { redirectTo: getOAuthRedirectTo(locale, returnPath) },
       });
       if (!error) return { errorKey: null };
       const key = resolveAuthError(error.message);

@@ -36,10 +36,21 @@ export function PostListingForm() {
   const [error, setError] = useState<string | null>(null);
 
   if (!isRegisteredUser || !user) {
+    const next = encodeURIComponent(`/${locale}/marketplace/new`);
     return (
       <div className="rounded-3xl bg-white p-8 text-center shadow-[var(--shadow-travel)] ring-1 ring-[var(--sand-dark)]/30">
         <p className="text-sm text-[var(--ink-muted)]">{t("loginToPost")}</p>
-        <Button className="mt-4" onClick={() => router.push("/login")}>
+        <Button
+          className="mt-4 w-full"
+          onClick={() => router.push(`/login?mode=signup&next=${next}`)}
+        >
+          {t("createFreeAccount")}
+        </Button>
+        <Button
+          className="mt-2 w-full"
+          variant="outline"
+          onClick={() => router.push(`/login?next=${next}`)}
+        >
           {tCommon("login")}
         </Button>
       </div>
