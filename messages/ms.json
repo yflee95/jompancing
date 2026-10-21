@@ -151,10 +151,10 @@
   },
   "spots": {
     "title": "Tempat Memancing",
-    "subtitle": "Kongsi & temui lokasi — foto sendiri, tag sendiri, alamat Google wajib",
+    "subtitle": "Cari kolam dan tempat memancing berdekatan, atau layari mengikut negeri dan daerah. Gunakan Berdekatan atau pilih lokasi sendiri.",
     "nearMeLocationNotice": "Ketik Berdekatan untuk mencari spot berhampiran. Koordinat anda dihantar kepada Google atau OpenStreetMap untuk mengenal pasti kawasan.",
     "nearMeLocationError": "Kawasan anda tidak dapat dikenal pasti. Semak kebenaran lokasi pelayar atau pilih negeri secara manual.",
-    "seoBrowseTitle": "Kolam Pancing & Port Memancing di Malaysia",
+    "seoBrowseTitle": "Kolam Pancing Berdekatan & Port Memancing Malaysia",
     "claimPondTitle": "Pemilik atau pengurus kolam ini?",
     "pondOwnerPageTitle": "Sahkan maklumat senarai kolam anda",
     "pondOwnerPageIntro": "Pemilik atau pengurus kolam yang sudah disenaraikan di JomPancing boleh memohon semakan percuma bagi waktu operasi, bayaran dan peraturan memancing. Kami mengesahkan hubungan anda dan hanya menerbitkan maklumat dengan izin anda. Senarai ini tidak menjanjikan pertambahan pelanggan.",
@@ -218,7 +218,7 @@
       "verifiedDetailsSaving": "Menerbitkan…",
       "verifiedDetailsPublish": "Terbitkan maklumat disahkan"
     },
-    "seoBrowseDescription": "Cari kolam pancing, port memancing, jeti dan sungai di Malaysia. Terokai lokasi mengikut negeri, semak alamat dan maklumat spot, kemudian rancang trip memancing anda bersama komuniti Jompancing.",
+    "seoBrowseDescription": "Mencari kolam pancing berdekatan? Terokai kolam, port memancing, jeti dan sungai di seluruh Malaysia. Gunakan Berdekatan untuk mencari lokasi sekitar anda atau layari mengikut negeri dan daerah.",
     "seoNationalPondTitle": "Kolam Pancing di Malaysia — Senarai Lokasi",
     "seoNationalPondDescription": "Terokai {count, plural, =0 {kolam pancing yang dikongsi pemancing} other {# kolam pancing}} di seluruh Malaysia. Bandingkan lokasi mengikut negeri, semak alamat dan butiran kolam sebelum merancang trip anda.",
     "seoSpotTitle": "{name} — {location}",
