@@ -178,9 +178,9 @@ export async function SpotDetailView({
           {spot.waterType === "pond" ? (
             <a
               href="#pond-claim"
-              className="font-semibold text-[var(--ocean)] underline-offset-2 hover:underline"
+              className="inline-flex rounded-full bg-[var(--ocean-light)] px-3 py-1.5 font-semibold text-[var(--ocean)] underline-offset-2 hover:underline"
             >
-              {t("suggestCorrection")}
+              {t("pondOwnerCta")}
             </a>
           ) : (
             <ReportContentLink

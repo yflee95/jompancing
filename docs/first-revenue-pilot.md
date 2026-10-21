@@ -196,3 +196,9 @@ Search Console 最近 3 个月（页面显示约 5.5 小时前更新）：174 �
 ## Search Console 404 修复（2026-10-21）
 
 索引报告最后更新于 2026-10-12，列出 6 个 404。样例均是旧式无语言前缀的 `/spots/{slug}`，对应的 `/ms/spots/{slug}` 页面原本仍返回 200；根因是 next-intl 中间件 matcher 只包含根路径及带 `/ms|en|zh` 前缀的路由，漏掉旧钓点链接。已将 `/spots/:path*` 加入 matcher，让旧链接按当前语言路由规则跳转到有效本地化详情；Node 24 下 typecheck、逐文件 lint 和 production build 通过。提交 `b549016` 已于 2026-10-21 在 Vercel Production Ready。上线后逐个请求 Search Console 列出的 6 条旧 URL，均以 HTTP 200 跳转到对应 `/ms/spots/{slug}` 页面。随后已在 Search Console 对这个 404 问题启动 “Validate Fix”；Google 当前显示 “Validation started”，索引报告尚未重新更新，最终验证结果待 Google 抓取后确认。
+
+## 自然搜索页面质量与商家转化（2026-10-21）
+
+- GSC 页面报告（2026-09-09 至 2026-10-18，报告更新约 6 小时前）中，Johor Bahru 马来文地区页有 11 次点击/1,033 次曝光，未筛选 `/ms/spots` 有 9/1,188，Johor 州页有 8/915。鱼塘详情页也已带来搜索访问：FarmVille 7/242、Kolam Pancing Udang Abg Bard 5/73、Natural Kelong Fishing Pond 5/38。不可一概把钓点详情设为 noindex；先保留能满足搜索需求的页面，集中改善真实资料和下一步行动。
+- “Discovered - currently not indexed” 导出有 575 个 URL，其中 537 个是钓点详情 URL。只读统计正式 Supabase public spots 得到 206 条记录：205 条 `source=google`、另 1 条 `source≠google`，0 条经营者核实；180 条有图片、26 条无图、0 条评论。样例详情主要展示地点名、地址和“未核实”提示。此结果支持优先增加可核实的实用资料及社区贡献，但不证明 Google 的未收录原因，也不能单独据此屏蔽整批页面。
+- 为接住高意图鱼塘详情页流量，三语鱼塘页入口已明确为老板/管理者可免费申请核实营业时间、收费和规则；表单提示也说明是申请人工核实，并非直接认领或保证客流。TypeScript、受影响组件 ESLint、三语 JSON 解析及 Node 24 下生产构建通过。上线后检查三语文案及锚点展开，并观察后续有效申请；当前仍无商家核实资料或可归因询问。
