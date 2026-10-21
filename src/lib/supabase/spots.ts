@@ -58,7 +58,16 @@ function toLocalized(row: SpotRow, field: "title" | "description"): LocalizedStr
   };
 }
 
+function getGoogleListingDescription(): LocalizedString {
+  return {
+    ms: "Maklumat tempat ini daripada Google Maps. Jompancing belum mengesahkan akses, bayaran, spesies atau waktu operasi. Sahkan dengan pengusaha sebelum berkunjung.",
+    en: "Place details are from Google Maps. Jompancing has not verified access, fees, species or opening hours. Confirm with the venue before visiting.",
+    zh: "地点资料来自 Google Maps。Jompancing 尚未核实是否开放、收费、鱼种或营业时间。前往前请向经营者确认。",
+  };
+}
+
 export function mapSpotRow(row: SpotRow): FishingSpot {
+  const isGoogleListing = row.source === "google";
   const photos = [...(row.spot_photos ?? [])]
     .sort((a, b) => a.sort_order - b.sort_order)
     .map((p) => p.url);
@@ -67,19 +76,21 @@ export function mapSpotRow(row: SpotRow): FishingSpot {
     id: row.id,
     slug: row.slug,
     title: toLocalized(row, "title"),
-    description: toLocalized(row, "description"),
+    description: isGoogleListing
+      ? getGoogleListingDescription()
+      : toLocalized(row, "description"),
     stateId: row.state_id,
     districtId: row.district_id,
     areaId: row.area_id,
     areaName: row.area_name ?? undefined,
     coordinates: { lat: row.lat, lng: row.lng },
     waterType: row.water_type as WaterType,
-    species: row.species ?? [],
+    species: isGoogleListing ? [] : (row.species ?? []),
     facilities: [],
     bestTime: { ms: "—", en: "—", zh: "—" },
     imageUrl: row.image_url || photos[0] || "",
     photos,
-    tags: row.tags ?? [],
+    tags: isGoogleListing ? [] : (row.tags ?? []),
     googleAddress: row.google_address,
     googleMapsUrl: row.google_maps_url,
     authorId: row.author_id,

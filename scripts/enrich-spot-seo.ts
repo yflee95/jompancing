@@ -54,9 +54,10 @@ async function main() {
   let query = supabase
     .from("spots")
     .select(
-      "id, slug, title_ms, title_en, description_ms, description_en, description_zh, google_address, tags, species, visibility",
+      "id, slug, title_ms, title_en, description_ms, description_en, description_zh, google_address, source, visibility",
     )
-    .eq("visibility", "public");
+    .eq("visibility", "public")
+    .eq("source", "google");
 
   if (slugFilter) {
     query = query.eq("slug", slugFilter);
@@ -77,25 +78,12 @@ async function main() {
       continue;
     }
 
-    const enrichment = findEnrichmentForSpot({
-      slug: spot.slug,
-      title_ms: spot.title_ms,
-      title_en: spot.title_en,
-      google_address: spot.google_address,
-    });
+    const enrichment = findEnrichmentForSpot();
 
     if (!enrichment) {
       skipped++;
       continue;
     }
-
-    const tags = new Set(spot.tags ?? []);
-    for (const tag of enrichment.extraTags ?? []) tags.add(tag);
-
-    const species =
-      (spot.species?.length ?? 0) > 0
-        ? spot.species
-        : (enrichment.species ?? []);
 
     console.log(`${dryRun ? "[dry-run] " : ""}↑ ${spot.slug}`);
 
@@ -110,8 +98,8 @@ async function main() {
         description_ms: enrichment.description_ms,
         description_en: enrichment.description_en,
         description_zh: enrichment.description_zh,
-        tags: [...tags],
-        species,
+        tags: [],
+        species: [],
       })
       .eq("id", spot.id);
 

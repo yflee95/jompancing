@@ -334,7 +334,7 @@ npm run enrich:spot-seo
 npm run enrich:spot-seo -- --slug=paradise-fishing-villa-zsFfQ7qE
 ```
 
-Rules: `src/data/spot-seo-enrichments.ts` — extend regex + copy, then re-run script.
+Imported Google listings display neutral copy because Jompancing has not verified venue operating details. `enrich:spot-seo` only cleans thin or known legacy generated copy on Google-source rows; do not add species, fees, hours or access claims without a reliable venue or official source.
 
 **GSC:** sitemap `https://www.jompancing.my/sitemap.xml`; request indexing for top `/ms/spots/*` after copy changes.
 

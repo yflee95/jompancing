@@ -109,8 +109,6 @@ export function RegionFilters({
         type="button"
         onClick={applyGpsRegion}
         disabled={userLocation.status === "pending" || applyingGps}
-        title={t("nearMeLocationNotice")}
-        aria-describedby="near-me-location-notice"
         className={cn(
           "inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 font-semibold transition ring-1",
           compact ? "h-8 text-[10px]" : "h-9 text-[11px]",
@@ -177,9 +175,6 @@ export function RegionFilters({
           </option>
         ))}
       </FilterPill>
-      <span id="near-me-location-notice" className="sr-only">
-        {t("nearMeLocationNotice")}
-      </span>
       </div>
       {userLocation.status === "idle" && (
         <p className="text-[10px] leading-relaxed text-[var(--ink-muted)]">
