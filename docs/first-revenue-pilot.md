@@ -81,6 +81,8 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 - **Kanicen Nix 联盟线索（未注册）**：官网有 Affiliate Dashboard，但点击后跳转到需要登录/注册及勾选条款的账户页面，未发现公开佣金和付款规则。暂不以此作为已确认收入渠道；未创建账户或接受条款。来源：[Kanicen Nix 官方网站](https://kanicen.com/)。
 - **Involve Asia Publisher（优先资格核实，未注册）**：其官方帮助说明网站所有者可以个人 Publisher 身份申请，不要求在该页面中声明自己是已注册企业；平台免费加入，但须以原创内容和实际网站 URL 申请媒体审核，批准后还需逐个申请广告活动。官方财产审核页另列网站/博客/论坛需“过去 30 天超过 10 次活跃内容更新”，并要求提交自有或管理的公开属性；无法验证产权时需提供证明或联系人工审核。JomPancing 指南现有 7 篇，只有 2026-10-21 新增的选购指南明确在近 30 天内，尚无证据满足更新频率门槛；不应把代码部署次数冒充内容更新。提款门槛为 MYR40（多数货币）或 MYR80（USD/EUR），佣金须先经过广告主验证，官方示例验证通常要 14–60 天或更久。还未创建账户、接受协议或填写个人/收款资料。继续发布真实有用的钓鱼内容并积累自然受众，或先向平台确认网站更新的计数方式；达到资格后再申请并逐个挑选相关广告活动。来源：[Publisher 资格](https://helpcentre.involve.asia/portal/en/kb/articles/involve-asia-publishers)、[网站/博客/论坛属性审核门槛](https://helpcentre.involve.asia/portal/en/kb/articles/what-is-property)、[加入步骤](https://helpcentre.involve.asia/portal/en/kb/articles/how-to-sign-up-as-a-publisher)、[提款门槛](https://helpcentre.involve.asia/portal/en/kb/articles/how-to-clear-balance-amount)、[验证周期](https://helpcentre.involve.asia/portal/en/kb/articles/what-is-the-validation-process)。
 - **Shopee Affiliate（可个人申请，渠道待确认）**：Shopee 官方帮助允许本地个人免费加入，并列出 1%–12% 的类别/活动佣金范围；申请指南要求连接公开社交媒体账号供审查。收款设置要提交个人身份及银行资料，因此不代填。只有在 JomPancing 已有可供审核的公开账号或 Shopee 接受网站渠道时才考虑；目前尚未注册或获批。来源：[Shopee 个人资格及佣金](https://help.shopee.com.my/portal/10/article/206120-How%20to%20Join%20Joint%20Acquisition%20Program)、[申请流程与社交媒体要求](https://help.shopee.com.my/portal/10/article/205759-How-to-Sign-Up-for-the-Shopee-Affiliate-Program)、[收款税务资料要求](https://help.shopee.com.my/portal/10/article/205770-How%20to%20Submit%20Payment%20and%20Tax%20Information)。
+- **ACCESSTRADE Malaysia（个人可申请，待评估）**：官方站明确 Publisher 可为个人或企业；其官方 Academy 注册说明允许以网站、博客或社交媒体作为媒体，申请审核后才填写电话、住址和银行资料。Campaign 仍需逐个申请，旧 Academy 说明审核约 3–5 个工作日，具体时效和当前可用钓具/电商广告需登录后核实。相比 Involve Asia 当前公开的“网站过去 30 天超过 10 次活跃更新”门槛，这条路线更值得优先核实；尚未创建账户、提交个人资料或申请 Campaign。来源：[ACCESSTRADE Malaysia](https://accesstrade.global/my/)、[官方 Publisher 注册说明](https://academy.accesstrade.global/accesstrade-platform-2471)、[Campaign 审核说明](https://academy.accesstrade.global/campaign-2476)。
+- **TCE Tackles 直接联盟计划（条款不明，待核实）**：TCE 官网存在 Affiliate Registration Form，官方联系页确认经营渔具零售；但公开页面没有佣金率、归因周期、付款门槛、个人资格或媒体审核规则。页面还包含普通网店注册表，不能仅凭可见注册入口认定联盟计划接受个人网站。未创建账户或提交信息；先核实计划条款后再决定是否申请。来源：[官方 Affiliate 页面](https://tcetackles.com.my/affiliate/)、[官方联系方式](https://tcetackles.com.my/contact-us/)。
 
 备选是 Kolam Pancing PDS，位于 Selangor；官网信息较完整，可在本地试点后再联系：<https://kolampancingpds.com/>。官网天气模块请求失败，不要把其天气数据当作可用服务来宣传。
 
@@ -118,6 +120,7 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 4. 等待 Syawal、D’Tiram、Joran Fest、Ko-Nelayan、MM Fishing Tackle 与 Southern Pro Tackle 对邀请回复。Joran Fest 联系人表示会告知管理层，暂无赛事资料确认；其他邀约发出后 7 天内不重复联系。只在收到主办方确认后整理 JomPancing 活动页，不复制官网旧场次的报名/费用文字。MBSA 活动暂不联系，因为其官方总机在 WhatsApp 搜索中没有账号。
 5. 让经营者检查资料并记录确认依据及日期。使用 Vercel Analytics 报告实际页面访问；Hobby 没有自定义事件，所以当前不宣称统计地图路线或 WhatsApp 点击。
 6. 试点结束后，以真实数据和经营者意愿决定是否测试赞助展示；未确认付费意愿前不收款、不公开承诺效果。
+7. 先核实 ACCESSTRADE 当前是否有适合马来西亚钓友的钓具/电商 Campaign，并向 TCE Tackles 官方确认其 Affiliate 计划个人资格、佣金与付款条款；Involve Asia 暂缓到网站更新频率达到官方要求或平台人工确认可接受当前媒体。挑中合适计划前不放商品链接；开户与个人/收款资料由账户持有人完成。
 
 ## 流量分析配置（2026-10-21）
 
