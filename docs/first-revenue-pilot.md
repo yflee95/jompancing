@@ -224,3 +224,9 @@ Search Console 最近 3 个月（页面显示约 5.5 小时前更新）：174 �
 - GSC 页面报告（2026-09-09 至 2026-10-18，报告更新约 6 小时前）中，Johor Bahru 马来文地区页有 11 次点击/1,033 次曝光，未筛选 `/ms/spots` 有 9/1,188，Johor 州页有 8/915。鱼塘详情页也已带来搜索访问：FarmVille 7/242、Kolam Pancing Udang Abg Bard 5/73、Natural Kelong Fishing Pond 5/38。不可一概把钓点详情设为 noindex；先保留能满足搜索需求的页面，集中改善真实资料和下一步行动。
 - “Discovered - currently not indexed” 导出有 575 个 URL，其中 537 个是钓点详情 URL。只读统计正式 Supabase public spots 得到 206 条记录：205 条 `source=google`、另 1 条 `source≠google`，0 条经营者核实；180 条有图片、26 条无图、0 条评论。样例详情主要展示地点名、地址和“未核实”提示。此结果支持优先增加可核实的实用资料及社区贡献，但不证明 Google 的未收录原因，也不能单独据此屏蔽整批页面。
 - 为接住高意图鱼塘详情页流量，三语鱼塘页入口已明确为老板/管理者可免费申请核实营业时间、收费和规则；表单提示也说明是申请人工核实，并非直接认领或保证客流。TypeScript、受影响组件 ESLint、三语 JSON 解析及 Node 24 下生产构建通过。提交 `ecc9417` 已在 Vercel Production Ready；FarmVille 三语页面均返回 200 并显示新入口，马来文入口点击后 `#pond-claim` 表单已展开。未提交申请。继续观察有效申请；当前仍无商家核实资料或可归因询问。
+
+## 自然搜索商业机会复核（2026-10-21）
+
+- Search Console 2026-09-21 至 2026-10-18 的 28 天报表：171 点击、11,300 曝光、CTR 1.5%、平均排名 6.9。`kolam pancing near me` 为 614 曝光、3 点击、CTR 0.5%、平均排名 7.2；查询筛选后的页面表显示 41 个页面都获得该词曝光。Johor Bahru 英文地区页 136 曝光/1 点击，马来文地区页 83 曝光/0 点击；剩余曝光分散在州页、地点页及不同主机名 URL。该词有搜索需求，但当前流量和商业转化均未证明能支撑广告收入。
+- 实时检查首页点入的 `www` 主机生产页面：`/ms/spots` HTTP 200、title 为 “Kolam Pancing Near Me & Port Memancing Malaysia | Jompancing”，但 canonical 指向 `https://jompancing.my/ms/spots`；`/ms/spots/johor?district=johor-bahru` 也返回 `www` 200 但 canonical 指向 apex。`robots.txt` 与整份 sitemap 仍使用 apex，而 apex 会 308 重定向到 `www`。所以 canonical 对齐修复 `f3e9a7e` 在本地，但线上尚未生效；对 Google 来说，页面曝光数据也确实分散在两个主机名上。
+- 本地 `master` 当前比 `origin/master` 多 5 个提交，包含 `f3e9a7e` 与回访收藏功能等改动；生产发布会触发 Vercel 部署。由于已查明 Vercel Hobby 限于非商业使用，而 JomPancing 的目标是商业运营，不能把当前生产部署当作无风险发布途径。应先取得符合商业用途的托管方式，再部署并复核 canonical、robots、sitemap 和页面主机统一；此前不把本地修复声称为线上已修复。
