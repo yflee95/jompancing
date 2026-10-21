@@ -557,6 +557,8 @@
     "googleAddressHint": "Dikuasakan Google — pilih padanan atau ketik “Guna alamat ini”",
     "googleAddressHintNoState": "Taip alamat dahulu — Google akan isi negeri & daerah bila anda pilih",
     "useMyLocation": "Guna lokasi saya",
+    "locatingMe": "Mencari lokasi anda…",
+    "locationRequestError": "Lokasi anda tidak dapat diperoleh. Benarkan akses lokasi atau ketik peta untuk meletakkan pin.",
     "nearMe": "Berdekatan",
     "gpsDetecting": "Mengesan…",
     "gpsUnavailable": "Lokasi dimatikan",

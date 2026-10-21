@@ -557,6 +557,8 @@
     "googleAddressHint": "Powered by Google — pick a match or tap “Use this address”",
     "googleAddressHintNoState": "Type address first — Google will auto-fill state & district when you pick a result",
     "useMyLocation": "Use my location",
+    "locatingMe": "Finding you…",
+    "locationRequestError": "Couldn't get your location. Allow location access, or tap the map to place the pin.",
     "nearMe": "Near me",
     "gpsDetecting": "Detecting…",
     "gpsUnavailable": "Location off",

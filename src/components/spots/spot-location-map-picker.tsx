@@ -36,6 +36,13 @@ export interface SpotLocationMapPickerProps {
   className?: string;
 }
 
+interface PickerRuntimeProps {
+  liveCoords: Coordinates | null;
+  requestLocation: () => Promise<Coordinates | null>;
+  requestingLocation: boolean;
+  locationError: boolean;
+}
+
 function PinMarker({ active }: { active?: boolean }) {
   return (
     <div
@@ -90,7 +97,10 @@ function GooglePickerInner({
   onAddressChange,
   onRegionMatch,
   className,
-}: SpotLocationMapPickerProps & { liveCoords: Coordinates | null }) {
+  requestLocation,
+  requestingLocation,
+  locationError,
+}: SpotLocationMapPickerProps & PickerRuntimeProps) {
   const t = useTranslations("post");
   const mapId = getGoogleMapsMapId();
   const resolvingRef = useRef(false);
@@ -196,18 +206,27 @@ function GooglePickerInner({
             {t("mapPickerResolving")}
           </span>
         )}
+        {locationError && (
+          <p role="alert" className="max-w-[60%] rounded-xl bg-white/95 px-3 py-2 text-[11px] text-red-700 shadow">
+            {t("locationRequestError")}
+          </p>
+        )}
         <button
           type="button"
           onClick={() => {
-            const coords = liveCoords ?? userCoords;
-            if (!coords) return;
-            void applyPin(coords);
+            void requestLocation().then((coords) => {
+              if (coords) void applyPin(coords);
+            });
           }}
-          disabled={!(liveCoords ?? userCoords)}
+          disabled={requestingLocation || resolving}
           className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-2 text-xs font-semibold text-[var(--ocean)] shadow-md transition hover:bg-[var(--ocean-light)] disabled:opacity-50"
         >
-          <Crosshair className="h-4 w-4" />
-          {t("useMyLocation")}
+          {requestingLocation ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Crosshair className="h-4 w-4" />
+          )}
+          {requestingLocation ? t("locatingMe") : t("useMyLocation")}
         </button>
       </div>
     </div>
@@ -215,7 +234,8 @@ function GooglePickerInner({
 }
 
 function GooglePicker(
-  props: SpotLocationMapPickerProps & { liveCoords: Coordinates | null; apiKey: string },
+  props: SpotLocationMapPickerProps &
+    PickerRuntimeProps & { apiKey: string },
 ) {
   return (
     <APIProvider
@@ -237,7 +257,10 @@ function LeafletPicker({
   onAddressChange,
   onRegionMatch,
   className,
-}: SpotLocationMapPickerProps & { liveCoords: Coordinates | null }) {
+  requestLocation,
+  requestingLocation,
+  locationError,
+}: SpotLocationMapPickerProps & PickerRuntimeProps) {
   const t = useTranslations("post");
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
@@ -245,8 +268,13 @@ function LeafletPicker({
   const userMarkerRef = useRef<LeafletCircleMarker | null>(null);
   const [resolving, setResolving] = useState(false);
   const resolvingRef = useRef(false);
+  const [mapReady, setMapReady] = useState(false);
+  const hasCenteredOnLocationRef = useRef(false);
+  const userInteractedRef = useRef(false);
 
-  const center = pinCoords ?? liveCoords ?? userCoords ?? MALAYSIA_MAP_CENTER;
+  const initialCenterRef = useRef(
+    pinCoords ?? liveCoords ?? userCoords ?? MALAYSIA_MAP_CENTER,
+  );
 
   const applyPin = useCallback(
     async (coords: Coordinates) => {
@@ -281,6 +309,11 @@ function LeafletPicker({
     ],
   );
 
+  const applyPinRef = useRef(applyPin);
+  useEffect(() => {
+    applyPinRef.current = applyPin;
+  }, [applyPin]);
+
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
@@ -292,7 +325,10 @@ function LeafletPicker({
       const map = L.map(containerRef.current, {
         zoomControl: false,
         attributionControl: true,
-      }).setView([center.lat, center.lng], 14);
+      }).setView(
+        [initialCenterRef.current.lat, initialCenterRef.current.lng],
+        14,
+      );
 
       L.control.zoom({ position: "topright" }).addTo(map);
 
@@ -303,10 +339,12 @@ function LeafletPicker({
       }).addTo(map);
 
       map.on("click", (event) => {
-        void applyPin({ lat: event.latlng.lat, lng: event.latlng.lng });
+        userInteractedRef.current = true;
+        void applyPinRef.current({ lat: event.latlng.lat, lng: event.latlng.lng });
       });
 
       mapRef.current = map;
+      setMapReady(true);
     });
 
     return () => {
@@ -316,11 +354,11 @@ function LeafletPicker({
       pinMarkerRef.current = null;
       userMarkerRef.current = null;
     };
-  }, [applyPin, center.lat, center.lng]);
+  }, []);
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return;
+    if (!map || !mapReady) return;
 
     void import("leaflet").then((L) => {
       const userPosition = liveCoords ?? userCoords;
@@ -350,15 +388,24 @@ function LeafletPicker({
             .on("dragend", (event) => {
               const marker = event.target as LeafletMarker;
               const latLng = marker.getLatLng();
-              void applyPin({ lat: latLng.lat, lng: latLng.lng });
+              userInteractedRef.current = true;
+              void applyPinRef.current({ lat: latLng.lat, lng: latLng.lng });
             });
         } else {
           pinMarkerRef.current.setLatLng([pinCoords.lat, pinCoords.lng]);
         }
         map.panTo([pinCoords.lat, pinCoords.lng]);
+        userInteractedRef.current = true;
+      } else if (
+        userPosition &&
+        !hasCenteredOnLocationRef.current &&
+        !userInteractedRef.current
+      ) {
+        map.setView([userPosition.lat, userPosition.lng], 14);
+        hasCenteredOnLocationRef.current = true;
       }
     });
-  }, [applyPin, liveCoords, pinCoords, userCoords]);
+  }, [mapReady, liveCoords, pinCoords, userCoords]);
 
   return (
     <div className={cn("relative overflow-hidden rounded-2xl ring-1 ring-[var(--sand-dark)]/50", className)}>
@@ -378,18 +425,27 @@ function LeafletPicker({
             {t("mapPickerResolving")}
           </span>
         )}
+        {locationError && (
+          <p role="alert" className="max-w-[60%] rounded-xl bg-white/95 px-3 py-2 text-[11px] text-red-700 shadow">
+            {t("locationRequestError")}
+          </p>
+        )}
         <button
           type="button"
           onClick={() => {
-            const coords = liveCoords ?? userCoords;
-            if (!coords) return;
-            void applyPin(coords);
+            void requestLocation().then((coords) => {
+              if (coords) void applyPin(coords);
+            });
           }}
-          disabled={!(liveCoords ?? userCoords)}
+          disabled={requestingLocation || resolving}
           className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-2 text-xs font-semibold text-[var(--ocean)] shadow-md transition hover:bg-[var(--ocean-light)] disabled:opacity-50"
         >
-          <Crosshair className="h-4 w-4" />
-          {t("useMyLocation")}
+          {requestingLocation ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Crosshair className="h-4 w-4" />
+          )}
+          {requestingLocation ? t("locatingMe") : t("useMyLocation")}
         </button>
       </div>
     </div>
@@ -398,65 +454,53 @@ function LeafletPicker({
 
 export function SpotLocationMapPicker(props: SpotLocationMapPickerProps) {
   const apiKey = getGoogleMapsApiKey();
-  const autoPinnedRef = useRef(false);
-  const [liveCoords, setLiveCoords] = useState<Coordinates | null>(
-    props.userCoords,
+  const [requestedCoords, setRequestedCoords] = useState<Coordinates | null>(null);
+  const liveCoords = requestedCoords ?? props.userCoords;
+  const [requestingLocation, setRequestingLocation] = useState(false);
+  const [locationError, setLocationError] = useState(false);
+
+  const requestLocation = useCallback(
+    () =>
+      new Promise<Coordinates | null>((resolve) => {
+        setLocationError(false);
+        if (!navigator.geolocation) {
+          setLocationError(true);
+          resolve(null);
+          return;
+        }
+
+        setRequestingLocation(true);
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const coords = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            setRequestedCoords(coords);
+            setRequestingLocation(false);
+            resolve(coords);
+          },
+          () => {
+            setRequestingLocation(false);
+            setLocationError(true);
+            resolve(null);
+          },
+          { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 },
+        );
+      }),
+    [],
   );
 
-  useEffect(() => {
-    setLiveCoords(props.userCoords);
-  }, [props.userCoords]);
-
-  useEffect(() => {
-    if (!navigator.geolocation) return;
-
-    const watchId = navigator.geolocation.watchPosition(
-      (position) => {
-        setLiveCoords({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-      },
-      () => {
-        /* keep last known coords */
-      },
-      { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 },
-    );
-
-    return () => navigator.geolocation.clearWatch(watchId);
-  }, []);
-
-  useEffect(() => {
-    if (autoPinnedRef.current || props.pinCoords || !liveCoords) return;
-    autoPinnedRef.current = true;
-
-    void (async () => {
-      props.onPinCoordsChange(liveCoords);
-      props.onMapsUrlChange(
-        buildGoogleMapsCoordsUrl(liveCoords.lat, liveCoords.lng),
-      );
-      const resolved = await resolvePinLocation(liveCoords, props.locale);
-      props.onAddressChange(resolved.address);
-      if (resolved.region) {
-        props.onRegionMatch?.({
-          stateId: resolved.region.stateId,
-          districtId: resolved.region.districtId,
-        });
-      }
-    })();
-  }, [
+  const runtimeProps: PickerRuntimeProps = {
     liveCoords,
-    props.pinCoords,
-    props.locale,
-    props.onPinCoordsChange,
-    props.onMapsUrlChange,
-    props.onAddressChange,
-    props.onRegionMatch,
-  ]);
+    requestLocation,
+    requestingLocation,
+    locationError,
+  };
 
   if (apiKey) {
-    return <GooglePicker {...props} liveCoords={liveCoords} apiKey={apiKey} />;
+    return <GooglePicker {...props} {...runtimeProps} apiKey={apiKey} />;
   }
 
-  return <LeafletPicker {...props} liveCoords={liveCoords} />;
+  return <LeafletPicker {...props} {...runtimeProps} />;
 }

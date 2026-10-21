@@ -557,6 +557,8 @@
     "googleAddressHint": "由 Google 提供 — 选择匹配项或点「使用此地址」",
     "googleAddressHintNoState": "先输入地址 — 选择结果后 Google 会自动填入州和区",
     "useMyLocation": "使用我的位置",
+    "locatingMe": "正在定位…",
+    "locationRequestError": "无法获取你的位置。请允许定位权限，或点击地图放置标记。",
     "nearMe": "附近",
     "gpsDetecting": "定位中…",
     "gpsUnavailable": "未开启定位",
