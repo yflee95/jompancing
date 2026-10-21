@@ -1,4 +1,5 @@
 import type { LocalizedString } from "@/types";
+import { FISH_CATALOG_EXPANSION } from "@/data/fish-catalog-expansion";
 
 export type FishHabitat = "freshwater" | "river" | "brackish" | "sea";
 export type FishStyle = "bait" | "lure" | "both";
@@ -31,7 +32,7 @@ const L = (ms: string, en: string, zh: string): LocalizedString => ({ ms, en, zh
 export const FISH_HABITATS: FishHabitat[] = ["freshwater", "river", "brackish", "sea"];
 export const FISH_STYLES: FishStyle[] = ["bait", "lure", "both"];
 
-export const FISH_SPECIES: FishSpecies[] = [
+const CORE_FISH_SPECIES: FishSpecies[] = [
   {
     slug: "haruan",
     name: L("Haruan", "Haruan · Striped snakehead", "乌鳢 · Haruan"),
@@ -228,16 +229,16 @@ export const FISH_SPECIES: FishSpecies[] = [
   },
   {
     slug: "lampam",
-    name: L("Lampam", "Lampam · Silver barb", "银鲃 · Lampam"),
+    name: L("Lampam Jawa", "Lampam Jawa · Silver barb", "银鲃 · Lampam Jawa"),
     latinName: "Barbonymus gonionotus",
-    taxonNote: L("Ikan lampam perak; nama lampam tempatan boleh merangkumi ikan berkaitan.", "Silver barb; local lampam names may also refer to related fish.", "银鲃；本地“Lampam”俗名也可能指近缘鱼种。"),
+    taxonNote: L("Lampam Jawa ialah Barbonymus gonionotus; jangan keliru dengan Lampam Sungai.", "Lampam Jawa is Barbonymus gonionotus; it is distinct from Lampam Sungai.", "Lampam Jawa 指 Barbonymus gonionotus，与 Lampam Sungai 是不同鱼种。"),
     habitats: ["freshwater", "river"], style: "both", isHot: false,
     overview: L("Lampam ditemui di sungai dan perairan tawar; taburan serta saiz ikan berbeza mengikut lokasi.", "Lampam occur in rivers and freshwater; distribution and fish size vary by location.", "Lampam 可见于河流和淡水水域；分布和鱼体大小因地点而异。"),
     wildDiet: L("Ikan ini memakan bahan tumbuhan dan makanan kecil di dalam air; diet berubah mengikut keadaan setempat.", "It feeds on plant material and small items in the water; diet varies with local conditions.", "它会吃植物性食物和水中小型生物；食性会随当地环境变化。"),
     baitTips: L("Cuba roti, doh, jagung atau pelet yang dibenarkan, bermula dengan sedikit umpan.", "Try bread, dough, corn or permitted pellets, starting with a small amount of feed.", "场地允许时可试面包、面饵、玉米或颗粒饵，先少量打窝。"),
     lureTips: L("Gewang kecil boleh dicuba untuk ikan yang aktif; bukan semua lokasi membenarkannya.", "Small lures can be tried for active fish; not every venue allows them.", "鱼活跃时可试小型路亚；并非所有场地都允许使用。"),
     starterRig: L("Pelampung atau rig dasar ringan dengan mata kail kecil; padankan kedalaman dengan lapisan ikan makan.", "Use a float or light bottom rig with a small hook; adjust depth to the feeding layer.", "可用浮漂或轻型底钓组配小钩，并按鱼群觅食水层调整深度。"),
-    photo: { src: "/fish/lampam.jpg", credit: "Xufanc", license: "CC BY-SA 3.0", sourceUrl: "https://commons.wikimedia.org/wiki/File:Barbonymus_gonionotus-Pla_som861.jpg" },
+    photo: { src: "/fish/lampam-jawa.jpg", credit: "Yung-Lun Lin", license: "CC BY 4.0", sourceUrl: "https://commons.wikimedia.org/wiki/File:Barbonymus_gonionotus_-_Yung-Lun_Lin_-_586218900.jpeg" },
     sourceUrl: "https://www.fishbase.se/summary/Barbonymus-gonionotus.html",
   },
   {
@@ -367,6 +368,10 @@ export const FISH_SPECIES: FishSpecies[] = [
     sourceUrl: "https://www.fishbase.se/summary/Sardinella-lemuru.html",
   },
 ];
+
+// Catalog photos are checked against their Commons description pages and the linked licence.
+
+export const FISH_SPECIES: FishSpecies[] = [...CORE_FISH_SPECIES, ...FISH_CATALOG_EXPANSION];
 
 export const HOT_FISH = FISH_SPECIES.filter((fish) => fish.isHot);
 
