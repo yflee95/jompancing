@@ -231,7 +231,7 @@ export async function SpotDetailView({
           {[
             {
               label: t("species"),
-              value: getSpotSpeciesLine(spot),
+              value: getSpotSpeciesLine(spot, locale),
             },
             {
               label: t("bestTime"),
@@ -239,7 +239,7 @@ export async function SpotDetailView({
             },
             {
               label: t("facilities"),
-              value: getSpotFacilitiesLine(spot),
+              value: getSpotFacilitiesLine(spot, locale),
             },
             {
               label: t("comments"),

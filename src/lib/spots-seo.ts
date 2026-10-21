@@ -34,7 +34,7 @@ export function buildSpotDetailSeo({
   const waterLabel = t(
     spot.waterType as "saltwater" | "freshwater" | "pond" | "river",
   );
-  const species = getSpotSpeciesLine(spot);
+  const species = getSpotSpeciesLine(spot, locale);
 
   const title = location
     ? t("seoSpotTitle", { name, location })
