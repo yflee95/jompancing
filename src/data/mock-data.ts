@@ -503,6 +503,60 @@ export const mockArticles: GuideArticle[] = [
       "https://images.unsplash.com/photo-1519709093765-457415791451?w=800&q=80",
     publishedAt: "2026-02-25T00:00:00Z",
   },
+  {
+    id: "guide-7",
+    slug: "first-fishing-setup-malaysia",
+    title: {
+      ms: "Set Pancing Pertama di Malaysia: Beli Ikut Tempat, Bukan Ikut Trend",
+      en: "Your First Fishing Setup in Malaysia: Buy for the Water, Not the Hype",
+      zh: "马来西亚新手第一套钓具：按钓场选，不跟风买",
+    },
+    excerpt: {
+      ms: "Panduan praktikal memilih set permulaan untuk kolam, sungai atau pantai tanpa membazir pada barang yang belum diperlukan.",
+      en: "A practical checklist for choosing a first setup for ponds, rivers or the coast without paying for gear you do not need yet.",
+      zh: "按鱼塘、河流或海边场景挑选第一套装备，先买必需品，避免为暂时用不到的功能花钱。",
+    },
+    body: {
+      ms: "Mula dengan satu soalan: di mana anda akan memancing paling kerap? Set untuk kolam patin, sungai yang berarus dan pantai terbuka mempunyai keperluan berbeza. Sebelum membeli, tanya pengusaha kolam atau pemancing setempat tentang spesies sasaran, ruang balingan, kekuatan arus dan kaedah yang dibenarkan. Jika belum pasti, pinjam atau sewa set dahulu jika tersedia.
+
+Pilih joran mengikut ruang dan cara memancing. Joran pendek lebih mudah dikawal di tebing sempit atau kawasan ramai; joran lebih panjang membantu balingan dari pantai tetapi memerlukan ruang. Padankan kekuatan joran dan kekili dengan saiz ikan serta tali yang dicadangkan pengeluar. Jangan anggap satu ukuran atau kekuatan sesuai untuk semua tempat.
+
+Untuk set pertama, utamakan joran, kekili yang berfungsi lancar, tali yang sepadan, mata kail atau gewang yang dibenarkan, serta tang, gunting tali dan bekas kecil untuk menyimpan barang. Semak sama ada set kombo benar-benar merangkumi tali dan aksesori yang anda perlukan. Beli umpan segar berhampiran hari memancing apabila sesuai, dan jangan beli banyak jenis gewang sebelum anda tahu keadaan air dan ikan sasaran.
+
+Di kedai, pegang joran dan cuba buka serta tutup bail kekili. Tanya tentang waranti, alat ganti, tali yang sesuai, dan sama ada harga termasuk pemasangan tali. Bandingkan jumlah kos set lengkap, bukan harga joran sahaja. Untuk pembelian dalam talian, semak saiz sebenar, kandungan pakej, kos penghantaran, polisi pemulangan dan reputasi penjual.
+
+Belanjakan baki pada keselamatan dan keselesaan: kasut yang tidak licin, air minum, pelindung matahari dan lampu jika memancing selepas gelap. Pakai jaket keselamatan apabila menaiki bot. Peraturan, bayaran dan had tangkapan berbeza mengikut tempat; sahkan dengan pengusaha atau pihak berkuasa sebelum pergi. Selepas beberapa sesi, catat apa yang benar-benar digunakan sebelum menaik taraf.
+
+JomPancing belum menguji atau mengesyorkan model produk tertentu dalam panduan ini. Anggapnya sebagai senarai semak membeli-belah; sahkan kesesuaian dengan pemancing berpengalaman atau kedai tempatan untuk tempat dan spesies sasaran anda.",
+      en: "Start with one question: where will you fish most often? A setup for a patin pond, a flowing river and an open beach has different needs. Before buying, ask the pond operator or a local angler about target species, casting space, current and allowed methods. If you are unsure, borrow or rent a setup first when that is available.
+
+Choose a rod for the space and style of fishing. A shorter rod is easier to control on a narrow bank or in a busy area; a longer rod can help with beach casting but needs room. Match the rod and reel strength to the fish and line recommended by the manufacturer. One size or strength does not suit every venue.
+
+For a first setup, prioritize a rod, a smoothly working reel, compatible line, hooks or lures allowed at your venue, pliers, line cutters and a small tackle container. Check whether a combo actually includes the line and accessories you need. Buy fresh bait close to the trip when practical, and avoid stocking up on lures before you know the water and target fish.
+
+At a shop, hold the rod and check that the reel bail opens and closes smoothly. Ask about warranty, spare parts, suitable line and whether the price includes spooling. Compare the cost of a complete usable setup, not just the rod price. For online purchases, check the exact size, package contents, delivery cost, return policy and seller reputation.
+
+Use the rest of your budget for safety and comfort: shoes with grip, drinking water, sun protection and a light for after dark. Wear a life jacket when boating. Rules, fees and catch limits vary by venue; confirm them with the operator or authority before you go. After a few trips, note what you actually used before upgrading.
+
+JomPancing has not tested or endorsed specific product models in this guide. Use it as a shopping checklist, then confirm suitability with an experienced angler or local tackle shop for your venue and target fish.",
+      zh: "先问自己一个问题：你最常去哪里钓鱼？巴丁鱼塘、流水河段和开放海滩需要的装备并不一样。购买前，先向鱼塘经营者或当地钓友确认目标鱼种、抛投空间、水流和允许的钓法。如果还不确定，能借用或租用的话，先试一套再买。
+
+按钓法和空间选鱼竿。狭窄岸边或人多的地方，短一些的竿更好控制；海滩远投可能需要较长的竿，但要有足够空间。鱼竿、渔轮和钓线的强度应配合目标鱼，并参考制造商建议。没有一种长度或强度适合所有钓场。
+
+第一套装备优先考虑鱼竿、收线顺畅的渔轮、相配的钓线、钓场允许使用的鱼钩或假饵、钳子、剪线器和小型收纳盒。买套装前确认是否真的包含你需要的钓线和配件。方便的话，在出钓前再买新鲜鱼饵；还不清楚水域和目标鱼种时，不要一次囤很多假饵。
+
+在实体店里拿起鱼竿试试，并检查渔轮的线杯环能否顺畅开合。询问保修、零件、适用钓线，以及价格是否包含上线服务。比较一套能实际开钓的总价，而不只是鱼竿价格。网购时核对具体尺寸、包装内容、运费、退货政策和卖家信誉。
+
+把剩余预算留给安全和舒适：防滑鞋、饮用水、防晒用品，以及夜钓用灯。乘船时穿救生衣。不同钓场的规定、费用和渔获限制各不相同，出发前向经营者或主管单位确认。钓过几次后，先记下自己真正用到的装备，再考虑升级。
+
+JomPancing 尚未测试或推荐本文中的具体产品型号。请把本文当作购物清单，再向有经验的钓友或当地渔具店确认装备是否适合你的钓场和目标鱼种。",
+    },
+    category: "gear",
+    readMinutes: 5,
+    imageUrl:
+      "https://images.unsplash.com/photo-1544551763-77a415543845?w=800&q=80",
+    publishedAt: "2026-10-21T00:00:00Z",
+  },
 ];
 
 export function getSpotBySlug(slug: string): FishingSpot | undefined {
