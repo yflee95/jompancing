@@ -4,6 +4,7 @@ import { Flame, MapPin, MessageCircle, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AppImage } from "@/components/ui/app-image";
+import { SavedSpotButton } from "@/components/spots/saved-spot-button";
 import { getSpotLocationLine } from "@/lib/spot-location";
 import { formatDistance } from "@/lib/geo";
 import { cn } from "@/lib/utils";
@@ -37,18 +38,16 @@ export function HomeSpotRailCard({
   const tCommon = useTranslations("common");
   const tSpots = useTranslations("spots");
   const tHome = useTranslations("home");
+  const widthClass = layout === "peek"
+    ? "w-[calc((100vw-2rem-0.625rem)/2.15)] min-w-[152px] max-w-[260px] md:w-[calc((100vw-3rem-0.625rem*2.5)/3.5)] md:max-w-[220px] md:min-w-[120px] lg:w-full lg:max-w-none lg:min-w-0"
+    : "w-[72vw] max-w-[280px] min-w-[148px] sm:w-[44vw] sm:max-w-[300px] md:w-full md:max-w-none md:min-w-0";
 
   return (
-    <Link
-      href={`/spots/${spot.slug}`}
-      className={cn(
-        "tap-card group relative shrink-0 snap-start overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-travel)] ring-1 ring-black/[0.04] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-travel-hover)]",
-        layout === "peek"
-          ? "w-[calc((100vw-2rem-0.625rem)/2.15)] min-w-[152px] max-w-[260px] md:w-[calc((100vw-3rem-0.625rem*2.5)/3.5)] md:max-w-[220px] md:min-w-[120px] lg:w-full lg:max-w-none lg:min-w-0"
-          : "w-[72vw] max-w-[280px] min-w-[148px] sm:w-[44vw] sm:max-w-[300px] md:w-full md:max-w-none md:min-w-0",
-        "md:shrink lg:shrink",
-      )}
-    >
+    <div className={cn("relative shrink-0 snap-start md:shrink lg:shrink", widthClass)}>
+      <Link
+        href={`/spots/${spot.slug}`}
+        className="tap-card group relative block h-full overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-travel)] ring-1 ring-black/[0.04] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-travel-hover)]"
+      >
       <div
         className={cn(
           "relative",
@@ -98,7 +97,7 @@ export function HomeSpotRailCard({
           </span>
         )}
         {distanceKm != null && (
-          <span className="absolute right-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-[var(--ink)] shadow-sm">
+          <span className="absolute right-3 top-14 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-[var(--ink)] shadow-sm">
             {formatDistance(distanceKm)}
           </span>
         )}
@@ -152,6 +151,14 @@ export function HomeSpotRailCard({
           </div>
         </div>
       </div>
-    </Link>
+      </Link>
+      {spot.visibility === "public" && (
+        <SavedSpotButton
+          slug={spot.slug}
+          compact
+          className="absolute right-3 top-3 z-20"
+        />
+      )}
+    </div>
   );
 }
