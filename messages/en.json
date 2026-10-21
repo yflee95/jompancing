@@ -175,6 +175,7 @@
     "claimContactHint": "Use a contact channel for the business",
     "claimWebsite": "Public business page (optional)",
     "claimMessage": "What would you like to update? (optional)",
+    "claimMessageHint": "For example: opening hours, fees, species, or fishing rules.",
     "claimConsent": "I agree Jompancing may use these details to verify and respond to this pond listing request. They will not be published.",
     "claimSubmit": "Send claim request",
     "claimSubmitting": "Sending…",

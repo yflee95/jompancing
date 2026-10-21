@@ -175,6 +175,7 @@
     "claimContactHint": "请填写商家使用的联系方式",
     "claimWebsite": "公开商家页面（选填）",
     "claimMessage": "你希望更新哪些信息？（选填）",
+    "claimMessageHint": "例如：营业时间、收费、鱼种或钓鱼规则。",
     "claimConsent": "我同意 Jompancing 使用这些资料核实并回复本次鱼塘页面申请。资料不会公开。",
     "claimSubmit": "提交认领申请",
     "claimSubmitting": "正在提交…",
