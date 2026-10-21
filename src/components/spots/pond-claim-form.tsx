@@ -58,7 +58,7 @@ export function PondClaimForm({
   }
 
   return (
-    <section className="mt-8 overflow-hidden rounded-3xl bg-white ring-1 ring-[var(--sand-dark)]/40">
+    <section id={spotId ? "pond-claim" : undefined} className="mt-8 scroll-mt-24 overflow-hidden rounded-3xl bg-white ring-1 ring-[var(--sand-dark)]/40">
       <button
         type="button"
         aria-expanded={open}

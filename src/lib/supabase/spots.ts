@@ -35,6 +35,7 @@ type SpotRow = {
   featured: boolean;
   comment_count: number;
   created_at: string;
+  updated_at?: string | null;
   source?: string;
   is_curated?: boolean;
   google_place_id?: string | null;
@@ -96,6 +97,7 @@ export function mapSpotRow(row: SpotRow): FishingSpot {
       : undefined,
     commentCount: row.comment_count,
     createdAt: row.created_at,
+    updatedAt: row.updated_at ?? undefined,
   };
 }
 

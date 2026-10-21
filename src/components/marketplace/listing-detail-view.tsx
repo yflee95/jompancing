@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { ListingOwnerActions } from "@/components/marketplace/listing-owner-actions";
-import { LoginGateClient } from "@/components/marketplace/login-gate-client";
+import { PublicWhatsAppContact } from "@/components/marketplace/public-whatsapp-contact";
 import { useMarketplace } from "@/components/providers/marketplace-provider";
 import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
@@ -94,10 +94,9 @@ export function ListingDetailView({
         </p>
 
         <div className="mt-6">
-          <LoginGateClient
+          <PublicWhatsAppContact
             listingTitle={title}
             whatsapp={listing.whatsapp}
-            loginMessage={t("loginForContact")}
             contactLabel={t("contactSeller")}
           />
         </div>

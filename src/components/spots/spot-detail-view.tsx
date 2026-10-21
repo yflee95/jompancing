@@ -46,6 +46,13 @@ export async function SpotDetailView({
   const seo = buildSpotDetailSeo({ spot, locale, t });
   const state = getStateById(spot.stateId);
   const stateName = state ? getLocalizedText(state.name, locale) : "";
+  const updatedAt = spot.updatedAt ? new Date(spot.updatedAt) : null;
+  const formattedUpdatedAt = !updatedAt || Number.isNaN(updatedAt.getTime())
+    ? null
+    : new Intl.DateTimeFormat(locale, {
+        dateStyle: "medium",
+        timeZone: "Asia/Kuala_Lumpur",
+      }).format(updatedAt);
 
   return (
     <article className="mx-auto max-w-4xl px-4 pb-28 sm:pb-8">
@@ -157,6 +164,41 @@ export async function SpotDetailView({
           </div>
         </a>
 
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--ink-muted)]">
+          {formattedUpdatedAt && (
+            <p>
+              {t("listingUpdated", { date: formattedUpdatedAt })}{" "}
+              <span className="text-[var(--ink-muted)]">
+                · {t("updateIsNotVerification")}
+              </span>
+            </p>
+          )}
+          {spot.waterType === "pond" ? (
+            <a
+              href="#pond-claim"
+              className="font-semibold text-[var(--ocean)] underline-offset-2 hover:underline"
+            >
+              {t("suggestCorrection")}
+            </a>
+          ) : (
+            <ReportContentLink
+              locale={locale}
+              path={`/spots/${spot.slug}`}
+              contentLabel={getLocalizedText(spot.title, locale)}
+              actionLabel={t("suggestCorrection")}
+            />
+          )}
+        </div>
+
+        <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+          <p className="font-semibold">{t("beforeYouGoTitle")}</p>
+          <p className="mt-1 leading-relaxed">{t("beforeYouGoHint")}</p>
+        </div>
+
+        {spot.waterType === "pond" && (
+          <PondClaimForm spotId={spot.id} defaultLocation={spot.googleAddress} />
+        )}
+
         {spot.tags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
             {spot.tags.map((tag) => (
@@ -227,23 +269,11 @@ export async function SpotDetailView({
           title={t("comments")}
         />
 
-        {spot.waterType === "pond" && (
-          <PondClaimForm spotId={spot.id} defaultLocation={spot.googleAddress} />
-        )}
-
         {isUserGenerated && <SpotOwnerActions spot={spot} />}
 
         {showAdminDelete && !isUserGenerated && (
           <AdminSpotDelete spotId={spot.id} />
         )}
-
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-          <ReportContentLink
-            locale={locale}
-            path={`/spots/${spot.slug}`}
-            contentLabel={getLocalizedText(spot.title, locale)}
-          />
-        </div>
 
         {state && (
           <div className="mt-8 rounded-2xl bg-[var(--ocean-light)]/40 p-4 ring-1 ring-[var(--sand-dark)]/30">

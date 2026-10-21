@@ -134,6 +134,8 @@ export interface FishingSpot {
   featured: boolean;
   commentCount: number;
   createdAt: string;
+  /** Database edit time; this does not imply that venue details were verified. */
+  updatedAt?: string;
 }
 
 export interface Activity {

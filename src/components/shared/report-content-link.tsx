@@ -8,12 +8,14 @@ interface ReportContentLinkProps {
   /** Path after locale, e.g. `/spots/foo` */
   path: string;
   contentLabel: string;
+  actionLabel?: string;
 }
 
 export async function ReportContentLink({
   locale,
   path,
   contentLabel,
+  actionLabel,
 }: ReportContentLinkProps) {
   const t = await getTranslations({ locale, namespace: "trust" });
   const pageUrl = absoluteUrl(localePath(locale, path));
@@ -29,7 +31,7 @@ export async function ReportContentLink({
       className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--ink-muted)] underline-offset-2 hover:text-[var(--ocean)] hover:underline"
     >
       <Flag className="h-3.5 w-3.5" />
-      {t("reportContent")}
+      {actionLabel ?? t("reportContent")}
     </a>
   );
 }
