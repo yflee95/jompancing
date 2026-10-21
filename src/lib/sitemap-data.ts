@@ -216,7 +216,7 @@ export async function getActivitySlugs(): Promise<SitemapSlugEntry[]> {
       });
     }
   } catch {
-    /* mock slugs only */
+    /* Keep curated and mock slugs when the public database is unavailable. */
   }
 
   return entries;

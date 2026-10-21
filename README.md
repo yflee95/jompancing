@@ -90,7 +90,7 @@ flowchart TB
 |---------|--------|----------------|
 | Spots | Supabase `spots` | No (`loadPublicSpots` DB-only) |
 | Forum | Supabase + optional dev mock | Mock off in prod |
-| Activities | Supabase | Mock off in prod |
+| Activities | Supabase + source-linked curated public events | Mock off in prod |
 | Marketplace | Supabase | No |
 | Guide | `src/data/mock-data.ts` articles | Static only (CMS TBD) |
 
