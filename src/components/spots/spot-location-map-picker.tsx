@@ -198,14 +198,18 @@ function GoogleMapCamera({
 
   useEffect(() => {
     if (!map || !pinCoords) return;
-    map.panTo({ lat: pinCoords.lat, lng: pinCoords.lng });
-    map.setZoom(14);
+    map.moveCamera({
+      center: { lat: pinCoords.lat, lng: pinCoords.lng },
+      zoom: 14,
+    });
   }, [map, pinCoords]);
 
   useEffect(() => {
     if (!map || pinCoords || !liveCoords) return;
-    map.panTo({ lat: liveCoords.lat, lng: liveCoords.lng });
-    map.setZoom(14);
+    map.moveCamera({
+      center: { lat: liveCoords.lat, lng: liveCoords.lng },
+      zoom: 14,
+    });
   }, [map, liveCoords, pinCoords]);
 
   return null;
@@ -537,8 +541,7 @@ function LeafletPicker({
         } else {
           pinMarkerRef.current.setLatLng([pinCoords.lat, pinCoords.lng]);
         }
-        map.panTo([pinCoords.lat, pinCoords.lng]);
-        map.setZoom(14);
+        map.setView([pinCoords.lat, pinCoords.lng], 14);
         userInteractedRef.current = true;
       } else if (
         userPosition &&
