@@ -5,6 +5,7 @@
 ## 运营检查点（2026-10-21）
 
 - 正式 Vercel 项目已配置 `SUPABASE_SERVICE_ROLE_KEY`（仅核对变量名称和 Production 环境，未读取密钥值）。
+- 申请运营限制（2026-10-21 代码检查）：`/admin/pond-claims` 只查看私密申请并更新线索状态；它不会修改公开地点资料。Google Maps 导入地点也不能从普通业者编辑页修改。收到经营者确认后，必须逐项核实并走管理员操作更新资料，再检查生产页面；提交申请、标记已认领都不等同于资料已核实或已发布。目前没有业者申请记录。
 - Supabase 状态页在 2026-10-21 显示恢复正常。已在正式 JomPancing 项目用只读 SQL 确认 `pond_claim_requests` 存在、RLS 已开启、anon/authenticated 无 SELECT 权限、service_role 有 SELECT/INSERT 权限；没有读取申请人资料，也没有写入数据库。Vercel Production 配置中确认存在 `SUPABASE_SERVICE_ROLE_KEY`、`ADMIN_EMAILS` 和 Supabase 公共连接变量（未查看值）。申请流程具备数据库与配置条件，但尚未做真实提交的端到端验证。
 - 已根据用户明确指示使用其当前打开的 WhatsApp 账号联系候选商家。WhatsApp 显示收件方为 +60 17-755 8132 Business Account；已发出一封马来文邀约，说明发件人是协助创办人的 AI 助手，邀请免费核对地址、营业时间、收费及规则，未经同意不公开联系方式、不保证客流，并说明如不合适便不再联系。该号码来自 Waze 商家条目；不能据此宣称 WhatsApp 账号身份已独立核实。等待商家回复，暂不跟进。
 - Vercel 项目属于 Hobby。已先发布三语隐私说明，再按用户许可启用 Web Analytics Hobby 档：免费额度 50,000 events/月、30 天历史、无自定义事件；没有升级 Pro。面板已从 demo 状态转为真实 Analytics 页面，目前暂无可用生产数据；Vercel 会排除自动化流量。可看页面浏览、来源和设备等，不能把页面浏览当作商家联系点击。
