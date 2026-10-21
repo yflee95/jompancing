@@ -84,6 +84,8 @@ Ko-Nelayan outreach (2026-10-21): The official event page lists the 31 October 2
 - **ACCESSTRADE Malaysia（个人可申请，待评估）**：官方站明确 Publisher 可为个人或企业；其官方 Academy 注册说明允许以网站、博客或社交媒体作为媒体，申请审核后才填写电话、住址和银行资料。Campaign 仍需逐个申请，旧 Academy 说明审核约 3–5 个工作日，具体时效和当前可用钓具/电商广告需登录后核实。相比 Involve Asia 当前公开的“网站过去 30 天超过 10 次活跃更新”门槛，这条路线更值得优先核实；尚未创建账户、提交个人资料或申请 Campaign。来源：[ACCESSTRADE Malaysia](https://accesstrade.global/my/)、[官方 Publisher 注册说明](https://academy.accesstrade.global/accesstrade-platform-2471)、[Campaign 审核说明](https://academy.accesstrade.global/campaign-2476)。
 - **TCE Tackles 直接联盟计划（条款不明，待核实）**：TCE 官网存在 Affiliate Registration Form，官方联系页确认经营渔具零售；但公开页面没有佣金率、归因周期、付款门槛、个人资格或媒体审核规则。页面还包含普通网店注册表，不能仅凭可见注册入口认定联盟计划接受个人网站。未创建账户或提交信息；先核实计划条款后再决定是否申请。来源：[官方 Affiliate 页面](https://tcetackles.com.my/affiliate/)、[官方联系方式](https://tcetackles.com.my/contact-us/)。
 
+ACCESSTRADE Publisher 申请简介草稿（待账户持有人核实后使用）："JomPancing is a Malaysia-focused fishing community and directory. We publish original Malay, English and Chinese guides and local fishing spot information to help anglers plan trips and choose gear suited to their venue. Any future affiliate links will appear only in relevant gear guidance and will be clearly disclosed. We do not claim product testing unless we have actually tested the product." 申请类型按个人资料据实选择；流量栏如需填写，使用后台真实统计，不估算或夸大。来源：[ACCESSTRADE Publisher 注册说明](https://academy.accesstrade.global/accesstrade-platform-2471)、[ACCESSTRADE Publisher 页面](https://accesstrade.global/publisher)。
+
 备选是 Kolam Pancing PDS，位于 Selangor；官网信息较完整，可在本地试点后再联系：<https://kolampancingpds.com/>。官网天气模块请求失败，不要把其天气数据当作可用服务来宣传。
 
 ### 首次联系文案（马来文）
