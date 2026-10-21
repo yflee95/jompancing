@@ -168,6 +168,8 @@ export interface Activity {
   viewCount: number;
   interestCount: number;
   contactWhatsApp?: string;
+  /** Official organizer announcement used for curated public events. */
+  sourceUrl?: string;
 }
 
 export interface NewActivityInput {

@@ -1,5 +1,11 @@
 # JomPancing 首笔收入试点
 
+## 官方钓鱼活动资料（2026-10-21）
+
+新增 Ko-Nelayan Tuaran Mini Game Fishing Competition 三语活动页。官方公告列出日期为 2026 年 10 月 31 日、上午 9 点至下午 1 点，地点为 Taman Mini Akuakultur (TMA), Kg. Laya-Laya，报名费 RM38/竿、奖品总额 RM3,800、名额有限。JomPancing 未获主办方核实，也不确认当前剩余名额；详情页直接链接主办方公告供读者核对最新报名信息。活动结束后从活动浏览、搜索和 sitemap 排除。本地功能改动尚未发布，因此不能当作已有读者使用或收入的证据。
+
+来源：<https://konelayan.sabah.gov.my/4.%20pusat-media-tab/aktiviti%202026/10.%20oktober/1001%20-%20Pertandingan%20Santai%20Mini%20Game%20Memancing%20Ko-Nelayan%202026.html>
+
 状态：首家商家试点进行中。实收收入 RM0，已发出 6 条商家/赛事资料核对或免费刊登邀请，经营者承诺 0；Kolam Pancing Syawal / Sungai Rekoh、D’Tiram、Joran Fest、Ko-Nelayan、MM Fishing Tackle 与 Southern Pro Tackle 各收到一条邀请。D’Tiram 号码尚未由商家自有渠道核实；Ko-Nelayan、Joran Fest、MM Fishing Tackle 与 Southern Pro Tackle 邀请均已送达；Joran Fest 联系人表示会告知管理层，之后发来一个 OK 贴图，但未提供赛事资料或确认转交结果。未承诺流量或收费服务。
 
 ## 运营检查点（2026-10-21）

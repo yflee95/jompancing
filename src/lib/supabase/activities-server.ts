@@ -23,12 +23,12 @@ export async function fetchActivityBySlugFromDb(
 }
 
 export async function fetchPublicActivitySlugsFromDb(): Promise<
-  { slug: string; start_date: string | null }[]
+  { slug: string; start_date: string | null; end_date: string | null }[]
 > {
   const supabase = createPublicSupabaseClient();
   const { data, error } = await supabase
     .from("activities")
-    .select("slug, start_date");
+    .select("slug, start_date, end_date");
 
   if (error) throw error;
   return data ?? [];

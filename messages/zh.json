@@ -427,12 +427,13 @@
     "seoListTitle": "马来西亚钓鱼活动与比赛",
     "seoListDescription": "钓鱼比赛、渔具特卖、钓友聚会 — 在 Jompancing 按州筛选。",
     "seoActivityTitle": "{title} — 钓鱼活动",
-    "seoActivityDescriptionRich": "{title}，地点：{venue}。{excerpt} — 在 Jompancing 报名联系。",
+    "seoActivityDescriptionRich": "{title}，地点：{venue}。{excerpt} — 在 Jompancing 查看活动详情。",
     "notFound": "找不到活动",
     "noActivities": "此区域暂无活动",
     "tryDifferentRegion": "试试其他州属或更换排序。",
     "imInterested": "我有兴趣",
     "organizerNoContact": "主办方暂未提供 WhatsApp 联系方式。",
+    "officialSource": "查看主办方官方公告与报名详情 ↗",
     "whatsappMessage": "你好，我对 {organizer} 的「{title}」有兴趣，可以分享详情吗？"
   },
   "forum": {

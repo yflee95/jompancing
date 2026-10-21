@@ -427,12 +427,13 @@
     "seoListTitle": "Fishing events & contests in Malaysia",
     "seoListDescription": "Tournaments, tackle sales, angler meetups — filter by state on Jompancing.",
     "seoActivityTitle": "{title} — fishing event",
-    "seoActivityDescriptionRich": "{title} at {venue}. {excerpt} — register via Jompancing.",
+    "seoActivityDescriptionRich": "{title} at {venue}. {excerpt} — check event details on Jompancing.",
     "notFound": "Activity not found",
     "noActivities": "No activities in this area",
     "tryDifferentRegion": "Try another state or change the sort.",
     "imInterested": "I'm interested",
     "organizerNoContact": "The organizer has not shared a WhatsApp contact.",
+    "officialSource": "View organizer's official announcement and registration details ↗",
     "whatsappMessage": "Hi, I'm interested in \"{title}\" by {organizer}. Could you share details?"
   },
   "forum": {

@@ -54,7 +54,7 @@ export function ActivityJsonLd({ activity, locale }: ActivityJsonLdProps) {
             "@type": "Offer",
             price: activity.fee,
             priceCurrency: "MYR",
-            availability: "https://schema.org/InStock",
+            ...(activity.sourceUrl ? { url: activity.sourceUrl } : {}),
           },
         }
       : {}),

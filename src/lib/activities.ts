@@ -20,7 +20,9 @@ export function filterActivitiesByRegion(
   districtId?: string,
   sort: ActivitySort = "hot",
 ): Activity[] {
+  const now = Date.now();
   let results = activities.filter((activity) => {
+    if (new Date(activity.endDate).getTime() < now) return false;
     if (stateId && activity.stateId !== stateId) return false;
     if (districtId && activity.districtId !== districtId) return false;
     return true;

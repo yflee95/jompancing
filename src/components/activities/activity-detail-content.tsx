@@ -123,6 +123,17 @@ export async function ActivityDetailContent({
           {getLocalizedText(activity.description, locale)}
         </p>
 
+        {activity.sourceUrl && (
+          <a
+            href={activity.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex rounded-full bg-[var(--ocean-light)] px-4 py-2 text-sm font-semibold text-[var(--ocean-dark)] underline-offset-4 hover:underline"
+          >
+            {t("officialSource")}
+          </a>
+        )}
+
         <ActivityDetailActions
           activityTitle={getLocalizedText(activity.title, locale)}
           organizer={activity.organizer}

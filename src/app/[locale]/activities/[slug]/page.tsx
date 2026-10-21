@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ActivityDetailContent } from "@/components/activities/activity-detail-content";
 import { ActivityDetailView } from "@/components/activities/activity-detail-view";
 import { getActivityBySlug } from "@/data/mock-data";
+import { getCuratedActivityBySlug } from "@/data/curated-activities";
 import { shouldUseMockContent } from "@/lib/mock-content";
 import { buildActivityDetailSeo } from "@/lib/content-seo";
 import { buildPageMetadata } from "@/lib/seo";
@@ -22,6 +23,13 @@ async function resolveActivity(slug: string) {
     } catch {
       /* fall through */
     }
+  }
+
+  const curatedActivity = getCuratedActivityBySlug(slug);
+  if (curatedActivity) {
+    return new Date(curatedActivity.endDate).getTime() >= Date.now()
+      ? curatedActivity
+      : null;
   }
 
   if (shouldUseMockContent()) {

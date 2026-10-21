@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { mockActivities } from "@/data/mock-data";
+import { CURATED_ACTIVITIES } from "@/data/curated-activities";
 import { shouldUseMockContent } from "@/lib/mock-content";
 import { slugify } from "@/lib/slug";
 import { computeFreePromotionEnd } from "@/lib/promotion";
@@ -55,7 +56,6 @@ function persistDemoActivities(activities: Activity[]) {
 }
 
 function createDemoActivity(input: NewActivityInput): Activity {
-  const now = new Date().toISOString();
   const baseSlug = slugify(input.title) || "activity";
   const slug = `${baseSlug}-${Date.now().toString(36)}`;
 
@@ -90,6 +90,7 @@ export function ActivitiesProvider({ children }: { children: React.ReactNode }) 
   const useDb = isSupabaseConfigured();
 
   const refreshActivities = useCallback(async () => {
+    await Promise.resolve();
     if (!useDb) {
       setUserActivities(loadDemoActivities());
       setIsLoaded(true);
@@ -107,8 +108,26 @@ export function ActivitiesProvider({ children }: { children: React.ReactNode }) 
   }, [useDb]);
 
   useEffect(() => {
-    void refreshActivities();
-  }, [refreshActivities]);
+    let active = true;
+
+    const loadActivities = async () => {
+      try {
+        const rows = useDb
+          ? await fetchActivitiesFromDb()
+          : await Promise.resolve().then(loadDemoActivities);
+        if (active) setUserActivities(rows);
+      } catch {
+        if (active) setUserActivities([]);
+      } finally {
+        if (active) setIsLoaded(true);
+      }
+    };
+
+    void loadActivities();
+    return () => {
+      active = false;
+    };
+  }, [useDb]);
 
   const addActivity = useCallback(
     async (input: NewActivityInput): Promise<Activity> => {
@@ -131,11 +150,14 @@ export function ActivitiesProvider({ children }: { children: React.ReactNode }) 
   );
 
   const activities = useMemo(
-    () =>
-      normalizeActivities([
+    () => {
+      const userSlugs = new Set(userActivities.map((activity) => activity.slug));
+      return normalizeActivities([
         ...userActivities,
+        ...CURATED_ACTIVITIES.filter((activity) => !userSlugs.has(activity.slug)),
         ...(shouldUseMockContent() ? mockActivities : []),
-      ]),
+      ]);
+    },
     [userActivities],
   );
 

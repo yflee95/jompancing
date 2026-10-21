@@ -80,9 +80,11 @@ export function searchActivitiesInList(
   query: string,
 ): Activity[] {
   if (!query.trim()) return [];
-  return activities.filter((activity) =>
-    matchesSearchTerms(activitySearchText(activity), query),
-  );
+  const now = Date.now();
+  return activities.filter((activity) => {
+    if (new Date(activity.endDate).getTime() < now) return false;
+    return matchesSearchTerms(activitySearchText(activity), query);
+  });
 }
 
 function listingSearchText(listing: MarketplaceListing): string {

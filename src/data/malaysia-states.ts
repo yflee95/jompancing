@@ -112,6 +112,11 @@ export const malaysiaStates: State[] = [
         slug: "sandakan",
         name: { ms: "Sandakan", en: "Sandakan", zh: "山打根" },
       },
+      {
+        id: "tuaran",
+        slug: "tuaran",
+        name: { ms: "Tuaran", en: "Tuaran", zh: "斗亚兰" },
+      },
     ],
   },
   {

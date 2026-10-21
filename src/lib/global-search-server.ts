@@ -1,4 +1,5 @@
 import { mockForumPosts } from "@/data/mock-data";
+import { CURATED_ACTIVITIES } from "@/data/curated-activities";
 import { shouldUseMockContent } from "@/lib/mock-content";
 import { loadPublicSpots } from "@/lib/public-spots";
 import {
@@ -51,6 +52,12 @@ export async function loadGlobalSearchResults(
     listingsPromise,
   ]);
 
+  const activitySlugs = new Set(activities.map((activity) => activity.slug));
+  const allActivities = [
+    ...activities,
+    ...CURATED_ACTIVITIES.filter((activity) => !activitySlugs.has(activity.slug)),
+  ];
+
   return {
     spots: searchSpotsInList(spots, normalized),
     forum: dedupeForum(
@@ -59,7 +66,7 @@ export async function loadGlobalSearchResults(
         normalized,
       ),
     ),
-    activities: searchActivitiesInList(activities, normalized),
+    activities: searchActivitiesInList(allActivities, normalized),
     listings: searchListingsInList(listings, normalized),
   };
 }

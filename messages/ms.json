@@ -427,12 +427,13 @@
     "seoListTitle": "Aktiviti & peraduan memancing Malaysia",
     "seoListDescription": "Peraduan memancing, jualan tackle, meetup pemancing — tapis mengikut negeri di Jompancing.",
     "seoActivityTitle": "{title} — aktiviti memancing",
-    "seoActivityDescriptionRich": "{title} di {venue}. {excerpt} — daftar & hubungi penganjur di Jompancing.",
+    "seoActivityDescriptionRich": "{title} di {venue}. {excerpt} — semak butiran acara di Jompancing.",
     "notFound": "Aktiviti tidak dijumpai",
     "noActivities": "Tiada aktiviti di kawasan ini",
     "tryDifferentRegion": "Cuba negeri lain atau tukar susunan.",
     "imInterested": "Saya berminat",
     "organizerNoContact": "Penganjur belum berkongsi nombor WhatsApp.",
+    "officialSource": "Lihat pengumuman rasmi dan maklumat pendaftaran ↗",
     "whatsappMessage": "Hi, saya berminat dengan \"{title}\" anjuran {organizer}. Boleh share butiran?"
   },
   "forum": {

@@ -15,6 +15,7 @@ import { fetchForumPostsFromDb } from "@/lib/supabase/forum";
 
 import { fetchPublicSpotSlugsFromDb } from "@/lib/supabase/spots-server";
 import { FISH_SPECIES } from "@/data/fish-catalog";
+import { CURATED_ACTIVITIES } from "@/data/curated-activities";
 
 
 
@@ -175,8 +176,20 @@ export async function getActivitySlugs(): Promise<SitemapSlugEntry[]> {
   const seen = new Set<string>();
   const entries: SitemapSlugEntry[] = [];
 
+  const currentTime = Date.now();
+  for (const activity of CURATED_ACTIVITIES) {
+    if (new Date(activity.endDate).getTime() < currentTime) continue;
+    if (seen.has(activity.slug)) continue;
+    seen.add(activity.slug);
+    entries.push({
+      slug: activity.slug,
+      lastModified: safeDate(activity.startDate),
+    });
+  }
+
   if (shouldUseMockContent()) {
     for (const activity of mockActivities) {
+      if (new Date(activity.endDate).getTime() < currentTime) continue;
       if (seen.has(activity.slug)) continue;
       seen.add(activity.slug);
       entries.push({
@@ -194,6 +207,7 @@ export async function getActivitySlugs(): Promise<SitemapSlugEntry[]> {
     );
     const rows = await fetchPublicActivitySlugsFromDb();
     for (const row of rows) {
+      if (row.end_date && new Date(row.end_date).getTime() < currentTime) continue;
       if (!row.slug || seen.has(row.slug)) continue;
       seen.add(row.slug);
       entries.push({
