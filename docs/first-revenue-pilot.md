@@ -1,12 +1,12 @@
 # JomPancing 首笔收入试点
 
-状态：首家商家试点准备中。实收收入 RM0，已联系经营者 0，经营者承诺 0；已选出一位与 Johor Bahru 搜索需求匹配的候选商家，待确认 JomPancing 官方发件身份。
+状态：首家商家试点进行中。实收收入 RM0，已联系经营者 1，经营者承诺 0；已于 2026-10-21 通过用户指定的 WhatsApp 账号，向 Kolam Pancing Syawal / Sungai Rekoh 的 WhatsApp Business 号码发送一封免费资料核对邀请。等待回复；未承诺流量或收费服务。
 
 ## 运营检查点（2026-10-21）
 
 - 正式 Vercel 项目已配置 `SUPABASE_SERVICE_ROLE_KEY`（仅核对变量名称和 Production 环境，未读取密钥值）。
 - Supabase 状态页在 2026-10-21 显示恢复正常。已在正式 JomPancing 项目用只读 SQL 确认 `pond_claim_requests` 存在、RLS 已开启、anon/authenticated 无 SELECT 权限、service_role 有 SELECT/INSERT 权限；没有读取申请人资料，也没有写入数据库。Vercel Production 配置中确认存在 `SUPABASE_SERVICE_ROLE_KEY`、`ADMIN_EMAILS` 和 Supabase 公共连接变量（未查看值）。申请流程具备数据库与配置条件，但尚未做真实提交的端到端验证。
-- 当前没有确认 JomPancing 自有的 Messenger 或 WhatsApp Business 发件身份，因此尚未外联。上一版曾把 Selangor 的 PDS 列为首选；现根据 Johor Bahru 搜索需求改为已有 JomPancing 地点页的 Kolam Pancing Syawal / Sungai Rekoh。
+- 已根据用户明确指示使用其当前打开的 WhatsApp 账号联系候选商家。WhatsApp 显示收件方为 +60 17-755 8132 Business Account；已发出一封马来文邀约，说明发件人是协助创办人的 AI 助手，邀请免费核对地址、营业时间、收费及规则，未经同意不公开联系方式、不保证客流，并说明如不合适便不再联系。该号码来自 Waze 商家条目；不能据此宣称 WhatsApp 账号身份已独立核实。等待商家回复，暂不跟进。
 - Vercel 项目属于 Hobby。已先发布三语隐私说明，再按用户许可启用 Web Analytics Hobby 档：免费额度 50,000 events/月、30 天历史、无自定义事件；没有升级 Pro。面板已从 demo 状态转为真实 Analytics 页面，目前暂无可用生产数据；Vercel 会排除自动化流量。可看页面浏览、来源和设备等，不能把页面浏览当作商家联系点击。
 - 最新 Search Console（2026-09-09 至 2026-10-18，报告 7 小时前更新）：174 次点击、11,400 次曝光、CTR 1.5%、平均排名 7。`kolam pancing near me` 有 615 次曝光、3 次点击、CTR 0.5%、平均排名 7.2；该查询主要落到 Johor Bahru 地区页。产品目前能让用户手动按距离筛选，但 GPS 曾在全站打开时自动请求。
 - GPS 现为用户点击后才请求，坐标用途说明与三语隐私文案已上线（提交 `a27ce8d`）。
@@ -45,7 +45,7 @@
 
 优先联系 **Kolam Pancing Syawal / Kolam Pancing Sungai Rekoh**：它位于 Masai 的 Kg. Sungai Rekoh，贴近当前有 `kolam pancing near me` 搜索需求的 Johor Bahru 区域，且 JomPancing 已有同名地点页，可直接邀请经营者核对现有资料。Waze 的 Sungai Rekoh 地点将 Kolam Pancing Syawal 的 Facebook 页面作为商家链接；同一 Facebook URL 也出现在钓友目录中。该页面尚未能在公开浏览器中独立打开确认，因此发送前只使用明确标注的商家主页，不直接把列表里的电话号码当成官方号码。
 
-候选页面：<https://www.jompancing.my/ms/spots/kolam-pancing-sungai-rekoh-7mmCYQ2g>。商家页面：<https://www.facebook.com/kolampancingsyawal/>。佐证来源：<https://www.waze.com/live-map/directions/my/johor/masai/kolam-pancing-syawal-kampung-teluk-jawa-masai?to=place.ChIJBwj4ddEU2jERG1l7mmCYQ2g>、<https://mohredahangler.wixsite.com/pancing/senarai-kolam-air-masin>。
+候选页面：<https://www.jompancing.my/ms/spots/kolam-pancing-sungai-rekoh-7mmCYQ2g>。商家页面：<https://www.facebook.com/kolampancingsyawal/>。佐证来源：<https://www.waze.com/live-map/directions/my/johor/masai/kolam-pancing-syawal-kampung-teluk-jawa-masai?to=place.ChIJBwj4ddEU2jERG1l7mmCYQ2g>、<https://mohredahangler.wixsite.com/pancing/senarai-kolam-air-masin>。2026-10-21 已通过用户指定 WhatsApp 账号发送首封邀约；收件界面显示 +60 17-755 8132 Business Account。号码源自 Waze 条目，商家关系尚待对方回复确认。
 
 备选是 Kolam Pancing PDS，位于 Selangor；官网信息较完整，可在本地试点后再联系：<https://kolampancingpds.com/>。官网天气模块请求失败，不要把其天气数据当作可用服务来宣传。
 
@@ -55,7 +55,7 @@
 >
 > Kami hanya akan mengemas kini maklumat yang disahkan dan memaparkan saluran hubungan perniagaan dengan kebenaran pihak tuan. Tiada bayaran dan tiada janji jumlah pelanggan. Jika berminat, boleh saya hantarkan pautan untuk disemak? Jika tidak sesuai, tiada masalah dan kami tidak akan menghubungi lagi.
 
-通过商家主页的 Messenger 联系时，收件人会看到发件账号/页面身份。当前没有确认 JomPancing 对外发送账号，因此暂不发送；不要从私人账号代表公司联系。对方拒绝后不再联系。若未回复，只允许在 7 天后礼貌跟进一次。
+首封邀请已由用户指定的 WhatsApp 账号发出，消息明确披露 AI 助手身份与免费核对目的。对方拒绝后不再联系。若未回复，只允许在 7 天后礼貌跟进一次；发送任何跟进前先检查回复，且不联系其他对象。
 
 ### 后续付费假设
 
@@ -65,7 +65,7 @@
 
 | 指标 | 记录定义 | 目前状态 |
 |---|---|---|
-| 商家邀约数 | 通过经营者公开业务渠道发送的个性化邀约 | 0 |
+| 商家邀约数 | 通过经营者公开业务渠道发送的个性化邀约 | 1（2026-10-21，Syawal，WhatsApp） |
 | 回复数 | 商家主动回复，不含系统送达/已读 | 0 |
 | 资料确认数 | 商家逐项确认公开的地址、时段、收费或规则 | 0 |
 | 纠错完成数 | 已核实并更新的钓点资料 | 0 |
@@ -78,7 +78,7 @@
 1. 活动/渔具 WhatsApp 联系体验、GPS 点击后授权、Johor Bahru 三语搜索摘要及导入地点资料可信度修复均已发布。
 2. 继续观察 Search Console 同一查询/页面至少 28 天；在用户允许设备定位时，再验证真实定位交互，不把排名或曝光当作收入。
 3. `pond_claim_requests` 表与 RLS 已只读确认；接下来在不插入合成生产申请的前提下，补做用户授权下的端到端验证或等待第一条真实商家申请。
-4. 确认 JomPancing 对外 WhatsApp 账号后，联系一位鱼塘经营者，提供免费资料核对；当前邀约数仍为 0。
+4. 等待 Syawal 对首封资料核对邀请回复；若 7 天内未回复，可礼貌跟进一次。只在收到同意后发送核对链接并开始更新资料。
 5. 让经营者检查资料并记录确认依据及日期。使用 Vercel Analytics 报告实际页面访问；Hobby 没有自定义事件，所以当前不宣称统计地图路线或 WhatsApp 点击。
 6. 试点结束后，以真实数据和经营者意愿决定是否测试赞助展示；未确认付费意愿前不收款、不公开承诺效果。
 
