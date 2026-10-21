@@ -510,6 +510,8 @@
     "clearFilters": "Kosongkan tapisan",
     "noListings": "Belum ada senarai",
     "beFirstSeller": "Jadilah yang pertama jual peralatan di sini!",
+    "emptyBuyerFallback": "Mencari tempat memancing? Terokai lokasi memancing dahulu.",
+    "browseFishingSpots": "Terokai lokasi memancing",
     "listingsLoadFailed": "Senarai tidak dapat dimuatkan sekarang.",
     "retryLoad": "Cuba lagi",
     "seoListTitle": "Jual beli peralatan memancing — COD Malaysia",

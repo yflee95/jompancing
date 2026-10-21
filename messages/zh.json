@@ -510,6 +510,8 @@
     "clearFilters": "清除筛选",
     "noListings": "暂无商品",
     "beFirstSeller": "成为第一个在此出售渔具的人！",
+    "emptyBuyerFallback": "想找钓点？可以先浏览附近的垂钓地点。",
+    "browseFishingSpots": "浏览钓点",
     "listingsLoadFailed": "商品暂时无法加载。",
     "retryLoad": "重试",
     "seoListTitle": "买卖渔具 — 马来西亚面交",

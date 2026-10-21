@@ -510,6 +510,8 @@
     "clearFilters": "Clear filters",
     "noListings": "No listings yet",
     "beFirstSeller": "Be the first to sell gear here!",
+    "emptyBuyerFallback": "Looking for somewhere to fish? Browse fishing spots instead.",
+    "browseFishingSpots": "Browse fishing spots",
     "listingsLoadFailed": "We couldn't load listings right now.",
     "retryLoad": "Try again",
     "seoListTitle": "Buy & sell fishing gear — COD Malaysia",

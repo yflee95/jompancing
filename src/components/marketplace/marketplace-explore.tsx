@@ -92,13 +92,21 @@ export function MarketplaceExplore({ locale }: MarketplaceExploreProps) {
       {!isLoaded ? (
         <PageLoader compact label={t("loadingListings")} />
       ) : sortedListings.length === 0 ? (
-        <EmptyState
-          className="mt-4"
-          title={t("noListings")}
-          description={t("beFirstSeller")}
-          actionLabel={t("postListing")}
-          actionHref="/marketplace/new"
-        />
+        <div className="mt-4">
+          <EmptyState
+            className="mt-0"
+            title={t("noListings")}
+            description={t("beFirstSeller")}
+            actionLabel={t("postListing")}
+            actionHref="/marketplace/new"
+          />
+          <div className="mt-5 text-center">
+            <p className="text-sm text-[var(--ink-muted)]">{t("emptyBuyerFallback")}</p>
+            <Button className="mt-3" variant="outline" asChild>
+              <Link href="/spots">{t("browseFishingSpots")}</Link>
+            </Button>
+          </div>
+        </div>
       ) : filteredListings.length === 0 ? (
         <div className="mt-4 space-y-4">
           <EmptyState
