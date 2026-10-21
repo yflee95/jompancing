@@ -36,7 +36,7 @@ export function FishDetail({ fish, locale, labels }: FishDetailProps) {
       <article className="mt-4 overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-travel)] ring-1 ring-[var(--sand-dark)]/40">
         <div className="grid md:grid-cols-[1.1fr_0.9fr]">
           <div className="relative aspect-[4/3] bg-[var(--ocean-light)] md:aspect-auto md:min-h-[25rem]">
-            <Image src={fish.photo.src} alt={name} fill priority sizes="(max-width: 768px) 100vw, 55vw" className="object-cover" />
+            <Image src={fish.photo.src} alt={name} fill priority unoptimized sizes="(max-width: 768px) 100vw, 55vw" className="object-cover" />
           </div>
           <div className="p-5 md:p-8">
             <div className="flex flex-wrap gap-2">

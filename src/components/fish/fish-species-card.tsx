@@ -31,6 +31,7 @@ export function FishSpeciesCard({
             src={fish.photo.src}
             alt={name}
             fill
+            unoptimized
             sizes={variant === "rail" ? "72vw" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"}
             className="object-cover transition duration-500 group-hover:scale-105"
           />
