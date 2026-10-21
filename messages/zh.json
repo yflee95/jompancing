@@ -243,6 +243,7 @@
     "photoCredit": "照片",
     "googleAddress": "Google 地址",
     "googlePlaceListing": "Google Maps 地点 · 钓鱼权限未核实",
+    "communityDetailsUnconfirmed": "社区分享 · 未经场地方确认",
     "googleSeedDescription": "此地点资料来自 Google Maps。Jompancing 尚未核实此处是否允许钓鱼，也未确认这里目前是否仍是钓鱼场所。",
     "seoGoogleSeedDescription": "{name}，位于 {location}。地点资料来自 Google Maps；Jompancing 尚未核实钓鱼权限或场地详情。",
     "listingUpdated": "页面更新于 {date}",

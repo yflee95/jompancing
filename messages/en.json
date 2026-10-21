@@ -243,6 +243,7 @@
     "photoCredit": "Photo",
     "googleAddress": "Google Address",
     "googlePlaceListing": "Google Maps place · fishing unconfirmed",
+    "communityDetailsUnconfirmed": "Community listing · venue not confirmed",
     "googleSeedDescription": "This place listing comes from Google Maps. Jompancing has not confirmed that fishing is allowed here or that this is an active fishing venue.",
     "seoGoogleSeedDescription": "{name} in {location}. Place information sourced from Google Maps; Jompancing has not confirmed fishing access or venue details.",
     "listingUpdated": "Listing updated {date}",

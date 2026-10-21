@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeCheck, Lock, MapPin, MessageCircle } from "lucide-react";
+import { BadgeCheck, Info, Lock, MapPin, MessageCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AppImage } from "@/components/ui/app-image";
@@ -32,15 +32,27 @@ export function SpotCard({ spot, locale, showPrivateBadge }: SpotCardProps) {
           />
           {spot.featured && spot.isUserGenerated && (
             <span
-              className={`badge-accent absolute left-3 z-10 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${spot.ownerVerifiedDetails ? "top-12" : "top-3"}`}
+              className={`badge-accent absolute left-3 z-10 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${spot.isUserGenerated ? "top-12" : "top-3"}`}
             >
               ★ {tCommon("featured")}
             </span>
           )}
-          {spot.ownerVerifiedDetails && (
-            <span className="absolute left-3 top-3 z-10 flex items-center gap-1 rounded-full bg-emerald-700/90 px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur-sm">
-              <BadgeCheck className="h-3 w-3" />
-              {t("ownerVerifiedTitle")}
+          {spot.isUserGenerated && (
+            <span
+              className={`absolute left-3 top-3 z-10 flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur-sm ${
+                spot.ownerVerifiedDetails
+                  ? "bg-emerald-700/90"
+                  : "bg-amber-700/90"
+              }`}
+            >
+              {spot.ownerVerifiedDetails ? (
+                <BadgeCheck className="h-3 w-3" />
+              ) : (
+                <Info className="h-3 w-3" />
+              )}
+              {spot.ownerVerifiedDetails
+                ? t("ownerVerifiedTitle")
+                : t("communityDetailsUnconfirmed")}
             </span>
           )}
           {(showPrivateBadge || spot.visibility === "private") && (
