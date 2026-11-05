@@ -303,8 +303,7 @@ export const mockListings: MarketplaceListing[] = [
     districtId: "johor-bahru",
     sellerName: "Hafiz R.",
     sellerVerified: true,
-    imageUrl:
-      "https://images.unsplash.com/photo-1532015917327-7a360180f871?w=800&q=80",
+    imageUrl: "",
     whatsapp: "60123456789",
     createdAt: "2026-03-08T12:00:00Z",
   },
@@ -327,8 +326,7 @@ export const mockListings: MarketplaceListing[] = [
     districtId: "klang",
     sellerName: "FishMart Klang",
     sellerVerified: true,
-    imageUrl:
-      "https://images.unsplash.com/photo-1544551763-77ef2d0cfcb6?w=800&q=80",
+    imageUrl: "",
     whatsapp: "60198765432",
     createdAt: "2026-03-10T09:00:00Z",
   },
@@ -428,7 +426,7 @@ export const mockArticles: GuideArticle[] = [
     category: "season",
     readMinutes: 5,
     imageUrl:
-      "https://images.unsplash.com/photo-1498654200943-1088dd4438ea?w=800&q=80",
+      "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=800&q=80",
     publishedAt: "2026-01-10T00:00:00Z",
   },
   {
@@ -452,7 +450,7 @@ export const mockArticles: GuideArticle[] = [
     category: "tips",
     readMinutes: 7,
     imageUrl:
-      "https://images.unsplash.com/photo-1544551763-77a415543845?w=800&q=80",
+      "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&q=80",
     publishedAt: "2026-02-15T00:00:00Z",
   },
   {
@@ -476,7 +474,7 @@ export const mockArticles: GuideArticle[] = [
     category: "gear",
     readMinutes: 5,
     imageUrl:
-      "https://images.unsplash.com/photo-1505118380757-91db5dda3b55?w=800&q=80",
+      "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=800&q=80",
     publishedAt: "2026-02-20T00:00:00Z",
   },
   {
@@ -500,7 +498,7 @@ export const mockArticles: GuideArticle[] = [
     category: "species",
     readMinutes: 6,
     imageUrl:
-      "https://images.unsplash.com/photo-1519709093765-457415791451?w=800&q=80",
+      "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=800&q=80",
     publishedAt: "2026-02-25T00:00:00Z",
   },
   {
@@ -554,7 +552,7 @@ JomPancing 尚未测试或推荐本文中的具体产品型号。请把本文当
     category: "gear",
     readMinutes: 5,
     imageUrl:
-      "https://images.unsplash.com/photo-1544551763-77a415543845?w=800&q=80",
+      "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
     publishedAt: "2026-10-21T00:00:00Z",
   },
 ];

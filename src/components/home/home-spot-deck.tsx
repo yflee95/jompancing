@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Compass,
+  Fish,
   MapPin,
   Navigation,
   PlusCircle,
@@ -39,6 +40,7 @@ type SpotWithDistance = FishingSpot & { distanceKm?: number };
 
 const CATEGORIES: { id: WaterType | "all"; icon: typeof Waves }[] = [
   { id: "all", icon: Sparkles },
+  { id: "freshwater", icon: Fish },
   { id: "saltwater", icon: Waves },
   { id: "pond", icon: MapPin },
   { id: "river", icon: Compass },
@@ -269,7 +271,7 @@ export function HomeSpotDeck({
               />
             </div>
           ))}
-          <div className="absolute inset-0 bg-gradient-to-b from-[var(--sand)]/70 via-[var(--ocean-light)]/40 to-[var(--sand)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--sand)]/90 via-[var(--sand)]/85 to-[var(--sand)]/95" />
         </div>
       )}
 
@@ -309,13 +311,14 @@ export function HomeSpotDeck({
           <h1 className="font-serif-display mt-4 text-2xl font-bold text-[var(--ink)] md:text-3xl lg:max-w-md lg:text-4xl xl:text-5xl">
             {t("deckTitle")}
           </h1>
-          <p className="mt-1 text-sm text-[var(--ink-muted)] lg:mt-3 lg:max-w-md lg:text-base lg:leading-relaxed">{t("deckHint")}</p>
+          <p className="mt-1 text-sm text-[var(--ink)] lg:mt-3 lg:max-w-md lg:text-base lg:leading-relaxed">{t("deckHint")}</p>
 
           <div className="mt-4 flex gap-2 overflow-x-auto pb-1 scrollbar-none md:justify-center lg:flex-wrap lg:justify-start">
             {CATEGORIES.map(({ id, icon: Icon }) => (
               <button
                 key={id}
                 type="button"
+                aria-pressed={activeCategory === id}
                 onClick={() => onCategoryChange(id)}
                 className={cn(
                   "flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium backdrop-blur-sm transition-colors md:text-sm",

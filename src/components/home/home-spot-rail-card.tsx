@@ -71,7 +71,7 @@ export function HomeSpotRailCard({
           imageClassName="transition duration-500 group-hover:scale-[1.03]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
-        {(showHot && spot.featured) || showPaid ? (
+        {(showHot && spot.featured && spot.ownerVerifiedDetails) || showPaid ? (
           <span
             className={cn(
               "absolute left-2 top-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide md:left-3 md:top-3 md:px-2.5 md:py-1 md:text-[10px]",

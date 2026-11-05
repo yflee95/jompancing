@@ -41,6 +41,9 @@ interface HomeExploreProps {
 }
 
 function sortNearbyHot(a: SpotWithDistance, b: SpotWithDistance): number {
+  const verifiedA = Boolean(a.ownerVerifiedDetails);
+  const verifiedB = Boolean(b.ownerVerifiedDetails);
+  if (verifiedA !== verifiedB) return verifiedA ? -1 : 1;
   if (a.featured !== b.featured) return a.featured ? -1 : 1;
   const distA = a.distanceKm ?? Infinity;
   const distB = b.distanceKm ?? Infinity;
@@ -49,6 +52,9 @@ function sortNearbyHot(a: SpotWithDistance, b: SpotWithDistance): number {
 }
 
 function sortNationwideHot(a: FishingSpot, b: FishingSpot): number {
+  const verifiedA = Boolean(a.ownerVerifiedDetails);
+  const verifiedB = Boolean(b.ownerVerifiedDetails);
+  if (verifiedA !== verifiedB) return verifiedA ? -1 : 1;
   if (a.featured !== b.featured) return a.featured ? -1 : 1;
   return b.commentCount - a.commentCount;
 }

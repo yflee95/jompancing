@@ -7,7 +7,7 @@ import { LoginGate } from "@/components/shared/login-gate";
 
 export default function ProfilePage() {
   const tCommon = useTranslations("common");
-  const { isRegisteredUser, isLoading } = useAuth();
+  const { user, isRegisteredUser, isLoading } = useAuth();
 
   if (isLoading) {
     return (
@@ -25,5 +25,6 @@ export default function ProfilePage() {
     );
   }
 
-  return <ProfileExplore />;
+  // Remount account-scoped local state when auth switches between users.
+  return <ProfileExplore key={user?.id ?? "profile"} />;
 }

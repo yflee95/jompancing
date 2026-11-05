@@ -3,6 +3,7 @@
 import {
   CalendarDays,
   ChevronRight,
+  ClipboardList,
   Fish,
   LogOut,
   Map,
@@ -11,7 +12,9 @@ import {
   MessageSquarePlus,
   Settings,
   Sparkles,
+  Trash2,
 } from "lucide-react";
+import { FormEvent, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/components/providers/auth-provider";
@@ -24,6 +27,46 @@ import { malaysiaStates } from "@/data/malaysia-states";
 import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import { FISH_SPECIES } from "@/data/fish-catalog";
+
+type FishingLogEntry = {
+  id: string;
+  date: string;
+  venue: string;
+  fishSlug: string;
+  method: string;
+  notes: string;
+};
+
+const fishingLogKey = (userId: string) => `jompancing_fishing_log_v1_${userId}`;
+const localDateInputValue = () => {
+  const date = new Date();
+  const pad = (value: number) => String(value).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+};
+
+function loadFishingLog(userId: string | undefined): FishingLogEntry[] {
+  if (typeof window === "undefined" || !userId) return [];
+  try {
+    const raw = localStorage.getItem(fishingLogKey(userId));
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (entry): entry is FishingLogEntry =>
+        entry &&
+        typeof entry === "object" &&
+        typeof entry.id === "string" &&
+        typeof entry.date === "string" &&
+        typeof entry.venue === "string" &&
+        typeof entry.fishSlug === "string" &&
+        typeof entry.method === "string" &&
+        typeof entry.notes === "string",
+    );
+  } catch {
+    return [];
+  }
+}
 
 export function ProfileExplore() {
   const t = useTranslations("nav");
@@ -34,6 +77,40 @@ export function ProfileExplore() {
   const { listings } = useMarketplace();
   const { getMySpots } = useUserSpots();
   const locale = useLocale() as Locale;
+  const [logEntries, setLogEntries] = useState<FishingLogEntry[]>(() =>
+    loadFishingLog(user?.id),
+  );
+  const [logFormOpen, setLogFormOpen] = useState(false);
+  const [logStorageError, setLogStorageError] = useState(false);
+
+  function persistLog(next: FishingLogEntry[]) {
+    setLogEntries(next);
+    try {
+      localStorage.setItem(
+        fishingLogKey(user?.id ?? "guest"),
+        JSON.stringify(next),
+      );
+      setLogStorageError(false);
+    } catch {
+      setLogStorageError(true);
+    }
+  }
+
+  function addLogEntry(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const entry: FishingLogEntry = {
+      id: crypto.randomUUID(),
+      date: String(form.get("date") || localDateInputValue()),
+      venue: String(form.get("venue") || "").trim(),
+      fishSlug: String(form.get("fish") || ""),
+      method: String(form.get("method") || "").trim(),
+      notes: String(form.get("notes") || "").trim(),
+    };
+    persistLog([entry, ...logEntries]);
+    event.currentTarget.reset();
+    setLogFormOpen(false);
+  }
 
   if (!user) return null;
 
@@ -41,8 +118,7 @@ export function ProfileExplore() {
   const mySpots = getMySpots(user.id);
   const myListings = listings.filter(
     (listing) =>
-      listing.authorId === user.id ||
-      listing.sellerName === user.name,
+      listing.authorId === user.id || listing.sellerName === user.name,
   );
   const homeState = user.homeStateId
     ? malaysiaStates.find((s) => s.id === user.homeStateId)
@@ -192,13 +268,166 @@ export function ProfileExplore() {
         ))}
       </div>
 
+      <section
+        className="mt-6 rounded-3xl bg-white p-4 shadow-[var(--shadow-travel)] ring-1 ring-[var(--sand-dark)]/30"
+        aria-labelledby="fishing-log-title"
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <ClipboardList className="h-5 w-5 text-[var(--ocean)]" />
+              <h2
+                id="fishing-log-title"
+                className="font-serif-display text-lg font-bold text-[var(--ink)]"
+              >
+                {tProfile("fishingLog")}
+              </h2>
+            </div>
+            <p className="mt-1 text-xs leading-relaxed text-[var(--ink-muted)]">
+              {tProfile("fishingLogPrivacy")}
+            </p>
+            {logStorageError && (
+              <p role="alert" className="mt-2 text-xs text-red-700">
+                {tProfile("logStorageFailed")}
+              </p>
+            )}
+          </div>
+          <span className="shrink-0 rounded-full bg-[var(--ocean-light)] px-2.5 py-1 text-xs font-semibold text-[var(--ocean)]">
+            {logEntries.length}
+          </span>
+        </div>
+        <Button
+          className="mt-4 w-full"
+          size="sm"
+          onClick={() => setLogFormOpen((open) => !open)}
+        >
+          <Fish className="h-4 w-4" />
+          {logFormOpen ? tCommon("cancel") : tProfile("addFishingLog")}
+        </Button>
+        {logFormOpen && (
+          <form
+            onSubmit={addLogEntry}
+            className="mt-4 space-y-3 rounded-2xl bg-[var(--sand)] p-3"
+          >
+            <label className="block text-xs font-semibold text-[var(--ink-muted)]">
+              {tProfile("logDate")}
+              <input
+                name="date"
+                type="date"
+                defaultValue={localDateInputValue()}
+                className="mt-1 h-11 w-full rounded-xl bg-white px-3 text-sm text-[var(--ink)] ring-1 ring-[var(--sand-dark)]/60"
+              />
+            </label>
+            <label className="block text-xs font-semibold text-[var(--ink-muted)]">
+              {tProfile("logVenue")}
+              <input
+                name="venue"
+                maxLength={100}
+                placeholder={tProfile("logVenuePlaceholder")}
+                className="mt-1 h-11 w-full rounded-xl bg-white px-3 text-sm text-[var(--ink)] ring-1 ring-[var(--sand-dark)]/60"
+              />
+            </label>
+            <label className="block text-xs font-semibold text-[var(--ink-muted)]">
+              {tProfile("logFish")}
+              <select
+                name="fish"
+                defaultValue=""
+                className="mt-1 h-11 w-full rounded-xl bg-white px-3 text-sm text-[var(--ink)] ring-1 ring-[var(--sand-dark)]/60"
+              >
+                <option value="">{tProfile("logFishUnknown")}</option>
+                {FISH_SPECIES.map((fish) => (
+                  <option key={fish.slug} value={fish.slug}>
+                    {fish.name[locale]}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block text-xs font-semibold text-[var(--ink-muted)]">
+              {tProfile("logMethod")}
+              <input
+                name="method"
+                maxLength={100}
+                placeholder={tProfile("logMethodPlaceholder")}
+                className="mt-1 h-11 w-full rounded-xl bg-white px-3 text-sm text-[var(--ink)] ring-1 ring-[var(--sand-dark)]/60"
+              />
+            </label>
+            <label className="block text-xs font-semibold text-[var(--ink-muted)]">
+              {tProfile("logNotes")}
+              <textarea
+                name="notes"
+                rows={3}
+                maxLength={1000}
+                placeholder={tProfile("logNotesPlaceholder")}
+                className="mt-1 w-full resize-y rounded-xl bg-white p-3 text-sm text-[var(--ink)] ring-1 ring-[var(--sand-dark)]/60"
+              />
+            </label>
+            <Button type="submit" size="sm" className="w-full">
+              {tProfile("saveFishingLog")}
+            </Button>
+          </form>
+        )}
+        {logEntries.length === 0 ? (
+          <p className="mt-3 rounded-2xl bg-[var(--sand)] p-4 text-center text-sm text-[var(--ink-muted)]">
+            {tProfile("fishingLogEmpty")}
+          </p>
+        ) : null}
+        <div className="mt-3 space-y-2">
+          {logEntries.map((entry) => {
+            const fish = FISH_SPECIES.find(
+              (item) => item.slug === entry.fishSlug,
+            );
+            return (
+              <article
+                key={entry.id}
+                className="rounded-2xl bg-[var(--sand)] p-3"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-[var(--ocean)]">
+                      {entry.date}
+                    </p>
+                    <h3 className="mt-1 truncate text-sm font-bold text-[var(--ink)]">
+                      {entry.venue || tProfile("logVenueUnspecified")}
+                    </h3>
+                    <p className="mt-1 text-xs text-[var(--ink-muted)]">
+                      {fish?.name[locale] || tProfile("logFishUnknown")}
+                      {entry.method ? ` · ${entry.method}` : ""}
+                    </p>
+                    {entry.notes && (
+                      <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-[var(--ink-muted)]">
+                        {entry.notes}
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      persistLog(
+                        logEntries.filter((item) => item.id !== entry.id),
+                      )
+                    }
+                    aria-label={tProfile("deleteFishingLog")}
+                    className="rounded-full p-2 text-[var(--ink-muted)] hover:bg-white hover:text-red-600"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
       {mySpots.length > 0 && (
         <section className="mt-6">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="font-serif-display text-lg font-bold text-[var(--ink)]">
               {tProfile("mySpots")}
             </h2>
-            <Link href="/spots" className="text-xs font-semibold text-[var(--ocean)]">
+            <Link
+              href="/spots"
+              className="text-xs font-semibold text-[var(--ocean)]"
+            >
               {tCommon("viewAll")}
             </Link>
           </div>

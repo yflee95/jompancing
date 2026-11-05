@@ -92,7 +92,7 @@ export const HomeSpotDeckCard = memo(function HomeSpotDeckCard({
               <span className="absolute left-3 top-3 inline-flex items-center rounded-full bg-[var(--ocean)] px-2.5 py-1 text-[10px] font-bold uppercase text-white">
                 {t("paidPond")}
               </span>
-            ) : spot.featured ? (
+            ) : spot.featured && spot.ownerVerifiedDetails ? (
               <span className="badge-accent absolute left-3 top-3 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase">
                 <Flame className="h-3 w-3" />
                 {t("hotSpot")}

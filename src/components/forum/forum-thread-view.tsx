@@ -1,11 +1,12 @@
 import { Eye, Flame, MessageCircle } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { CommentsSection } from "@/components/shared/comments-section";
+import { ReportContentLink } from "@/components/shared/report-content-link";
 import type { CommentItem } from "@/components/shared/comments-section";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { TranslatableText } from "@/components/shared/translatable-text";
-import type { ForumPost } from "@/types";
+import { getLocalizedText, type ForumPost } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
 interface ForumThreadViewProps {
@@ -70,6 +71,13 @@ export async function ForumThreadView({
           contentId={post.id}
           field="body"
         />
+        <div className="mt-5 border-t border-[var(--sand-dark)]/40 pt-4">
+          <ReportContentLink
+            locale={locale}
+            path={`/forum/${post.slug}`}
+            contentLabel={getLocalizedText(post.title, locale)}
+          />
+        </div>
       </div>
 
       <CommentsSection

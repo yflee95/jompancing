@@ -79,6 +79,12 @@ export function mapForumRow(row: ForumRow): ForumPost {
   };
 }
 
+/** Keep malformed editor fragments out of public lists and direct thread pages. */
+export function isForumPostDisplayable(post: ForumPost): boolean {
+  const localizedFields = [...Object.values(post.title), ...Object.values(post.body)];
+  return !localizedFields.some((value) => /<\s*\/\s*>|<\s*>/u.test(value));
+}
+
 export async function fetchForumPostsFromDb(
   category?: ForumCategory,
 ): Promise<ForumPost[]> {
@@ -95,7 +101,9 @@ export async function fetchForumPostsFromDb(
 
   const { data, error } = await query;
   if (error) throw error;
-  return ((data ?? []) as ForumRow[]).map(mapForumRow);
+  return ((data ?? []) as ForumRow[])
+    .map(mapForumRow)
+    .filter(isForumPostDisplayable);
 }
 
 export async function fetchForumPostBySlugFromDb(
@@ -110,7 +118,8 @@ export async function fetchForumPostBySlugFromDb(
 
   if (error) throw error;
   if (!data) return null;
-  return mapForumRow(data as ForumRow);
+  const post = mapForumRow(data as ForumRow);
+  return isForumPostDisplayable(post) ? post : null;
 }
 
 export async function fetchForumPostsClient(
@@ -129,7 +138,9 @@ export async function fetchForumPostsClient(
 
   const { data, error } = await query;
   if (error) throw error;
-  return ((data ?? []) as ForumRow[]).map(mapForumRow);
+  return ((data ?? []) as ForumRow[])
+    .map(mapForumRow)
+    .filter(isForumPostDisplayable);
 }
 
 export async function insertForumPostToDb(input: {
