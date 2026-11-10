@@ -44,7 +44,7 @@ import { cn } from "@/lib/utils";
 
 
 
-type SpotsTab = "community" | "map" | "mine" | "saved";
+type SpotsTab = "all" | "community" | "map" | "mine" | "saved";
 
 
 
@@ -95,7 +95,7 @@ export function SpotsExplore({
   const { userSpots, isLoaded } = useUserSpots();
   const { slugs: savedSlugs } = useSavedSpots();
 
-  const [tab, setTab] = useState<SpotsTab>("community");
+  const [tab, setTab] = useState<SpotsTab>("all");
 
   const {
     effectiveState,
@@ -153,7 +153,9 @@ export function SpotsExplore({
       ? savedSpots
       : tab === "map"
         ? mapListings
-        : communitySpots;
+        : tab === "community"
+          ? communitySpots
+          : allSpots;
 
 
 
@@ -240,7 +242,21 @@ export function SpotsExplore({
 
       <WaterTypeFilters className="mt-3" compact />
 
-      <div className="mb-4 mt-4 flex gap-2">
+      <div className="mb-4 mt-4 flex flex-wrap gap-2">
+
+        <button
+          type="button"
+          aria-pressed={tab === "all"}
+          onClick={() => setTab("all")}
+          className={cn(
+            "rounded-full px-4 py-2 text-sm font-medium transition",
+            tab === "all"
+              ? "bg-[var(--ocean)] text-white shadow-md shadow-[var(--ocean-glow)]"
+              : "bg-white text-[var(--ink-muted)] ring-1 ring-[var(--sand-dark)]/60",
+          )}
+        >
+          {t("tabAllPlaces")}
+        </button>
 
         <button
 
@@ -334,7 +350,7 @@ export function SpotsExplore({
         </p>
       )}
 
-      {tab === "map" && (
+      {(tab === "map" || tab === "all") && (
         <p className="mb-3 text-sm text-[var(--ink-muted)]">
           {t("mapListingsHint")}
         </p>

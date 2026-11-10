@@ -6,6 +6,7 @@ import { useActivities } from "@/components/providers/activities-provider";
 import { useForum } from "@/components/providers/forum-provider";
 import { useMarketplace } from "@/components/providers/marketplace-provider";
 import { HomeEmptyWelcome } from "@/components/home/home-empty-welcome";
+import { HomeMapListingsSection } from "@/components/home/home-map-listings-section";
 import {
   getPublicUserSpots,
   useUserSpots,
@@ -95,6 +96,10 @@ export function HomeExplore({ spots }: HomeExploreProps) {
   // confirmed fishing locations. Keep them out of angler recommendations.
   const communityFishingSpots = useMemo(
     () => allPublicSpots.filter((spot) => spot.isUserGenerated),
+    [allPublicSpots],
+  );
+  const mapListings = useMemo(
+    () => allPublicSpots.filter((spot) => !spot.isUserGenerated),
     [allPublicSpots],
   );
 
@@ -239,6 +244,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
       <div className="bg-[var(--sand)] pb-24 md:pb-12">
         <HomeEmptyWelcome />
         <HomeFishSection />
+        <HomeMapListingsSection spots={mapListings} locale={locale} />
         <div id="home-browse" className="scroll-mt-4 border-t border-[var(--sand-dark)]/30">
           <HomeShareSpotBanner
             locale={locale}
@@ -290,6 +296,8 @@ export function HomeExplore({ spots }: HomeExploreProps) {
         onRequestLocation={() => void requestNearbySpots()}
         locationError={locationError}
       />
+
+      <HomeMapListingsSection spots={mapListings} locale={locale} />
 
       <HomeFishSection />
 
