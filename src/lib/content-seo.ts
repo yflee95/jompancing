@@ -133,7 +133,7 @@ export function pickSpotsForSeoHub(
   limit = 16,
 ): FishingSpot[] {
   return [...spots]
-    .filter((s) => s.visibility === "public")
+    .filter((s) => s.visibility === "public" && s.isUserGenerated)
     .sort((a, b) => {
       if (a.featured !== b.featured) return a.featured ? -1 : 1;
       return b.commentCount - a.commentCount;

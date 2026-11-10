@@ -31,7 +31,7 @@ export async function generateMetadata({
   if (filters.stateId || filters.water === "pond") {
     const spots = await loadPublicSpots();
     let list = filterSpotsByRegion(
-      spots,
+      spots.filter((spot) => spot.isUserGenerated),
       filters.stateId,
       filters.districtId,
       filters.areaId,

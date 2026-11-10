@@ -39,6 +39,7 @@ type PublicSpotSlugRow = {
   slug: string;
   created_at: string | null;
   updated_at?: string | null;
+  source?: string | null;
 };
 
 export async function fetchPublicSpotSlugsFromDb(): Promise<
@@ -47,18 +48,22 @@ export async function fetchPublicSpotSlugsFromDb(): Promise<
   const supabase = createPublicSupabaseClient();
   const withUpdated = await supabase
     .from("spots")
-    .select("slug, created_at, updated_at")
+    .select("slug, created_at, updated_at, source")
     .eq("visibility", "public");
 
   if (!withUpdated.error) {
-    return (withUpdated.data ?? []) as PublicSpotSlugRow[];
+    return ((withUpdated.data ?? []) as PublicSpotSlugRow[]).filter(
+      (row) => row.source !== "google",
+    );
   }
 
   const fallback = await supabase
     .from("spots")
-    .select("slug, created_at")
+    .select("slug, created_at, source")
     .eq("visibility", "public");
 
   if (fallback.error) throw fallback.error;
-  return (fallback.data ?? []) as PublicSpotSlugRow[];
+  return ((fallback.data ?? []) as PublicSpotSlugRow[]).filter(
+    (row) => row.source !== "google",
+  );
 }

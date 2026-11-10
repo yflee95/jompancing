@@ -60,13 +60,22 @@ export function HomeActivityEmptyCard({
         <p className="mt-2 max-w-lg text-sm leading-relaxed text-white/80 md:text-base">
           {t("activityEmptyDesc")}
         </p>
-        <Link
-          href="/activities/promote"
-          className="tap-card mt-5 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[var(--ocean-dark)] shadow-lg transition hover:bg-[var(--ocean-light)]"
-        >
-          <Megaphone className="h-4 w-4" />
-          {t("activityApplyCta")}
-        </Link>
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <Link
+            href="/activities"
+            className="tap-card inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[var(--ocean-dark)] shadow-lg transition hover:bg-[var(--ocean-light)]"
+          >
+            <CalendarDays className="h-4 w-4" />
+            {t("activityBrowseCta")}
+          </Link>
+          <Link
+            href="/activities/promote"
+            className="tap-card inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/35 transition hover:bg-white/25"
+          >
+            <Megaphone className="h-4 w-4" />
+            {t("activityApplyCta")}
+          </Link>
+        </div>
       </div>
     </div>
   );

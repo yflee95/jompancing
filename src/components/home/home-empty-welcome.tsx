@@ -28,9 +28,9 @@ export function HomeEmptyWelcome() {
           </Link>
         </Button>
         <Button asChild size="lg" variant="outline">
-          <Link href="/spots">
+          <Link href="/map">
             <MapPin className="h-4 w-4" />
-            {tNav("spots")}
+            {tNav("map")}
           </Link>
         </Button>
       </div>

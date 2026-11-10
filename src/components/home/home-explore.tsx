@@ -91,17 +91,24 @@ export function HomeExplore({ spots }: HomeExploreProps) {
     [spots, userSpots],
   );
 
+  // Google Maps results are useful as map references, but they are not
+  // confirmed fishing locations. Keep them out of angler recommendations.
+  const communityFishingSpots = useMemo(
+    () => allPublicSpots.filter((spot) => spot.isUserGenerated),
+    [allPublicSpots],
+  );
+
   const spotsWithDistance = useMemo<SpotWithDistance[]>(() => {
     if (!hasGps || !userLocation.coords) {
-      return allPublicSpots.map((spot) => ({ ...spot }));
+      return communityFishingSpots.map((spot) => ({ ...spot }));
     }
-    return allPublicSpots
+    return communityFishingSpots
       .map((spot) => ({
         ...spot,
         distanceKm: getDistanceKm(userLocation.coords!, spot.coordinates),
       }))
       .sort(sortNearbyHot);
-  }, [allPublicSpots, hasGps, userLocation.coords]);
+  }, [communityFishingSpots, hasGps, userLocation.coords]);
 
   const filterByCategory = useCallback(
     <T extends FishingSpot>(list: T[]): T[] =>
@@ -169,11 +176,11 @@ export function HomeExplore({ spots }: HomeExploreProps) {
   );
 
   const nationwideHotSpots = useMemo(() => {
-    return filterByCategory(allPublicSpots)
+    return filterByCategory(communityFishingSpots)
       .filter((s) => !nearbyIds.has(s.id))
       .sort(sortNationwideHot)
       .slice(0, 6);
-  }, [allPublicSpots, filterByCategory, nearbyIds]);
+  }, [communityFishingSpots, filterByCategory, nearbyIds]);
 
   const showPaidPondSection = activeCategory === "all";
 
@@ -227,7 +234,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
     return ids.size;
   }, [userPosts, forumLoaded]);
 
-  if (allPublicSpots.length === 0) {
+  if (communityFishingSpots.length === 0) {
     return (
       <div className="bg-[var(--sand)] pb-24 md:pb-12">
         <HomeEmptyWelcome />

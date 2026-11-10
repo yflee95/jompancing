@@ -44,7 +44,7 @@ import { cn } from "@/lib/utils";
 
 
 
-type SpotsTab = "community" | "mine" | "saved";
+type SpotsTab = "community" | "map" | "mine" | "saved";
 
 
 
@@ -115,9 +115,18 @@ export function SpotsExplore({
 
 
 
-  const communitySpots = useMemo(
+  const allSpots = useMemo(
     () => mergePublicSpots(initialSpots, getPublicUserSpots(userSpots)),
     [initialSpots, userSpots],
+  );
+
+  const communitySpots = useMemo(
+    () => allSpots.filter((spot) => spot.isUserGenerated),
+    [allSpots],
+  );
+  const mapListings = useMemo(
+    () => allSpots.filter((spot) => !spot.isUserGenerated),
+    [allSpots],
   );
 
 
@@ -134,15 +143,17 @@ export function SpotsExplore({
 
   const savedSlugSet = useMemo(() => new Set(savedSlugs), [savedSlugs]);
   const savedSpots = useMemo(
-    () => communitySpots.filter((spot) => savedSlugSet.has(spot.slug)),
-    [communitySpots, savedSlugSet],
+    () => allSpots.filter((spot) => savedSlugSet.has(spot.slug)),
+    [allSpots, savedSlugSet],
   );
 
   const baseList = tab === "mine" && user
     ? mySpots
     : tab === "saved"
       ? savedSpots
-      : communitySpots;
+      : tab === "map"
+        ? mapListings
+        : communitySpots;
 
 
 
@@ -235,6 +246,8 @@ export function SpotsExplore({
 
           type="button"
 
+          aria-pressed={tab === "community"}
+
           onClick={() => setTab("community")}
 
           className={cn(
@@ -255,11 +268,27 @@ export function SpotsExplore({
 
         </button>
 
+        <button
+          type="button"
+          onClick={() => setTab("map")}
+          aria-pressed={tab === "map"}
+          className={cn(
+            "rounded-full px-4 py-2 text-sm font-medium transition",
+            tab === "map"
+              ? "bg-[var(--ocean)] text-white shadow-md shadow-[var(--ocean-glow)]"
+              : "bg-white text-[var(--ink-muted)] ring-1 ring-[var(--sand-dark)]/60",
+          )}
+        >
+          {t("tabMapListings")}
+        </button>
+
         {user && (
 
           <button
 
             type="button"
+
+            aria-pressed={tab === "mine"}
 
             onClick={() => setTab("mine")}
 
@@ -285,6 +314,7 @@ export function SpotsExplore({
 
         <button
           type="button"
+          aria-pressed={tab === "saved"}
           onClick={() => setTab("saved")}
           className={cn(
             "rounded-full px-4 py-2 text-sm font-medium transition",
@@ -304,6 +334,12 @@ export function SpotsExplore({
         </p>
       )}
 
+      {tab === "map" && (
+        <p className="mb-3 text-sm text-[var(--ink-muted)]">
+          {t("mapListingsHint")}
+        </p>
+      )}
+
 
 
       {(hasRegionFilter || effectiveWater) && (
@@ -316,7 +352,8 @@ export function SpotsExplore({
 
 
 
-      {!isLoaded || (tab === "community" && isResolvingLocation) ? (
+      {!isLoaded ||
+      ((tab === "community" || tab === "map") && isResolvingLocation) ? (
         <PageLoader compact label={t("loadingNearby")} />
       ) : displayed.length === 0 ? (
 
@@ -338,6 +375,10 @@ export function SpotsExplore({
 
                   ? t("noSavedSpots")
 
+                  : tab === "map"
+
+                    ? t("noMapListings")
+
                 : t("noSpots")
 
           }
@@ -346,7 +387,9 @@ export function SpotsExplore({
 
             tab === "saved"
               ? t("saveSpotsHint")
-              : hasRegionFilter
+              : tab === "map"
+                ? t("mapListingsHint")
+                : hasRegionFilter
                 ? t("tryDifferentRegion")
                 : tab === "mine"
                   ? t("shareFirst")
@@ -354,9 +397,9 @@ export function SpotsExplore({
 
           }
 
-          actionLabel={tab === "saved" ? undefined : tNav("post")}
+          actionLabel={tab === "saved" || tab === "map" ? undefined : tNav("post")}
 
-          actionHref={tab === "saved" ? undefined : "/post"}
+          actionHref={tab === "saved" || tab === "map" ? undefined : "/post"}
 
         />
 

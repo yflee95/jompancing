@@ -28,7 +28,7 @@ export async function SpotsRegionShell({ locale, filters }: SpotsRegionShellProp
 
   const state = filters.stateId ? getStateById(filters.stateId) : undefined;
   const filtered = filterSpotsByRegion(
-    spots,
+    spots.filter((spot) => spot.isUserGenerated),
     filters.stateId,
     filters.districtId,
     filters.areaId,

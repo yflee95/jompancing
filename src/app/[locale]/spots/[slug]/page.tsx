@@ -12,7 +12,6 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { fetchSpotBySlugFromDb } from "@/lib/supabase/spots-server";
 import { buildSpotDetailSeo, getSpotsSeoCopy } from "@/lib/spots-seo";
 import { parseWaterTypeParam } from "@/lib/water-types";
-import { getLocalizedText } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
 interface SpotDetailPageProps {
@@ -50,7 +49,12 @@ export async function generateMetadata({
       water: parseWaterTypeParam(water),
     };
     const spots = await loadPublicSpots();
-    let list = filterSpotsByRegion(spots, state.id, district, area);
+    let list = filterSpotsByRegion(
+      spots.filter((item) => item.isUserGenerated),
+      state.id,
+      district,
+      area,
+    );
     if (filters.water) {
       list = list.filter((spot) => spot.waterType === filters.water);
     }
@@ -89,6 +93,9 @@ export async function generateMetadata({
     description: seo.description,
     ogImage: spot.imageUrl || undefined,
     ogType: "article",
+    // Imported map records are directory references until fishing access and
+    // details are confirmed. Keep them accessible to anglers, out of search.
+    noIndex: !spot.isUserGenerated,
   });
 }
 
@@ -116,34 +123,35 @@ export default async function SpotDetailPage({
   }
 
   if (isSupabaseConfigured()) {
-    try {
-      const dbSpot = await resolveSpot(slug);
-      if (dbSpot) {
-        if (dbSpot.visibility === "private") {
-          return <UserSpotDetail slug={slug} locale={locale} />;
-        }
-
-        let dbComments: Awaited<ReturnType<typeof fetchCommentsForThreadServer>> =
-          [];
-        try {
-          dbComments = await fetchCommentsForThreadServer("spot", dbSpot.id);
-        } catch {
-          /* empty comments */
-        }
-
-        const showAdminDelete = !!(await getSessionAdminEmail());
-
-        return (
-          <SpotDetailView
-            spot={dbSpot}
-            comments={dbComments}
-            locale={locale}
-            showAdminDelete={showAdminDelete}
-          />
-        );
+    const dbSpot = await resolveSpot(slug);
+    if (dbSpot) {
+      if (dbSpot.visibility === "private") {
+        return <UserSpotDetail slug={slug} locale={locale} />;
       }
-    } catch {
-      /* fall through to client fallback */
+
+      let dbComments: Awaited<ReturnType<typeof fetchCommentsForThreadServer>> =
+        [];
+      try {
+        dbComments = await fetchCommentsForThreadServer("spot", dbSpot.id);
+      } catch {
+        /* empty comments */
+      }
+
+      let showAdminDelete = false;
+      try {
+        showAdminDelete = !!(await getSessionAdminEmail());
+      } catch {
+        /* rendering the public spot should not depend on admin session lookup */
+      }
+
+      return (
+        <SpotDetailView
+          spot={dbSpot}
+          comments={dbComments}
+          locale={locale}
+          showAdminDelete={showAdminDelete}
+        />
+      );
     }
   }
 
