@@ -1,4 +1,4 @@
-import { Calendar, Flame, MapPin, User } from "lucide-react";
+import { Calendar, Flame, Mail, MapPin, MessageCircle, Phone, User } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { ActivityDetailActions } from "@/components/activities/activity-detail-actions";
 import { CampaignFlyer } from "@/components/activities/campaign-flyer";
@@ -174,6 +174,50 @@ export async function ActivityDetailContent({
           {getLocalizedText(activity.description, locale)}
         </p>
 
+        {activity.registrationNote && (
+          <aside className="rounded-2xl border border-amber-300/70 bg-amber-50 p-4 text-sm leading-relaxed text-amber-950">
+            <p className="mb-1 font-semibold">{t("registrationCheckNote")}</p>
+            <p>{getLocalizedText(activity.registrationNote, locale)}</p>
+          </aside>
+        )}
+
+        {activity.organizerContacts?.length ? (
+          <section className="rounded-2xl bg-white p-4 ring-1 ring-[var(--sand-dark)]/40" aria-labelledby="organizer-contacts-heading">
+            <h2 id="organizer-contacts-heading" className="font-semibold text-[var(--ink)]">
+              {t("organizerContacts")}
+            </h2>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              {activity.organizerContacts.map((contact) => {
+                const digits = contact.phone.replace(/\D/g, "");
+                return (
+                  <div key={contact.phone} className="rounded-xl bg-[var(--sand)]/60 p-3">
+                    <p className="font-semibold text-[var(--ink)]">{contact.name}</p>
+                    {contact.role && (
+                      <p className="mt-0.5 text-xs text-[var(--ink-muted)]">
+                        {getLocalizedText(contact.role, locale)}
+                      </p>
+                    )}
+                    <p className="mt-1 text-sm text-[var(--ink-muted)]">{contact.phone}</p>
+                    <div className="mt-2 flex gap-3 text-sm font-semibold text-[var(--ocean-dark)]">
+                      <a className="inline-flex items-center gap-1 underline-offset-4 hover:underline" href={`tel:${contact.phone}`}>
+                        <Phone className="h-3.5 w-3.5" /> {t("callOrganizer")}
+                      </a>
+                      <a className="inline-flex items-center gap-1 underline-offset-4 hover:underline" href={`https://wa.me/${digits}`} target="_blank" rel="noopener noreferrer">
+                        <MessageCircle className="h-3.5 w-3.5" /> WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {activity.contactEmail && (
+              <a className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[var(--ocean-dark)] underline-offset-4 hover:underline" href={`mailto:${activity.contactEmail}`}>
+                <Mail className="h-4 w-4" /> {activity.contactEmail}
+              </a>
+            )}
+          </section>
+        ) : null}
+
         {activity.prizeDetails && (
           <details className="rounded-2xl bg-[var(--sand)] p-4">
             <summary className="cursor-pointer font-semibold text-[var(--ink)]">
@@ -182,6 +226,11 @@ export async function ActivityDetailContent({
             <p className="mt-3 text-sm leading-relaxed text-[var(--ink-muted)]">
               {getLocalizedText(activity.prizeDetails, locale)}
             </p>
+            {activity.prizeDetailsNote && (
+              <p className="mt-3 border-t border-[var(--sand-dark)]/50 pt-3 text-sm leading-relaxed text-[var(--ink-muted)]">
+                {getLocalizedText(activity.prizeDetailsNote, locale)}
+              </p>
+            )}
           </details>
         )}
 
@@ -192,7 +241,9 @@ export async function ActivityDetailContent({
             placement="activity_detail"
             className="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--ocean)] px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-[var(--ocean-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ocean)] focus-visible:ring-offset-2"
           >
-            {t("registerWithOrganizer")} →
+            {activity.registrationLinkLabel
+              ? getLocalizedText(activity.registrationLinkLabel, locale)
+              : t("registerWithOrganizer")} →
           </TrackedRegistrationLink>
         )}
 
@@ -207,7 +258,7 @@ export async function ActivityDetailContent({
           </a>
         )}
 
-        {activity.sourceUrl && (
+        {activity.sourceUrl && activity.sourceUrl !== activity.registrationUrl && (
           <a
             href={activity.sourceUrl}
             target="_blank"

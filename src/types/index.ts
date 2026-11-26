@@ -172,6 +172,16 @@ export interface Activity {
   viewCount: number;
   interestCount: number;
   contactWhatsApp?: string;
+  /** Public organizer contacts copied from the event poster or official site. */
+  organizerContacts?: Array<{
+    name: string;
+    phone: string;
+    role?: LocalizedString;
+  }>;
+  contactEmail?: string;
+  registrationLinkLabel?: LocalizedString;
+  registrationNote?: LocalizedString;
+  prizeDetailsNote?: LocalizedString;
   /** Official organizer announcement used for curated public events. */
   sourceUrl?: string;
   registrationUrl?: string;

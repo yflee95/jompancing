@@ -267,7 +267,9 @@ export function HomeFeaturedEvent({ activity, locale }: HomeFeaturedEventProps) 
                   placement="home_popup"
                   className="flex min-h-12 w-full items-center justify-center rounded-full bg-[var(--ocean)] px-5 py-3 text-center text-sm font-bold text-white shadow-lg transition hover:bg-[var(--ocean-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ocean)] focus-visible:ring-offset-2"
                 >
-                  {t("registerWithOrganizer")} →
+                  {activity.registrationLinkLabel
+                    ? getLocalizedText(activity.registrationLinkLabel, locale)
+                    : t("registerWithOrganizer")} →
                 </TrackedRegistrationLink>
               )}
               {prizes && (
