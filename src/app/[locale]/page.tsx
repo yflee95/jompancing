@@ -6,6 +6,8 @@ import { buildPageMetadata } from "@/lib/seo";
 import { loadPublicSpots } from "@/lib/public-spots";
 import type { Locale } from "@/i18n/routing";
 
+const INITIAL_SERVER_TIME = Date.now();
+
 export async function generateMetadata({
   params,
 }: {
@@ -39,7 +41,7 @@ export default async function HomePage({
         spots={spots}
         description={t("homeDescription")}
       />
-      <HomeExplore spots={spots} />
+      <HomeExplore spots={spots} serverNow={INITIAL_SERVER_TIME} />
       <HomeSeoHub locale={locale} spots={spots} />
     </>
   );

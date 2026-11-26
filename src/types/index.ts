@@ -170,6 +170,9 @@ export interface Activity {
   contactWhatsApp?: string;
   /** Official organizer announcement used for curated public events. */
   sourceUrl?: string;
+  registrationUrl?: string;
+  termsUrl?: string;
+  prizeDetails?: LocalizedString;
 }
 
 export interface NewActivityInput {

@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useActivities } from "@/components/providers/activities-provider";
 import { useForum } from "@/components/providers/forum-provider";
 import { useMarketplace } from "@/components/providers/marketplace-provider";
 import { HomeEmptyWelcome } from "@/components/home/home-empty-welcome";
+import { HomeFeaturedEvent } from "@/components/home/home-featured-event";
 import { HomeMapListingsSection } from "@/components/home/home-map-listings-section";
 import {
   getPublicUserSpots,
@@ -39,6 +40,32 @@ import type { Locale } from "@/i18n/routing";
 
 interface HomeExploreProps {
   spots: FishingSpot[];
+  serverNow: number;
+}
+
+let currentTimeSnapshot = Date.now();
+const clockSubscribers = new Set<() => void>();
+let clockTimer: number | undefined;
+
+function subscribeToClock(onChange: () => void) {
+  clockSubscribers.add(onChange);
+  if (clockTimer === undefined) {
+    clockTimer = window.setInterval(() => {
+      currentTimeSnapshot = Date.now();
+      clockSubscribers.forEach((subscriber) => subscriber());
+    }, 60_000);
+  }
+  return () => {
+    clockSubscribers.delete(onChange);
+    if (clockSubscribers.size === 0 && clockTimer !== undefined) {
+      window.clearInterval(clockTimer);
+      clockTimer = undefined;
+    }
+  };
+}
+
+function getCurrentTime() {
+  return currentTimeSnapshot;
 }
 
 function sortNearbyHot(a: SpotWithDistance, b: SpotWithDistance): number {
@@ -60,7 +87,7 @@ function sortNationwideHot(a: FishingSpot, b: FishingSpot): number {
   return b.commentCount - a.commentCount;
 }
 
-export function HomeExplore({ spots }: HomeExploreProps) {
+export function HomeExplore({ spots, serverNow }: HomeExploreProps) {
   const t = useTranslations("home");
   const tCommon = useTranslations("common");
   const locale = useLocale() as Locale;
@@ -69,6 +96,18 @@ export function HomeExplore({ spots }: HomeExploreProps) {
   const { listings, isLoaded: marketplaceLoaded } = useMarketplace();
   const { userPosts, isLoaded: forumLoaded } = useForum();
   const userLocation = useUserLocation(locale);
+  const getServerTime = useCallback(() => serverNow, [serverNow]);
+  const now = useSyncExternalStore(subscribeToClock, getCurrentTime, getServerTime);
+  const featuredActivity = activities.find(
+    (activity) => activity.slug === "joran-fest-siri-2-2026-2027",
+  );
+  const featuredEventActive = Boolean(
+    featuredActivity && new Date(featuredActivity.endDate).getTime() >= now,
+  );
+  const otherActivities = useMemo(
+    () => activities.filter((activity) => activity.slug !== "joran-fest-siri-2-2026-2027"),
+    [activities],
+  );
 
   const [activeCategory, setActiveCategory] = useState<WaterType | "all">("all");
   const [locationError, setLocationError] = useState(false);
@@ -242,6 +281,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
   if (communityFishingSpots.length === 0) {
     return (
       <div className="bg-[var(--sand)] pb-24 md:pb-12">
+        {featuredEventActive && featuredActivity && <HomeFeaturedEvent activity={featuredActivity} locale={locale} />}
         <HomeEmptyWelcome />
         <HomeFishSection />
         <HomeMapListingsSection spots={mapListings} locale={locale} />
@@ -253,13 +293,15 @@ export function HomeExplore({ spots }: HomeExploreProps) {
             districtId={inferredRegion?.districtId}
             hasGps={hasGps}
           />
-          <HomeActivitySection
-            activities={activities}
-            locale={locale}
-            hasGps={hasGps}
-            defaultStateId={inferredRegion?.stateId}
-            defaultDistrictId={inferredRegion?.districtId}
-          />
+          {otherActivities.length > 0 && (
+            <HomeActivitySection
+              activities={otherActivities}
+              locale={locale}
+              hasGps={hasGps}
+              defaultStateId={inferredRegion?.stateId}
+              defaultDistrictId={inferredRegion?.districtId}
+            />
+          )}
           <HomeListingsSection locale={locale} />
           <HomeDiscoverGrid
             title={t("discover")}
@@ -283,6 +325,7 @@ export function HomeExplore({ spots }: HomeExploreProps) {
 
   return (
     <div className="bg-[var(--sand)] pb-24 md:pb-12">
+      {featuredEventActive && featuredActivity && <HomeFeaturedEvent activity={featuredActivity} locale={locale} />}
       <HomeSpotDeck
         key={`${activeCategory}:${deckSpots.length}`}
         spots={deckSpots}
@@ -342,13 +385,15 @@ export function HomeExplore({ spots }: HomeExploreProps) {
           </HomeSpotSection>
         )}
 
-        <HomeActivitySection
-          activities={activities}
-          locale={locale}
-          hasGps={hasGps}
-          defaultStateId={inferredRegion?.stateId}
-          defaultDistrictId={inferredRegion?.districtId}
-        />
+        {otherActivities.length > 0 && (
+          <HomeActivitySection
+            activities={otherActivities}
+            locale={locale}
+            hasGps={hasGps}
+            defaultStateId={inferredRegion?.stateId}
+            defaultDistrictId={inferredRegion?.districtId}
+          />
+        )}
 
         <HomeListingsSection locale={locale} />
 

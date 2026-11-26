@@ -1,6 +1,8 @@
 import { Calendar, Flame, MapPin, User } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { ActivityDetailActions } from "@/components/activities/activity-detail-actions";
+import { CampaignFlyer } from "@/components/activities/campaign-flyer";
+import { TrackedRegistrationLink } from "@/components/activities/tracked-registration-link";
 import { PromotionStatusBanner } from "@/components/activities/promotion-status-banner";
 import { ActivityJsonLd } from "@/components/seo/activity-json-ld";
 import { AppImage } from "@/components/ui/app-image";
@@ -21,11 +23,16 @@ export async function ActivityDetailContent({
   locale,
 }: ActivityDetailContentProps) {
   const t = await getTranslations("activities");
+  const tHome = await getTranslations("home");
   const tCommon = await getTranslations("common");
 
   const state = getStateById(activity.stateId);
   const district = getDistrictById(activity.stateId, activity.districtId);
   const promoted = isPromotionActive(activity);
+  const title = getLocalizedText(activity.title, locale);
+  const hasFlyer = Boolean(activity.registrationUrl);
+  const sameCalendarDay =
+    activity.startDate.slice(0, 10) === activity.endDate.slice(0, 10);
   const venueSearch = [
     getLocalizedText(activity.venue, locale),
     district ? getLocalizedText(district.name, locale) : "",
@@ -41,39 +48,61 @@ export async function ActivityDetailContent({
     <article className="mx-auto max-w-4xl px-4 pb-32 sm:pb-8">
       <ActivityJsonLd activity={activity} locale={locale} />
 
-      <div className="relative -mx-4 aspect-[16/10] overflow-hidden sm:mx-0 sm:rounded-3xl">
-        <AppImage
-          src={activity.imageUrl}
-          alt={getLocalizedText(activity.title, locale)}
-          priority
-          sizes="(max-width: 896px) 100vw, 896px"
-          placeholderVariant="wide"
-          placeholderLabel={tCommon("photoUnavailable")}
-          className="absolute inset-0"
-        />
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-8">
-          <div className="flex flex-wrap gap-2">
-            <Badge className="bg-white/90 text-[var(--ink)] backdrop-blur-sm">
-              {t(activity.type)}
-            </Badge>
-            {promoted && (
-              <span className="badge-accent inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold">
-                <Flame className="h-3 w-3" />
-                {t("hot")}
-              </span>
-            )}
-            {activity.verified && (
-              <Badge className="bg-[var(--ocean)]/90 text-white backdrop-blur-sm">
-                {tCommon("verified")}
-              </Badge>
-            )}
-          </div>
-          <h1 className="font-serif-display mt-3 text-3xl font-bold text-white sm:text-4xl">
-            {getLocalizedText(activity.title, locale)}
-          </h1>
-        </div>
+      <div
+        className={`relative overflow-hidden ${
+          hasFlyer
+            ? "mx-auto aspect-[4/5] max-h-[760px] max-w-[430px] bg-[#07548c] sm:aspect-[9/16] sm:rounded-3xl"
+            : "-mx-4 aspect-[16/10] sm:mx-0 sm:rounded-3xl"
+        }`}
+      >
+        {hasFlyer ? (
+          <CampaignFlyer
+            src={activity.imageUrl}
+            alt={title}
+            eventSlug={activity.slug}
+          />
+        ) : (
+          <>
+            <AppImage
+              src={activity.imageUrl}
+              alt={title}
+              priority
+              sizes="(max-width: 896px) 100vw, 896px"
+              placeholderVariant="wide"
+              placeholderLabel={tCommon("photoUnavailable")}
+              className="absolute inset-0"
+            />
+            <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-8">
+              <div className="flex flex-wrap gap-2">
+                <Badge className="bg-white/90 text-[var(--ink)] backdrop-blur-sm">
+                  {t(activity.type)}
+                </Badge>
+                {promoted && (
+                  <span className="badge-accent inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold">
+                    <Flame className="h-3 w-3" />
+                    {t("hot")}
+                  </span>
+                )}
+                {activity.verified && (
+                  <Badge className="bg-[var(--ocean)]/90 text-white backdrop-blur-sm">
+                    {tCommon("verified")}
+                  </Badge>
+                )}
+              </div>
+              <h1 className="font-serif-display mt-3 text-3xl font-bold text-white sm:text-4xl">
+                {title}
+              </h1>
+            </div>
+          </>
+        )}
       </div>
+
+      {hasFlyer && (
+        <h1 className="font-serif-display mt-5 text-3xl font-bold text-[var(--ink)] sm:text-4xl">
+          {title}
+        </h1>
+      )}
 
       <PromotionStatusBanner activity={activity} />
 
@@ -87,8 +116,9 @@ export async function ActivityDetailContent({
               </p>
               <p className="text-sm font-semibold text-[var(--ink)]">
                 {formatDate(activity.startDate, locale)}
-                {activity.endDate !== activity.startDate &&
+                {!sameCalendarDay &&
                   ` – ${formatDate(activity.endDate, locale)}`}
+                {hasFlyer && ` · ${tHome("eventHours")}`}
               </p>
             </div>
           </div>
@@ -140,6 +170,39 @@ export async function ActivityDetailContent({
         <p className="text-base leading-relaxed text-[var(--ink-muted)]">
           {getLocalizedText(activity.description, locale)}
         </p>
+
+        {activity.prizeDetails && (
+          <details className="rounded-2xl bg-[var(--sand)] p-4">
+            <summary className="cursor-pointer font-semibold text-[var(--ink)]">
+              {t("fullPrizeBreakdown")}
+            </summary>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--ink-muted)]">
+              {getLocalizedText(activity.prizeDetails, locale)}
+            </p>
+          </details>
+        )}
+
+        {activity.registrationUrl && (
+          <TrackedRegistrationLink
+            href={activity.registrationUrl}
+            eventSlug={activity.slug}
+            placement="activity_detail"
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--ocean)] px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-[var(--ocean-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ocean)] focus-visible:ring-offset-2"
+          >
+            {t("registerWithOrganizer")} →
+          </TrackedRegistrationLink>
+        )}
+
+        {activity.termsUrl && (
+          <a
+            href={activity.termsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-3 inline-flex text-sm font-semibold text-[var(--ocean-dark)] underline-offset-4 hover:underline"
+          >
+            {t("eventTerms")}
+          </a>
+        )}
 
         {activity.sourceUrl && (
           <a

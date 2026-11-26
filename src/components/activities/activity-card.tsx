@@ -29,7 +29,13 @@ export async function ActivityCard({ activity, locale }: ActivityCardProps) {
   return (
     <Link href={`/activities/${activity.slug}`} className="tap-card block">
       <Card className="overflow-hidden transition hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(44,36,22,0.1)]">
-        <div className="relative aspect-[16/10] overflow-hidden">
+        <div
+          className={`relative overflow-hidden ${
+            activity.registrationUrl
+              ? "aspect-[4/5] bg-[#07548c]"
+              : "aspect-[16/10]"
+          }`}
+        >
           <AppImage
             src={activity.imageUrl}
             alt={getLocalizedText(activity.title, locale)}
@@ -37,20 +43,28 @@ export async function ActivityCard({ activity, locale }: ActivityCardProps) {
             placeholderVariant="wide"
             placeholderLabel={tCommon("photoUnavailable")}
             className="absolute inset-0"
-            imageClassName="transition duration-500 group-hover:scale-105"
+            imageClassName={
+              activity.registrationUrl
+                ? "object-contain"
+                : "transition duration-500 group-hover:scale-105"
+            }
           />
-          <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/30 to-transparent" />
-          <div className="absolute left-3 top-3 z-10 flex flex-wrap gap-1.5">
-            <Badge className="bg-white/90 text-[var(--ink)] backdrop-blur-sm">
-              {t(activity.type)}
-            </Badge>
-            {activity.promoted && (
-              <span className="badge-accent inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold">
-                <Flame className="h-3 w-3" />
-                {t("hot")}
-              </span>
-            )}
-          </div>
+          {!activity.registrationUrl && (
+            <>
+              <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/30 to-transparent" />
+              <div className="absolute left-3 top-3 z-10 flex flex-wrap gap-1.5">
+                <Badge className="bg-white/90 text-[var(--ink)] backdrop-blur-sm">
+                  {t(activity.type)}
+                </Badge>
+                {activity.promoted && (
+                  <span className="badge-accent inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold">
+                    <Flame className="h-3 w-3" />
+                    {t("hot")}
+                  </span>
+                )}
+              </div>
+            </>
+          )}
         </div>
         <div className="p-4">
           <h3 className="font-serif-display line-clamp-2 text-lg font-semibold text-[var(--ink)]">
