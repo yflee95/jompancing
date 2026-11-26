@@ -1,5 +1,7 @@
+"use client";
+
 import { Calendar, Flame, MapPin } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AppImage } from "@/components/ui/app-image";
 import { Badge } from "@/components/ui/badge";
@@ -14,9 +16,9 @@ interface ActivityCardProps {
   locale: Locale;
 }
 
-export async function ActivityCard({ activity, locale }: ActivityCardProps) {
-  const t = await getTranslations("activities");
-  const tCommon = await getTranslations("common");
+export function ActivityCard({ activity, locale }: ActivityCardProps) {
+  const t = useTranslations("activities");
+  const tCommon = useTranslations("common");
 
   const state = getStateById(activity.stateId);
   const district = getDistrictById(activity.stateId, activity.districtId);
