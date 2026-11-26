@@ -30,6 +30,9 @@ export async function ActivityDetailContent({
   const district = getDistrictById(activity.stateId, activity.districtId);
   const promoted = isPromotionActive(activity);
   const title = getLocalizedText(activity.title, locale);
+  const flyerAlt = activity.imageAlt
+    ? getLocalizedText(activity.imageAlt, locale)
+    : title;
   const hasFlyer = Boolean(activity.registrationUrl);
   const sameCalendarDay =
     activity.startDate.slice(0, 10) === activity.endDate.slice(0, 10);
@@ -58,7 +61,7 @@ export async function ActivityDetailContent({
         {hasFlyer ? (
           <CampaignFlyer
             src={activity.imageUrl}
-            alt={title}
+            alt={flyerAlt}
             eventSlug={activity.slug}
           />
         ) : (

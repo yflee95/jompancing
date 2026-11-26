@@ -10,19 +10,17 @@ interface ActivityJsonLdProps {
 
 export function ActivityJsonLd({ activity, locale }: ActivityJsonLdProps) {
   const name = getLocalizedText(activity.title, locale);
-  const description = getLocalizedText(activity.description, locale);
+  const eventDescription = getLocalizedText(activity.description, locale);
+  const prizeDetails = activity.prizeDetails
+    ? getLocalizedText(activity.prizeDetails, locale)
+    : "";
+  const description = [eventDescription, prizeDetails]
+    .filter(Boolean)
+    .join(" ");
   const venue = getLocalizedText(activity.venue, locale);
   const url = absoluteUrl(localePath(locale, `/activities/${activity.slug}`));
   const state = getStateById(activity.stateId);
   const district = getDistrictById(activity.stateId, activity.districtId);
-
-  const locality = [
-    venue,
-    district ? getLocalizedText(district.name, locale) : "",
-    state ? getLocalizedText(state.name, locale) : "",
-  ]
-    .filter(Boolean)
-    .join(", ");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -40,7 +38,10 @@ export function ActivityJsonLd({ activity, locale }: ActivityJsonLdProps) {
       name: venue,
       address: {
         "@type": "PostalAddress",
-        addressLocality: locality,
+        ...(district
+          ? { addressLocality: getLocalizedText(district.name, locale) }
+          : {}),
+        ...(state ? { addressRegion: getLocalizedText(state.name, locale) } : {}),
         addressCountry: "MY",
       },
     },
@@ -54,7 +55,9 @@ export function ActivityJsonLd({ activity, locale }: ActivityJsonLdProps) {
             "@type": "Offer",
             price: activity.fee,
             priceCurrency: "MYR",
-            ...(activity.sourceUrl ? { url: activity.sourceUrl } : {}),
+            ...((activity.registrationUrl || activity.sourceUrl)
+              ? { url: activity.registrationUrl || activity.sourceUrl }
+              : {}),
           },
         }
       : {}),

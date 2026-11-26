@@ -64,10 +64,18 @@ export async function generateMetadata({ params }: ActivityDetailPageProps) {
   return buildPageMetadata({
     locale,
     path: `/activities/${slug}`,
-    title: seo.title,
-    description: seo.description,
+    title: activity.seoTitle
+      ? getLocalizedText(activity.seoTitle, locale)
+      : seo.title,
+    description: activity.seoDescription
+      ? getLocalizedText(activity.seoDescription, locale)
+      : seo.description,
     ogImage: activity.imageUrl || undefined,
+    ogImageDimensions: activity.imageUrl
+      ? { width: 1125, height: 2000 }
+      : undefined,
     ogType: "article",
+    titleAbsolute: Boolean(activity.seoTitle),
   });
 }
 

@@ -58,6 +58,8 @@ interface PageMetadataInput {
   description: string;
   /** Absolute or site-relative image URL */
   ogImage?: string | null;
+  /** Actual dimensions for non-standard Open Graph images such as portrait event posters. */
+  ogImageDimensions?: { width: number; height: number };
   noIndex?: boolean;
   ogType?: "website" | "article";
   /** Skip layout title template (e.g. when title already includes brand). */
@@ -70,6 +72,7 @@ export function buildPageMetadata({
   title,
   description,
   ogImage,
+  ogImageDimensions,
   noIndex = false,
   ogType = "website",
   titleAbsolute = false,
@@ -101,7 +104,13 @@ export function buildPageMetadata({
       locale,
       alternateLocale: alternateLocales,
       type: ogType,
-      images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
+      images: [
+        {
+          url: imageUrl,
+          ...(ogImageDimensions ?? { width: 1200, height: 630 }),
+          alt: title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",

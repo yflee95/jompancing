@@ -47,7 +47,7 @@ export interface SitemapSlugEntry {
 
   slug: string;
 
-  lastModified: Date;
+  lastModified?: Date;
 
 }
 
@@ -183,7 +183,6 @@ export async function getActivitySlugs(): Promise<SitemapSlugEntry[]> {
     seen.add(activity.slug);
     entries.push({
       slug: activity.slug,
-      lastModified: safeDate(activity.startDate),
     });
   }
 
@@ -194,7 +193,6 @@ export async function getActivitySlugs(): Promise<SitemapSlugEntry[]> {
       seen.add(activity.slug);
       entries.push({
         slug: activity.slug,
-        lastModified: safeDate(activity.startDate),
       });
     }
   }
@@ -212,7 +210,6 @@ export async function getActivitySlugs(): Promise<SitemapSlugEntry[]> {
       seen.add(row.slug);
       entries.push({
         slug: row.slug,
-        lastModified: safeDate(row.start_date),
       });
     }
   } catch {

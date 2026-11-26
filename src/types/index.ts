@@ -149,6 +149,10 @@ export interface Activity {
   id: string;
   slug: string;
   title: LocalizedString;
+  /** Optional curated search and accessibility copy, kept separate from public event facts. */
+  seoTitle?: LocalizedString;
+  seoDescription?: LocalizedString;
+  imageAlt?: LocalizedString;
   description: LocalizedString;
   type: ActivityType;
   stateId: string;

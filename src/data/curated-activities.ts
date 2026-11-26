@@ -10,6 +10,21 @@ export const CURATED_ACTIVITIES: Activity[] = [
       en: "Joran Fest Siri 2 2026/2027",
       zh: "Joran Fest 第二届 2026/2027",
     },
+    seoTitle: {
+      ms: "Joran Fest Siri 2 di Muar — Hadiah RM40,000",
+      en: "Joran Fest Siri 2 Fishing Competition in Muar | RM40,000 Prize",
+      zh: "Joran Fest 第二届 Muar 钓鱼赛｜冠军奖金 RM40,000",
+    },
+    seoDescription: {
+      ms: "13 Dis 2026 di Pantai Mesra, Muar. Yuran RM130; hadiah juara RM40,000 seperti diiklankan penganjur. Daftar dalam talian sebelum 6 Dis.",
+      en: "13 Dec 2026 at Pantai Mesra, Muar. RM130 entry; RM40,000 champion prize as advertised by the organizer. Online registration closes 6 Dec.",
+      zh: "2026年12月13日于 Muar Pantai Mesra 举行，报名 RM130；冠军奖金 RM40,000（主办方公告）。网上报名截止12月6日。",
+    },
+    imageAlt: {
+      ms: "Poster rasmi pertandingan memancing Joran Fest Siri 2 di Muar pada 13 Disember 2026, dengan hadiah utama RM40,000.",
+      en: "Official poster for the Joran Fest Siri 2 fishing competition in Muar on 13 December 2026, advertising a RM40,000 top prize.",
+      zh: "Joran Fest 第二届钓鱼赛官方海报：2026年12月13日于 Muar 举行，海报公布冠军奖金 RM40,000。",
+    },
     description: {
       ms: "Pertandingan memancing di Pantai Mesra, Seri Menanti, Muar. Pertandingan berlangsung dari 9.00 pagi hingga 1.00 petang dan tertakluk kepada keadaan pasang surut. Yuran penyertaan RM130. 200 pendaftar dalam talian terawal menerima satu T-shirt percuma. Pendaftaran dalam talian ditutup pada 6 Disember 2026; kaunter walk-in dibuka pada 11, 12 dan 13 Disember 2026. Semak terma penganjur sebelum mendaftar.",
       en: "A fishing competition at Pantai Mesra, Seri Menanti, Muar, from 9:00 am to 1:00 pm, subject to tide conditions. Entry is RM130. The first 200 online registrants receive one free event T-shirt. Online registration closes on 6 December 2026; walk-in counters are open on 11, 12 and 13 December. Review the organizer's terms before registering.",
