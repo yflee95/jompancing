@@ -2,12 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { CalendarDays, MapPin, X } from "lucide-react";
+import { CalendarDays, MapPin, MessageCircle, X } from "lucide-react";
 import { track } from "@vercel/analytics/react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { TrackedRegistrationLink } from "@/components/activities/tracked-registration-link";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatPrice } from "@/lib/utils";
 import { getLocalizedText, type Activity } from "@/types";
 import type { Locale } from "@/i18n/routing";
 
@@ -22,6 +22,15 @@ interface HomeFeaturedEventProps {
 export function HomeFeaturedEvent({ activity, locale }: HomeFeaturedEventProps) {
   const t = useTranslations("home");
   const tActivities = useTranslations("activities");
+  const title = getLocalizedText(activity.title, locale);
+  const registrationWhatsAppDigits = activity.contactWhatsApp?.replace(/\D/g, "");
+  const registrationWhatsAppUrl = registrationWhatsAppDigits
+    ? `https://wa.me/${registrationWhatsAppDigits}?text=${encodeURIComponent(
+        activity.registrationWhatsAppMessage
+          ? getLocalizedText(activity.registrationWhatsAppMessage, locale)
+          : title,
+      )}`
+    : undefined;
   const [open, setOpen] = useState(false);
   const [imageOpen, setImageOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -130,7 +139,6 @@ export function HomeFeaturedEvent({ activity, locale }: HomeFeaturedEventProps) 
   }, [open, imageOpen, dismiss]);
 
   const posterUrl = activity.imageUrl;
-  const title = getLocalizedText(activity.title, locale);
   const description = getLocalizedText(activity.description, locale);
   const prizes = activity.prizeDetails
     ? getLocalizedText(activity.prizeDetails, locale)
@@ -260,18 +268,61 @@ export function HomeFeaturedEvent({ activity, locale }: HomeFeaturedEventProps) 
                 <p>{t("topPrizeCallout")}</p>
                 <p className="mt-1 text-xs font-medium">{t("onlineRegistrationDeadline")}</p>
               </div>
-              {activity.registrationUrl && (
-                <TrackedRegistrationLink
-                  href={activity.registrationUrl}
-                  eventSlug={activity.slug}
-                  placement="home_popup"
-                  className="flex min-h-12 w-full items-center justify-center rounded-full bg-[var(--ocean)] px-5 py-3 text-center text-sm font-bold text-white shadow-lg transition hover:bg-[var(--ocean-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ocean)] focus-visible:ring-offset-2"
-                >
-                  {activity.registrationLinkLabel
-                    ? getLocalizedText(activity.registrationLinkLabel, locale)
-                    : t("registerWithOrganizer")} →
-                </TrackedRegistrationLink>
+              {activity.paymentDetails && (
+                <section className="rounded-2xl bg-[var(--ocean-light)] p-4 ring-1 ring-[var(--ocean)]/15" aria-labelledby="home-online-registration-heading">
+                  <h3 id="home-online-registration-heading" className="font-semibold text-[var(--ocean-dark)]">
+                    {tActivities("onlineRegistration")}
+                  </h3>
+                  <ol className="mt-2 space-y-1.5 text-sm leading-relaxed text-[var(--ink)]">
+                    <li>{tActivities("completePdfForm")}</li>
+                    <li>{tActivities("transferRegistrationFee", { fee: formatPrice(activity.fee ?? 0) })}</li>
+                    <li>{tActivities("sendRegistrationDocuments")}</li>
+                  </ol>
+                  <dl className="mt-3 grid grid-cols-2 gap-2 rounded-xl bg-white/80 p-3 text-sm">
+                    <div>
+                      <dt className="text-xs text-[var(--ink-muted)]">{tActivities("bank")}</dt>
+                      <dd className="font-semibold text-[var(--ink)]">{activity.paymentDetails.bankName}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs text-[var(--ink-muted)]">{tActivities("accountNumber")}</dt>
+                      <dd className="font-semibold text-[var(--ink)]">{activity.paymentDetails.accountNumber}</dd>
+                    </div>
+                    <div className="col-span-2">
+                      <dt className="text-xs text-[var(--ink-muted)]">{tActivities("accountName")}</dt>
+                      <dd className="font-semibold text-[var(--ink)]">{activity.paymentDetails.accountName}</dd>
+                    </div>
+                  </dl>
+                  {activity.registrationNote && (
+                    <p className="mt-3 text-xs leading-relaxed text-[var(--ink-muted)]">
+                      {getLocalizedText(activity.registrationNote, locale)}
+                    </p>
+                  )}
+                </section>
               )}
+              <div className="grid gap-2 sm:grid-cols-2">
+                {activity.registrationUrl && (
+                  <TrackedRegistrationLink
+                    href={activity.registrationUrl}
+                    eventSlug={activity.slug}
+                    placement="home_popup"
+                    className="flex min-h-12 w-full items-center justify-center rounded-full bg-[var(--ocean)] px-5 py-3 text-center text-sm font-bold text-white shadow-lg transition hover:bg-[var(--ocean-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ocean)] focus-visible:ring-offset-2"
+                  >
+                    {activity.registrationLinkLabel
+                      ? getLocalizedText(activity.registrationLinkLabel, locale)
+                      : t("registerWithOrganizer")} →
+                  </TrackedRegistrationLink>
+                )}
+                {registrationWhatsAppUrl && activity.paymentDetails && (
+                  <TrackedRegistrationLink
+                    href={registrationWhatsAppUrl}
+                    eventSlug={activity.slug}
+                    placement="home_popup"
+                    className="flex min-h-12 w-full items-center justify-center rounded-full bg-[#168a53] px-5 py-3 text-center text-sm font-bold text-white shadow-lg transition hover:bg-[#117343] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#168a53] focus-visible:ring-offset-2"
+                  >
+                    <MessageCircle className="mr-2 h-4 w-4" /> {tActivities("sendFormAndReceipt")}
+                  </TrackedRegistrationLink>
+                )}
+              </div>
               {prizes && (
                 <details className="rounded-2xl border border-[var(--sand-dark)]/40 px-4 py-3">
                   <summary className="cursor-pointer text-sm font-semibold text-[var(--ink)]">
