@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   ImagePlaceholder,
@@ -43,10 +43,24 @@ export function AppImage({
   placeholderVariant = "spot",
   placeholderLabel,
 }: AppImageProps) {
-  const [status, setStatus] = useState<ImageStatus>(() => getInitialStatus(src));
+  const [imageState, setImageState] = useState<{
+    src?: string | null;
+    status: ImageStatus;
+  }>(() => ({ src, status: getInitialStatus(src) }));
+  const imageRef = useRef<HTMLImageElement>(null);
+  const status = imageState.src === src ? imageState.status : getInitialStatus(src);
 
   useEffect(() => {
-    setStatus(getInitialStatus(src));
+    const timer = window.setTimeout(() => {
+      const image = imageRef.current;
+      if (!image?.complete) return;
+      setImageState({
+        src,
+        status: image.naturalWidth > 0 ? "loaded" : "error",
+      });
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, [src]);
 
   const hasValidSrc = Boolean(src?.trim());
@@ -76,13 +90,14 @@ export function AppImage({
           sizes={sizes}
           priority={priority}
           unoptimized={unoptimized}
+          ref={imageRef}
           className={cn(
             "object-cover transition-opacity duration-500",
             status === "loaded" ? "opacity-100" : "opacity-0",
             imageClassName,
           )}
-          onLoad={() => setStatus("loaded")}
-          onError={() => setStatus("error")}
+          onLoad={() => setImageState({ src, status: "loaded" })}
+          onError={() => setImageState({ src, status: "error" })}
         />
       )}
     </div>
