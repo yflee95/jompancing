@@ -179,6 +179,12 @@ export interface Activity {
     role?: LocalizedString;
   }>;
   contactEmail?: string;
+  paymentDetails?: {
+    bankName: string;
+    accountNumber: string;
+    accountName: string;
+  };
+  registrationWhatsAppMessage?: LocalizedString;
   registrationLinkLabel?: LocalizedString;
   registrationNote?: LocalizedString;
   prizeDetailsNote?: LocalizedString;

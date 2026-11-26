@@ -33,6 +33,14 @@ export async function ActivityDetailContent({
   const flyerAlt = activity.imageAlt
     ? getLocalizedText(activity.imageAlt, locale)
     : title;
+  const registrationWhatsAppDigits = activity.contactWhatsApp?.replace(/\D/g, "");
+  const registrationWhatsAppUrl = registrationWhatsAppDigits
+    ? `https://wa.me/${registrationWhatsAppDigits}?text=${encodeURIComponent(
+        activity.registrationWhatsAppMessage
+          ? getLocalizedText(activity.registrationWhatsAppMessage, locale)
+          : title,
+      )}`
+    : undefined;
   const hasFlyer = Boolean(activity.registrationUrl);
   const sameCalendarDay =
     activity.startDate.slice(0, 10) === activity.endDate.slice(0, 10);
@@ -174,6 +182,55 @@ export async function ActivityDetailContent({
           {getLocalizedText(activity.description, locale)}
         </p>
 
+        {activity.paymentDetails && activity.registrationUrl && (
+          <section className="rounded-2xl bg-[var(--ocean-light)] p-4 ring-1 ring-[var(--ocean)]/15" aria-labelledby="online-registration-heading">
+            <h2 id="online-registration-heading" className="font-semibold text-[var(--ocean-dark)]">
+              {t("onlineRegistration")}
+            </h2>
+            <ol className="mt-3 space-y-3 text-sm leading-relaxed text-[var(--ink)]">
+              <li>{t("completePdfForm")}</li>
+              <li>{t("transferRegistrationFee", { fee: formatPrice(activity.fee ?? 0) })}</li>
+              <li>{t("sendRegistrationDocuments")}</li>
+            </ol>
+            <dl className="mt-3 grid gap-2 rounded-xl bg-white/80 p-3 text-sm sm:grid-cols-3">
+              <div>
+                <dt className="text-xs text-[var(--ink-muted)]">{t("bank")}</dt>
+                <dd className="font-semibold text-[var(--ink)]">{activity.paymentDetails.bankName}</dd>
+              </div>
+              <div>
+                <dt className="text-xs text-[var(--ink-muted)]">{t("accountNumber")}</dt>
+                <dd className="font-semibold text-[var(--ink)]">{activity.paymentDetails.accountNumber}</dd>
+              </div>
+              <div className="sm:col-span-1">
+                <dt className="text-xs text-[var(--ink-muted)]">{t("accountName")}</dt>
+                <dd className="font-semibold text-[var(--ink)]">{activity.paymentDetails.accountName}</dd>
+              </div>
+            </dl>
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+              <TrackedRegistrationLink
+                href={activity.registrationUrl}
+                eventSlug={activity.slug}
+                placement="activity_detail"
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-5 py-3 text-center text-sm font-bold text-[var(--ocean-dark)] ring-1 ring-[var(--ocean)]/20 transition hover:bg-[var(--sand)]"
+              >
+                {activity.registrationLinkLabel
+                  ? getLocalizedText(activity.registrationLinkLabel, locale)
+                  : t("registerWithOrganizer")} ↗
+              </TrackedRegistrationLink>
+              {registrationWhatsAppUrl && (
+                <TrackedRegistrationLink
+                  href={registrationWhatsAppUrl}
+                  eventSlug={activity.slug}
+                  placement="activity_detail"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--ocean)] px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-[var(--ocean-dark)]"
+                >
+                  <MessageCircle className="mr-2 h-4 w-4" /> {t("sendFormAndReceipt")}
+                </TrackedRegistrationLink>
+              )}
+            </div>
+          </section>
+        )}
+
         {activity.registrationNote && (
           <aside className="rounded-2xl border border-amber-300/70 bg-amber-50 p-4 text-sm leading-relaxed text-amber-950">
             <p className="mb-1 font-semibold">{t("registrationCheckNote")}</p>
@@ -234,7 +291,7 @@ export async function ActivityDetailContent({
           </details>
         )}
 
-        {activity.registrationUrl && (
+        {activity.registrationUrl && !activity.paymentDetails && (
           <TrackedRegistrationLink
             href={activity.registrationUrl}
             eventSlug={activity.slug}

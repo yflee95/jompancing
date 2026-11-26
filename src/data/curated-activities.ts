@@ -36,14 +36,14 @@ export const CURATED_ACTIVITIES: Activity[] = [
       zh: "官网目前列出的奖项：最重鱼冠军 RM40,000、亚军 RM8,000、季军 RM5,000；第 4–50 名各 RM500，第 51–300 名各 RM400。黄貂鱼（超过 600 克）特别奖：第 1 名 RM1,000、第 2 名 RM500、第 3 名 RM300、第 4–5 名各 RM200。10 轮 Grand Slam 奖品为 Toyota Hilux。官网公布奖金总额 RM178,700。",
     },
     registrationLinkLabel: {
-      ms: "Semak maklumat pendaftaran terkini",
-      en: "Check current registration details",
-      zh: "查看最新报名详情",
+      ms: "Muat turun borang PDF",
+      en: "Download PDF registration form",
+      zh: "下载 PDF 报名表",
     },
     registrationNote: {
-      ms: "Poster rasmi menyenaraikan kaunter walk-in pada 11, 12 dan 13 Disember 2026 serta pendaftaran dalam talian sebelum 6 Disember. Laman rasmi Joran Fest menyatakan pendaftaran walk-in sahaja. Hubungi penganjur untuk mengesahkan sama ada pendaftaran dalam talian masih tersedia.",
-      en: "The event poster lists walk-in counters on 11, 12 and 13 December 2026 and online registration until 6 December. Joran Fest's official site says registration is walk-in only. Contact the organizer to confirm whether online registration is still available.",
-      zh: "活动海报列出 2026 年 12 月 11、12、13 日现场报名，并注明网上报名至 12 月 6 日；Joran Fest 官网则写明仅限现场报名。请联系主办方确认网上报名是否仍开放。",
+      ms: "Poster menyatakan pendaftaran dalam talian ditutup pada 6 Disember 2026 dan kaunter walk-in dibuka pada 11–13 Disember. Laman rasmi turut memaparkan pendaftaran walk-in sahaja; WhatsApp En Mat untuk mengesahkan slot dalam talian masih tersedia.",
+      en: "The poster says online registration closes on 6 December 2026 and walk-in counters are open on 11–13 December. The official site also displays walk-in only; WhatsApp En Mat to confirm online places are still available.",
+      zh: "海报注明网上报名截止日为 2026 年 12 月 6 日，现场柜台开放于 12 月 11–13 日。官网也显示仅现场报名；请先 WhatsApp 联系 En Mat，确认网上名额是否仍开放。",
     },
     prizeDetailsNote: {
       ms: "Maklumat hadiah di laman rasmi berbeza daripada poster yang dikongsi: laman rasmi menyatakan jumlah RM178,700 dan pari melebihi 600g, manakala poster menyatakan RM177,500 dan pari 400g ke atas. Sahkan terma terkini dengan penganjur.",
@@ -82,6 +82,16 @@ export const CURATED_ACTIVITIES: Activity[] = [
     ],
     contactWhatsApp: "+60127085669",
     contactEmail: "admin@joranfest.com",
+    paymentDetails: {
+      bankName: "Maybank",
+      accountNumber: "551137548366",
+      accountName: "Persatuan Pelancongan Eko & Pelancongan Pendidikan",
+    },
+    registrationWhatsAppMessage: {
+      ms: "Hi En Mat, saya ingin mendaftar Joran Fest Siri 2. Saya akan hantar borang PDF yang lengkap dan resit bayaran di sini.",
+      en: "Hi En Mat, I'd like to register for Joran Fest Siri 2. I will send my completed PDF form and payment receipt here.",
+      zh: "你好 En Mat，我想报名 Joran Fest Siri 2。我会在这里发送填好的 PDF 报名表和转账收据。",
+    },
     verified: false,
     fee: 130,
     startDate: "2026-12-13T09:00:00+08:00",
@@ -91,7 +101,8 @@ export const CURATED_ACTIVITIES: Activity[] = [
     viewCount: 0,
     interestCount: 0,
     sourceUrl: "https://joranfest.com",
-    registrationUrl: "https://joranfest.com",
+    registrationUrl:
+      "https://drive.google.com/file/d/1LN-7RfEKVJGQFWosgD4_-b1V0Gg3iw6s/view?usp=sharing",
     termsUrl:
       "https://drive.google.com/file/d/1zpi08mSLcDaBn7yfsYIzXmX6Ie4kp2XF/view?usp=drive_link",
   },
