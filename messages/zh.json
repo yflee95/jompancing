@@ -152,6 +152,7 @@
     "eventHours": "上午 9:00–下午 1:00",
     "fullEventDetails": "查看活动详情",
     "eventTerms": "条款与细则",
+    "officialEventWebsite": "Joran Fest 官网",
     "nearbyActivitiesHint": "比赛、促销与聚会 — 按州属和县筛选。",
     "activityEmptyTitle": "附近暂时没有活动",
     "activityEmptyDesc": "试试其他地区，或浏览全部活动。主办方也可以提交钓鱼活动供审核。",
@@ -484,7 +485,7 @@
     "accountName": "收款户名",
     "sendFormAndReceipt": "通过 WhatsApp 发送表格和收据",
     "officialSource": "查看主办方官方公告与报名详情 ↗",
-    "whatsappMessage": "你好，我对 {organizer} 的「{title}」有兴趣，可以分享详情吗？"
+    "whatsappMessage": "你好，我对 {organizer} 的「{title}」有兴趣。我是通过 Jompancing 看到这个活动的，可以分享详情吗？"
   },
   "forum": {
     "title": "钓友论坛",

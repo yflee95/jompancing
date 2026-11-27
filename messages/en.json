@@ -152,6 +152,7 @@
     "eventHours": "9:00 am–1:00 pm",
     "fullEventDetails": "Full event details",
     "eventTerms": "Terms & conditions",
+    "officialEventWebsite": "Joran Fest website",
     "nearbyActivitiesHint": "Contests, sales & meetups — filter by state and district.",
     "activityEmptyTitle": "No nearby events yet",
     "activityEmptyDesc": "Try another area or browse all activities. Organizers can submit a fishing event for review.",
@@ -484,7 +485,7 @@
     "accountName": "Account name",
     "sendFormAndReceipt": "Send form + receipt on WhatsApp",
     "officialSource": "View organizer's official announcement and registration details ↗",
-    "whatsappMessage": "Hi, I'm interested in \"{title}\" by {organizer}. Could you share details?"
+    "whatsappMessage": "Hi, I'm interested in \"{title}\" by {organizer}. I found this event through Jompancing. Could you share details?"
   },
   "forum": {
     "title": "Anglers Forum",

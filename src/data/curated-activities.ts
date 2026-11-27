@@ -88,9 +88,9 @@ export const CURATED_ACTIVITIES: Activity[] = [
       accountName: "Persatuan Pelancongan Eko & Pelancongan Pendidikan",
     },
     registrationWhatsAppMessage: {
-      ms: "Hi En Mat, saya ingin mendaftar Joran Fest Siri 2. Saya akan hantar borang PDF yang lengkap dan resit bayaran di sini.",
-      en: "Hi En Mat, I'd like to register for Joran Fest Siri 2. I will send my completed PDF form and payment receipt here.",
-      zh: "你好 En Mat，我想报名 Joran Fest Siri 2。我会在这里发送填好的 PDF 报名表和转账收据。",
+      ms: "Hi En Mat, saya ingin mendaftar Joran Fest Siri 2. Saya jumpa acara ini melalui Jompancing. Saya akan hantar borang PDF yang lengkap dan resit bayaran di sini.",
+      en: "Hi En Mat, I'd like to register for Joran Fest Siri 2. I found this event through Jompancing. I will send my completed PDF form and payment receipt here.",
+      zh: "你好 En Mat，我想报名 Joran Fest Siri 2。我是通过 Jompancing 看到这个活动的，会在这里发送填好的 PDF 报名表和转账收据。",
     },
     verified: false,
     fee: 130,

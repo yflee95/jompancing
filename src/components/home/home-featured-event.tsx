@@ -349,6 +349,16 @@ export function HomeFeaturedEvent({ activity, locale }: HomeFeaturedEventProps) 
                     {t("eventTerms")}
                   </a>
                 )}
+                {activity.sourceUrl && (
+                  <a
+                    href={activity.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-medium text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ocean-dark)] hover:underline"
+                  >
+                    {t("officialEventWebsite")} ↗
+                  </a>
+                )}
               </div>
               <p className="text-center text-xs leading-relaxed text-[var(--ink-muted)]">
                 {description}

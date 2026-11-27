@@ -152,6 +152,7 @@
     "eventHours": "9.00 pagi–1.00 petang",
     "fullEventDetails": "Butiran penuh acara",
     "eventTerms": "Terma & syarat",
+    "officialEventWebsite": "Laman web Joran Fest",
     "nearbyActivitiesHint": "Peraduan, jualan & meetup — tapis mengikut negeri & daerah.",
     "activityEmptyTitle": "Tiada acara berdekatan buat masa ini",
     "activityEmptyDesc": "Cuba kawasan lain atau layari semua aktiviti. Penganjur boleh menghantar acara memancing untuk semakan.",
@@ -484,7 +485,7 @@
     "accountName": "Nama akaun",
     "sendFormAndReceipt": "Hantar borang + resit melalui WhatsApp",
     "officialSource": "Lihat pengumuman rasmi dan maklumat pendaftaran ↗",
-    "whatsappMessage": "Hi, saya berminat dengan \"{title}\" anjuran {organizer}. Boleh share butiran?"
+    "whatsappMessage": "Hi, saya berminat dengan \"{title}\" anjuran {organizer}. Saya jumpa acara ini melalui Jompancing. Boleh kongsi butiran?"
   },
   "forum": {
     "title": "Forum Pemancing",
