@@ -477,7 +477,7 @@
     "registrationCheckNote": "Sahkan sebelum mendaftar atau bertolak",
     "onlineRegistration": "Pendaftaran dalam talian melalui PDF",
     "completePdfForm": "1. Muat turun dan lengkapkan borang pendaftaran PDF",
-    "transferRegistrationFee": "2. Bank-in yuran pendaftaran RM{fee} ke akaun ini",
+    "transferRegistrationFee": "2. Bank-in yuran pendaftaran {fee} ke akaun ini",
     "sendRegistrationDocuments": "3. Hantar borang lengkap dan resit bayaran kepada penganjur melalui WhatsApp",
     "bank": "Bank",
     "accountNumber": "Nombor akaun",

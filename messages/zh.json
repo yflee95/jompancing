@@ -477,7 +477,7 @@
     "registrationCheckNote": "报名或出发前请先确认",
     "onlineRegistration": "网上报名（PDF）",
     "completePdfForm": "1. 下载并填写 PDF 报名表",
-    "transferRegistrationFee": "2. 将 RM{fee} 报名费转入以下账户",
+    "transferRegistrationFee": "2. 将 {fee} 报名费转入以下账户",
     "sendRegistrationDocuments": "3. 通过 WhatsApp 把填好的表格和转账收据发给主办方",
     "bank": "银行",
     "accountNumber": "账号",

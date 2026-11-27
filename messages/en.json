@@ -477,7 +477,7 @@
     "registrationCheckNote": "Please confirm before registering or travelling",
     "onlineRegistration": "Register online by PDF",
     "completePdfForm": "1. Download and complete the registration PDF",
-    "transferRegistrationFee": "2. Bank in the RM{fee} registration fee to this account",
+    "transferRegistrationFee": "2. Bank in the {fee} registration fee to this account",
     "sendRegistrationDocuments": "3. WhatsApp the completed form and payment receipt to the organizer",
     "bank": "Bank",
     "accountNumber": "Account number",
